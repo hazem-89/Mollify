@@ -27,7 +27,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-web": "~0.18.7",
     "@types/react-native": "~0.70.6",
-    "expo-screen-orientation": "~5.0.1"
+    "expo-screen-orientation": "~5.0.1",
+    "@expo/webpack-config": "^0.17.2"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
