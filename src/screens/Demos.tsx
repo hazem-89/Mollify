@@ -3,8 +3,8 @@ import { StyleSheet, View, Alert } from 'react-native';
 
 import colors from '../constants/colors';
 import { Text } from '../components/Text';
-import { Button } from '../components/Button';
-import { TextInput } from '../components/Form';
+import { Button } from '../components/buttons/Button';
+import { TextInput } from '../components/forms/Form';
 import { useLogin } from '../util/auth';
 
 const styles = StyleSheet.create({
