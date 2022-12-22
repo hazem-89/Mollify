@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 
-import { Button } from '../buttons/Button';
+import { Button } from '../Buttons/Button';
 
 it('functions as a button', () => {
   const onPress = jest.fn();
