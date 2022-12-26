@@ -11,13 +11,14 @@ import MainBackGround from '../../assets/Images/MainBackGround.png';
 import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Tiger from '../../assets/Images/tiger-min.png';
 import { useDimensions } from '@react-native-community/hooks';
-import { SignUp } from '../components/forms/SignUp';
-import StartPageButtons from '../components/buttons/Buttons';
+import { SignUp } from '../components/forms/Signup';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainStackParams } from '../navigation/Main';
 import { useNavigation } from '@react-navigation/native';
 import Button from '../components/buttons/Buttons';
 import { Text } from '../components/Text';
+
+import { auth, db } from '../../firebaseConfig';
 
 type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
