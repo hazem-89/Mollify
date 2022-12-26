@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -9,16 +9,27 @@ import {
 import colors from '../constants/colors';
 import MainBackGround from '../../assets/Images/MainBackGround.png';
 import WelcomeSign from '../../assets/Images/WelcomeSign.png';
+import Tiger from '../../assets/Images/tiger-min.png';
 import { useDimensions } from '@react-native-community/hooks';
-import { SignUp } from '../components/forms/Signup';
-import StartPageButtons from '../components/buttons/StartPageButtons';
+import { SignUp } from '../components/forms/SignUp';
+import StartPageButtons from '../components/buttons/Buttons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { MainStackParams } from '../navigation/Main';
+import { useNavigation } from '@react-navigation/native';
+import Button from '../components/buttons/Buttons';
+import { Text } from '../components/Text';
 
-export const StartPage = () => {
+type Props = {
+  navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
+};
+export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [signUpMenuOpen, setSignUpMenuOpen] = useState(false);
-
+  const handleMenu = () => {
+    signUpMenuOpen ? setSignUpMenuOpen(false) : setSignUpMenuOpen(true);
+  };
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -33,32 +44,9 @@ export const StartPage = () => {
       height: smallScreen ? 75 : 150,
       marginTop: 30,
     },
-    buttonsContainer: {
-      marginTop: smallScreen ? 10 : 20,
-    },
     backGroundImage: {
       width: '100%',
       height: '100%',
-    },
-    GreenButtonImage: {
-      justifyContent: 'center',
-      width: smallScreen ? 200 : 250,
-      height: smallScreen ? 40 : 50,
-      alignSelf: 'center',
-    },
-    GoogleButton: {
-      justifyContent: 'center',
-      width: smallScreen ? 200 : 250,
-      height: smallScreen ? 40 : 60,
-      alignSelf: 'center',
-      marginTop: 20,
-    },
-    GoldenButtonImg: {
-      justifyContent: 'center',
-      width: 150,
-      height: 45,
-      alignSelf: 'center',
-      resizeMode: 'contain',
     },
     menuContainer: {
       // width: 500,
@@ -70,6 +58,14 @@ export const StartPage = () => {
       flex: 1,
       backgroundColor: 'tomato',
     },
+    tiger: {
+      position: 'absolute',
+      bottom: 0,
+      left: smallScreen ? '15%' : '20%',
+      flex: 1,
+      height: 180,
+      width: 130,
+    },
   });
 
   return (
@@ -77,9 +73,25 @@ export const StartPage = () => {
       <ImageBackground source={MainBackGround} style={styles.backGroundImage}>
         <View>
           <Image source={WelcomeSign} style={styles.WelcomeSign} />
-          <>
-            <StartPageButtons />
-          </>
+          <Button
+            background="Gold"
+            text="Click me"
+            onPress={handleMenu}
+            type="Gold"
+          />
+          <Button
+            background="Google"
+            text="sign in with Google"
+            onPress={handleMenu}
+            type="Google"
+          />
+          <Text type="bold">OR</Text>
+          <Button
+            background="Green"
+            text="Create account"
+            onPress={handleMenu}
+            type="Green"
+          />
         </View>
         {signUpMenuOpen ? (
           <View style={styles.menuContainer}>
@@ -87,6 +99,7 @@ export const StartPage = () => {
           </View>
         ) : null}
       </ImageBackground>
+      <Image source={Tiger} style={styles.tiger} />
     </SafeAreaView>
   );
 };
