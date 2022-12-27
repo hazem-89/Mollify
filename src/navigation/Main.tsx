@@ -4,13 +4,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { List } from '../screens/List';
 import { TextDemo, ButtonDemo, FormDemo } from '../screens/Demos';
 import { StartPage } from '../screens/StartPage';
-import { SignUp } from '../components/forms/SignUp';
 
 export type MainStackParams = {
   StartPage: {
-    signUpMenuOpen: boolean;
-  };
-  SignUP: {
     signUpMenuOpen: boolean;
   };
 };
@@ -24,6 +20,5 @@ export const Main = () => (
     }}
   >
     <MainStack.Screen name="StartPage" component={StartPage} />
-    <MainStack.Screen name="SignUP" component={SignUp} />
   </MainStack.Navigator>
 );
