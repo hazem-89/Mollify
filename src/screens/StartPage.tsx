@@ -18,6 +18,8 @@ import Button from '../components/buttons/Buttons';
 import { Text } from '../components/Text';
 import { Audio } from 'expo-av';
 
+import { auth, db } from '../../firebaseConfig';
+
 type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
 };
