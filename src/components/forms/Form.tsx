@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   TextInput as RNTextInput,
   StyleSheet,
@@ -10,44 +10,52 @@ import {
 
 import { Text } from '../Text';
 import colors from '../../constants/colors';
-
-const styles = StyleSheet.create({
-  inputContainer: {
-    marginBottom: 20,
-  },
-  labelText: {
-    color: colors.gray,
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  textInput: {
-    fontSize: 14,
-    fontWeight: '500',
-    paddingBottom: 10,
-  },
-  border: {
-    height: 1,
-    backgroundColor: colors.border,
-  },
-  borderError: {
-    backgroundColor: colors.error,
-  },
-  errorText: {
-    marginTop: 5,
-    color: colors.error,
-  },
-});
+import { useDimensions } from '@react-native-community/hooks';
 
 interface TextInputProps extends RNTextInputProps {
-  label: string;
+  label?: string;
   errorText?: string;
 }
 
 export const TextInput = ({
-  label,
+  label = '',
   errorText = '',
   ...rest
 }: TextInputProps) => {
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+
+  const styles = StyleSheet.create({
+    inputContainer: {
+      justifyContent: 'center',
+      maxHeight: smallScreen ? 20 : 30,
+      marginTop: smallScreen ? 20 : 30,
+      borderBottomColor: colors.primary,
+      borderBottomWidth: 1,
+      width: smallScreen ? 200 : 200,
+      alignItems: 'flex-start',
+    },
+    labelText: {
+      color: colors.gray,
+      fontSize: smallScreen ? 12 : 18,
+    },
+    textInput: {
+      fontSize: smallScreen ? 10 : 14,
+      fontWeight: '500',
+    },
+    border: {
+      height: 1,
+      backgroundColor: colors.border,
+    },
+    borderError: {
+      backgroundColor: colors.error,
+    },
+    errorText: {
+      marginTop: 5,
+      color: colors.error,
+      fontSize: smallScreen ? 10 : 14,
+    },
+  });
   const borderStyles: StyleProp<ViewStyle> = [styles.border];
 
   if (errorText && errorText.length > 0) {
