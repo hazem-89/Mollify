@@ -47,11 +47,20 @@ export const SignUp = ({ signUpMenuOpen, setSignUpMenuOpen }: SignUpProps) => {
   });
   return (
     <ImageBackground source={FormTemp} style={styles.backGroundImage}>
-      <Button
-        background="CancelButton"
-        onPress={handleMenu}
-        type="CancelButton"
-      />
+      <View
+        style={{
+          position: 'absolute',
+          right: smallScreen ? 30 : 35,
+          top: smallScreen ? 30 : 40,
+          zIndex: 100,
+        }}
+      >
+        <Button
+          background="CancelButton"
+          onPress={handleMenu}
+          type="CancelButton"
+        />
+      </View>
       <View style={styles.container}>
         <Text type="formText">Let’s register your account.</Text>
         <TextInput
