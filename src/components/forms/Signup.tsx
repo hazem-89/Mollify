@@ -33,7 +33,6 @@ export const SignUp = ({ signUpMenuOpen, setSignUpMenuOpen }: SignUpProps) => {
     container: {
       flex: 1,
       padding: smallScreen ? 40 : 60,
-      // width: 400,
       alignItems: 'flex-start',
       justifyContent: 'center',
     },
