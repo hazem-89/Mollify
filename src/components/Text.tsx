@@ -4,13 +4,17 @@ import { useDimensions } from '@react-native-community/hooks';
 import colors from '../constants/colors';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+
 type TextProps = {
   type?: string;
   children: string;
   style?: StyleProp<TextStyle>[];
 };
-SplashScreen.preventAutoHideAsync();
+
 export const Text = ({ type, children, style = [] }: TextProps) => {
+  SplashScreen.preventAutoHideAsync();
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [fontsLoaded] = useFonts({
     Inika: require('../../assets/fonts/Inika/Inika-Regular.ttf'),
   });
@@ -20,14 +24,9 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     }
   }, [fontsLoaded]);
 
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
-  const dimensions = useDimensions();
-
-  const [smallScreen, setSmallScreen] = useState(
-    dimensions.screen.height < 600 ? true : false,
-  );
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const styles = StyleSheet.create({
     text: {
@@ -58,7 +57,6 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: 'rgba(136, 80, 0, 1)',
-      // width: '100%',
       textAlign: 'center',
     },
 
