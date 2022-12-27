@@ -12,7 +12,7 @@ type TextProps = {
 SplashScreen.preventAutoHideAsync();
 export const Text = ({ type, children, style = [] }: TextProps) => {
   const [fontsLoaded] = useFonts({
-    Inika: require('../../assets/fonts/Inika/Inika-Bold.ttf'),
+    Inika: require('../../assets/fonts/Inika/Inika-Regular.ttf'),
   });
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
