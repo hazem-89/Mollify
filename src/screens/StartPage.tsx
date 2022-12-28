@@ -12,12 +12,15 @@ import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Tiger from '../../assets/Images/tiger-min.png';
 import { useDimensions } from '@react-native-community/hooks';
 import { SignUpForm } from '../components/forms/Signup';
+import { LoginForm } from '../components/forms/Login';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MainStackParams } from '../navigation/Main';
 import Button from '../components/buttons/Buttons';
 import { Text } from '../components/Text';
 
 import { auth, db } from '../../firebaseConfig';
+import { useLogin } from '../util/auth';
+import SelectProfile from '../components/menu/SelectProfile';
 
 type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
@@ -27,16 +30,22 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [signUpMenuOpen, setSignUpMenuOpen] = useState(false);
   const [googleBtnPressed, setGoogleBtnPressed] = useState(false);
-  const handleMenu = () => {
+  const [loginMenuOpen, setLoginMenuOpen] = useState(false);
+  const { currentUser } = useLogin();
+
+  const handleSignUpMenu = () => {
     signUpMenuOpen ? setSignUpMenuOpen(false) : setSignUpMenuOpen(true);
   };
-
+  const handleLoginMenu = () => {
+    loginMenuOpen ? setLoginMenuOpen(false) : setLoginMenuOpen(true);
+  };
   const handleGoogleBtnClick = () => {
     setGoogleBtnPressed(true);
   };
   const handleGoogleBtnClick1 = () => {
     setGoogleBtnPressed(false);
   };
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -85,49 +94,65 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
     <SafeAreaView style={styles.container}>
       <ImageBackground source={MainBackGround} style={styles.backGroundImage}>
         <Image source={WelcomeSign} style={styles.WelcomeSign} />
-        {!signUpMenuOpen ? (
-          <View>
-            <Button
-              background="Gold"
-              text="Sign in"
-              onPress={handleMenu}
-              type="Gold"
-            />
-            {!googleBtnPressed ? (
-              <Button
-                background="Google"
-                text={'sign in with Google'}
-                onPress={handleGoogleBtnClick}
-                type="Google"
-              />
-            ) : (
-              <Button
-                background="GoogleButtonBroken"
-                onPress={handleGoogleBtnClick1}
-                type="Google"
-              />
+        {currentUser ? (
+          <>
+            {!signUpMenuOpen ? (
+              <View>
+                <Button
+                  background="Gold"
+                  text="Sign in"
+                  onPress={handleLoginMenu}
+                  type="Gold"
+                />
+                {!googleBtnPressed ? (
+                  <Button
+                    background="Google"
+                    text={'sign in with Google'}
+                    onPress={handleGoogleBtnClick}
+                    type="Google"
+                  />
+                ) : (
+                  <Button
+                    background="GoogleButtonBroken"
+                    onPress={handleGoogleBtnClick1}
+                    type="Google"
+                  />
+                )}
+
+                <Text type="bold">OR</Text>
+                <Button
+                  background="Green"
+                  text="Create account"
+                  onPress={handleSignUpMenu}
+                  type="Green"
+                />
+              </View>
+            ) : null}
+
+            {signUpMenuOpen ? (
+              <View style={styles.menuContainer}>
+                <SignUpForm
+                  signUpMenuOpen={signUpMenuOpen}
+                  setSignUpMenuOpen={setSignUpMenuOpen}
+                />
+              </View>
+            ) : null}
+            {loginMenuOpen ? (
+              <View style={styles.menuContainer}>
+                <LoginForm
+                  loginMenuOpen={loginMenuOpen}
+                  setLoginMenuOpen={setLoginMenuOpen}
+                />
+              </View>
+            ) : null}
+            {signUpMenuOpen ? null : (
+              <Image source={Tiger} style={styles.tiger} />
             )}
-
-            <Text type="bold">OR</Text>
-            <Button
-              background="Green"
-              text="Create account"
-              onPress={handleMenu}
-              type="Green"
-            />
-          </View>
-        ) : null}
-
-        {signUpMenuOpen ? (
-          <View style={styles.menuContainer}>
-            <SignUpForm
-              signUpMenuOpen={signUpMenuOpen}
-              setSignUpMenuOpen={setSignUpMenuOpen}
-            />
-          </View>
-        ) : null}
+          </>
+        ) : (
+          <SelectProfile />
+        )}
       </ImageBackground>
-      {signUpMenuOpen ? null : <Image source={Tiger} style={styles.tiger} />}
     </SafeAreaView>
   );
 };
