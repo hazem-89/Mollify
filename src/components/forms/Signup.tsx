@@ -94,7 +94,7 @@ export const SignUpForm = ({
         <Button
           background="GreenForms"
           text="Create account"
-          onPress={handelSignup}
+          onPress={submit}
           type="Green"
         />
       </View>
