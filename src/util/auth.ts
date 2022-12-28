@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Alert } from 'react-native';
-import { auth } from '../../firebaseConfig';
+import { auth, db } from '../../firebaseConfig';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,6 +11,7 @@ import {
   UserInfo,
   updateProfile,
 } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 type ErrorType = {
   email?: string;
@@ -29,11 +30,11 @@ export const useLogin = () => {
 
   const [currentUser, setCurrentUser] = useState<User>();
 
-  // const addUserToDb = (email: string, id: string) => {
-  //   setDoc(doc(db, 'users', id), {
-  //     email: email,
-  //   });
-  // };
+  const addUserToDb = (email: string, id: string) => {
+    setDoc(doc(db, 'users', id), {
+      email: email,
+    });
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, user => {
@@ -75,13 +76,12 @@ export const useLogin = () => {
           if (auth.currentUser) {
             updateProfile(auth.currentUser, {});
           }
+          if (auth.currentUser && auth.currentUser.email) {
+            addUserToDb(auth.currentUser.email, auth.currentUser.uid);
+          }
         })
         .catch((error: any) => {
           console.error(error);
-          // if (error.message.includes('email')) {
-          //   nextErrors.email = 'This email is already in use';
-          // }
-          // setErrors(nextErrors);
         });
     } catch (error) {
       console.error(error);
