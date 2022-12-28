@@ -62,11 +62,7 @@ export const LoginForm = ({ loginMenuOpen, setLoginMenuOpen }: LogInProps) => {
           zIndex: 100,
         }}
       >
-        <Button
-          background="CancelButton"
-          onPress={handleMenu}
-          type="CancelButton"
-        />
+        <Button background="CancelButton" onPress={handleMenu} />
       </View>
       <View style={styles.container}>
         <Text type="formText">Login</Text>
@@ -86,12 +82,7 @@ export const LoginForm = ({ loginMenuOpen, setLoginMenuOpen }: LogInProps) => {
           autoCapitalize="none"
           value={loginPassword}
         />
-        <Button
-          background="GreenForms"
-          text="Login"
-          onPress={handleSignIn}
-          type="Green"
-        />
+        <Button background="GreenForms" text="Login" onPress={handleSignIn} />
       </View>
     </ImageBackground>
   );
