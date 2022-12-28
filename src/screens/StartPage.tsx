@@ -1,49 +1,28 @@
-import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  ImageBackground,
-  Image,
-  SafeAreaView,
-} from 'react-native';
-import colors from '../constants/colors';
-import MainBackGround from '../../assets/Images/MainBackGround.png';
-import WelcomeSign from '../../assets/Images/WelcomeSign.png';
-import Tiger from '../../assets/Images/tiger-min.png';
 import { useDimensions } from '@react-native-community/hooks';
-import { SignUpForm } from '../components/forms/Signup';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { MainStackParams } from '../navigation/Main';
+import React, { useCallback, useState } from 'react';
+import {
+  Image, ImageBackground, SafeAreaView, StyleSheet, View
+} from 'react-native';
+import MainBackGround from '../../assets/Images/MainBackGround.png';
+import Tiger from '../../assets/Images/tiger-min.png';
+import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Button from '../components/buttons/Buttons';
+import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
+import { MainStackParams } from '../navigation/Main';
 
-import { auth, db } from '../../firebaseConfig';
 
 type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
 };
+
 export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-  const [signUpMenuOpen, setSignUpMenuOpen] = useState(false);
-  const [googleBtnPressed, setGoogleBtnPressed] = useState(false);
-  const handleMenu = () => {
-    signUpMenuOpen ? setSignUpMenuOpen(false) : setSignUpMenuOpen(true);
-  };
+  const [smallScreen] = useState(dimensions.screen.width < 600 ? true : false);
+  const [btnClicked, setBtnClicked] = useState<string | undefined>();
 
-  const handleGoogleBtnClick = () => {
-    setGoogleBtnPressed(true);
-  };
-  const handleGoogleBtnClick1 = () => {
-    setGoogleBtnPressed(false);
-  };
   const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: colors.white,
-      width: '100%',
-      height: '100%',
-    },
     WelcomeSign: {
       justifyContent: 'center',
       alignSelf: 'center',
@@ -52,16 +31,11 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
       marginTop: 30,
       zIndex: 10,
     },
-    backGroundImage: {
+    Background: {
+      position: "relative",
+      zIndex: 1,
       width: '100%',
       height: '100%',
-    },
-    menuContainer: {
-      position: 'absolute',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      top: '25%',
-      flex: 1,
     },
     tiger: {
       position: 'absolute',
@@ -71,63 +45,61 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
       height: 180,
       width: 130,
     },
-    CancelButton: {
-      position: 'absolute',
-    },
-    GoogleIcon: {
-      position: 'absolute',
-      width: 50,
-      height: 50,
+    SafeArea: {
+      overflow: "hidden",
+      position: "absolute",
+      width: "100%",
+      maxWidth: "100%",
+      height: "100%",
+      maxHeight: "100%",
+      display: "flex",
+      alignItems: "center",
+      zIndex: 1,
     },
   });
 
+  const handleEmit = useCallback((value: undefined) => {
+    setBtnClicked(value);  // This function will be called by the child component to emit a prop
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ImageBackground source={MainBackGround} style={styles.backGroundImage}>
+    <>
+      <ImageBackground source={MainBackGround} style={styles.Background} />
+      <SafeAreaView style={styles.SafeArea}>
         <Image source={WelcomeSign} style={styles.WelcomeSign} />
-        {!signUpMenuOpen ? (
-          <View>
+        <View>
+          <Button
+            disable={btnClicked ? true : false}
+            background="Gold"
+            text="Sign in"
+            onPress={() => setBtnClicked("SignIn")}
+          />
+          {btnClicked !== "GoogleSignIn" ? (
             <Button
-              background="Gold"
-              text="Sign in"
-              onPress={handleMenu}
-              type="Gold"
+              disable={btnClicked ? true : false}
+              background="Google"
+              text={'sign in with Google'}
+              onPress={() => setBtnClicked("GoogleSignIn")}
             />
-            {!googleBtnPressed ? (
-              <Button
-                background="Google"
-                text={'sign in with Google'}
-                onPress={handleGoogleBtnClick}
-                type="Google"
-              />
-            ) : (
-              <Button
-                background="GoogleButtonBroken"
-                onPress={handleGoogleBtnClick1}
-                type="Google"
-              />
-            )}
-
-            <Text type="bold">OR</Text>
+          ) : (
             <Button
-              background="Green"
-              text="Create account"
-              onPress={handleMenu}
-              type="Green"
+              disable={btnClicked ? true : false}
+              background="GoogleButtonBroken"
+              onPress={() => setBtnClicked("")}
             />
-          </View>
-        ) : null}
+          )}
 
-        {signUpMenuOpen ? (
-          <View style={styles.menuContainer}>
-            <SignUpForm
-              signUpMenuOpen={signUpMenuOpen}
-              setSignUpMenuOpen={setSignUpMenuOpen}
-            />
-          </View>
-        ) : null}
-      </ImageBackground>
-      {signUpMenuOpen ? null : <Image source={Tiger} style={styles.tiger} />}
-    </SafeAreaView>
+          <Text type="bold">OR</Text>
+          <Button
+            disable={btnClicked ? true : false}
+            background="Green"
+            text="Create account"
+            onPress={() => setBtnClicked("SignUp")}
+          />
+        </View>
+        <FormModal onEmit={handleEmit} formName={btnClicked} />
+        <Image source={Tiger} style={styles.tiger} />
+      </SafeAreaView>
+    </>
   );
 };
