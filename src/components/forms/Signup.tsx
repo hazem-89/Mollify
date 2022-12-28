@@ -32,10 +32,15 @@ export const SignUpForm = ({
   const handleMenu = () => {
     signUpMenuOpen ? setSignUpMenuOpen(false) : null;
   };
-  const handelSignup = () => {
-    signup(email, password);
+
+  const handelSignUp = () => {
+    submit();
     console.log(errors);
+    if (Object.keys(errors).length === 0) {
+      signup(email, password);
+    }
   };
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -94,7 +99,9 @@ export const SignUpForm = ({
         <Button
           background="GreenForms"
           text="Create account"
-          onPress={submit}
+          onPress={() => {
+            handelSignUp();
+          }}
           type="Green"
         />
       </View>
