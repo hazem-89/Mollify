@@ -14,11 +14,13 @@ import colors from '../../constants/colors';
 import { useDimensions } from '@react-native-community/hooks';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
 import GoldenButton from '../../../assets/Images/GoldenButton.png';
-import GoogleButton from '../../../assets/Images/GoogleButton.png';
+import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
+import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
+import CancelButton from '../../../assets/Images/CancelButton.png';
 
 type ButtonProps = {
   onPress: () => void;
-  text: string;
+  text?: string;
   background: string;
   type: string;
 };
@@ -45,6 +47,13 @@ function Button({
       height: smallScreen ? 40 : 50,
       alignSelf: 'center',
     },
+    GreenForms: {
+      justifyContent: 'center',
+      width: smallScreen ? 120 : 150,
+      height: smallScreen ? 25 : 35,
+      alignSelf: 'center',
+      marginTop: 30,
+    },
     Google: {
       justifyContent: 'center',
       width: smallScreen ? 200 : 300,
@@ -59,6 +68,10 @@ function Button({
       alignSelf: 'center',
       resizeMode: 'contain',
     },
+    CancelButton: {
+      width: smallScreen ? 35 : 55,
+      height: smallScreen ? 35 : 55,
+    },
   });
 
   useEffect(() => {
@@ -70,6 +83,15 @@ function Button({
       setStyle(styles.Green);
     } else if (background === 'Google') {
       setSource(GoogleButton);
+      setStyle(styles.Google);
+    } else if (background === 'CancelButton') {
+      setSource(CancelButton);
+      setStyle(styles.CancelButton);
+    } else if (background === 'GreenForms') {
+      setSource(GreenButtonImage);
+      setStyle(styles.GreenForms);
+    } else if (background === 'GoogleButtonBroken') {
+      setSource(GoogleButtonBroken);
       setStyle(styles.Google);
     }
   }, [background]);
