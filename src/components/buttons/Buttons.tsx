@@ -43,21 +43,21 @@ function Button({
   const styles = StyleSheet.create({
     Green: {
       justifyContent: 'center',
-      width: smallScreen ? 200 : 250,
-      height: smallScreen ? 40 : 50,
+      width: smallScreen ? 200 : 270,
+      height: smallScreen ? 50 : 70,
       alignSelf: 'center',
     },
     GreenForms: {
       justifyContent: 'center',
-      width: smallScreen ? 120 : 150,
-      height: smallScreen ? 25 : 35,
+      width: smallScreen ? 90 : 150,
+      height: smallScreen ? 25 : 40,
       alignSelf: 'center',
       marginTop: 30,
     },
     Google: {
       justifyContent: 'center',
-      width: smallScreen ? 200 : 300,
-      height: smallScreen ? 40 : 70,
+      width: smallScreen ? 250 : 300,
+      height: smallScreen ? 60 : 70,
       alignSelf: 'center',
       marginTop: 20,
     },
