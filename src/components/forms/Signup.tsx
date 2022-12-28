@@ -1,20 +1,16 @@
+import { useDimensions } from '@react-native-community/hooks';
 import React, { useState } from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
-import FormTemp from '../../../assets/Images/paperFormTEMP.png';
+import { StyleSheet, View } from 'react-native';
+import Button from '../../components/buttons/Buttons';
 import { useLogin } from '../../util/auth';
 import { TextInput } from '../forms/Form';
-import Button from '../../components/buttons/Buttons';
 import { Text } from '../Text';
-import { useDimensions } from '@react-native-community/hooks';
 
 type SignUpProps = {
   signUpMenuOpen: boolean;
   setSignUpMenuOpen: Function;
 };
-export const SignUpForm = ({
-  signUpMenuOpen,
-  setSignUpMenuOpen,
-}: SignUpProps) => {
+export const SignUpForm = () => {
   const {
     errors,
     email,
@@ -29,9 +25,6 @@ export const SignUpForm = ({
   const dimensions = useDimensions();
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-  const handleMenu = () => {
-    signUpMenuOpen ? setSignUpMenuOpen(false) : null;
-  };
   const handelSignup = () => {
     signup(email, password);
     console.log(errors);
@@ -50,20 +43,14 @@ export const SignUpForm = ({
     },
   });
   return (
-    <ImageBackground source={FormTemp} style={styles.backGroundImage}>
+    <View>
       <View
         style={{
           position: 'absolute',
           right: smallScreen ? 30 : 35,
           top: smallScreen ? 30 : 40,
-          zIndex: 100,
         }}
       >
-        <Button
-          background="CancelButton"
-          onPress={handleMenu}
-          type="CancelButton"
-        />
       </View>
       <View style={styles.container}>
         <Text type="formText">Let’s register your account.</Text>
@@ -73,31 +60,27 @@ export const SignUpForm = ({
           onChangeText={(text: string) => setEmail(text)}
           errorText={errors.email}
           keyboardType="email-address"
-          autoCapitalize="none"
-        />
+          autoCapitalize="none" />
         <TextInput
           placeholder="Choose your password..."
           onChangeText={(text: string) => setPassword(text)}
           secureTextEntry
           errorText={errors.password}
           autoCapitalize="none"
-          value={password}
-        />
+          value={password} />
         <TextInput
           placeholder="Confirm Password"
           value={confirmedPassword}
           onChangeText={(text: string) => setConfirmedPassword(text)}
           secureTextEntry
           errorText={errors.confirmedPassword}
-          autoCapitalize="none"
-        />
+          autoCapitalize="none" />
         <Button
           background="GreenForms"
           text="Create account"
           onPress={submit}
-          type="Green"
         />
       </View>
-    </ImageBackground>
+    </View>
   );
 };
