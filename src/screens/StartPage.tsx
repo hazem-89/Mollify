@@ -94,7 +94,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
     <SafeAreaView style={styles.container}>
       <ImageBackground source={MainBackGround} style={styles.backGroundImage}>
         <Image source={WelcomeSign} style={styles.WelcomeSign} />
-        {currentUser ? (
+        {!currentUser ? (
           <>
             {!signUpMenuOpen ? (
               <View>
