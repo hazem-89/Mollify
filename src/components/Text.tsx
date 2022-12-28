@@ -4,15 +4,19 @@ import { useDimensions } from '@react-native-community/hooks';
 import colors from '../constants/colors';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+
 type TextProps = {
   type?: string;
   children: string;
   style?: StyleProp<TextStyle>[];
 };
-SplashScreen.preventAutoHideAsync();
+
 export const Text = ({ type, children, style = [] }: TextProps) => {
+  SplashScreen.preventAutoHideAsync();
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [fontsLoaded] = useFonts({
-    Inika: require('../../assets/fonts/Inika/Inika-Bold.ttf'),
+    Inika: require('../../assets/fonts/Inika/Inika-Regular.ttf'),
   });
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -20,14 +24,9 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     }
   }, [fontsLoaded]);
 
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
-  const dimensions = useDimensions();
-
-  const [smallScreen, setSmallScreen] = useState(
-    dimensions.screen.height < 600 ? true : false,
-  );
+  if (!fontsLoaded) {
+    return null;
+  }
 
   const styles = StyleSheet.create({
     text: {
@@ -58,7 +57,6 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: 'rgba(136, 80, 0, 1)',
-      // width: '100%',
       textAlign: 'center',
     },
 
@@ -70,23 +68,37 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       width: '100%',
       textAlign: 'center',
     },
-
-    Google: {
-      fontSize: smallScreen ? 20 : 20,
+    GreenForms: {
+      fontSize: smallScreen ? 10 : 15,
       alignSelf: 'center',
       fontFamily: 'Inika',
-      color: '#1F7698',
+      color: '#0F6209',
+      width: '100%',
       textAlign: 'center',
-      paddingLeft: 20,
+    },
+
+    Google: {
+      fontSize: smallScreen ? 17 : 23,
+      fontFamily: 'Inika',
+      color: '#1F7698',
+      textAlign: 'left',
+      paddingLeft: 10,
     },
 
     bold: {
       fontWeight: '900',
       justifyContent: 'center',
       alignSelf: 'center',
-      marginVertical: 20,
+      marginVertical: smallScreen ? 10 : 20,
       fontSize: 30,
       fontFamily: 'Inika',
+    },
+    formText: {
+      fontWeight: '900',
+      marginTop: 20,
+      fontSize: smallScreen ? 15 : 20,
+      fontFamily: 'Inika',
+      color: 'rgba(0,0,0,.4)',
     },
   });
 
@@ -100,10 +112,14 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.Green);
   } else if (type === 'bold') {
     textStyles.push(styles.bold);
-  } else if (type === 'Google') {
+  } else if (type === 'Google' || type === 'GoogleButtonBroken') {
     textStyles.push(styles.Google);
   } else if (type === 'Gold') {
     textStyles.push(styles.Gold);
+  } else if (type === 'GreenForms') {
+    textStyles.push(styles.GreenForms);
+  } else if (type === 'formText') {
+    textStyles.push(styles.formText);
   }
 
   textStyles = [...textStyles, ...style];

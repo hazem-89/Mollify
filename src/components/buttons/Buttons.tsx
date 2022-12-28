@@ -62,12 +62,8 @@ function Button({
       resizeMode: 'contain',
     },
     CancelButton: {
-      position: 'absolute',
-      right: smallScreen ? 30 : 35,
-      top: smallScreen ? 30 : 40,
       width: smallScreen ? 35 : 55,
       height: smallScreen ? 35 : 55,
-      zIndex: 100,
     },
   });
 
