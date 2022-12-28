@@ -25,6 +25,7 @@ export const SignUpForm = () => {
   const dimensions = useDimensions();
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+
   const handelSignup = () => {
     signup(email, password);
     console.log(errors);
@@ -37,13 +38,6 @@ export const SignUpForm = () => {
     container: {
       flex: 1,
       padding: smallScreen ? 40 : 60,
-    },
-    backGroundImage: {
-      width: smallScreen ? 300 : 430,
-      height: smallScreen ? 300 : 430,
-      flex: 1,
-      zIndex: 3,
-      position: 'relative',
     },
   });
   return (

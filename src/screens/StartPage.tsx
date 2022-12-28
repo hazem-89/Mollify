@@ -22,7 +22,7 @@ type Props = {
 
 export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.width < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
 
   const styles = StyleSheet.create({
@@ -32,7 +32,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
       width: smallScreen ? 350 : 450,
       height: smallScreen ? 100 : 150,
       marginTop: 30,
-      zIndex: 10,
+      zIndex: 100,
     },
     Background: {
       position: 'relative',

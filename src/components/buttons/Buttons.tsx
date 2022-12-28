@@ -1,7 +1,10 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { useEffect, useState } from 'react';
 import {
-  ImageBackground, ImageSourcePropType, StyleSheet, TouchableOpacity
+  ImageBackground,
+  ImageSourcePropType,
+  StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import Close from '../../../assets/Images/Close.png';
 import GoldenButton from '../../../assets/Images/GoldenButton.png';
