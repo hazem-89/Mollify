@@ -11,16 +11,13 @@ type LogInProps = {
   loginMenuOpen: boolean;
   setLoginMenuOpen: Function;
 };
-export const LoginForm = ({ loginMenuOpen, setLoginMenuOpen }: LogInProps) => {
+export const LoginForm = () => {
   const { login, errors, submit } = useLogin();
   const dimensions = useDimensions();
   const [loginEmail, setLoginEmail] = useState<string>('');
   const [loginPassword, setLoginPassword] = useState<string>('');
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-  const handleMenu = () => {
-    loginMenuOpen ? setLoginMenuOpen(false) : null;
-  };
 
   const handleSignIn = async () => {
     submit();
@@ -41,29 +38,19 @@ export const LoginForm = ({ loginMenuOpen, setLoginMenuOpen }: LogInProps) => {
     container: {
       flex: 1,
       padding: smallScreen ? 40 : 60,
-      alignItems: 'flex-start',
-      justifyContent: 'center',
-    },
-    backGroundImage: {
-      width: smallScreen ? 300 : 430,
-      height: smallScreen ? 300 : 430,
-      flex: 1,
-      zIndex: 3,
-      position: 'relative',
+      // alignItems: 'flex-start',
+      // justifyContent: 'center',
     },
   });
   return (
-    <ImageBackground source={FormTemp} style={styles.backGroundImage}>
+    <View>
       <View
         style={{
           position: 'absolute',
           right: smallScreen ? 30 : 35,
           top: smallScreen ? 30 : 40,
-          zIndex: 100,
         }}
-      >
-        <Button background="CancelButton" onPress={handleMenu} />
-      </View>
+      ></View>
       <View style={styles.container}>
         <Text type="formText">Login</Text>
         <TextInput
@@ -84,6 +71,6 @@ export const LoginForm = ({ loginMenuOpen, setLoginMenuOpen }: LogInProps) => {
         />
         <Button background="GreenForms" text="Login" onPress={handleSignIn} />
       </View>
-    </ImageBackground>
+    </View>
   );
 };
