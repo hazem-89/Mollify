@@ -1,35 +1,27 @@
+import { useDimensions } from '@react-native-community/hooks';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
-  ImageBackground,
-  Alert,
-  TouchableOpacity,
-  ImageSourcePropType,
-  StyleProp,
+  ImageBackground, ImageSourcePropType, StyleSheet, TouchableOpacity
 } from 'react-native';
-import { Text } from '../Text';
-import colors from '../../constants/colors';
-import { useDimensions } from '@react-native-community/hooks';
-import GreenButtonImage from '../../../assets/Images/GreenButton.png';
+import Close from '../../../assets/Images/Close.png';
 import GoldenButton from '../../../assets/Images/GoldenButton.png';
-import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
-import CancelButton from '../../../assets/Images/CancelButton.png';
+import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
+import GreenButtonImage from '../../../assets/Images/GreenButton.png';
+import { Text } from '../Text';
 
 type ButtonProps = {
   onPress: () => void;
   text?: string;
   background: string;
-  type: string;
+  disable?: boolean;
 };
 
 function Button({
-  onPress = () => {},
+  onPress = Function,
   text = '',
   background = '',
-  type = '',
+  disable = false,
 }: ButtonProps) {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
@@ -37,9 +29,7 @@ function Button({
     undefined,
   );
   const [style, setStyle] = useState<Object>({});
-  const handleMenu = () => {
-    // signUpMenuOpen ? setSignUpMenuOpen(false) : setSignUpMenuOpen(true);
-  };
+
   const styles = StyleSheet.create({
     Green: {
       justifyContent: 'center',
@@ -68,7 +58,7 @@ function Button({
       alignSelf: 'center',
       resizeMode: 'contain',
     },
-    CancelButton: {
+    Close: {
       width: smallScreen ? 35 : 55,
       height: smallScreen ? 35 : 55,
     },
@@ -84,9 +74,9 @@ function Button({
     } else if (background === 'Google') {
       setSource(GoogleButton);
       setStyle(styles.Google);
-    } else if (background === 'CancelButton') {
-      setSource(CancelButton);
-      setStyle(styles.CancelButton);
+    } else if (background === 'Close') {
+      setSource(Close);
+      setStyle(styles.Close);
     } else if (background === 'GreenForms') {
       setSource(GreenButtonImage);
       setStyle(styles.GreenForms);
@@ -98,11 +88,11 @@ function Button({
 
   // const imageBackgroundStyles: StyleProp[] = [styles.GreenButtonImage];
   return (
-    <ImageBackground source={source} style={style}>
-      <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity activeOpacity={disable ? 1 : 0.2} onPress={onPress}>
+      <ImageBackground source={source} style={style}>
         <Text type={background}>{text}</Text>
-      </TouchableOpacity>
-    </ImageBackground>
+      </ImageBackground>
+    </TouchableOpacity>
   );
 }
 
