@@ -46,10 +46,10 @@ export const useLogin = () => {
         })
         .catch((error: any) => {
           console.error(error);
-          if (error.message.includes('email')) {
-            nextErrors.email = 'This email is already in use';
-          }
-          setErrors(nextErrors);
+          // if (error.message.includes('email')) {
+          //   nextErrors.email = 'This email is already in use';
+          // }
+          // setErrors(nextErrors);
         });
     } catch (error) {
       console.error(error);
