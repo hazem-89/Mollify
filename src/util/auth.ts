@@ -27,10 +27,11 @@ export const useLogin = () => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [currentUser, setCurrentUser] = useState<User>();
+
   const addUserToDb = (email: string, id: string) => {
-    setDoc(doc(db, 'users', id), {
-      email: email,
-    });
+    // setDoc(doc(db, 'users', id), {
+    //   email: email,
+    // });
   };
 
   useEffect(() => {
@@ -47,33 +48,21 @@ export const useLogin = () => {
     }
     if (password.length === 0) {
       nextErrors.password = 'This field is required.';
-    }
-    if (password.length < 6) {
+    } else if (password.length < 6) {
       nextErrors.password = 'Password should be at least 6 characters.';
     }
-    if (password !== confirmedPassword) {
+    if (password !== confirmedPassword && functionName === 'signUp') {
       nextErrors.confirmedPassword = 'Passwords do not match';
     }
     setErrors(nextErrors);
-    // console.log('====================================');
-    // console.log(functionName);
-    // console.log('====================================');
-    const loginFun = async () => {
-      try {
-        login(email, password);
-      } catch (error) {
-        console.error('login failed' + error);
-      }
-    };
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
-      loginFun();
+      login(email, password);
     } else if (
       Object.keys(nextErrors).length === 0 &&
       functionName === 'signUp'
     ) {
       signup(email, password);
     }
-
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
@@ -83,8 +72,6 @@ export const useLogin = () => {
   };
 
   const signup = (email: string, password: string) => {
-    console.log('signupStart');
-    const nextErrors: ErrorType = {};
     try {
       createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
@@ -103,19 +90,12 @@ export const useLogin = () => {
     }
   };
   const login = async (email: string, password: string) => {
-    console.log('====================================');
-    console.log('loginStart');
-    console.log('====================================');
     try {
       await signInWithEmailAndPassword(auth, email, password).catch(error => {
         setErrorMessage(true);
       });
-
       if (auth.currentUser && !errorMessage) {
         setCurrentUser(auth.currentUser);
-        console.log('====================================');
-        console.log('currentUser', currentUser);
-        console.log('====================================');
       } else {
         setCurrentUser(undefined);
       }
@@ -123,7 +103,6 @@ export const useLogin = () => {
       console.error(error);
     }
   };
-
   const logout = async () => {
     const auth = getAuth();
     signOut(auth)

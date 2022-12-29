@@ -15,21 +15,10 @@ export const SignUpForm = () => {
     setPassword,
     confirmedPassword,
     setConfirmedPassword,
-    signup,
     submit,
   } = useLogin();
   const dimensions = useDimensions();
-
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-
-  const handelSignup = () => {
-    submit();
-    console.log(errors);
-
-    if (Object.keys(errors).length === 0) {
-      signup(email, password);
-    }
-  };
 
   const styles = StyleSheet.create({
     container: {
@@ -40,13 +29,6 @@ export const SignUpForm = () => {
 
   return (
     <View>
-      <View
-        style={{
-          position: 'absolute',
-          right: smallScreen ? 30 : 35,
-          top: smallScreen ? 30 : 40,
-        }}
-      ></View>
       <View style={styles.container}>
         <Text type="formText">Let’s register your account.</Text>
         <TextInput
@@ -76,9 +58,7 @@ export const SignUpForm = () => {
         <Button
           background="GreenForms"
           text="Create account"
-          onPress={() => {
-            handelSignup();
-          }}
+          onPress={() => submit('signUp')}
         />
       </View>
     </View>

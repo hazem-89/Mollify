@@ -8,27 +8,28 @@ import { Text } from '../Text';
 import { useDimensions } from '@react-native-community/hooks';
 
 export const LoginForm = () => {
-  const { login, errors, submit } = useLogin();
+  const { login, errors, submit, email, password, setEmail, setPassword } =
+    useLogin();
   const dimensions = useDimensions();
   const [loginEmail, setLoginEmail] = useState<string>('');
   const [loginPassword, setLoginPassword] = useState<string>('');
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
-  const handleSignIn = async () => {
-    submit();
-    console.log(errors);
+  // const handleSignIn = async () => {
+  //   submit('login');
+  //   console.log(errors);
 
-    try {
-      if (Object.keys(errors).length === 0) {
-        console.log('login');
+  //   try {
+  //     if (Object.keys(errors).length === 0) {
+  //       console.log('login');
 
-        await login(loginEmail, loginPassword);
-      }
-    } catch (error) {
-      console.error('login failed' + error);
-    }
-  };
+  //       await login(loginEmail, loginPassword);
+  //     }
+  //   } catch (error) {
+  //     console.error('login failed' + error);
+  //   }
+  // };
 
   const styles = StyleSheet.create({
     container: {
@@ -38,32 +39,29 @@ export const LoginForm = () => {
   });
   return (
     <View>
-      <View
-        style={{
-          position: 'absolute',
-          right: smallScreen ? 30 : 35,
-          top: smallScreen ? 30 : 40,
-        }}
-      ></View>
       <View style={styles.container}>
         <Text type="formText">Login</Text>
         <TextInput
           placeholder="Enter your email..."
-          value={loginEmail}
-          onChangeText={(text: string) => setLoginEmail(text)}
+          value={email}
+          onChangeText={(text: string) => setEmail(text)}
           errorText={errors.email}
           keyboardType="email-address"
           autoCapitalize="none"
         />
         <TextInput
           placeholder="Choose your password..."
-          onChangeText={(text: string) => setLoginPassword(text)}
+          onChangeText={(text: string) => setPassword(text)}
           secureTextEntry
           errorText={errors.password}
           autoCapitalize="none"
-          value={loginPassword}
+          value={password}
         />
-        <Button background="GreenForms" text="Login" onPress={handleSignIn} />
+        <Button
+          background="GreenForms"
+          text="Login"
+          onPress={() => submit('login')}
+        />
       </View>
     </View>
   );
