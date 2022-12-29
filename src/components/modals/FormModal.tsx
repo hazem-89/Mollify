@@ -4,6 +4,7 @@ import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
 import { CreateProfileForm } from '../forms/CreateProfile';
+import { LoginForm } from '../forms/Login';
 import { SignUpForm } from '../forms/Signup';
 
 type ModalProps = {
@@ -46,7 +47,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
       position: 'absolute',
       alignSelf: 'center',
       justifyContent: 'center',
-      top: '26%',
+      top: smallScreen ? '30%' : '25%',
       flex: 1,
       zIndex: 10,
     },
@@ -55,24 +56,27 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
       <ImageBackground resizeMode="stretch" source={PaperForm}>
-        <View
-          style={{
-            position: 'absolute',
-            right: smallScreen ? 30 : 35,
-            top: smallScreen ? 25 : 25,
-          }}
-        >
-          <Button
-            background="Close"
-            onPress={() => {
-              setformNameState(undefined);
-              onEmit(undefined);
+        {formNameState && (
+          <View
+            style={{
+              position: 'absolute',
+              right: smallScreen ? 30 : 35,
+              top: smallScreen ? 25 : 25,
             }}
-          />
-        </View>
+          >
+            <Button
+              background="Close"
+              onPress={() => {
+                setformNameState(undefined);
+                onEmit(undefined);
+              }}
+            />
+          </View>
+        )}
+
         {formNameState === 'SignUp' && <SignUpForm />}
         {formNameState === 'GoogleSignUp' && <CreateProfileForm />}
-        {formNameState === 'Login' && <CreateProfileForm />}
+        {formNameState === 'Login' && <LoginForm />}
       </ImageBackground>
     </Animated.View>
   );

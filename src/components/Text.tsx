@@ -96,7 +96,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     formText: {
       fontWeight: '900',
       marginTop: 20,
-      fontSize: smallScreen ? 15 : 20,
+      fontSize: smallScreen ? 15 : 18,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
     },

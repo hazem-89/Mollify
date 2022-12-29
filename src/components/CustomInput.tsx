@@ -31,7 +31,7 @@ export const TextInput = ({
       marginTop: smallScreen ? 20 : 30,
       borderBottomColor: colors.primary,
       borderBottomWidth: 1,
-      width: smallScreen ? 200 : 200,
+      width: smallScreen ? 200 : 250,
       alignItems: 'flex-start',
     },
     labelText: {
@@ -52,7 +52,7 @@ export const TextInput = ({
     errorText: {
       marginTop: 5,
       color: colors.error,
-      fontSize: smallScreen ? 10 : 14,
+      fontSize: smallScreen ? 10 : 12,
     },
   });
   const borderStyles: StyleProp<ViewStyle> = [styles.border];
