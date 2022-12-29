@@ -3,13 +3,9 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Button from '../../components/buttons/Buttons';
 import { useLogin } from '../../util/auth';
-import { TextInput } from '../forms/Form';
+import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
 
-type SignUpProps = {
-  signUpMenuOpen: boolean;
-  setSignUpMenuOpen: Function;
-};
 export const SignUpForm = () => {
   const {
     errors,
@@ -33,10 +29,6 @@ export const SignUpForm = () => {
     if (Object.keys(errors).length === 0) {
       signup(email, password);
     }
-
-    if (Object.keys(errors).length === 0) {
-      signup(email, password);
-    }
   };
 
   const styles = StyleSheet.create({
@@ -45,6 +37,7 @@ export const SignUpForm = () => {
       padding: smallScreen ? 40 : 60,
     },
   });
+
   return (
     <View>
       <View

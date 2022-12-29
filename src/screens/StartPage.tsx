@@ -75,7 +75,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
             disable={btnClicked ? true : false}
             background="Gold"
             text="Sign in"
-            onPress={() => setBtnClicked('SignIn')}
+            onPress={() => setBtnClicked('Login')}
           />
           {btnClicked !== 'GoogleSignIn' ? (
             <Button
@@ -88,7 +88,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
             <Button
               disable={btnClicked ? true : false}
               background="GoogleButtonBroken"
-              onPress={() => setBtnClicked('')}
+              onPress={() => setBtnClicked(undefined)}
             />
           )}
 

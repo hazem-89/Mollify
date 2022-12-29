@@ -8,8 +8,8 @@ import {
   TextInputProps as RNTextInputProps,
 } from 'react-native';
 
-import { Text } from '../Text';
-import colors from '../../constants/colors';
+import { Text } from './Text';
+import colors from '../constants/colors';
 import { useDimensions } from '@react-native-community/hooks';
 
 interface TextInputProps extends RNTextInputProps {

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
-import { LoginForm } from '../forms/Login';
+import { CreateProfileForm } from '../forms/CreateProfile';
 import { SignUpForm } from '../forms/Signup';
 
 type ModalProps = {
@@ -55,27 +55,18 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
       <ImageBackground resizeMode="stretch" source={PaperForm}>
-        <View
-          style={{
-            flex: 1,
-            // width: '100%',
-            position: 'absolute',
-            right: smallScreen ? 30 : 35,
-            top: smallScreen ? 25 : 25,
-          }}
-        >
-          {formNameState && (
-            <Button
-              background="Close"
-              onPress={() => {
-                setformNameState(undefined);
-                onEmit(undefined);
-              }}
-            />
-          )}
+        <View style={{ width: '100 %', alignSelf: 'flex-end' }}>
+          <Button
+            background="Close"
+            onPress={() => {
+              setformNameState(undefined);
+              onEmit(undefined);
+            }}
+          />
         </View>
         {formNameState === 'SignUp' && <SignUpForm />}
-        {formNameState === 'SignIn' && <LoginForm />}
+        {formNameState === 'GoogleSignUp' && <CreateProfileForm />}
+        {formNameState === 'Login' && <CreateProfileForm />}
       </ImageBackground>
     </Animated.View>
   );

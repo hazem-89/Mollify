@@ -89,7 +89,6 @@ function Button({
     }
   }, [background]);
 
-  // const imageBackgroundStyles: StyleProp[] = [styles.GreenButtonImage];
   return (
     <TouchableOpacity activeOpacity={disable ? 1 : 0.2} onPress={onPress}>
       <ImageBackground source={source} style={style}>
