@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ImageBackground } from 'react-native';
 import FormTemp from '../../../assets/Images/paperFormTEMP.png';
 import { useLogin } from '../../util/auth';
-import { TextInput } from '../forms/Form';
+import { TextInput } from '../CustomInput';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../Text';
 import { useDimensions } from '@react-native-community/hooks';
@@ -34,8 +34,6 @@ export const LoginForm = () => {
     container: {
       flex: 1,
       padding: smallScreen ? 40 : 60,
-      // alignItems: 'flex-start',
-      // justifyContent: 'center',
     },
   });
   return (
