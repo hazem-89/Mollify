@@ -20,7 +20,7 @@ type Props = {
 export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.width < 600 ? true : false);
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  const [btnClicked, setBtnClicked] = useState<"Login" | "SignUp" | "GoogleSignIn" | undefined>();
 
   const styles = StyleSheet.create({
     WelcomeSign: {
@@ -72,7 +72,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
             disable={btnClicked ? true : false}
             background="Gold"
             text="Sign in"
-            onPress={() => setBtnClicked("SignIn")}
+            onPress={() => setBtnClicked("Login")}
           />
           {btnClicked !== "GoogleSignIn" ? (
             <Button
@@ -85,7 +85,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
             <Button
               disable={btnClicked ? true : false}
               background="GoogleButtonBroken"
-              onPress={() => setBtnClicked("")}
+              onPress={() => setBtnClicked(undefined)}
             />
           )}
 
