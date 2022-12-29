@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Animated, ImageBackground, StyleSheet, View } from "react-native";
 import PaperForm from "../../../assets/Images/paperFormTEMP.png";
 import Button from "../buttons/Buttons";
+import { CreateProfileForm } from "../forms/CreateProfile";
 import { SignUpForm } from "../forms/Signup";
 
 
@@ -56,6 +57,12 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
                 </View>
                 {formNameState === "SignUp" &&
                     <SignUpForm />
+                }
+                {formNameState === "GoogleSignUp" &&
+                    <CreateProfileForm />
+                }
+                {formNameState === "Login" &&
+                    <CreateProfileForm />
                 }
             </ImageBackground>
         </Animated.View>
