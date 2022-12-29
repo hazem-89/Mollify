@@ -27,8 +27,13 @@ export const SignUpForm = () => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
   const handelSignup = () => {
-    signup(email, password);
+    submit();
     console.log(errors);
+
+    if (Object.keys(errors).length === 0) {
+      signup(email, password);
+    }
+
     if (Object.keys(errors).length === 0) {
       signup(email, password);
     }
@@ -79,7 +84,7 @@ export const SignUpForm = () => {
           background="GreenForms"
           text="Create account"
           onPress={() => {
-            submit();
+            handelSignup();
           }}
         />
       </View>

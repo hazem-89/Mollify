@@ -30,7 +30,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
       justifyContent: 'center',
       alignSelf: 'center',
       width: smallScreen ? 350 : 450,
-      height: smallScreen ? 100 : 150,
+      height: smallScreen ? 100 : 140,
       marginTop: 30,
       zIndex: 100,
     },

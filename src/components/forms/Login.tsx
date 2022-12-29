@@ -7,10 +7,6 @@ import Button from '../../components/buttons/Buttons';
 import { Text } from '../Text';
 import { useDimensions } from '@react-native-community/hooks';
 
-type LogInProps = {
-  loginMenuOpen: boolean;
-  setLoginMenuOpen: Function;
-};
 export const LoginForm = () => {
   const { login, errors, submit } = useLogin();
   const dimensions = useDimensions();
