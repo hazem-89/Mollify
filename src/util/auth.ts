@@ -24,12 +24,9 @@ export const useLogin = () => {
   const [password, setPassword] = React.useState('');
   const [confirmedPassword, setConfirmedPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
-
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
-
   const [currentUser, setCurrentUser] = useState<User>();
-
   const addUserToDb = (email: string, id: string) => {
     setDoc(doc(db, 'users', id), {
       email: email,
@@ -43,7 +40,7 @@ export const useLogin = () => {
     return unsubscribe;
   }, [onAuthStateChanged, auth]);
 
-  const submit = () => {
+  const submit = (functionName: string) => {
     const nextErrors: ErrorType = {};
     if (email.length === 0) {
       nextErrors.email = 'This field is required.';
@@ -52,12 +49,30 @@ export const useLogin = () => {
       nextErrors.password = 'This field is required.';
     }
     if (password.length < 6) {
-      nextErrors.password = 'Password should be at least 6 characters long.';
+      nextErrors.password = 'Password should be at least 6 characters.';
     }
     if (password !== confirmedPassword) {
       nextErrors.confirmedPassword = 'Passwords do not match';
     }
     setErrors(nextErrors);
+    // console.log('====================================');
+    // console.log(functionName);
+    // console.log('====================================');
+    const loginFun = async () => {
+      try {
+        login(email, password);
+      } catch (error) {
+        console.error('login failed' + error);
+      }
+    };
+    if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
+      loginFun();
+    } else if (
+      Object.keys(nextErrors).length === 0 &&
+      functionName === 'signUp'
+    ) {
+      signup(email, password);
+    }
 
     if (Object.keys(nextErrors).length > 0) {
       return null;
@@ -68,7 +83,7 @@ export const useLogin = () => {
   };
 
   const signup = (email: string, password: string) => {
-    console.log('signup');
+    console.log('signupStart');
     const nextErrors: ErrorType = {};
     try {
       createUserWithEmailAndPassword(auth, email, password)
@@ -88,6 +103,9 @@ export const useLogin = () => {
     }
   };
   const login = async (email: string, password: string) => {
+    console.log('====================================');
+    console.log('loginStart');
+    console.log('====================================');
     try {
       await signInWithEmailAndPassword(auth, email, password).catch(error => {
         setErrorMessage(true);
@@ -95,12 +113,26 @@ export const useLogin = () => {
 
       if (auth.currentUser && !errorMessage) {
         setCurrentUser(auth.currentUser);
+        console.log('====================================');
+        console.log('currentUser', currentUser);
+        console.log('====================================');
       } else {
         setCurrentUser(undefined);
       }
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const logout = async () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        setCurrentUser(undefined);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
   return {
     submit,
@@ -114,5 +146,6 @@ export const useLogin = () => {
     signup,
     login,
     currentUser,
+    logout,
   };
 };
