@@ -12,6 +12,11 @@ import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
 import AddButtonImage from '../../../assets/Images/AddButton.png';
+import InfoButtonImage from '../../../assets/Images/info.png'
+import TodoButtonImage from '../../../assets/Images/todo.png'
+import BellButtonImage from '../../../assets/Images/bell.png'
+import SignButtonImage from '../../../assets/Images/sign.png'
+import TrophyButtonImage from '../../../assets/Images/trophy.png'
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -70,6 +75,26 @@ function Button({
       width: smallScreen ? 60 : 75,
       height: smallScreen ? 60 : 75,
     },
+    infoStyle: {
+      width: smallScreen ? 50 : 80,
+      height: smallScreen ? 50 : 80,
+    },
+    todoStyle: {
+      width: smallScreen ? 50 : 80,
+      height: smallScreen ? 50 : 80,
+    },
+    bellStyle: {
+      width: smallScreen ? 42 : 67,
+      height: smallScreen ? 45 : 70,
+    },
+    signStyle: {
+      width: smallScreen ? 90 : 165,
+      height: smallScreen ? 100 : 210,
+    },
+    trophyStyle: {
+      width: smallScreen ? 35 : 45,
+      height: smallScreen ? 40 : 50,
+    },
   });
 
   useEffect(() => {
@@ -94,6 +119,21 @@ function Button({
     } else if (background === 'AddButtonImage') {
       setSource(AddButtonImage);
       setStyle(styles.Add);
+    } else if (background === 'InfoButtonImage') {
+      setSource(InfoButtonImage);
+      setStyle(styles.infoStyle);
+    } else if (background === 'TodoButtonImage') {
+      setSource(TodoButtonImage);
+      setStyle(styles.todoStyle);
+    } else if (background === 'BellButtonImage') {
+      setSource(BellButtonImage);
+      setStyle(styles.bellStyle);
+    } else if (background === 'SignButtonImage') {
+      setSource(SignButtonImage);
+      setStyle(styles.signStyle);
+    } else if (background === 'TrophyButtonImage') {
+      setSource(TrophyButtonImage);
+      setStyle(styles.trophyStyle);
     }
   }, [background]);
 

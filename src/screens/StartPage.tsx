@@ -12,7 +12,7 @@ import MainBackGround from '../../assets/Images/MainBackGround.png';
 import Tiger from '../../assets/Images/tiger-min.png';
 import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Button from '../components/buttons/Buttons';
-import SelectProfile from '../components/menu/SelectProfile';
+import SelectProfile from '../components/Menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
 import { MainStackParams } from '../navigation/Main';
