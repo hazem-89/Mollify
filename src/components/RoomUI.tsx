@@ -2,6 +2,7 @@ import {
     StyleSheet,
     View,
     Image,
+    ImageBackground,
   } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
@@ -11,6 +12,7 @@ import awardBadge from '../../assets/Images/awardBadge.png'
 import woodSignLarge from '../../assets/Images/woodSignLarge.png'
 import Button from './buttons/Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import roomExample from '../../assets/Images/roomExample.png'
 
 
 const RoomUI = () => {
@@ -66,6 +68,7 @@ const RoomUI = () => {
       });
     
     return (
+        <ImageBackground source={roomExample}>
         <SafeAreaView>
     <View style={{ height: "100%" }}>
       <View style={styles.imagesContainer}>
@@ -90,6 +93,7 @@ const RoomUI = () => {
         </View>
       </View>
       </SafeAreaView>
+      </ImageBackground>
     );
   };
   
