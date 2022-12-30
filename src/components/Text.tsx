@@ -78,7 +78,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
 
     Google: {
-      fontSize: smallScreen ? 17 : 23,
+      fontSize: smallScreen ? 19 : 23,
       fontFamily: 'Inika',
       color: '#1F7698',
       textAlign: 'left',
@@ -96,7 +96,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     formText: {
       fontWeight: '900',
       marginTop: 20,
-      fontSize: smallScreen ? 15 : 20,
+      fontSize: smallScreen ? 15 : 18,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
     },

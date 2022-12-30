@@ -6,7 +6,6 @@ import { useLogin } from '../../util/auth';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
 
-
 export const SignUpForm = () => {
   const {
     errors,
@@ -16,17 +15,10 @@ export const SignUpForm = () => {
     setPassword,
     confirmedPassword,
     setConfirmedPassword,
-    signup,
     submit,
   } = useLogin();
   const dimensions = useDimensions();
-
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-  // Not used? 👇
-  const handleSignup = () => {
-    signup(email, password);
-    console.log(errors);
-  };
 
   const styles = StyleSheet.create({
     container: {
@@ -37,14 +29,6 @@ export const SignUpForm = () => {
 
   return (
     <View>
-      <View
-        style={{
-          position: 'absolute',
-          right: smallScreen ? 30 : 35,
-          top: smallScreen ? 30 : 40,
-        }}
-      >
-      </View>
       <View style={styles.container}>
         <Text type="formText">Let’s register your account.</Text>
         <TextInput
@@ -53,25 +37,28 @@ export const SignUpForm = () => {
           onChangeText={(text: string) => setEmail(text)}
           errorText={errors.email}
           keyboardType="email-address"
-          autoCapitalize="none" />
+          autoCapitalize="none"
+        />
         <TextInput
           placeholder="Choose your password..."
           onChangeText={(text: string) => setPassword(text)}
           secureTextEntry
           errorText={errors.password}
           autoCapitalize="none"
-          value={password} />
+          value={password}
+        />
         <TextInput
           placeholder="Confirm Password"
           value={confirmedPassword}
           onChangeText={(text: string) => setConfirmedPassword(text)}
           secureTextEntry
           errorText={errors.confirmedPassword}
-          autoCapitalize="none" />
+          autoCapitalize="none"
+        />
         <Button
           background="GreenForms"
           text="Create account"
-          onPress={submit}
+          onPress={() => submit('signUp')}
         />
       </View>
     </View>
