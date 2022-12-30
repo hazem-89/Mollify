@@ -29,9 +29,10 @@ export const useLogin = () => {
   const [currentUser, setCurrentUser] = useState<User>();
 
   const addUserToDb = (email: string, id: string) => {
-    // setDoc(doc(db, 'users', id), {
-    //   email: email,
-    // });
+    setDoc(doc(db, 'users', id), {
+      email,
+      id,
+    });
   };
 
   useEffect(() => {

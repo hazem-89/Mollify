@@ -73,7 +73,11 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
       <ImageBackground source={MainBackGround} style={styles.Background} />
       <SafeAreaView style={styles.SafeArea}>
         <Image source={WelcomeSign} style={styles.WelcomeSign} />
-        {currentUser && <Button background="Close" onPress={logout} />}
+        {currentUser ? (
+          <View style={{ position: 'absolute', top: 50, left: 50 }}>
+            <Button background="Close" onPress={logout} />
+          </View>
+        ) : null}
         {!currentUser ? (
           <>
             <View>
