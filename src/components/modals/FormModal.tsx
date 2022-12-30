@@ -47,7 +47,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
       position: 'absolute',
       alignSelf: 'center',
       justifyContent: 'center',
-      top: smallScreen ? '30%' : '25%',
+      top: smallScreen ? '27%' : '22%',
       flex: 1,
       zIndex: 10,
     },
@@ -60,8 +60,8 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
           <View
             style={{
               position: 'absolute',
-              right: smallScreen ? 30 : 35,
-              top: smallScreen ? 25 : 25,
+              right: smallScreen ? 10 : 15,
+              top: 40,
             }}
           >
             <Button
@@ -75,8 +75,9 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
         )}
 
         {formNameState === 'SignUp' && <SignUpForm />}
-        {formNameState === 'GoogleSignUp' && <CreateProfileForm />}
         {formNameState === 'Login' && <LoginForm />}
+        {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
+        {formNameState === 'ProfilePin' && <CreateProfileForm />}
       </ImageBackground>
     </Animated.View>
   );

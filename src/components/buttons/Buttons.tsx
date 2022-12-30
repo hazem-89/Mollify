@@ -11,6 +11,7 @@ import GoldenButton from '../../../assets/Images/GoldenButton.png';
 import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
+import AddButtonImage from '../../../assets/Images/AddButton.png';
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -65,6 +66,10 @@ function Button({
       width: smallScreen ? 35 : 55,
       height: smallScreen ? 35 : 55,
     },
+    Add: {
+      width: smallScreen ? 60 : 75,
+      height: smallScreen ? 60 : 75,
+    },
   });
 
   useEffect(() => {
@@ -86,6 +91,9 @@ function Button({
     } else if (background === 'GoogleButtonBroken') {
       setSource(GoogleButtonBroken);
       setStyle(styles.Google);
+    } else if (background === 'AddButtonImage') {
+      setSource(AddButtonImage);
+      setStyle(styles.Add);
     }
   }, [background]);
 
