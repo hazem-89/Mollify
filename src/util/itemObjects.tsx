@@ -55,3 +55,22 @@ export const avatars: assetInterface[] = [
         image: TigerAvatar,
     },
 ]
+
+export const rooms: assetInterface[] = [
+    {
+        id: "PirateRoom",
+        image: TigerAvatar,
+    },
+    {
+        id: "AtticRoom",
+        image: TigerAvatar,
+    },
+    {
+        id: "LoftBedRoom",
+        image: TigerAvatar,
+    },
+    {
+        id: "PurpleRoom",
+        image: TigerAvatar,
+    }
+]
