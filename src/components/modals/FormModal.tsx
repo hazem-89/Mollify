@@ -34,7 +34,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
         useNativeDriver: true,
       }).start();
     } else {
-      // Animate slide out.
+      // Animate slide out not working but removing this breaks things.
       Animated.timing(translateX, {
         toValue: 1000,
         duration: 1000,
@@ -45,43 +45,51 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
 
   const styles = StyleSheet.create({
     modal: {
-      padding: 16,
       position: 'absolute',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      top: smallScreen ? '27%' : '22%',
-      flex: 1,
+      top: 0,
       zIndex: 10,
+    },
+    scrollView: {
+      padding: 50,
+      width: "contentWidth",
+      height: "contentHeight",
+      maxHeight: dimensions.window.height,
+    },
+    formBackground: {
+      paddingTop: 35,
+      paddingBottom: 35,
+      minHeight: "contentHeight",
+      maxHeight: dimensions.window.height,
+      maxWidth: 0.75 * dimensions.window.width
+    },
+    btnPosition: {
+      position: 'absolute',
+      right: smallScreen ? 10 : 15,
+      top: 20,
     },
   });
 
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground resizeMode="stretch" source={PaperForm}>
-          <View style={{height: "max-content"}}>
-            {formNameState === 'SignUp' && <SignUpForm />}
-            {formNameState === 'Login' && <LoginForm />}
-            {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
-            {formNameState === 'ProfilePin' && <CreateProfileForm />}
-            {formNameState && (
-              <View
-                style={{
-                  position: 'absolute',
-                  right: smallScreen ? 10 : 15,
-                  top: 40,
+      <ImageBackground style={styles.formBackground} resizeMode="stretch" source={PaperForm}>
+        <ScrollView style={styles.scrollView} horizontal={false}>
+          {formNameState === 'SignUp' && <SignUpForm />}
+          {formNameState === 'Login' && <LoginForm />}
+          {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
+          {formNameState === 'ProfilePin' && <CreateProfileForm />}
+          {formNameState && (
+            <View style={styles.btnPosition}>
+              < Button
+                background="Close"
+                onPress={() => {
+                  setformNameState(undefined);
+                  onEmit(undefined);
                 }}
-              >
-                <Button
-                  background="Close"
-                  onPress={() => {
-                    setformNameState(undefined);
-                    onEmit(undefined);
-                  }}
-                />
-              </View>
-            )}
-          </View>
+              />
+            </View>
+          )}
+        </ScrollView>
       </ImageBackground>
-    </Animated.View>
+    </Animated.View >
   );
 }
