@@ -8,26 +8,31 @@ import Button from '../buttons/Buttons';
 import Carousel from '../Carousel';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
-import { avatars } from '../../util/itemObjects';
+import { avatars, rooms } from '../../util/itemObjects';
 
 interface Profiles {
-  id?: string;
-  mainUserId?: string;
+  mainUserId: string | undefined;
   name: string;
   pin: string;
-  avatar?: object;
+  avatar: string;
+  room: string;
 }
 export const CreateProfileForm = () => {
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const { currentUser } = useLogin();
-  const [name, setName] = useState('');
-  const [pin, setPin] = useState('');
+  const [state, setState] = useState({
+    name: '',
+    pin: '',
+    avatar: '',
+    room: '',
+  });
 
   const addProfileToUser = async () => {
     const newProfile: Profiles = {
-      name,
-      pin,
+      name: state.name,
+      pin: state.pin,
+      avatar: state.avatar,
+      room: state.room,
       mainUserId: currentUser?.uid,
     };
     try {
@@ -39,42 +44,43 @@ export const CreateProfileForm = () => {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      padding: smallScreen ? 40 : 60,
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 16
     },
   });
 
-  /* type these params */
-  const handleEmit = useCallback((selectedItem: any) => {
-    console.log(selectedItem);
-  }, []);
-
   return (
-      <View style={styles.container}>
-        <Text type="formText">Add Profile</Text>
-        <TextInput
-          placeholder="Name"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={name}
-          onChangeText={(text: string) => setName(text)}
-        />
-        <TextInput
-          placeholder="PIN code"
-          secureTextEntry
-          autoCapitalize="none"
-          value={pin}
-          onChangeText={(text: string) => setPin(text)}
-        />
-        {/* data = avatar objects, avatar id, avatar image */}
-        <Carousel titel='Choose avatar' onEmit={handleEmit} data={avatars} />
-        {/* data = room objects, room id, room image */}
-        <Carousel titel='Choose room' onEmit={handleEmit} data={avatars} />
-        <Button
-          background="GreenForms"
-          text="Create account"
-          onPress={addProfileToUser}
-        />
-      </View>
+    <View style={styles.container}>
+      <Text type="formText">Add Profile</Text>
+      <TextInput
+        placeholder="Name"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        value={state.name}
+        onChangeText={(text: string) => setState({ ...state, name: text })}
+      />
+      <TextInput
+        placeholder="PIN code"
+        secureTextEntry
+        autoCapitalize="none"
+        value={state.pin}
+        onChangeText={(text: string) => setState({ ...state, pin: text })}
+      />
+      <Carousel titel='Choose avatar'
+        onEmit={(selectedItem: any) => setState({ ...state, avatar: selectedItem })}
+        data={avatars} />
+      <Carousel titel='Choose room'
+        onEmit={(selectedItem: any) => setState({ ...state, room: selectedItem })
+        } data={rooms} />
+      <Button
+        background="GreenForms"
+        text="Add profile"
+        onPress={addProfileToUser}
+      />
+    </View>
   );
 };
