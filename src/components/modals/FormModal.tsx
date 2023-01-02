@@ -53,7 +53,6 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
     },
     scrollView: {
       padding: 50,
-
       maxHeight: dimensions.window.height,
     },
     formBackground: {
