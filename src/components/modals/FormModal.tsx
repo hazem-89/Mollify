@@ -1,6 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
 import { CreateProfileForm } from '../forms/CreateProfile';
@@ -35,7 +36,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
         useNativeDriver: true,
       }).start();
     } else {
-      // Animate slide out.
+      // Animate slide out not working but removing this breaks things.
       Animated.timing(translateX, {
         toValue: 1000,
         duration: 1000,
@@ -47,40 +48,53 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
-      alignSelf: 'center',
-      justifyContent: 'center',
-      top: smallScreen ? '15%' : '15%',
-      flex: 1,
+      top: 0,
       zIndex: 10,
+    },
+    scrollView: {
+      padding: 50,
+      width: 'contentWidth',
+      height: 'contentHeight',
+      maxHeight: dimensions.window.height,
+    },
+    formBackground: {
+      paddingTop: 35,
+      paddingBottom: 35,
+      minHeight: 'contentHeight',
+      maxHeight: dimensions.window.height,
+      maxWidth: 0.75 * dimensions.window.width,
+    },
+    btnPosition: {
+      position: 'absolute',
+      right: smallScreen ? 10 : 15,
+      top: 20,
     },
   });
 
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground source={PaperForm}>
-        {formNameState && (
-          <View
-            style={{
-              position: 'absolute',
-              right: smallScreen ? 10 : 15,
-              top: smallScreen ? 35 : 42,
-            }}
-          >
-            <Button
-              background="Close"
-              onPress={() => {
-                setFormNameState(undefined);
-                onEmit(undefined);
-              }}
-            />
-          </View>
-        )}
-        {formNameState === 'SignUp' && <SignUpForm />}
-        {formNameState === 'Login' && <LoginForm />}
-        {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
-        {formNameState === 'ProfilePin' && <CreateProfileForm />}
-        {formNameState === 'AddTodo' && <AddToDo />}
-        {formNameState === 'AddCleaningTask' && <AddCleaningToDo />}
+      <ImageBackground
+        style={styles.formBackground}
+        resizeMode="stretch"
+        source={PaperForm}
+      >
+        <ScrollView style={styles.scrollView} horizontal={false}>
+          {formNameState === 'SignUp' && <SignUpForm />}
+          {formNameState === 'Login' && <LoginForm />}
+          {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
+          {formNameState === 'ProfilePin' && <CreateProfileForm />}
+          {formNameState && (
+            <View style={styles.btnPosition}>
+              <Button
+                background="Close"
+                onPress={() => {
+                  setFormNameState(undefined);
+                  onEmit(undefined);
+                }}
+              />
+            </View>
+          )}
+        </ScrollView>
       </ImageBackground>
     </Animated.View>
   );
