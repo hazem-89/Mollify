@@ -1,32 +1,38 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
+import { addDoc, collection } from 'firebase/firestore';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { db } from '../../../firebaseConfig';
+import { useLogin } from '../../util/auth';
 import Button from '../buttons/Buttons';
+import Carousel from '../Carousel';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
-import { updateProfile, User } from 'firebase/auth';
-import { useLogin } from '../../util/auth';
+import { avatars, rooms } from '../../util/itemObjects';
+
 interface Profiles {
-  id?: string;
-  mainUserId?: string;
+  mainUserId: string | undefined;
   name: string;
   pin: string;
-  avatar?: object;
+  avatar: string;
+  room: string;
 }
 export const CreateProfileForm = () => {
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const { currentUser } = useLogin();
+  const [state, setState] = useState({
+    name: '',
+    pin: '',
+    avatar: '',
+    room: '',
+  });
 
-  const [name, setName] = useState('');
-  const [pin, setPin] = useState('');
-
-  const handelAddProfileToUSer = async () => {
+  const addProfileToUser = async () => {
     const newProfile: Profiles = {
-      name,
-      pin,
+      name: state.name,
+      pin: state.pin,
+      avatar: state.avatar,
+      room: state.room,
       mainUserId: currentUser?.uid,
     };
     try {
@@ -38,40 +44,43 @@ export const CreateProfileForm = () => {
 
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      padding: smallScreen ? 40 : 60,
-    },
-    backGroundImage: {
-      flex: 1,
-      zIndex: 3,
-      position: 'relative',
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 16
     },
   });
 
   return (
-    <View>
-      <View style={styles.container}>
-        <Text type="formText">Add Profile</Text>
-        <TextInput
-          placeholder="Name"
-          keyboardType="email-address"
-          autoCapitalize="none"
-          value={name}
-          onChangeText={(text: string) => setName(text)}
-        />
-        <TextInput
-          placeholder="PIN code"
-          secureTextEntry
-          autoCapitalize="none"
-          value={pin}
-          onChangeText={(text: string) => setPin(text)}
-        />
-        <Button
-          background="GreenForms"
-          text="Create account"
-          onPress={handelAddProfileToUSer}
-        />
-      </View>
+    <View style={styles.container}>
+      <Text type="formText">Add Profile</Text>
+      <TextInput
+        placeholder="Name"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        value={state.name}
+        onChangeText={(text: string) => setState({ ...state, name: text })}
+      />
+      <TextInput
+        placeholder="PIN code"
+        secureTextEntry
+        autoCapitalize="none"
+        value={state.pin}
+        onChangeText={(text: string) => setState({ ...state, pin: text })}
+      />
+      <Carousel titel='Choose avatar'
+        onEmit={(selectedItem: any) => setState({ ...state, avatar: selectedItem })}
+        data={avatars} />
+      <Carousel titel='Choose room'
+        onEmit={(selectedItem: any) => setState({ ...state, room: selectedItem })
+        } data={rooms} />
+      <Button
+        background="GreenForms"
+        text="Add profile"
+        onPress={addProfileToUser}
+      />
     </View>
   );
 };

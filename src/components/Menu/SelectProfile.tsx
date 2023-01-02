@@ -84,17 +84,9 @@ const SelectProfile = () => {
       backgroundColor: '#FF7A00',
       borderRadius: 500,
     },
-    formView: {
-      position: 'absolute',
-      top: smallScreen ? '15%' : '15%',
-      left: smallScreen ? '50%' : '50%',
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
   });
   return (
-    <ImageBackground source={SelectFormMenu} style={styles.modal}>
+    <><ImageBackground source={SelectFormMenu} style={styles.modal}>
       <View
         style={{
           marginTop: smallScreen ? 80 : 150,
@@ -116,8 +108,7 @@ const SelectProfile = () => {
         >
           <Button
             background="AddButtonImage"
-            onPress={() => setBtnClicked('CreateProfileForm')}
-          />
+            onPress={() => setBtnClicked('CreateProfileForm')} />
         </View>
         <View style={styles.ProfilesView}>
           {mockupProfiles.map(profile => (
@@ -133,8 +124,7 @@ const SelectProfile = () => {
                       width: smallScreen ? 50 : 75,
                       height: smallScreen ? 50 : 75,
                       // marginVertical: 30,
-                    }}
-                  />
+                    }} />
                 </View>
 
                 <Text type="text">{profile.name}</Text>
@@ -144,10 +134,9 @@ const SelectProfile = () => {
         </View>
         {/* <Text></Text> */}
       </View>
-      <View style={styles.formView}>
-        <FormModal onEmit={handleEmit} formName={btnClicked} />
-      </View>
     </ImageBackground>
+      <FormModal onEmit={handleEmit} formName={btnClicked} />
+    </>
   );
 };
 

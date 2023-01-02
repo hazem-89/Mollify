@@ -9,24 +9,24 @@ import { TodoMenuHeader } from '../modals/TodoMenuSign';
 import TodoBackGroundImage from '../../../assets/Images/TodoBackGroundImage.png';
 import { Text } from '../../components/Text';
 import { useDimensions } from '@react-native-community/hooks';
-import FormModal from '../modals/FormModal';
+import TodoFormModel from '../modals/TodoFormModel';
 
 const todoCategories = [
   {
     title: 'Add cleaning Task',
-    link: 'AddcleaningTask',
+    link: 'AddCleaningTask',
   },
   {
     title: 'Add special task',
-    link: 'AddcleaningTask',
+    link: 'AddSpacialTask',
   },
   {
     title: 'Add school assignment',
-    link: 'AddcleaningTask',
+    link: 'AddCleaningTask',
   },
   {
     title: 'Add Activity',
-    link: 'AddcleaningTask',
+    link: 'AddCleaningTask',
   },
 ];
 export const AddToDo = () => {
@@ -67,7 +67,14 @@ export const AddToDo = () => {
     <View>
       {!btnClicked ? (
         <>
-          <View>
+          <View
+            style={{
+              position: 'absolute',
+              top: smallScreen ? -60 : -100,
+              justifyContent: 'center',
+              // left: '50%',
+            }}
+          >
             <TodoMenuHeader text="Add To-Do" />
           </View>
           <View style={styles.container}>
@@ -91,7 +98,7 @@ export const AddToDo = () => {
           </View>
         </>
       ) : null}
-      <FormModal onEmit={handleEmit} formName={btnClicked} />
+      <TodoFormModel onEmit={handleEmit} formName={btnClicked} />
     </View>
   );
 };

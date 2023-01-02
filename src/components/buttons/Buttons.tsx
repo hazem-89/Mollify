@@ -12,11 +12,11 @@ import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
 import AddButtonImage from '../../../assets/Images/AddButton.png';
-import InfoButtonImage from '../../../assets/Images/info.png'
-import TodoButtonImage from '../../../assets/Images/todo.png'
-import BellButtonImage from '../../../assets/Images/bell.png'
-import SignButtonImage from '../../../assets/Images/sign.png'
-import TrophyButtonImage from '../../../assets/Images/trophy.png'
+import InfoButtonImage from '../../../assets/Images/info.png';
+import TodoButtonImage from '../../../assets/Images/todo.png';
+import BellButtonImage from '../../../assets/Images/bell.png';
+import SignButtonImage from '../../../assets/Images/sign.png';
+import TrophyButtonImage from '../../../assets/Images/trophy.png';
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -51,7 +51,7 @@ function Button({
       width: smallScreen ? 90 : 150,
       height: smallScreen ? 25 : 40,
       alignSelf: 'center',
-      marginTop: 30,
+      marginTop: smallScreen ? 20 : 30,
     },
     Google: {
       justifyContent: 'center',

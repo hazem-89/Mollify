@@ -1,4 +1,4 @@
-import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import { ImageBackground, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
 import { Text } from '../../components/Text';
 import TodoMenuHeaderImage from '../../../assets/Images/TodoMenuHeaderImage.png';
@@ -14,12 +14,12 @@ export const TodoMenuHeader = ({ text }: TodoMenuHeaderProps) => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     background: {
-      width: smallScreen ? 300 : 400,
-      height: smallScreen ? 100 : 130,
+      width: smallScreen ? 300 : 450,
+      height: smallScreen ? 100 : 140,
       alignContent: 'center',
       justifyContent: 'center',
-      position: 'absolute',
-      top: smallScreen ? -60 : -90,
+      // position: 'absolute',
+      // top: smallScreen ? -10 : -4,
       alignSelf: 'center',
     },
   });
