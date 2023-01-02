@@ -1,9 +1,7 @@
-import { View, Text, FlatList, StyleSheet, Image, ImageSourcePropType } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { assetInterface } from '../util/itemObjects';
-
+import React, { useEffect, useState } from 'react';
+import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 type CarouselProps = {
@@ -14,26 +12,25 @@ type CarouselProps = {
 
 export default function Carousel({ titel, data, onEmit }: CarouselProps) {
     const dimensions = useDimensions();
-    const [selectedItem, setSelectedItem] = useState();
-
+    const [selectedItem, setSelectedItem] = useState()
 
     const styles = StyleSheet.create({
         CarouselContainer: {
             display: "flex",
             flexDirection: "column",
+            alignItems: "center",
             width: "100%",
-            maxWidth: 0.75 * dimensions.window.width,
-            height: "100%",
+            height: "contentHeight",
         },
         carousel: {
             width: "100%",
             height: "100%"
         },
         slide: {
-            padding: 16,
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: 15,
         },
         image: {
             width: 100,
@@ -49,11 +46,7 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
             boxShadow: "0px 0px 15px 10px #5CE337",
         }
     });
-
-    useEffect(() => {
-        console.log(data);
-    }, [data])
-
+    
     return (
         <View style={styles.CarouselContainer}>
             {titel && <Text>{titel}</Text>}
@@ -64,14 +57,13 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
                 pagingEnabled={true}
                 showsHorizontalScrollIndicator={true}
                 renderItem={({ item }) => (
-                    <View style={styles.slide}>
-                        <TouchableOpacity onPress={() => { setSelectedItem(item.id); onEmit(item.id) }}>
+                    <View >
+                        <TouchableOpacity style={styles.slide} onPress={() => { setSelectedItem(item.id); onEmit(item.id) }}>
                             {item.image &&
                                 item.id === selectedItem ?
                                 <Image style={styles.selectedImage} source={item.image} /> :
                                 <Image style={styles.image} source={item.image} />
                             }
-                            {item.id && <Text>{item.id}</Text>}
                         </TouchableOpacity>
                     </View>
                 )}
