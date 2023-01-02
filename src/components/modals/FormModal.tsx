@@ -1,6 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
 import { CreateProfileForm } from '../forms/CreateProfile';
@@ -44,6 +45,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
 
   const styles = StyleSheet.create({
     modal: {
+      padding: 16,
       position: 'absolute',
       alignSelf: 'center',
       justifyContent: 'center',
@@ -56,28 +58,29 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
       <ImageBackground resizeMode="stretch" source={PaperForm}>
-        {formNameState && (
-          <View
-            style={{
-              position: 'absolute',
-              right: smallScreen ? 10 : 15,
-              top: 40,
-            }}
-          >
-            <Button
-              background="Close"
-              onPress={() => {
-                setformNameState(undefined);
-                onEmit(undefined);
-              }}
-            />
+          <View style={{height: "max-content"}}>
+            {formNameState === 'SignUp' && <SignUpForm />}
+            {formNameState === 'Login' && <LoginForm />}
+            {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
+            {formNameState === 'ProfilePin' && <CreateProfileForm />}
+            {formNameState && (
+              <View
+                style={{
+                  position: 'absolute',
+                  right: smallScreen ? 10 : 15,
+                  top: 40,
+                }}
+              >
+                <Button
+                  background="Close"
+                  onPress={() => {
+                    setformNameState(undefined);
+                    onEmit(undefined);
+                  }}
+                />
+              </View>
+            )}
           </View>
-        )}
-
-        {formNameState === 'SignUp' && <SignUpForm />}
-        {formNameState === 'Login' && <LoginForm />}
-        {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
-        {formNameState === 'ProfilePin' && <CreateProfileForm />}
       </ImageBackground>
     </Animated.View>
   );

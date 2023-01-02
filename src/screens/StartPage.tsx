@@ -35,7 +35,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
       width: smallScreen ? 350 : 450,
       height: smallScreen ? 100 : 140,
       marginTop: 30,
-      zIndex: 100,
+      zIndex: 20,
     },
     Background: {
       position: 'relative',
