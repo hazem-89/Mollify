@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
-import hourglass from '../../../assets/Images/Icons/hourglass.png';
 type DropDownProps = {
   open: boolean;
   setOpen: () => void;

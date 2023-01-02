@@ -30,7 +30,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
   const styles = StyleSheet.create({
     text: {
-      fontSize: 18,
+      fontSize: smallScreen ? 12 : 16,
       textAlign: 'center',
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
@@ -38,7 +38,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
     headerText: {
       fontWeight: '600',
-      fontSize: smallScreen ? 20 : 30,
+      fontSize: smallScreen ? 18 : 20,
       marginBottom: 12,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
@@ -104,6 +104,12 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
     },
+    todoList: {
+      fontWeight: '400',
+      fontSize: smallScreen ? 12 : 16,
+      fontFamily: 'Inika',
+      color: 'rgba(0,0,0,.4)',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -124,6 +130,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.GreenForms);
   } else if (type === 'formText') {
     textStyles.push(styles.formText);
+  } else if (type === 'todoList') {
+    textStyles.push(styles.todoList);
   }
 
   textStyles = [...textStyles, ...style];

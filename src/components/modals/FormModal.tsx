@@ -6,6 +6,8 @@ import Button from '../buttons/Buttons';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import { LoginForm } from '../forms/Login';
 import { SignUpForm } from '../forms/Signup';
+import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
+import { AddToDo } from '../ToDos/AddToDo';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
@@ -15,13 +17,13 @@ type ModalProps = {
 };
 
 export default function FormModal({ text, formName, onEmit }: ModalProps) {
-  const [formNameState, setformNameState] = useState<string | undefined>();
+  const [formNameState, setFormNameState] = useState<string | undefined>();
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const dimensions = useDimensions();
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   useEffect(() => {
-    if (formNameState !== formName) setformNameState(formName);
+    if (formNameState !== formName) setFormNameState(formName);
   }, [formName]);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
       position: 'absolute',
       alignSelf: 'center',
       justifyContent: 'center',
-      top: smallScreen ? '27%' : '22%',
+      top: smallScreen ? '15%' : '15%',
       flex: 1,
       zIndex: 10,
     },
@@ -55,29 +57,30 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
 
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground resizeMode="stretch" source={PaperForm}>
+      <ImageBackground source={PaperForm}>
         {formNameState && (
           <View
             style={{
               position: 'absolute',
               right: smallScreen ? 10 : 15,
-              top: 40,
+              top: smallScreen ? 35 : 42,
             }}
           >
             <Button
               background="Close"
               onPress={() => {
-                setformNameState(undefined);
+                setFormNameState(undefined);
                 onEmit(undefined);
               }}
             />
           </View>
         )}
-
         {formNameState === 'SignUp' && <SignUpForm />}
         {formNameState === 'Login' && <LoginForm />}
         {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
         {formNameState === 'ProfilePin' && <CreateProfileForm />}
+        {formNameState === 'AddTodo' && <AddToDo />}
+        {formNameState === 'AddCleaningTask' && <AddCleaningToDo />}
       </ImageBackground>
     </Animated.View>
   );
