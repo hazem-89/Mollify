@@ -21,10 +21,11 @@ interface Profiles {
 type CreateProfileProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   profilesExist: boolean;
+  onClose?: () => void;
 };
 
 
-export const CreateProfileForm = ({ profilesExist }: CreateProfileProps) => {
+export const CreateProfileForm = ({ profilesExist, onClose }: CreateProfileProps) => {
   const dimensions = useDimensions();
   const { currentUser } = useLogin();
   const [state, setState] = useState({
@@ -65,9 +66,20 @@ export const CreateProfileForm = ({ profilesExist }: CreateProfileProps) => {
     },
   });
 
+  const handleSubmit = () => {
+    addProfileToUser();
+    if (onClose) {
+      onClose();
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <Text type="formText">Add Profile</Text>
+      <Text>Add Profile</Text>
+      {!profilesExist &&
+        <Text type="formText">Since this is the first profile on this account it will be used as the parent profile.
+          The parent profile is the one used to manage the to-do list's of the other profiles.</Text>
+      }
       <TextInput
         placeholder="Name"
         keyboardType="email-address"
@@ -91,7 +103,7 @@ export const CreateProfileForm = ({ profilesExist }: CreateProfileProps) => {
       <Button
         background="GreenForms"
         text="Add profile"
-        onPress={addProfileToUser}
+        onPress={handleSubmit}
       />
     </View>
   );
