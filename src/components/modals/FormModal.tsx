@@ -1,4 +1,5 @@
 import { useDimensions } from '@react-native-community/hooks';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -66,21 +67,23 @@ export default function FormModal({ text, onEmit, component }: ModalProps) {
     },
   });
 
+  function handleClose() {
+    setComponentState(undefined);
+    onEmit();
+  }
+
   return (
     <>
       {componentState &&
         <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
           <ImageBackground style={styles.formBackground} resizeMode="stretch" source={PaperForm}>
             <ScrollView style={styles.scrollView} horizontal={false}>
-              {componentState && componentState}
+              {componentState && React.cloneElement(componentState, { onClose: handleClose })}
             </ScrollView>
             <View style={styles.btnPosition}>
               < Button
                 background="Close"
-                onPress={() => {
-                  setComponentState(undefined);
-                  onEmit();
-                }}
+                onPress={handleClose}
               />
             </View>
           </ImageBackground>
