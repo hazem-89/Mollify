@@ -1,22 +1,25 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Image,
   ImageBackground,
   SafeAreaView,
   StyleSheet,
-  View,
+  View
 } from 'react-native';
 import MainBackGround from '../../assets/Images/MainBackGround.png';
 import Tiger from '../../assets/Images/tiger-min.png';
 import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Button from '../components/buttons/Buttons';
+import { LoginForm } from '../components/forms/Login';
+import { SignUpForm } from '../components/forms/Signup';
 import SelectProfile from '../components/menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
 import { MainStackParams } from '../navigation/Main';
 import { useLogin } from '../util/auth';
+
 
 type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
@@ -26,6 +29,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  const [component, setComponent] = useState<JSX.Element | undefined>();
   const { currentUser, logout } = useLogin();
 
   const styles = StyleSheet.create({
@@ -64,9 +68,23 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
     },
   });
 
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
-  }, []);
+  function handleClick(state: string | undefined) {
+    setBtnClicked(state)
+    switch (state) {
+      case 'Login':
+        setComponent(<LoginForm />)
+        break;
+      case 'SignUp':
+        setComponent(<SignUpForm />)
+        break;
+      case 'GoogleSignIn':
+        setComponent(undefined)
+        break;
+      default:
+        setComponent(undefined)
+        break;
+    }
+  }
 
   return (
     <>
@@ -85,20 +103,20 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
                 disable={btnClicked ? true : false}
                 background="Gold"
                 text="Sign in"
-                onPress={() => setBtnClicked('Login')}
+                onPress={() => handleClick("Login")}
               />
               {btnClicked !== 'GoogleSignIn' ? (
                 <Button
                   disable={btnClicked ? true : false}
                   background="Google"
                   text={'sign in with Google'}
-                  onPress={() => setBtnClicked('GoogleSignIn')}
+                  onPress={() => handleClick("GoogleSignIn")}
                 />
               ) : (
                 <Button
                   disable={btnClicked ? true : false}
                   background="GoogleButtonBroken"
-                  onPress={() => setBtnClicked(undefined)}
+                  onPress={() => handleClick(undefined)}
                 />
               )}
 
@@ -107,10 +125,10 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
                 disable={btnClicked ? true : false}
                 background="Green"
                 text="Create account"
-                onPress={() => setBtnClicked('SignUp')}
+                onPress={() => handleClick("SignUp")}
               />
             </View>
-            <FormModal onEmit={handleEmit} formName={btnClicked} />
+            <FormModal component={component} onEmit={() => handleClick(undefined)} />
             <Image source={Tiger} style={styles.tiger} />
           </>
         ) : (
