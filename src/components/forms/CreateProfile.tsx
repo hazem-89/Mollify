@@ -1,14 +1,14 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { addDoc, collection } from 'firebase/firestore';
-import React, { useCallback, useState } from 'react';
+import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { db } from '../../../firebaseConfig';
 import { useLogin } from '../../util/auth';
+import { avatars, rooms } from '../../util/itemObjects';
 import Button from '../buttons/Buttons';
 import Carousel from '../Carousel';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
-import { avatars, rooms } from '../../util/itemObjects';
 
 interface Profiles {
   mainUserId: string | undefined;
@@ -17,7 +17,14 @@ interface Profiles {
   avatar: string;
   room: string;
 }
-export const CreateProfileForm = () => {
+
+type CreateProfileProps = {
+  // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
+  profilesExist: boolean;
+};
+
+
+export const CreateProfileForm = ({ profilesExist }: CreateProfileProps) => {
   const dimensions = useDimensions();
   const { currentUser } = useLogin();
   const [state, setState] = useState({
@@ -35,8 +42,13 @@ export const CreateProfileForm = () => {
       room: state.room,
       mainUserId: currentUser?.uid,
     };
+
     try {
-      await addDoc(collection(db, 'profiles'), newProfile);
+      if (profilesExist) {
+        await addDoc(collection(db, 'profiles'), newProfile);
+      } else {
+        await addDoc(collection(db, 'profiles'), { parent: true, ...newProfile });
+      }
     } catch (err) {
       console.log(err);
     }
@@ -49,7 +61,7 @@ export const CreateProfileForm = () => {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
-      gap: 16
+      paddingBottom: 60,
     },
   });
 

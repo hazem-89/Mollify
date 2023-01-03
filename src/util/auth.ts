@@ -24,8 +24,7 @@ export const useLogin = () => {
   const [password, setPassword] = React.useState('');
   const [confirmedPassword, setConfirmedPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
-  const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
-    React.useState({});
+  const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] = React.useState({});
   const [currentUser, setCurrentUser] = useState<User>();
 
   const addUserToDb = (email: string, id: string) => {
