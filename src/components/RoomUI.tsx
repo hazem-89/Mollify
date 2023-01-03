@@ -2,19 +2,29 @@ import { StyleSheet, View, Image, ImageBackground } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../components/Text';
-import woodSignSmall from '../../assets/Images/woodSignSmall.png';
 import awardBadge from '../../assets/Images/awardBadge.png';
 import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import Button from './buttons/Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import roomExample from '../../assets/Images/roomExample.png';
 import FormModal from './modals/FormModal';
-
+import TodoFormModel from './modals/TodoFormModel';
+type roomProps = {
+  addTaskBtnClicked: string;
+  setAddTaskBtnClicked: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
+};
 const RoomUI = () => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
-
+  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
+    string | undefined
+  >();
+  const handleTaskEmit = useCallback((value: undefined) => {
+    setAddTaskBtnClicked(value); // This function will be called by the child component to emit a prop
+  }, []);
   const handleEmit = useCallback((value: undefined) => {
     setBtnClicked(value); // This function will be called by the child component to emit a prop
   }, []);
@@ -24,11 +34,6 @@ const RoomUI = () => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       marginLeft: 10,
-    },
-    woodSmallStyle: {
-      width: smallScreen ? 180 : 300,
-      height: smallScreen ? 125 : 200,
-      marginTop: smallScreen ? -45 : -75,
     },
     woodLargeStyle: {
       width: smallScreen ? 210 : 310,
@@ -51,7 +56,7 @@ const RoomUI = () => {
     },
     bellAlign: {
       position: 'absolute',
-      left: smallScreen ? 100 : 160,
+      left: smallScreen ? 100 : 200,
       top: smallScreen ? 20 : 30,
     },
     trophyAlign: {
@@ -71,7 +76,7 @@ const RoomUI = () => {
       <SafeAreaView>
         <View style={{ height: '100%' }}>
           <View style={styles.imagesContainer}>
-            <Image source={woodSignSmall} style={styles.woodSmallStyle} />
+            <Image source={woodSignLarge} style={styles.woodLargeStyle} />
             <Image source={awardBadge} style={styles.awardBadgeStyle} />
             <Image source={woodSignLarge} style={styles.woodLargeStyle} />
             <View style={styles.infoAlign}>
@@ -106,7 +111,8 @@ const RoomUI = () => {
             />
           </View>
         </View>
-        <FormModal onEmit={handleEmit} formName={btnClicked} />
+        {/* <FormModal onEmit={handleEmit} formName={btnClicked} /> */}
+        <TodoFormModel onTaskEmit={handleEmit} addTaskFormName={btnClicked} />
       </SafeAreaView>
     </ImageBackground>
   );
