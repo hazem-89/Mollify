@@ -44,12 +44,12 @@ export const CreateProfileForm = () => {
 
   const styles = StyleSheet.create({
     container: {
-      height: "100%",
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: 16
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 16,
     },
   });
 
@@ -68,14 +68,23 @@ export const CreateProfileForm = () => {
         secureTextEntry
         autoCapitalize="none"
         value={state.pin}
+        keyboardType="phone-pad"
         onChangeText={(text: string) => setState({ ...state, pin: text })}
       />
-      <Carousel titel='Choose avatar'
-        onEmit={(selectedItem: any) => setState({ ...state, avatar: selectedItem })}
-        data={avatars} />
-      <Carousel titel='Choose room'
-        onEmit={(selectedItem: any) => setState({ ...state, room: selectedItem })
-        } data={rooms} />
+      <Carousel
+        titel="Choose avatar"
+        onEmit={(selectedItem: any) =>
+          setState({ ...state, avatar: selectedItem })
+        }
+        data={avatars}
+      />
+      <Carousel
+        titel="Choose room"
+        onEmit={(selectedItem: any) =>
+          setState({ ...state, room: selectedItem })
+        }
+        data={rooms}
+      />
       <Button
         background="GreenForms"
         text="Add profile"

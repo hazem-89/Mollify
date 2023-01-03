@@ -3,32 +3,37 @@ import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
 import Button from '../buttons/Buttons';
-import { CreateProfileForm } from '../forms/CreateProfile';
-import { LoginForm } from '../forms/Login';
-import { SignUpForm } from '../forms/Signup';
+import { AddActivityTask } from '../ToDos/AddActivityTask';
 import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
+import { AddSchoolTask } from '../ToDos/AddSchoolTask';
 import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
 import { AddToDo } from '../ToDos/AddToDo';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
-  onEmit: Function;
-  formName: string | undefined;
+  onTaskEmit: Function;
+  addTaskFormName: string | undefined;
 };
 
-export default function TodoFormModal({ text, formName, onEmit }: ModalProps) {
-  const [formNameState, setFormNameState] = useState<string | undefined>();
+export default function TodoFormModal({
+  addTaskFormName,
+  onTaskEmit,
+}: ModalProps) {
+  const [addTaskFormNameState, setAddTaskFFormNameState] = useState<
+    string | undefined
+  >();
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const dimensions = useDimensions();
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   useEffect(() => {
-    if (formNameState !== formName) setFormNameState(formName);
-  }, [formName]);
+    if (addTaskFormNameState !== addTaskFormName)
+      setAddTaskFFormNameState(addTaskFormName);
+  }, [addTaskFormName]);
 
   useEffect(() => {
-    if (formNameState) {
+    if (addTaskFormNameState) {
       // Animate slide in.
       Animated.timing(translateX, {
         toValue: 0,
@@ -43,40 +48,53 @@ export default function TodoFormModal({ text, formName, onEmit }: ModalProps) {
         useNativeDriver: true,
       }).start();
     }
-  }, [formNameState]);
+  }, [addTaskFormNameState]);
 
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
       alignSelf: 'center',
-      top: smallScreen ? -45 : -50,
+      top: smallScreen ? 10 : 20,
       flex: 1,
       zIndex: 10,
+    },
+    formBackground: {
+      // paddingTop: 35,
+      // paddingBottom: 35,
+      // maxHeight: dimensions.window.height,
+      // maxWidth: dimensions.window.width,
     },
   });
 
   return (
     <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground source={SelectFormMenu}>
-        {formNameState && (
+      <ImageBackground
+        source={SelectFormMenu}
+        resizeMode="stretch"
+        style={styles.formBackground}
+      >
+        {addTaskFormNameState && (
           <View
             style={{
               position: 'absolute',
               right: smallScreen ? 45 : 60,
-              top: smallScreen ? 60 : 80,
+              top: smallScreen ? 70 : 90,
             }}
           >
             <Button
               background="Close"
               onPress={() => {
-                setFormNameState(undefined);
-                onEmit(undefined);
+                setAddTaskFFormNameState(undefined);
+                onTaskEmit(undefined);
               }}
             />
           </View>
         )}
-        {formNameState === 'AddCleaningTask' && <AddCleaningToDo />}
-        {formNameState === 'AddSpacialTask' && <AddSpacialTodo />}
+        {addTaskFormNameState === 'AddTodo' && <AddToDo />}
+        {addTaskFormNameState === 'AddCleaningTask' && <AddCleaningToDo />}
+        {addTaskFormNameState === 'AddSpacialTask' && <AddSpacialTodo />}
+        {addTaskFormNameState === 'AddSchoolAssignment' && <AddSchoolTask />}
+        {addTaskFormNameState === 'AddActivityTask' && <AddActivityTask />}
       </ImageBackground>
     </Animated.View>
   );

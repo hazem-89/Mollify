@@ -7,7 +7,6 @@ import Button from '../buttons/Buttons';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import { LoginForm } from '../forms/Login';
 import { SignUpForm } from '../forms/Signup';
-import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
 import { AddToDo } from '../ToDos/AddToDo';
 
 type ModalProps = {
@@ -48,11 +47,12 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
-      top: 0,
+      top: formNameState === 'AddTodo' ? 25 : 0,
       zIndex: 10,
+      alignSelf: 'center',
     },
     scrollView: {
-      padding: 50,
+      padding: formNameState === 'AddTodo' ? 0 : 50,
       maxHeight: dimensions.window.height,
     },
     formBackground: {
@@ -64,35 +64,40 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
     btnPosition: {
       position: 'absolute',
       right: smallScreen ? 10 : 15,
-      top: 20,
+      top: 30,
     },
   });
 
   return (
-    <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground
-        style={styles.formBackground}
-        resizeMode="stretch"
-        source={PaperForm}
-      >
-        <ScrollView style={styles.scrollView} horizontal={false}>
-          {formNameState === 'SignUp' && <SignUpForm />}
-          {formNameState === 'Login' && <LoginForm />}
-          {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
-          {formNameState === 'ProfilePin' && <CreateProfileForm />}
-          {formNameState && (
-            <View style={styles.btnPosition}>
-              <Button
-                background="Close"
-                onPress={() => {
-                  setFormNameState(undefined);
-                  onEmit(undefined);
-                }}
-              />
-            </View>
-          )}
-        </ScrollView>
-      </ImageBackground>
-    </Animated.View>
+    <>
+      {formNameState && (
+        <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
+          <ImageBackground
+            style={styles.formBackground}
+            resizeMode="stretch"
+            source={PaperForm}
+          >
+            <ScrollView style={styles.scrollView} horizontal={false}>
+              {formNameState === 'SignUp' && <SignUpForm />}
+              {formNameState === 'Login' && <LoginForm />}
+              {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
+              {formNameState === 'ProfilePin' && <CreateProfileForm />}
+              {formNameState === 'AddTodo' && <AddToDo />}
+              {formNameState && (
+                <View style={styles.btnPosition}>
+                  <Button
+                    background="Close"
+                    onPress={() => {
+                      setFormNameState(undefined);
+                      onEmit(undefined);
+                    }}
+                  />
+                </View>
+              )}
+            </ScrollView>
+          </ImageBackground>
+        </Animated.View>
+      )}
+    </>
   );
 }
