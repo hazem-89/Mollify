@@ -86,55 +86,58 @@ const SelectProfile = () => {
     },
   });
   return (
-    <><ImageBackground source={SelectFormMenu} style={styles.modal}>
-      <View
-        style={{
-          marginTop: smallScreen ? 80 : 150,
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
-        <Text type="header">Select profile to View</Text>
-      </View>
-      <View style={styles.MainView}>
+    <>
+      <ImageBackground source={SelectFormMenu} style={styles.modal}>
         <View
           style={{
-            width: '10%',
-            marginRight: 20,
-            alignContent: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
+            marginTop: smallScreen ? 80 : 150,
+            flex: 1,
+            alignItems: 'center',
           }}
         >
-          <Button
-            background="AddButtonImage"
-            onPress={() => setBtnClicked('CreateProfileForm')} />
+          <Text type="header">Select profile to View</Text>
         </View>
-        <View style={styles.ProfilesView}>
-          {mockupProfiles.map(profile => (
-            <TouchableOpacity
-              key={profile.id}
-              onPress={() => setBtnClicked('ProfilePin')}
-            >
-              <View style={styles.profile}>
-                <View style={styles.Avatar}>
-                  <Image
-                    source={TigerAvatar}
-                    style={{
-                      width: smallScreen ? 50 : 75,
-                      height: smallScreen ? 50 : 75,
-                      // marginVertical: 30,
-                    }} />
-                </View>
+        <View style={styles.MainView}>
+          <View
+            style={{
+              width: '10%',
+              marginRight: 20,
+              alignContent: 'center',
+              justifyContent: 'center',
+              marginBottom: 20,
+            }}
+          >
+            <Button
+              background="AddButtonImage"
+              onPress={() => setBtnClicked('CreateProfileForm')}
+            />
+          </View>
+          <View style={styles.ProfilesView}>
+            {mockupProfiles.map(profile => (
+              <TouchableOpacity
+                key={profile.id}
+                onPress={() => setBtnClicked('ProfilePin')}
+              >
+                <View style={styles.profile}>
+                  <View style={styles.Avatar}>
+                    <Image
+                      source={TigerAvatar}
+                      style={{
+                        width: smallScreen ? 50 : 75,
+                        height: smallScreen ? 50 : 75,
+                        // marginVertical: 30,
+                      }}
+                    />
+                  </View>
 
-                <Text type="text">{profile.name}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                  <Text type="text">{profile.name}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {/* <Text></Text> */}
         </View>
-        {/* <Text></Text> */}
-      </View>
-    </ImageBackground>
+      </ImageBackground>
       <FormModal onEmit={handleEmit} formName={btnClicked} />
     </>
   );

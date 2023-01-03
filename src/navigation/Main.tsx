@@ -18,7 +18,7 @@ export const Main = () => (
       headerShown: false,
     }}
   >
-    <MainStack.Screen name="RoomUI" component={RoomUI} />
-    {/* <MainStack.Screen name="StartPage" component={StartPage} /> */}
+    {/* <MainStack.Screen name="RoomUI" component={RoomUI} /> */}
+    <MainStack.Screen name="StartPage" component={StartPage} />
   </MainStack.Navigator>
 );

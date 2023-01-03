@@ -51,7 +51,7 @@ function Button({
       width: smallScreen ? 90 : 150,
       height: smallScreen ? 25 : 40,
       alignSelf: 'center',
-      marginTop: smallScreen ? 20 : 30,
+      // marginTop: smallScreen ? 20 : 30,
     },
     Google: {
       justifyContent: 'center',

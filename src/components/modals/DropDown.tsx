@@ -83,12 +83,26 @@ export default function DropDown({
         textStyle={{
           fontSize: 8,
         }}
+        // listMode="SCROLLVIEW"
+        scrollViewProps={{
+          decelerationRate: 'fast',
+          nestedScrollEnabled: true,
+        }}
+        dropDownDirection="AUTO"
+        bottomOffset={1}
         dropDownContainerStyle={{
           borderColor: '#0F6209',
-          borderRadius: 5,
-          width: smallScreen ? 70 : 100,
-          // height: smallScreen ? 70 : 100,
+          width: smallScreen ? 80 : 100,
+          borderRadius: 10,
+          padding: 0,
+          margin: 0,
+          maxHeight: 150,
+          overflow: 'scroll',
         }}
+        // modalProps={{
+        //   animationType: 'fade',
+        // }}
+        listMode="SCROLLVIEW"
       />
     </View>
   );
