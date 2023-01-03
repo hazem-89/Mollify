@@ -1,53 +1,38 @@
+import { useDimensions } from '@react-native-community/hooks';
 import {
-  Animated,
+  collection,
+  DocumentData,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  Image,
   ImageBackground,
   StyleSheet,
-  View,
-  Image,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import React, { useCallback, useState } from 'react';
-import { useLogin } from '../../util/auth';
-import { useDimensions } from '@react-native-community/hooks';
+import TigerAvatar from '../../../assets/Images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
+import { db } from '../../../firebaseConfig';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
+import { useLogin } from '../../util/auth';
+import { CreateProfileForm } from '../forms/CreateProfile';
+import { EnterProfile } from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
-import TigerAvatar from '../../../assets/Images/Avatars/Avatar-Tiger.png';
-interface Profiles {
-  id: string;
-  name: string;
-  pin: number;
-  avatar: object;
-}
-const mockupProfiles: Profiles[] = [
-  {
-    id: '1',
-    name: 'Malva',
-    pin: 1234,
-    avatar: { TigerAvatar },
-  },
-  {
-    id: '2',
-    name: 'Matteo',
-    pin: 1234,
-    avatar: { TigerAvatar },
-  },
-  {
-    id: '3',
-    name: 'Leya',
-    pin: 1234,
-    avatar: { TigerAvatar },
-  },
-];
+
 const SelectProfile = () => {
   const { currentUser, logout } = useLogin();
-  const dimensions = useDimensions();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
-  }, []);
+  const [component, setComponent] = useState<JSX.Element | undefined>();
+  const [profilesExist, setProfilesExist] = useState<boolean>(false);
+  const [profiles, setProfiles] = useState<DocumentData[]>([]);
+  const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
@@ -85,6 +70,54 @@ const SelectProfile = () => {
       borderRadius: 500,
     },
   });
+
+  const handleEmit = useCallback((value: undefined) => {
+    setBtnClicked(value); // This function will be called by the child component to emit a prop.
+  }, []);
+
+  useEffect(() => {
+    if (currentUser) getProfiles();
+  }, [currentUser]);
+
+  async function getProfiles() {
+    const profilesRef = collection(db, 'profiles');
+    const searchQuery = query(
+      profilesRef,
+      where('mainUserId', '==', `${currentUser?.uid}`),
+    );
+
+    const querySnapshot = await getDocs(searchQuery);
+    if (querySnapshot.size > 0) {
+      setProfilesExist(true);
+      querySnapshot.forEach(doc => {
+        setProfiles(prevProfiles => [...prevProfiles, doc.data()]);
+      });
+    } else {
+      setProfilesExist(false);
+    }
+  }
+
+  function handleClick(state: string | undefined, profile?: DocumentData) {
+    setBtnClicked(state);
+    switch (state) {
+      case 'CreateProfile':
+        setComponent(<CreateProfileForm profilesExist={profilesExist} />);
+        break;
+      case 'EnterPIN':
+        setComponent(
+          <EnterProfile
+            name={profile?.name}
+            pin={profile?.pin}
+            parent={profile?.parent}
+          />,
+        );
+        break;
+      default:
+        setComponent(undefined);
+        break;
+    }
+  }
+
   return (
     <>
       <ImageBackground source={SelectFormMenu} style={styles.modal}>
@@ -109,14 +142,14 @@ const SelectProfile = () => {
           >
             <Button
               background="AddButtonImage"
-              onPress={() => setBtnClicked('CreateProfileForm')}
+              onPress={() => handleClick('CreateProfile')}
             />
           </View>
           <View style={styles.ProfilesView}>
-            {mockupProfiles.map(profile => (
+            {profiles.map((profile, index) => (
               <TouchableOpacity
-                key={profile.id}
-                onPress={() => setBtnClicked('ProfilePin')}
+                key={index}
+                onPress={() => handleClick('EnterPIN', profile)}
               >
                 <View style={styles.profile}>
                   <View style={styles.Avatar}>
@@ -125,7 +158,6 @@ const SelectProfile = () => {
                       style={{
                         width: smallScreen ? 50 : 75,
                         height: smallScreen ? 50 : 75,
-                        // marginVertical: 30,
                       }}
                     />
                   </View>
@@ -135,14 +167,11 @@ const SelectProfile = () => {
               </TouchableOpacity>
             ))}
           </View>
-          {/* <Text></Text> */}
         </View>
       </ImageBackground>
-      <FormModal onEmit={handleEmit} formName={btnClicked} />
+      <FormModal onEmit={handleEmit} component={component} />
     </>
   );
 };
 
 export default SelectProfile;
-
-const styles = StyleSheet.create({});

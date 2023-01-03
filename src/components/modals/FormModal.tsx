@@ -1,33 +1,30 @@
 import { useDimensions } from '@react-native-community/hooks';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
-import { CreateProfileForm } from '../forms/CreateProfile';
-import { LoginForm } from '../forms/Login';
-import { SignUpForm } from '../forms/Signup';
-import { AddToDo } from '../ToDos/AddToDo';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
   onEmit: Function;
-  formName: string | undefined;
+  component: JSX.Element | undefined;
 };
 
-export default function FormModal({ text, formName, onEmit }: ModalProps) {
-  const [formNameState, setFormNameState] = useState<string | undefined>();
+export default function FormModal({ text, onEmit, component }: ModalProps) {
+  const [componentState, setComponentState] = useState<JSX.Element>();
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const dimensions = useDimensions();
-
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-  useEffect(() => {
-    if (formNameState !== formName) setFormNameState(formName);
-  }, [formName]);
 
   useEffect(() => {
-    if (formNameState) {
+    if (componentState !== component) setComponentState(component);
+  }, [component]);
+
+  useEffect(() => {
+    if (componentState) {
       // Animate slide in.
       Animated.timing(translateX, {
         toValue: 0,
@@ -42,17 +39,19 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
         useNativeDriver: true,
       }).start();
     }
-  }, [formNameState]);
+  }, [componentState]);
 
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
-      top: formNameState === 'AddTodo' ? 25 : 0,
+      // top: formNameState === 'AddTodo' ? 25 : 0,
       zIndex: 10,
       alignSelf: 'center',
     },
     scrollView: {
-      padding: formNameState === 'AddTodo' ? 0 : 50,
+      padding: 50,
+      width: '100%',
+      height: '100%',
       maxHeight: dimensions.window.height,
     },
     formBackground: {
@@ -63,14 +62,19 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
     },
     btnPosition: {
       position: 'absolute',
-      right: smallScreen ? 10 : 15,
+      right: 30,
       top: 30,
     },
   });
 
+  function handleClose() {
+    setComponentState(undefined);
+    onEmit();
+  }
+
   return (
     <>
-      {formNameState && (
+      {componentState && (
         <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
           <ImageBackground
             style={styles.formBackground}
@@ -78,23 +82,12 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
             source={PaperForm}
           >
             <ScrollView style={styles.scrollView} horizontal={false}>
-              {formNameState === 'SignUp' && <SignUpForm />}
-              {formNameState === 'Login' && <LoginForm />}
-              {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
-              {formNameState === 'ProfilePin' && <CreateProfileForm />}
-              {formNameState === 'AddTodo' && <AddToDo />}
-              {formNameState && (
-                <View style={styles.btnPosition}>
-                  <Button
-                    background="Close"
-                    onPress={() => {
-                      setFormNameState(undefined);
-                      onEmit(undefined);
-                    }}
-                  />
-                </View>
-              )}
+              {componentState &&
+                React.cloneElement(componentState, { onClose: handleClose })}
             </ScrollView>
+            <View style={styles.btnPosition}>
+              <Button background="Close" onPress={handleClose} />
+            </View>
           </ImageBackground>
         </Animated.View>
       )}

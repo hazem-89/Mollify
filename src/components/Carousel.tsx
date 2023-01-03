@@ -19,11 +19,6 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
       flexDirection: 'column',
       alignItems: 'center',
       width: '100%',
-      // height: "contentHeight",
-    },
-    carousel: {
-      width: '100%',
-      height: '100%',
     },
     slide: {
       display: 'flex',
@@ -32,17 +27,16 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
       padding: 15,
     },
     image: {
-      width: 100,
-      height: 100,
-      borderRadius: 50,
+      maxWidth: 200,
+      maxHeight: 200,
+      borderRadius: 200,
     },
     selectedImage: {
-      width: 100,
-      borderRadius: 50,
-      height: 100,
+      maxWidth: 200,
+      maxHeight: 200,
+      borderRadius: 200,
       borderWidth: 3,
       borderColor: '#97E491',
-      // boxShadow: "0px 0px 15px 10px #5CE337",
     },
   });
 
@@ -51,7 +45,6 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
       {titel && <Text>{titel}</Text>}
       <FlatList
         data={data}
-        style={styles.carousel}
         horizontal={true}
         pagingEnabled={true}
         showsHorizontalScrollIndicator={true}
