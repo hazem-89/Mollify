@@ -12,6 +12,7 @@ import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
 import { CreateProfileForm } from '../forms/CreateProfile';
+import { EnterProfile } from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
 
 
@@ -78,22 +79,21 @@ const SelectProfile = () => {
     if (querySnapshot.size > 0) {
       setProfilesExist(true)
       querySnapshot.forEach((doc) => {
-        console.log(doc.data);
-        setProfiles( prevProfiles => [...prevProfiles, doc.data()])
+        setProfiles(prevProfiles => [...prevProfiles, doc.data()])
       });
     } else {
       setProfilesExist(false)
     }
   }
 
-  function handleClick(state: string | undefined) {
+  function handleClick(state: string | undefined, profile?: DocumentData) {
     setBtnClicked(state)
     switch (state) {
       case 'CreateProfile':
         setComponent(<CreateProfileForm profilesExist={profilesExist} />)
         break;
       case 'EnterPIN':
-        // setComponent(<EnterProfile />)
+        setComponent(<EnterProfile name={profile?.name} pin={profile?.pin} parent={profile?.parent} />)
         break;
       default:
         setComponent(undefined)
@@ -130,7 +130,7 @@ const SelectProfile = () => {
           {profiles.map((profile, index) => (
             <TouchableOpacity
               key={index}
-              onPress={() => handleClick('EnterPIN')}
+              onPress={() => handleClick('EnterPIN', profile)}
             >
               <View style={styles.profile}>
                 <View style={styles.Avatar}>
