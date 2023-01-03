@@ -1,5 +1,5 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { collection, DocumentData, getDocs, query, where } from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   Image, ImageBackground,
@@ -12,48 +12,17 @@ import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
 import { CreateProfileForm } from '../forms/CreateProfile';
+import { EnterProfile } from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
 
 
-interface Profiles {
-  id: string;
-  name: string;
-  pin: number;
-  avatar: object;
-}
-
-const mockupProfiles: Profiles[] = [
-  {
-    id: '1',
-    name: 'Malva',
-    pin: 1234,
-    avatar: { TigerAvatar },
-  },
-  {
-    id: '2',
-    name: 'Matteo',
-    pin: 1234,
-    avatar: { TigerAvatar },
-  },
-  {
-    id: '3',
-    name: 'Leya',
-    pin: 1234,
-    avatar: { TigerAvatar },
-  },
-];
-
 const SelectProfile = () => {
   const { currentUser, logout } = useLogin();
-  const dimensions = useDimensions();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<JSX.Element | undefined>();
   const [profilesExist, setProfilesExist] = useState<boolean>(false);
-
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
-  }, []);
-
+  const [profiles, setProfiles] = useState<DocumentData[]>([]);
+  const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
   const styles = StyleSheet.create({
@@ -94,6 +63,10 @@ const SelectProfile = () => {
     },
   });
 
+  const handleEmit = useCallback((value: undefined) => {
+    setBtnClicked(value); // This function will be called by the child component to emit a prop.
+  }, []);
+
   useEffect(() => {
     if (currentUser) getProfiles()
   }, [currentUser])
@@ -106,21 +79,21 @@ const SelectProfile = () => {
     if (querySnapshot.size > 0) {
       setProfilesExist(true)
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+        setProfiles(prevProfiles => [...prevProfiles, doc.data()])
       });
     } else {
       setProfilesExist(false)
     }
   }
 
-  function handleClick(state: string | undefined) {
+  function handleClick(state: string | undefined, profile?: DocumentData) {
     setBtnClicked(state)
     switch (state) {
       case 'CreateProfile':
         setComponent(<CreateProfileForm profilesExist={profilesExist} />)
         break;
       case 'EnterPIN':
-        // setComponent(<EnterProfile />)
+        setComponent(<EnterProfile name={profile?.name} pin={profile?.pin} parent={profile?.parent} />)
         break;
       default:
         setComponent(undefined)
@@ -154,10 +127,10 @@ const SelectProfile = () => {
             onPress={() => handleClick('CreateProfile')} />
         </View>
         <View style={styles.ProfilesView}>
-          {mockupProfiles.map(profile => (
+          {profiles.map((profile, index) => (
             <TouchableOpacity
-              key={profile.id}
-              onPress={() => handleClick('EnterPIN')}
+              key={index}
+              onPress={() => handleClick('EnterPIN', profile)}
             >
               <View style={styles.profile}>
                 <View style={styles.Avatar}>
@@ -184,5 +157,3 @@ const SelectProfile = () => {
 };
 
 export default SelectProfile;
-
-const styles = StyleSheet.create({});
