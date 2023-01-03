@@ -4,29 +4,27 @@ import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
-import { CreateProfileForm } from '../forms/CreateProfile';
-import { LoginForm } from '../forms/Login';
-import { SignUpForm } from '../forms/Signup';
+
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
   onEmit: Function;
-  formName: string | undefined;
+  component: JSX.Element | undefined;
 };
 
-export default function FormModal({ text, formName, onEmit }: ModalProps) {
-  const [formNameState, setformNameState] = useState<string | undefined>();
+export default function FormModal({ text, onEmit, component }: ModalProps) {
+  const [componentState, setComponentState] = useState<JSX.Element>();
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const dimensions = useDimensions();
-
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-  useEffect(() => {
-    if (formNameState !== formName) setformNameState(formName);
-  }, [formName]);
 
   useEffect(() => {
-    if (formNameState) {
+    if (componentState !== component) setComponentState(component);
+  }, [component]);
+
+  useEffect(() => {
+    if (componentState) {
       // Animate slide in.
       Animated.timing(translateX, {
         toValue: 0,
@@ -41,7 +39,7 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
         useNativeDriver: true,
       }).start();
     }
-  }, [formNameState]);
+  }, [componentState]);
 
   const styles = StyleSheet.create({
     modal: {
@@ -51,45 +49,43 @@ export default function FormModal({ text, formName, onEmit }: ModalProps) {
     },
     scrollView: {
       padding: 50,
-      width: "contentWidth",
-      height: "contentHeight",
+      width: "100%",
+      height: "100%",
       maxHeight: dimensions.window.height,
     },
     formBackground: {
       paddingTop: 35,
       paddingBottom: 35,
-      minHeight: "contentHeight",
       maxHeight: dimensions.window.height,
       maxWidth: 0.75 * dimensions.window.width
     },
     btnPosition: {
       position: 'absolute',
-      right: smallScreen ? 10 : 15,
-      top: 20,
+      right: 30,
+      top: 30,
     },
   });
 
   return (
-    <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground style={styles.formBackground} resizeMode="stretch" source={PaperForm}>
-        <ScrollView style={styles.scrollView} horizontal={false}>
-          {formNameState === 'SignUp' && <SignUpForm />}
-          {formNameState === 'Login' && <LoginForm />}
-          {formNameState === 'CreateProfileForm' && <CreateProfileForm />}
-          {formNameState === 'ProfilePin' && <CreateProfileForm />}
-          {formNameState && (
+    <>
+      {componentState &&
+        <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
+          <ImageBackground style={styles.formBackground} resizeMode="stretch" source={PaperForm}>
+            <ScrollView style={styles.scrollView} horizontal={false}>
+              {componentState && componentState}
+            </ScrollView>
             <View style={styles.btnPosition}>
               < Button
                 background="Close"
                 onPress={() => {
-                  setformNameState(undefined);
-                  onEmit(undefined);
+                  setComponentState(undefined);
+                  onEmit();
                 }}
               />
             </View>
-          )}
-        </ScrollView>
-      </ImageBackground>
-    </Animated.View >
+          </ImageBackground>
+        </Animated.View >
+      }
+    </>
   );
 }
