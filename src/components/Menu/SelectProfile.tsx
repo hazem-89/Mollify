@@ -103,16 +103,21 @@ const SelectProfile = () => {
     const searchQuery = query(profilesRef, where("mainUserId", "==", `${currentUser?.uid}`));
 
     const querySnapshot = await getDocs(searchQuery);
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
-    });
+    if (querySnapshot.size > 0) {
+      setProfilesExist(true)
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, " => ", doc.data());
+      });
+    } else {
+      setProfilesExist(false)
+    }
   }
 
   function handleClick(state: string | undefined) {
     setBtnClicked(state)
     switch (state) {
       case 'CreateProfile':
-        setComponent(<CreateProfileForm profilesExist={false} />)
+        setComponent(<CreateProfileForm profilesExist={profilesExist} />)
         break;
       case 'EnterPIN':
         // setComponent(<EnterProfile />)
