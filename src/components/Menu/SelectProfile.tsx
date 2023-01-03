@@ -64,7 +64,7 @@ const SelectProfile = () => {
   });
 
   const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
+    setBtnClicked(value); // This function will be called by the child component to emit a prop.
   }, []);
 
   useEffect(() => {
