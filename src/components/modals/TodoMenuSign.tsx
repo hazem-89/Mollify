@@ -14,13 +14,14 @@ export const TodoMenuHeader = ({ text }: TodoMenuHeaderProps) => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     background: {
-      width: smallScreen ? 300 : 450,
-      height: smallScreen ? 100 : 140,
+      width: smallScreen ? 320 : 450,
+      height: smallScreen ? 110 : 150,
       alignContent: 'center',
       justifyContent: 'center',
       // position: 'absolute',
-      // top: smallScreen ? -10 : -4,
+      // top: smallScreen ? -10 : -100,
       alignSelf: 'center',
+      zIndex: 100,
     },
   });
   return (

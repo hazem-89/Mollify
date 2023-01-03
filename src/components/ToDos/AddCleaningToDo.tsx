@@ -8,20 +8,23 @@ import {
 import React, { useCallback, useState } from 'react';
 import { TodoMenuHeader } from '../modals/TodoMenuSign';
 import { useDimensions } from '@react-native-community/hooks';
-import TigerAvatar from '../../../assets/Images/Avatars/Avatar-Tiger.png';
 import DropDown from '../modals/DropDown';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import laundryBasket from '../../../assets/Images/Icons/basket.png';
-import plant from '../../../assets/Images/Icons/plant1.png';
 import { Text } from '../../components/Text';
 import Button from '../buttons/Buttons';
+import uuid from 'react-native-uuid';
+
 import {
   doc,
   setDoc,
   updateDoc,
   getDocs,
+  getDoc,
   collection,
+  addDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 
 import { db } from '../../../firebaseConfig';
@@ -60,6 +63,7 @@ export const AddCleaningToDo = () => {
   const [todoTitle, setTodoTitle] = useState('');
   const [todoDescription, setTodoDescription] = useState('');
   const [timeValue, setTimeValue] = useState(null);
+  const [pointsValue, setPointsValue] = useState(null);
   const [selected, setSelected] = useState('');
 
   const [time, setTime] = useState([
@@ -72,7 +76,6 @@ export const AddCleaningToDo = () => {
     { label: '2 days', value: '2D' },
     { label: '3 days', value: '3D' },
   ]);
-  const [pointsValue, setPointsValue] = useState(null);
   const [points, setPoints] = useState([
     { label: '5 Points', value: '5' },
     { label: '10 Points', value: '10' },
@@ -81,33 +84,21 @@ export const AddCleaningToDo = () => {
     { label: '40 Points', value: '40' },
     { label: '50 Points', value: '50' },
   ]);
+  uuid.v4(); // ⇨ '11edc52b-2918-4d71-9058-f7285e29d894'
 
   const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
   const addCleaningTask = async () => {
-    const Profiles: any[] = [];
-
-    const querySnapshot = await getDocs(collection(db, 'profiles'));
-    querySnapshot.forEach(doc => {
-      const data = doc.data();
-      data['id'] = doc.id;
-      Profiles.push(data);
-    });
-    const currProfile = Profiles.find(profile => profile.id === profileId);
-    console.log('====================================');
-    console.log(currProfile.id);
-    console.log('====================================');
-    // const frankDocRef = doc(db, 'users', 'frank');
-    // await setDoc(frankDocRef, {
-    //   name: 'Frank',
-    //   favorites: { food: 'Pizza', color: 'Blue', subject: 'recess' },
-    //   age: 12,
-    // });
-
-    // // To update age and favorite color:
-    await updateDoc(currProfile, {
-      name: 'Matteoo',
-      pin: 12345,
-    });
+    const currDocRef = doc(db, 'profiles', profileId);
+    const newTodo = {
+      id: uuid.v4(),
+      todoTitle,
+      todoDescription,
+      pointsValue,
+      timeValue,
+      category: 'cleaning',
+    };
+    await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
+    console.log('updated');
   };
 
   const dimensions = useDimensions();
@@ -116,12 +107,12 @@ export const AddCleaningToDo = () => {
   const styles = StyleSheet.create({
     main: {
       flex: 1,
-      minHeight: smallScreen ? 380 : 540,
+      minHeight: smallScreen ? 380 : 530,
       minWidth: smallScreen ? 550 : 750,
+      padding: smallScreen ? 20 : 50,
     },
     container: {
       flex: 1,
-      padding: smallScreen ? 20 : 50,
       alignItems: 'center',
       justifyContent: 'center',
       marginTop: smallScreen ? 60 : 70,
@@ -150,11 +141,13 @@ export const AddCleaningToDo = () => {
       width: smallScreen ? 300 : 350,
       alignItems: 'center',
       marginLeft: 30,
+      maxHeight: 100,
     },
     DropDown: {
       backgroundColor: 'transparent',
-      // maxHeight: smallScreen ? 50 : 50,
+      // minHeight: 30,
       width: smallScreen ? 80 : 100,
+      maxHeight: 100,
     },
   });
   return (

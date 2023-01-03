@@ -15,15 +15,7 @@ type ErrorType = {
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 
-type AddSpacialTodoProps = {
-  taskTitle: string;
-  setTaskTitle: React.Dispatch<React.SetStateAction<{}>>;
-  taskDescription: string;
-  setTaskDescription: React.Dispatch<React.SetStateAction<{}>>;
-  tasCategory: string;
-};
-
-export const AddSpacialTodo = (title: any) => {
+export const AddActivityTask = (title: any) => {
   const [taskTitle, setTaskTitle] = useState<string>();
   const [taskDescription, setTaskDescription] = useState<string>();
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
@@ -113,7 +105,7 @@ export const AddSpacialTodo = (title: any) => {
           alignSelf: 'center',
         }}
       >
-        <TodoMenuHeader text="Add Spacial Task" />
+        <TodoMenuHeader text="Add Activity Task" />
       </View>
       <View
         style={{

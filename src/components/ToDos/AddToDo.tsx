@@ -22,20 +22,19 @@ const todoCategories = [
   },
   {
     title: 'Add school assignment',
-    link: 'AddCleaningTask',
+    link: 'AddSchoolAssignment',
   },
   {
     title: 'Add Activity',
-    link: 'AddCleaningTask',
+    link: 'AddActivityTask',
   },
 ];
 export const AddToDo = () => {
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  console.log('====================================');
-  console.log(btnClicked);
-  console.log('====================================');
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
+  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
+    string | undefined
+  >();
+  const handleTaskEmit = useCallback((value: undefined) => {
+    setAddTaskBtnClicked(value); // This function will be called by the child component to emit a prop
   }, []);
 
   const dimensions = useDimensions();
@@ -44,16 +43,19 @@ export const AddToDo = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: smallScreen ? 50 : 70,
-      marginTop: 30,
-      minHeight: smallScreen ? 250 : 400,
+      // padding: smallScreen ? 90 : 150,
+      // marginTop: 100,
+      minHeight: smallScreen ? 380 : 540,
+      minWidth: smallScreen ? 550 : 750,
+      justifyContent: 'center',
+      // alignItems: 'center',
     },
     TodoBackground: {
       width: smallScreen ? 200 : 300,
       height: smallScreen ? 30 : 50,
       flex: 1,
       padding: smallScreen ? 2 : 10,
-      alignItems: 'flex-start',
+      alignItems: 'center',
       justifyContent: 'center',
       marginBottom: 10,
     },
@@ -64,15 +66,16 @@ export const AddToDo = () => {
     },
   });
   return (
-    <View>
-      {!btnClicked ? (
+    <>
+      {!addTaskBtnClicked ? (
         <>
           <View
             style={{
               position: 'absolute',
-              top: smallScreen ? -60 : -100,
-              justifyContent: 'center',
-              // left: '50%',
+              top: smallScreen ? -20 : -20,
+              // justifyContent: 'center',
+              left: '20%',
+              zIndex: 100,
             }}
           >
             <TodoMenuHeader text="Add To-Do" />
@@ -82,8 +85,9 @@ export const AddToDo = () => {
               <TouchableOpacity
                 key={todoCategory.title}
                 onPress={() => {
-                  setBtnClicked(todoCategory.link);
+                  setAddTaskBtnClicked(todoCategory.link);
                 }}
+                style={{ alignItems: 'center' }}
               >
                 <ImageBackground
                   source={TodoBackGroundImage}
@@ -98,7 +102,10 @@ export const AddToDo = () => {
           </View>
         </>
       ) : null}
-      <TodoFormModel onEmit={handleEmit} formName={btnClicked} />
-    </View>
+      <TodoFormModel
+        onTaskEmit={handleTaskEmit}
+        addTaskFormName={addTaskBtnClicked}
+      />
+    </>
   );
 };
