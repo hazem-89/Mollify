@@ -88,56 +88,60 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <>
-      <ImageBackground source={MainBackGround} style={styles.Background} />
-      <SafeAreaView style={styles.SafeArea}>
-        <Image source={WelcomeSign} style={styles.WelcomeSign} />
-        {currentUser ? (
-          <View style={{ position: 'absolute', top: 50, left: 50 }}>
-            <Button background="Close" onPress={logout} />
-          </View>
-        ) : null}
-        {!currentUser ? (
-          <>
-            <View>
-              <Button
-                disable={btnClicked ? true : false}
-                background="Gold"
-                text="Sign in"
-                onPress={() => handleClick('Login')}
-              />
-              {btnClicked !== 'GoogleSignIn' ? (
+      {!currentUser ? (
+        <>
+          <ImageBackground source={MainBackGround} style={styles.Background} />
+          <SafeAreaView style={styles.SafeArea}>
+            <Image source={WelcomeSign} style={styles.WelcomeSign} />
+            {currentUser ? (
+              <View style={{ position: 'absolute', top: 50, left: 50 }}>
+                <Button background="Close" onPress={logout} />
+              </View>
+            ) : null}
+            <>
+              <View>
                 <Button
                   disable={btnClicked ? true : false}
-                  background="Google"
-                  text={'sign in with Google'}
-                  onPress={() => handleClick('GoogleSignIn')}
+                  background="Gold"
+                  text="Sign in"
+                  onPress={() => handleClick('Login')}
                 />
-              ) : (
-                <Button
-                  disable={btnClicked ? true : false}
-                  background="GoogleButtonBroken"
-                  onPress={() => handleClick(undefined)}
-                />
-              )}
+                {btnClicked !== 'GoogleSignIn' ? (
+                  <Button
+                    disable={btnClicked ? true : false}
+                    background="Google"
+                    text={'sign in with Google'}
+                    onPress={() => handleClick('GoogleSignIn')}
+                  />
+                ) : (
+                  <Button
+                    disable={btnClicked ? true : false}
+                    background="GoogleButtonBroken"
+                    onPress={() => handleClick(undefined)}
+                  />
+                )}
 
-              <Text type="bold">OR</Text>
-              <Button
-                disable={btnClicked ? true : false}
-                background="Green"
-                text="Create account"
-                onPress={() => handleClick('SignUp')}
+                <Text type="bold">OR</Text>
+                <Button
+                  disable={btnClicked ? true : false}
+                  background="Green"
+                  text="Create account"
+                  onPress={() => handleClick('SignUp')}
+                />
+              </View>
+              <FormModal
+                component={component}
+                onEmit={() => handleClick(undefined)}
               />
-            </View>
-            <FormModal
-              component={component}
-              onEmit={() => handleClick(undefined)}
-            />
-            <Image source={Tiger} style={styles.tiger} />
-          </>
-        ) : (
-          <SelectProfile />
-        )}
-      </SafeAreaView>
+              <Image source={Tiger} style={styles.tiger} />
+            </>
+          </SafeAreaView>
+        </>
+      ) : (
+        <>
+          <RoomUI />
+        </>
+      )}
     </>
   );
 };
