@@ -14,7 +14,7 @@ import { useDimensions } from '@react-native-community/hooks';
 
 interface TextInputProps extends RNTextInputProps {
   label?: string;
-  errorText?: string;
+  errorText?: string | undefined;
   impStyle?: object;
 }
 

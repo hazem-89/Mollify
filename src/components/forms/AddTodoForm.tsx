@@ -49,8 +49,6 @@ type todoFormProps = {
   category: string;
 };
 export const AddTodoForm = ({ category }: todoFormProps) => {
-  const [taskTitle, setTaskTitle] = useState<string>();
-  // const [taskDescription, setTaskDescription] = useState<string>();
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [timeDropDownOpen, setTimeDropDownOpen] = useState(false);
@@ -86,17 +84,19 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       marginTop: 40,
     },
     DorpDonContainer: {
-      flex: 1,
       flexDirection: 'row',
-      width: smallScreen ? 300 : 350,
       alignItems: 'center',
-      marginLeft: 30,
+      justifyContent: 'center',
       marginVertical: 20,
+      marginLeft: 50,
     },
     DropDown: {
       backgroundColor: 'transparent',
       minHeight: 30,
       width: smallScreen ? 80 : 100,
+    },
+    DropDownView: {
+      width: smallScreen ? 100 : 200,
     },
     AvatarContainer: {
       width: smallScreen ? 50 : 100,
@@ -148,8 +148,8 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       category: category,
     };
     await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
-    console.log('updated');
   };
+
   const submit = () => {
     const nextErrors: ErrorType = {};
     if (!state.taskTitle) {
@@ -158,23 +158,23 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     if (!state.taskDescription) {
       nextErrors.taskDescription = 'This field is required.';
     }
-
+    !pointsValue ? (nextErrors.points = 'you need to set points') : '';
+    !timeValue ? (nextErrors.time = 'you need to set Time') : '';
     setErrors(nextErrors);
     console.log(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
-
       addCleaningTask();
+      Alert.alert(
+        'Success!',
+        `Title: ${state.taskTitle} \n Description: ${state.taskDescription}`,
+      );
     }
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
 
-    // Alert.alert(
-    //   'Success!',
-    //   `Title: ${state.taskTitle} \n Description: ${state.taskDescription}`,
-    // );
     return null;
   };
   return (
@@ -298,13 +298,9 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
           />
         </View>
       )}
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <View style={styles.DorpDonContainer}>
+
+      <View style={styles.DorpDonContainer}>
+        <View style={styles.DropDownView}>
           <DropDown
             open={timeDropDownOpen}
             setOpen={() =>
@@ -321,6 +317,10 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
             source={hourglass}
             disabled={!state.taskTitle && !state.taskDescription ? true : false}
           />
+          <Text type="errorText">{errors.time}</Text>
+        </View>
+
+        <View style={styles.DropDownView}>
           <DropDown
             open={pointsDropDownOpen}
             setOpen={() =>
@@ -337,10 +337,11 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
             source={PointsIcon}
             disabled={!state.taskTitle && !state.taskDescription ? true : false}
           />
+          <Text type="errorText">{errors.points}</Text>
         </View>
-        <View style={{ marginBottom: smallScreen ? 10 : 0 }}>
-          <Button background="GreenForms" text="Add" onPress={() => submit()} />
-        </View>
+      </View>
+      <View style={{ marginBottom: smallScreen ? 10 : 0 }}>
+        <Button background="GreenForms" text="Add" onPress={() => submit()} />
       </View>
     </View>
   );

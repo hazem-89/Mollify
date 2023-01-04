@@ -64,12 +64,9 @@ export const AddToDo = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      // padding: smallScreen ? 90 : 150,
-      // marginTop: 100,
       minHeight: smallScreen ? 380 : 540,
       minWidth: smallScreen ? 550 : 750,
       justifyContent: 'center',
-      // alignItems: 'center',
     },
     TodoBackground: {
       width: smallScreen ? 200 : 300,
@@ -94,7 +91,6 @@ export const AddToDo = () => {
             style={{
               position: 'absolute',
               top: smallScreen ? -20 : -20,
-              // justifyContent: 'center',
               left: '20%',
               zIndex: 100,
             }}

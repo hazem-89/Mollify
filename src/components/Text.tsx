@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 type TextProps = {
   type?: string;
-  children: string;
+  children: string | undefined;
   style?: StyleProp<TextStyle>[];
 };
 
@@ -110,6 +110,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
     },
+    errorText: {
+      color: colors.error,
+      fontSize: smallScreen ? 10 : 12,
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -132,6 +136,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.formText);
   } else if (type === 'todoList') {
     textStyles.push(styles.todoList);
+  } else if (type === 'errorText') {
+    textStyles.push(styles.errorText);
   }
 
   textStyles = [...textStyles, ...style];
