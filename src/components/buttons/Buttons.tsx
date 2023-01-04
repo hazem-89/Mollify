@@ -12,6 +12,8 @@ import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
 import AddButtonImage from '../../../assets/Images/AddButton.png';
+import ArrowButtonImage from '../../../assets/Images/Polygon.png'
+import ReverseArrow from '../../../assets/Images/PolygonReverse.png'
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -70,6 +72,10 @@ function Button({
       width: smallScreen ? 60 : 75,
       height: smallScreen ? 60 : 75,
     },
+    Arrow: {
+      width: smallScreen ? 60 : 30,
+      height: smallScreen ? 60 : 30,
+    },
   });
 
   useEffect(() => {
@@ -94,6 +100,12 @@ function Button({
     } else if (background === 'AddButtonImage') {
       setSource(AddButtonImage);
       setStyle(styles.Add);
+    } else if (background === 'ArrowButtonImage') {
+      setSource(ArrowButtonImage);
+      setStyle(styles.Arrow);
+    } else if (background === 'ReverseArrow') {
+      setSource(ReverseArrow);
+      setStyle(styles.Arrow);
     }
   }, [background]);
 
