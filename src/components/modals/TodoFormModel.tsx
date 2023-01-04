@@ -1,39 +1,30 @@
 import { useDimensions } from '@react-native-community/hooks';
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
 import Button from '../buttons/Buttons';
-import { AddActivityTask } from '../ToDos/AddActivityTask';
-import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
-import { AddSchoolTask } from '../ToDos/AddSchoolTask';
-import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
-import { AddToDo } from '../ToDos/AddToDo';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
   onTaskEmit: Function;
-  addTaskFormName: string | undefined;
+  component: JSX.Element | undefined;
 };
 
-export default function TodoFormModal({
-  addTaskFormName,
-  onTaskEmit,
-}: ModalProps) {
-  const [addTaskFormNameState, setAddTaskFFormNameState] = useState<
-    string | undefined
-  >();
+export default function TodoFormModal({ component, onTaskEmit }: ModalProps) {
+  const [componentState, setComponentState] = useState<JSX.Element>();
+
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const dimensions = useDimensions();
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   useEffect(() => {
-    if (addTaskFormNameState !== addTaskFormName)
-      setAddTaskFFormNameState(addTaskFormName);
-  }, [addTaskFormName]);
+    if (componentState !== component) setComponentState(component);
+  }, [component]);
 
   useEffect(() => {
-    if (addTaskFormNameState) {
+    if (componentState) {
       // Animate slide in.
       Animated.timing(translateX, {
         toValue: 0,
@@ -48,7 +39,7 @@ export default function TodoFormModal({
         useNativeDriver: true,
       }).start();
     }
-  }, [addTaskFormNameState]);
+  }, [componentState]);
 
   const styles = StyleSheet.create({
     modal: {
@@ -66,36 +57,35 @@ export default function TodoFormModal({
     },
   });
 
+  function handleClose() {
+    setComponentState(undefined);
+    onTaskEmit();
+  }
   return (
-    <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
-      <ImageBackground
-        source={SelectFormMenu}
-        resizeMode="stretch"
-        style={styles.formBackground}
-      >
-        {addTaskFormNameState && (
-          <View
-            style={{
-              position: 'absolute',
-              right: smallScreen ? 45 : 60,
-              top: smallScreen ? 70 : 90,
-            }}
+    <>
+      {componentState && (
+        <Animated.View style={[styles.modal, { transform: [{ translateX }] }]}>
+          <ImageBackground
+            source={SelectFormMenu}
+            resizeMode="stretch"
+            style={styles.formBackground}
           >
-            <Button
-              background="Close"
-              onPress={() => {
-                setAddTaskFFormNameState(undefined);
-                onTaskEmit(undefined);
-              }}
-            />
-          </View>
-        )}
-        {addTaskFormNameState === 'AddTodo' && <AddToDo />}
-        {addTaskFormNameState === 'AddCleaningTask' && <AddCleaningToDo />}
-        {addTaskFormNameState === 'AddSpacialTask' && <AddSpacialTodo />}
-        {addTaskFormNameState === 'AddSchoolAssignment' && <AddSchoolTask />}
-        {addTaskFormNameState === 'AddActivityTask' && <AddActivityTask />}
-      </ImageBackground>
-    </Animated.View>
+            {componentState &&
+              React.cloneElement(componentState, { onClose: handleClose })}
+            {componentState && (
+              <View
+                style={{
+                  position: 'absolute',
+                  right: smallScreen ? 45 : 60,
+                  top: smallScreen ? 70 : 90,
+                }}
+              >
+                <Button background="Close" onPress={handleClose} />
+              </View>
+            )}
+          </ImageBackground>
+        </Animated.View>
+      )}
+    </>
   );
 }

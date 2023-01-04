@@ -10,7 +10,10 @@ import TodoBackGroundImage from '../../../assets/Images/TodoBackGroundImage.png'
 import { Text } from '../../components/Text';
 import { useDimensions } from '@react-native-community/hooks';
 import TodoFormModel from '../modals/TodoFormModel';
-
+import { AddActivityTask } from '../ToDos/AddActivityTask';
+import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
+import { AddSchoolTask } from '../ToDos/AddSchoolTask';
+import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
 const todoCategories = [
   {
     title: 'Add cleaning Task',
@@ -33,10 +36,28 @@ export const AddToDo = () => {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
-  const handleTaskEmit = useCallback((value: undefined) => {
-    setAddTaskBtnClicked(value); // This function will be called by the child component to emit a prop
-  }, []);
+  const [component, setComponent] = useState<JSX.Element | undefined>();
 
+  function handleClick(state: string | undefined) {
+    setAddTaskBtnClicked(state);
+    switch (state) {
+      case 'AddActivityTask':
+        setComponent(<AddActivityTask />);
+        break;
+      case 'AddCleaningTask':
+        setComponent(<AddCleaningToDo />);
+        break;
+      case 'AddSchoolAssignment':
+        setComponent(<AddSchoolTask />);
+        break;
+      case 'AddSpacialTask':
+        setComponent(<AddSpacialTodo />);
+        break;
+      default:
+        setComponent(undefined);
+        break;
+    }
+  }
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
@@ -85,7 +106,7 @@ export const AddToDo = () => {
               <TouchableOpacity
                 key={todoCategory.title}
                 onPress={() => {
-                  setAddTaskBtnClicked(todoCategory.link);
+                  handleClick(todoCategory.link);
                 }}
                 style={{ alignItems: 'center' }}
               >
@@ -103,8 +124,8 @@ export const AddToDo = () => {
         </>
       ) : null}
       <TodoFormModel
-        onTaskEmit={handleTaskEmit}
-        addTaskFormName={addTaskBtnClicked}
+        onTaskEmit={() => handleClick(undefined)}
+        component={component}
       />
     </>
   );
