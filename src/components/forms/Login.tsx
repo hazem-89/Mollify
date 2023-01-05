@@ -8,29 +8,10 @@ import { Text } from '../Text';
 import { useDimensions } from '@react-native-community/hooks';
 
 export const LoginForm = () => {
-  const { login, errors, submit, email, password, setEmail, setPassword } =
-    useLogin();
+  const { errors, submit, email, password, setEmail, setPassword } = useLogin();
   const dimensions = useDimensions();
-  const [loginEmail, setLoginEmail] = useState<string>('');
-  const [loginPassword, setLoginPassword] = useState<string>('');
 
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-
-  // const handleSignIn = async () => {
-  //   submit('login');
-  //   console.log(errors);
-
-  //   try {
-  //     if (Object.keys(errors).length === 0) {
-  //       console.log('login');
-
-  //       await login(loginEmail, loginPassword);
-  //     }
-  //   } catch (error) {
-  //     console.error('login failed' + error);
-  //   }
-  // };
-
   const styles = StyleSheet.create({
     container: {
       flex: 1,

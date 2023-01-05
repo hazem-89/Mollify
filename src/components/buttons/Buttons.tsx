@@ -68,8 +68,8 @@ function Button({
       resizeMode: 'contain',
     },
     Close: {
-      width: smallScreen ? 35 : 55,
-      height: smallScreen ? 35 : 55,
+      width: smallScreen ? 40 : 60,
+      height: smallScreen ? 40 : 60,
     },
     Add: {
       width: smallScreen ? 60 : 75,

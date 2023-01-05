@@ -1,26 +1,29 @@
-import { StyleSheet, View, Image, ImageBackground } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { Text } from '../components/Text';
-import awardBadge from '../../assets/Images/awardBadge.png';
-import woodSignLarge from '../../assets/Images/woodSignLarge.png';
-import Button from './buttons/Buttons';
+import React, { ReactElement, useState } from 'react';
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import awardBadge from '../../assets/Images/awardBadge.png';
 import roomExample from '../../assets/Images/roomExample.png';
+import woodSignLarge from '../../assets/Images/woodSignLarge.png';
+import { useLogin } from '../util/auth';
+import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
-import TodoFormModel from './modals/TodoFormModel';
 import { AddToDo } from './ToDos/AddToDo';
-type roomProps = {
-  addTaskBtnClicked: string;
-  setAddTaskBtnClicked: React.Dispatch<
-    React.SetStateAction<string | undefined>
-  >;
-};
-const RoomUI = () => {
+
+// type roomProps = {
+//   addTaskBtnClicked: string;
+//   setAddTaskBtnClicked: React.Dispatch<
+//     React.SetStateAction<string | undefined>
+//   >;
+// };
+
+export const RoomUI = () => {
+  const { logout } = useLogin();
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [component, setComponent] = useState<JSX.Element | undefined>();
+  const [component, setComponent] = useState<ReactElement | undefined>();
+  const [text, setText] = useState<string | undefined>();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
@@ -29,16 +32,11 @@ const RoomUI = () => {
     switch (state) {
       case 'AddToDo':
         setComponent(<AddToDo />);
+        setText('addTask');
         break;
-      // case 'AddCleaningToDo':
-      //   setComponent(<AddCleaningToDo />);
-      //   break;
-      // // case 'GoogleSignIn':
-      // //   setComponent(undefined);
-      // //   break;
-      // // default:
-      // //   setComponent(undefined);
-      // //   break;
+      default:
+        setComponent(undefined);
+        break;
     }
   }
 
@@ -103,17 +101,12 @@ const RoomUI = () => {
               <Button
                 background="TodoButtonImage"
                 onPress={() => {
-                  console.log(component);
-
                   handleClick('AddToDo');
                 }}
               />
             </View>
             <View style={styles.bellAlign}>
-              <Button
-                background="BellButtonImage"
-                onPress={() => setBtnClicked(undefined)}
-              />
+              <Button background="BellButtonImage" onPress={logout} />
             </View>
             <View style={styles.trophyAlign}>
               <Button
@@ -129,16 +122,12 @@ const RoomUI = () => {
             />
           </View>
         </View>
-        {/* <FormModal onEmit={handleEmit} formName={btnClicked} /> */}
-        <TodoFormModel
-          onTaskEmit={() => handleClick(undefined)}
+        <FormModal
           component={component}
+          onEmit={() => handleClick(undefined)}
+          text={text}
         />
       </SafeAreaView>
     </ImageBackground>
   );
 };
-
-export default RoomUI;
-
-const styles = StyleSheet.create({});

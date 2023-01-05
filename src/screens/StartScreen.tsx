@@ -15,7 +15,7 @@ import Button from '../components/buttons/Buttons';
 import { LoginForm } from '../components/forms/Login';
 import { SignUpForm } from '../components/forms/Signup';
 import FormModal from '../components/modals/FormModal';
-import RoomUI from '../components/RoomUI';
+import { RoomUI } from '../components/RoomUI';
 import { Text } from '../components/Text';
 import { MainStackParams } from '../navigation/Main';
 import { useLogin } from '../util/auth';
