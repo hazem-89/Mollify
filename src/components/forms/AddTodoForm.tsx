@@ -96,7 +96,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       width: smallScreen ? 80 : 100,
     },
     DropDownView: {
-      width: smallScreen ? 100 : 200,
+      width: smallScreen ? 150 : 200,
     },
     AvatarContainer: {
       width: smallScreen ? 50 : 100,
