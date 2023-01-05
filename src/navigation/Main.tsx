@@ -1,13 +1,10 @@
-import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StartScreen } from "../screens/StartScreen";
-import RoomUI from '../components/RoomUI';
+import React from 'react';
+import { StartScreen } from '../screens/StartScreen';
 
 export type MainStackParams = {
-  StartScreen: {
-  };
-  RoomScreen: {
-  };
+  StartScreen: {};
+  RoomScreen: {};
 };
 
 const MainStack = createStackNavigator<MainStackParams>();

@@ -1,6 +1,5 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
@@ -8,16 +7,16 @@ import Button from '../buttons/Buttons';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
-  text?: string;
-  onEmit: Function;
-  component: JSX.Element | undefined;
+  // text?: string;
+  onEmit?: Function;
+  component: ReactElement | undefined;
 };
 
-export default function FormModal({ text, onEmit, component }: ModalProps) {
-  const [componentState, setComponentState] = useState<JSX.Element>();
+export default function FormModal({ onEmit, component }: ModalProps) {
+  const [componentState, setComponentState] = useState<ReactElement>();
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  // const [smallScreen] = useState(dimensions.screen.height < 600);
 
   useEffect(() => {
     if (componentState !== component) setComponentState(component);
@@ -69,7 +68,7 @@ export default function FormModal({ text, onEmit, component }: ModalProps) {
 
   function handleClose() {
     setComponentState(undefined);
-    onEmit();
+    if (onEmit) onEmit();
   }
 
   return (
@@ -86,7 +85,7 @@ export default function FormModal({ text, onEmit, component }: ModalProps) {
                 React.cloneElement(componentState, { onClose: handleClose })}
             </ScrollView>
             <View style={styles.btnPosition}>
-              <Button background="Close" onPress={handleClose} />
+              <Button background="Close" onPress={() => handleClose} />
             </View>
           </ImageBackground>
         </Animated.View>

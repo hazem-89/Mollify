@@ -1,12 +1,12 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { StackNavigationProp } from '@react-navigation/stack';
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   Image,
   ImageBackground,
   SafeAreaView,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 import MainBackGround from '../../assets/Images/MainBackGround.png';
 import Tiger from '../../assets/Images/tiger-min.png';
@@ -24,11 +24,12 @@ type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartScreen'>;
 };
 
+// eslint-disable-next-line no-unused-vars
 export const StartScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [component, setComponent] = useState<JSX.Element | undefined>();
+  const [component, setComponent] = useState<ReactElement | undefined>();
   const { currentUser, logout } = useLogin();
 
   const styles = StyleSheet.create({

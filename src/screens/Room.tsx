@@ -82,14 +82,14 @@ export const RoomScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <>
-      {currentUser && (
-        <>
-          <ImageBackground source={MainBackGround} style={styles.Background} />
-          <SafeAreaView style={styles.SafeArea}>
-            <RoomUI />
-          </SafeAreaView>
-        </>
-      )}
+      {/* {currentUser && ( */}
+      <>
+        <ImageBackground source={roomImage} style={styles.Background} />
+        <SafeAreaView style={styles.SafeArea}>
+          <RoomUI />
+        </SafeAreaView>
+      </>
+      {/* )} */}
     </>
   );
 };
