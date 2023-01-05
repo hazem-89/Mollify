@@ -5,7 +5,7 @@ import { TodoMenuHeader } from '../modals/TodoMenuSign';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
-import DropDown from '../modals/DropDown';
+import DropDown from '../DropDown';
 import laundryBasket from '../../../assets/Images/Icons/basket.png';
 import uuid from 'react-native-uuid';
 import { Text } from '../../components/Text';
