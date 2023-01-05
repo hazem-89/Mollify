@@ -97,8 +97,8 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
                   <View
                     style={{
                       position: 'absolute',
-                      right: smallScreen ? 45 : 20,
-                      top: smallScreen ? 70 : 50,
+                      right: smallScreen ? 10 : 20,
+                      top: smallScreen ? 40 : 50,
                     }}
                   >
                     <Button background="Close" onPress={handleClose} />

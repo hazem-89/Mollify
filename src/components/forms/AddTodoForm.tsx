@@ -68,7 +68,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       flex: 1,
       minHeight: smallScreen ? 380 : 530,
       minWidth: smallScreen ? 550 : 750,
-      padding: smallScreen ? 40 : 80,
+      padding: smallScreen ? 40 : 50,
     },
     input: {
       justifyContent: 'center',
@@ -196,7 +196,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
               width: smallScreen ? 500 : 700,
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: 80,
+              marginTop: smallScreen ? 60 : 80,
             }}
           >
             {CleaningTodo?.map(todo => {
@@ -221,8 +221,6 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
                           selected: todo.title,
                           taskTitle: todo.title,
                         });
-
-                    console.log(state.taskTitle);
                   }}
                 >
                   <View
