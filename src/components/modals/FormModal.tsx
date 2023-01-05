@@ -11,7 +11,7 @@ import { AddActivityTask } from '../ToDos/AddActivityTask';
 import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
 import { AddSchoolTask } from '../ToDos/AddSchoolTask';
 import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
-import { TodoMenuHeader } from './TodoMenuSign';
+import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
@@ -20,7 +20,7 @@ type ModalProps = {
   component: JSX.Element | undefined;
 };
 
-export default function FormModal({ component, onEmit }: ModalProps) {
+export default function FormModal({ component, onEmit, text }: ModalProps) {
   const [componentState, setComponentState] = useState<JSX.Element>();
   const [headerText, setHeaderText] = useState('');
   const translateX = new Animated.Value(1000); // Initial value for translateX
@@ -31,16 +31,18 @@ export default function FormModal({ component, onEmit }: ModalProps) {
   // console.log('headerText', headerText);
 
   useEffect(() => {
-    if (componentState !== component) setComponentState(component);
-    if ((component = <AddToDo /> || <AddActivityTask />)) {
-      setTodoForm(true);
-    } else {
-      setTodoForm(false);
+    if (componentState !== component) {
+      setComponentState(component);
+      if (text === 'addTask') {
+        setTodoForm(true);
+      } else {
+        setTodoForm(false);
+      }
     }
+    console.log(component);
+    console.log('text', text);
   }, [component]);
-  console.log('====================================');
-  console.log('component', component);
-  console.log('====================================');
+
   useEffect(() => {
     if (componentState) {
       // Animate slide in.
@@ -64,11 +66,9 @@ export default function FormModal({ component, onEmit }: ModalProps) {
       position: 'absolute',
       zIndex: 10,
       alignSelf: 'center',
-      // top: smallScreen ? 10 : 20,
-      // flex: 1,
     },
     scrollView: {
-      padding: 50,
+      padding: smallScreen ? 30 : 50,
       width: '100%',
       height: '100%',
       maxHeight: dimensions.window.height,
@@ -81,8 +81,8 @@ export default function FormModal({ component, onEmit }: ModalProps) {
     },
     btnPosition: {
       position: 'absolute',
-      right: 30,
-      top: 30,
+      right: smallScreen ? 15 : 30,
+      top: smallScreen ? 55 : 90,
     },
   });
 
@@ -100,21 +100,6 @@ export default function FormModal({ component, onEmit }: ModalProps) {
             resizeMode="stretch"
             source={todoForm ? SelectFormMenu : PaperForm}
           >
-            {/* {todoForm && (
-              <>
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: smallScreen ? -20 : -20,
-                    left: '23%',
-                    zIndex: 100,
-                  }}
-                >
-                  <TodoMenuHeader text={headerText} />
-                </View>
-              </>
-            )} */}
-
             {todoForm && (
               <>
                 {componentState &&
@@ -124,7 +109,7 @@ export default function FormModal({ component, onEmit }: ModalProps) {
                     style={{
                       position: 'absolute',
                       right: smallScreen ? 45 : 60,
-                      top: smallScreen ? 80 : 100,
+                      top: smallScreen ? 70 : 100,
                     }}
                   >
                     <Button background="Close" onPress={handleClose} />

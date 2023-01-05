@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import roomExample from '../../assets/Images/roomExample.png';
 import FormModal from './modals/FormModal';
 import { AddToDo } from './ToDos/AddToDo';
+import { useLogin } from '../util/auth';
 type roomProps = {
   addTaskBtnClicked: string;
   setAddTaskBtnClicked: React.Dispatch<
@@ -15,10 +16,12 @@ type roomProps = {
   >;
 };
 export const RoomUI = () => {
+  const { logout } = useLogin();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<JSX.Element | undefined>();
+  const [text, setText] = useState<string | undefined>();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
@@ -27,6 +30,7 @@ export const RoomUI = () => {
     switch (state) {
       case 'AddToDo':
         setComponent(<AddToDo />);
+        setText('addTask');
         break;
       default:
         setComponent(undefined);
@@ -102,10 +106,7 @@ export const RoomUI = () => {
               />
             </View>
             <View style={styles.bellAlign}>
-              <Button
-                background="BellButtonImage"
-                onPress={() => setBtnClicked(undefined)}
-              />
+              <Button background="BellButtonImage" onPress={logout} />
             </View>
             <View style={styles.trophyAlign}>
               <Button
@@ -124,6 +125,7 @@ export const RoomUI = () => {
         <FormModal
           component={component}
           onEmit={() => handleClick(undefined)}
+          text={text}
         />
       </SafeAreaView>
     </ImageBackground>

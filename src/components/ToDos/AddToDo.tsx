@@ -5,7 +5,7 @@ import {
   View,
 } from 'react-native';
 import React, { useState } from 'react';
-import { TodoMenuHeader } from '../modals/TodoMenuSign';
+import { TodoMenuHeader } from './TodoMenuSign';
 import TodoBackGroundImage from '../../../assets/Images/TodoBackGroundImage.png';
 import { Text } from '../../components/Text';
 import { useDimensions } from '@react-native-community/hooks';
@@ -37,24 +37,26 @@ export const AddToDo = () => {
     string | undefined
   >();
   const [component, setComponent] = useState<JSX.Element | undefined>();
+  const [formText, setFormText] = useState<string | undefined>();
 
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {
       case 'AddActivityTask':
         setComponent(<AddActivityTask />);
+        setFormText('addTask');
         break;
       case 'AddCleaningTask':
         setComponent(<AddCleaningToDo />);
+        setFormText('addTask');
         break;
       case 'AddSchoolAssignment':
         setComponent(<AddSchoolTask />);
+        setFormText('addTask');
         break;
       case 'AddSpacialTask':
         setComponent(<AddSpacialTodo />);
-        break;
-      default:
-        setComponent(undefined);
+        setFormText('addTask');
         break;
     }
   }
@@ -68,7 +70,7 @@ export const AddToDo = () => {
       minHeight: smallScreen ? 380 : 530,
       minWidth: smallScreen ? 550 : 750,
       justifyContent: 'center',
-      marginTop: 50,
+      padding: 50,
     },
     TodoBackground: {
       width: smallScreen ? 200 : 300,
@@ -121,7 +123,11 @@ export const AddToDo = () => {
           </View>
         </>
       ) : null}
-      <FormModal component={component} onEmit={() => handleClick(undefined)} />
+      <FormModal
+        component={component}
+        onEmit={() => handleClick(undefined)}
+        text={formText}
+      />
     </>
   );
 };

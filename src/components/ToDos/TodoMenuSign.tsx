@@ -1,6 +1,6 @@
 import { ImageBackground, StyleSheet, View } from 'react-native';
 import React, { useState } from 'react';
-import { Text } from '../../components/Text';
+import { Text } from '../Text';
 import TodoMenuHeaderImage from '../../../assets/Images/TodoMenuHeaderImage.png';
 import { useDimensions } from '@react-native-community/hooks';
 

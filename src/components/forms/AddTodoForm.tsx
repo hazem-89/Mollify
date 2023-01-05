@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { TodoMenuHeader } from '../modals/TodoMenuSign';
+import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
@@ -68,7 +68,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       flex: 1,
       minHeight: smallScreen ? 380 : 530,
       minWidth: smallScreen ? 550 : 750,
-      padding: smallScreen ? 40 : 50,
+      padding: smallScreen ? 40 : 80,
     },
     input: {
       justifyContent: 'center',
