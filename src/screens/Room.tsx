@@ -8,11 +8,13 @@ import {
   StyleSheet,
   // View,
 } from 'react-native';
+import RoomUI from '../components/RoomUI';
+import { MainStackParams } from '../navigation/Main';
+import roomImage from '../../assets/Images/roomExample.png';
+
 // import Button from '../components/buttons/Buttons';
 // import FormModal from '../components/modals/FormModal';
-import RoomUI from '../components/RoomUI';
 // import { Text } from '../components/Text';
-import { MainStackParams } from '../navigation/Main';
 // import { useLogin } from '../util/auth';
 
 type Props = {

@@ -9,7 +9,7 @@ import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
-  onEmit: Function;
+  onEmit?: Function;
   component: ReactElement | undefined;
 };
 

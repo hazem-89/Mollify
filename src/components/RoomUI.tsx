@@ -1,9 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useState } from 'react';
-import { Image, ImageBackground, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image, StyleSheet, View } from 'react-native';
 import awardBadge from '../../assets/Images/awardBadge.png';
-import roomExample from '../../assets/Images/roomExample.png';
 import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
@@ -17,7 +15,7 @@ import { AddToDo } from './ToDos/AddToDo';
 //   >;
 // };
 
-export const RoomUI = () => {
+export default function RoomUI() {
   const { logout } = useLogin();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -84,50 +82,48 @@ export const RoomUI = () => {
   });
 
   return (
-    <ImageBackground source={roomExample}>
-      <SafeAreaView>
-        <View style={{ height: '100%' }}>
-          <View style={styles.imagesContainer}>
-            <Image source={woodSignLarge} style={styles.woodLargeStyle} />
-            <Image source={awardBadge} style={styles.awardBadgeStyle} />
-            <Image source={woodSignLarge} style={styles.woodLargeStyle} />
-            <View style={styles.infoAlign}>
-              <Button
-                background="InfoButtonImage"
-                onPress={() => setBtnClicked(undefined)}
-              />
-            </View>
-            <View style={styles.todoAlign}>
-              <Button
-                background="TodoButtonImage"
-                onPress={() => {
-                  handleClick('AddToDo');
-                }}
-              />
-            </View>
-            <View style={styles.bellAlign}>
-              <Button background="BellButtonImage" onPress={logout} />
-            </View>
-            <View style={styles.trophyAlign}>
-              <Button
-                background="TrophyButtonImage"
-                onPress={() => setBtnClicked(undefined)}
-              />
-            </View>
-          </View>
-          <View style={styles.signAlign}>
+    <>
+      <View style={{ height: '100%' }}>
+        <View style={styles.imagesContainer}>
+          <Image source={woodSignLarge} style={styles.woodLargeStyle} />
+          <Image source={awardBadge} style={styles.awardBadgeStyle} />
+          <Image source={woodSignLarge} style={styles.woodLargeStyle} />
+          <View style={styles.infoAlign}>
             <Button
-              background="SignButtonImage"
+              background="InfoButtonImage"
+              onPress={() => setBtnClicked(undefined)}
+            />
+          </View>
+          <View style={styles.todoAlign}>
+            <Button
+              background="TodoButtonImage"
+              onPress={() => {
+                handleClick('AddToDo');
+              }}
+            />
+          </View>
+          <View style={styles.bellAlign}>
+            <Button background="BellButtonImage" onPress={logout} />
+          </View>
+          <View style={styles.trophyAlign}>
+            <Button
+              background="TrophyButtonImage"
               onPress={() => setBtnClicked(undefined)}
             />
           </View>
         </View>
-        <FormModal
-          component={component}
-          onEmit={() => handleClick(undefined)}
-          text={text}
-        />
-      </SafeAreaView>
-    </ImageBackground>
+        <View style={styles.signAlign}>
+          <Button
+            background="SignButtonImage"
+            onPress={() => setBtnClicked(undefined)}
+          />
+        </View>
+      </View>
+      <FormModal
+        component={component}
+        onEmit={() => handleClick(undefined)}
+        text={text}
+      />
+    </>
   );
-};
+}

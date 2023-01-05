@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ImageBackground } from 'react-native';
-import FormTemp from '../../../assets/Images/paperFormTEMP.png';
+import { View, StyleSheet } from 'react-native';
+import { useDimensions } from '@react-native-community/hooks';
 import { useLogin } from '../../util/auth';
 import { TextInput } from '../CustomInput';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../Text';
-import { useDimensions } from '@react-native-community/hooks';
 
 export const LoginForm = () => {
   const { errors, submit, email, password, setEmail, setPassword } = useLogin();
   const dimensions = useDimensions();
 
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     container: {
       flex: 1,

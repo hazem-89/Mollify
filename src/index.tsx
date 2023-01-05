@@ -3,10 +3,19 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { Main } from './navigation/Main';
 
+// The main component for the app
 export default function App() {
+  // Render the app
   return (
     <>
+      {/* Render the StatusBar component with the "auto" style */}
       <StatusBar style="auto" />
+      {/* 
+        Render the NavigationContainer component with the Main component as its child. 
+        The NavigationContainer component is the root component for the navigation system,
+        and it is responsible for managing the navigation state and linking the app to the 
+        appropriate navigation logic. 
+      */}
       <NavigationContainer>
         <Main />
       </NavigationContainer>
