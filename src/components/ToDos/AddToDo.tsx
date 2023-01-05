@@ -71,6 +71,7 @@ export const AddToDo = () => {
       minWidth: smallScreen ? 550 : 750,
       justifyContent: 'center',
       padding: 50,
+      marginTop: 20,
     },
     TodoBackground: {
       width: smallScreen ? 200 : 300,
