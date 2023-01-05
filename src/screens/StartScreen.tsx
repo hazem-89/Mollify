@@ -6,7 +6,7 @@ import {
   ImageBackground,
   SafeAreaView,
   StyleSheet,
-  View,
+  View
 } from 'react-native';
 import MainBackGround from '../../assets/Images/MainBackGround.png';
 import Tiger from '../../assets/Images/tiger-min.png';
@@ -14,7 +14,6 @@ import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Button from '../components/buttons/Buttons';
 import { LoginForm } from '../components/forms/Login';
 import { SignUpForm } from '../components/forms/Signup';
-import SelectProfile from '../components/menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
 import RoomUI from '../components/RoomUI';
 import { Text } from '../components/Text';
@@ -22,12 +21,12 @@ import { MainStackParams } from '../navigation/Main';
 import { useLogin } from '../util/auth';
 
 type Props = {
-  navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
+  navigation: StackNavigationProp<MainStackParams, 'StartScreen'>;
 };
 
-export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
+export const StartScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<JSX.Element | undefined>();
   const { currentUser, logout } = useLogin();
@@ -101,21 +100,21 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
             <>
               <View>
                 <Button
-                  disable={btnClicked ? true : false}
+                  disable={!!btnClicked}
                   background="Gold"
                   text="Sign in"
                   onPress={() => handleClick('Login')}
                 />
                 {btnClicked !== 'GoogleSignIn' ? (
                   <Button
-                    disable={btnClicked ? true : false}
+                    disable={!!btnClicked}
                     background="Google"
-                    text={'sign in with Google'}
+                    text="sign in with Google"
                     onPress={() => handleClick('GoogleSignIn')}
                   />
                 ) : (
                   <Button
-                    disable={btnClicked ? true : false}
+                    disable={!!btnClicked}
                     background="GoogleButtonBroken"
                     onPress={() => handleClick(undefined)}
                   />
@@ -123,7 +122,7 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
 
                 <Text type="bold">OR</Text>
                 <Button
-                  disable={btnClicked ? true : false}
+                  disable={!!btnClicked}
                   background="Green"
                   text="Create account"
                   onPress={() => handleClick('SignUp')}
