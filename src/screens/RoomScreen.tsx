@@ -1,32 +1,17 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import {
   // Image,
   ImageBackground,
   SafeAreaView,
   StyleSheet,
-  // View,
 } from 'react-native';
-import RoomUI from '../components/RoomUI';
-import { MainStackParams } from '../navigation/Main';
 import roomImage from '../../assets/Images/roomExample.png';
+import RoomUI from '../components/RoomUI';
 
-// import Button from '../components/buttons/Buttons';
-// import FormModal from '../components/modals/FormModal';
-// import { Text } from '../components/Text';
-// import { useLogin } from '../util/auth';
-
-type Props = {
-  navigation: StackNavigationProp<MainStackParams, 'RoomScreen'>;
-};
-
-export const RoomScreen: React.FC<Props> = ({ navigation }: Props) => {
+export default function RoomScreen() {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  // const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  // const [component, setComponent] = useState<JSX.Element | undefined>();
-  // const { currentUser, logout } = useLogin();
 
   const styles = StyleSheet.create({
     WelcomeSign: {
@@ -64,24 +49,6 @@ export const RoomScreen: React.FC<Props> = ({ navigation }: Props) => {
     },
   });
 
-  /*  function handleClick(state: string | undefined) {
-     setBtnClicked(state);
-         switch (state) {
-       case 'Login':
-         setComponent(<LoginForm />);
-         break;
-       case 'SignUp':
-         setComponent(<SignUpForm />);
-         break;
-       case 'GoogleSignIn':
-         setComponent(undefined);
-         break;
-       default:
-         setComponent(undefined);
-         break;
-     }
-   } */
-
   return (
     <>
       {/* {currentUser && ( */}
@@ -94,4 +61,4 @@ export const RoomScreen: React.FC<Props> = ({ navigation }: Props) => {
       {/* )} */}
     </>
   );
-};
+}

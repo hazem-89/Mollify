@@ -1,7 +1,6 @@
-import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { MainStackParams } from '../../navigation/Main';
 import Button from '../buttons/Buttons';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
@@ -23,9 +22,7 @@ export const EnterProfile = ({
   const styles = StyleSheet.create({
     container: {},
   });
-
-  const navigation: StackNavigationProp<MainStackParams, 'RoomScreen'> =
-    'RoomScreen';
+  const navigation = useNavigation();
 
   const handleSubmit = () => {
     // Compare pin from db to entered pin.
@@ -39,6 +36,8 @@ export const EnterProfile = ({
       } else {
         // Here the user gets navigated to their room.
         console.log(navigation);
+        // Disabling the next line because all the item.targets are valid - that data just isn't getting picked up by TypeScript
+        // @ts-ignore
         navigation.navigate('RoomScreen');
       }
     }

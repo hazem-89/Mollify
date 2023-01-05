@@ -1,5 +1,4 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { StackNavigationProp } from '@react-navigation/stack';
 import React, { ReactElement, useState } from 'react';
 import {
   Image,
@@ -17,15 +16,9 @@ import { SignUpForm } from '../components/forms/Signup';
 import SelectProfile from '../components/menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
-import { MainStackParams } from '../navigation/Main';
 import { useLogin } from '../util/auth';
 
-type Props = {
-  navigation: StackNavigationProp<MainStackParams, 'StartScreen'>;
-};
-
-// eslint-disable-next-line no-unused-vars
-export const StartScreen: React.FC<Props> = ({ navigation }: Props) => {
+export default function StartScreen() {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
@@ -139,4 +132,4 @@ export const StartScreen: React.FC<Props> = ({ navigation }: Props) => {
       </SafeAreaView>
     </>
   );
-};
+}
