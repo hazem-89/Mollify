@@ -14,7 +14,7 @@ export const TodoMenuHeader = ({ text }: TodoMenuHeaderProps) => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     background: {
-      width: smallScreen ? 320 : 450,
+      width: smallScreen ? 300 : 450,
       height: smallScreen ? 110 : 150,
       alignContent: 'center',
       justifyContent: 'center',

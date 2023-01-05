@@ -1,14 +1,12 @@
 import { StyleSheet, View, Image, ImageBackground } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { Text } from '../components/Text';
 import awardBadge from '../../assets/Images/awardBadge.png';
 import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import Button from './buttons/Buttons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import roomExample from '../../assets/Images/roomExample.png';
 import FormModal from './modals/FormModal';
-import TodoFormModel from './modals/TodoFormModel';
 import { AddToDo } from './ToDos/AddToDo';
 type roomProps = {
   addTaskBtnClicked: string;
@@ -16,7 +14,7 @@ type roomProps = {
     React.SetStateAction<string | undefined>
   >;
 };
-const RoomUI = () => {
+export const RoomUI = () => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
@@ -30,15 +28,9 @@ const RoomUI = () => {
       case 'AddToDo':
         setComponent(<AddToDo />);
         break;
-      // case 'AddCleaningToDo':
-      //   setComponent(<AddCleaningToDo />);
-      //   break;
-      // // case 'GoogleSignIn':
-      // //   setComponent(undefined);
-      // //   break;
-      // // default:
-      // //   setComponent(undefined);
-      // //   break;
+      default:
+        setComponent(undefined);
+        break;
     }
   }
 
@@ -129,16 +121,13 @@ const RoomUI = () => {
             />
           </View>
         </View>
-        {/* <FormModal onEmit={handleEmit} formName={btnClicked} /> */}
-        <TodoFormModel
-          onTaskEmit={() => handleClick(undefined)}
+        <FormModal
           component={component}
+          onEmit={() => handleClick(undefined)}
         />
       </SafeAreaView>
     </ImageBackground>
   );
 };
-
-export default RoomUI;
 
 const styles = StyleSheet.create({});

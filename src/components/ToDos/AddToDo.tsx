@@ -4,16 +4,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { TodoMenuHeader } from '../modals/TodoMenuSign';
 import TodoBackGroundImage from '../../../assets/Images/TodoBackGroundImage.png';
 import { Text } from '../../components/Text';
 import { useDimensions } from '@react-native-community/hooks';
-import TodoFormModel from '../modals/TodoFormModel';
 import { AddActivityTask } from '../ToDos/AddActivityTask';
 import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
 import { AddSchoolTask } from '../ToDos/AddSchoolTask';
 import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
+import FormModal from '../modals/FormModal';
 const todoCategories = [
   {
     title: 'Add cleaning Task',
@@ -58,15 +58,17 @@ export const AddToDo = () => {
         break;
     }
   }
+
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      minHeight: smallScreen ? 380 : 540,
+      minHeight: smallScreen ? 380 : 530,
       minWidth: smallScreen ? 550 : 750,
       justifyContent: 'center',
+      marginTop: 50,
     },
     TodoBackground: {
       width: smallScreen ? 200 : 300,
@@ -90,12 +92,12 @@ export const AddToDo = () => {
           <View
             style={{
               position: 'absolute',
-              top: smallScreen ? -20 : -20,
+              top: smallScreen ? -10 : -15,
               left: '20%',
               zIndex: 100,
             }}
           >
-            <TodoMenuHeader text="Add To-Do" />
+            <TodoMenuHeader text="Add Task" />
           </View>
           <View style={styles.container}>
             {todoCategories?.map(todoCategory => (
@@ -119,10 +121,7 @@ export const AddToDo = () => {
           </View>
         </>
       ) : null}
-      <TodoFormModel
-        onTaskEmit={() => handleClick(undefined)}
-        component={component}
-      />
+      <FormModal component={component} onEmit={() => handleClick(undefined)} />
     </>
   );
 };

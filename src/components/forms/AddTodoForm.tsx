@@ -182,7 +182,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       <View
         style={{
           position: 'absolute',
-          top: smallScreen ? -15 : -25,
+          top: smallScreen ? -15 : -15,
           alignSelf: 'center',
         }}
       >
