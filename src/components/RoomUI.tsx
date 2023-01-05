@@ -9,15 +9,14 @@ import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import { AddToDo } from './ToDos/AddToDo';
-
-// type roomProps = {
-//   addTaskBtnClicked: string;
-//   setAddTaskBtnClicked: React.Dispatch<
-//     React.SetStateAction<string | undefined>
-//   >;
-// };
-
-export const RoomUI = () => {
+import { DisplayToDos } from './ToDos/DisplayToDos';
+type roomProps = {
+  addTaskBtnClicked: string;
+  setAddTaskBtnClicked: React.Dispatch<
+    React.SetStateAction<string | undefined>
+  >;
+};
+const RoomUI = () => {
   const { logout } = useLogin();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -27,6 +26,7 @@ export const RoomUI = () => {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
+  const [parent, setParent] = useState(false);
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {
@@ -37,6 +37,15 @@ export const RoomUI = () => {
       default:
         setComponent(undefined);
         break;
+      case 'displayTask':
+        setComponent(<DisplayToDos />);
+        break;
+      // // case 'GoogleSignIn':
+      // //   setComponent(undefined);
+      // //   break;
+      // // default:
+      // //   setComponent(undefined);
+      // //   break;
     }
   }
 
@@ -101,7 +110,8 @@ export const RoomUI = () => {
               <Button
                 background="TodoButtonImage"
                 onPress={() => {
-                  handleClick('AddToDo');
+                  console.log('component', component);
+                  !parent ? handleClick('AddToDo') : handleClick('displayTask');
                 }}
               />
             </View>
