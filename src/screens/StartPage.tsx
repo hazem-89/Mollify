@@ -6,7 +6,7 @@ import {
   ImageBackground,
   SafeAreaView,
   StyleSheet,
-  View
+  View,
 } from 'react-native';
 import MainBackGround from '../../assets/Images/MainBackGround.png';
 import Tiger from '../../assets/Images/tiger-min.png';
@@ -16,10 +16,10 @@ import { LoginForm } from '../components/forms/Login';
 import { SignUpForm } from '../components/forms/Signup';
 import SelectProfile from '../components/menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
+import { RoomUI } from '../components/RoomUI';
 import { Text } from '../components/Text';
 import { MainStackParams } from '../navigation/Main';
 import { useLogin } from '../util/auth';
-
 
 type Props = {
   navigation: StackNavigationProp<MainStackParams, 'StartPage'>;
@@ -69,72 +69,79 @@ export const StartPage: React.FC<Props> = ({ navigation }: Props) => {
   });
 
   function handleClick(state: string | undefined) {
-    setBtnClicked(state)
+    setBtnClicked(state);
     switch (state) {
       case 'Login':
-        setComponent(<LoginForm />)
+        setComponent(<LoginForm />);
         break;
       case 'SignUp':
-        setComponent(<SignUpForm />)
+        setComponent(<SignUpForm />);
         break;
       case 'GoogleSignIn':
-        setComponent(undefined)
+        setComponent(undefined);
         break;
       default:
-        setComponent(undefined)
+        setComponent(undefined);
         break;
     }
   }
 
   return (
     <>
-      <ImageBackground source={MainBackGround} style={styles.Background} />
-      <SafeAreaView style={styles.SafeArea}>
-        <Image source={WelcomeSign} style={styles.WelcomeSign} />
-        {currentUser ? (
-          <View style={{ position: 'absolute', top: 50, left: 50 }}>
-            <Button background="Close" onPress={logout} />
-          </View>
-        ) : null}
-        {!currentUser ? (
-          <>
-            <View>
-              <Button
-                disable={btnClicked ? true : false}
-                background="Gold"
-                text="Sign in"
-                onPress={() => handleClick("Login")}
-              />
-              {btnClicked !== 'GoogleSignIn' ? (
+      {!currentUser ? (
+        <>
+          <ImageBackground source={MainBackGround} style={styles.Background} />
+          <SafeAreaView style={styles.SafeArea}>
+            <Image source={WelcomeSign} style={styles.WelcomeSign} />
+            {currentUser ? (
+              <View style={{ position: 'absolute', top: 50, left: 50 }}>
+                <Button background="Close" onPress={logout} />
+              </View>
+            ) : null}
+            <>
+              <View>
                 <Button
                   disable={btnClicked ? true : false}
-                  background="Google"
-                  text={'sign in with Google'}
-                  onPress={() => handleClick("GoogleSignIn")}
+                  background="Gold"
+                  text="Sign in"
+                  onPress={() => handleClick('Login')}
                 />
-              ) : (
-                <Button
-                  disable={btnClicked ? true : false}
-                  background="GoogleButtonBroken"
-                  onPress={() => handleClick(undefined)}
-                />
-              )}
+                {btnClicked !== 'GoogleSignIn' ? (
+                  <Button
+                    disable={btnClicked ? true : false}
+                    background="Google"
+                    text={'sign in with Google'}
+                    onPress={() => handleClick('GoogleSignIn')}
+                  />
+                ) : (
+                  <Button
+                    disable={btnClicked ? true : false}
+                    background="GoogleButtonBroken"
+                    onPress={() => handleClick(undefined)}
+                  />
+                )}
 
-              <Text type="bold">OR</Text>
-              <Button
-                disable={btnClicked ? true : false}
-                background="Green"
-                text="Create account"
-                onPress={() => handleClick("SignUp")}
+                <Text type="bold">OR</Text>
+                <Button
+                  disable={btnClicked ? true : false}
+                  background="Green"
+                  text="Create account"
+                  onPress={() => handleClick('SignUp')}
+                />
+              </View>
+              <FormModal
+                component={component}
+                onEmit={() => handleClick(undefined)}
               />
-            </View>
-            <FormModal component={component} onEmit={() => handleClick(undefined)} />
-            <Image source={Tiger} style={styles.tiger} />
-          </>
-        ) : (
-          <SelectProfile />
-        )}
-      </SafeAreaView>
+              <Image source={Tiger} style={styles.tiger} />
+            </>
+          </SafeAreaView>
+        </>
+      ) : (
+        <>
+          <RoomUI />
+        </>
+      )}
     </>
   );
 };

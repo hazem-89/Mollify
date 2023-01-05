@@ -1,9 +1,18 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { collection, DocumentData, getDocs, query, where } from 'firebase/firestore';
+import {
+  collection,
+  DocumentData,
+  getDocs,
+  query,
+  where,
+} from 'firebase/firestore';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  Image, ImageBackground,
-  StyleSheet, TouchableOpacity, View
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import TigerAvatar from '../../../assets/Images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
@@ -14,7 +23,6 @@ import { useLogin } from '../../util/auth';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import { EnterProfile } from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
-
 
 const SelectProfile = () => {
   const { currentUser, logout } = useLogin();
@@ -68,90 +76,100 @@ const SelectProfile = () => {
   }, []);
 
   useEffect(() => {
-    if (currentUser) getProfiles()
-  }, [currentUser])
+    if (currentUser) getProfiles();
+  }, [currentUser]);
 
   async function getProfiles() {
-    const profilesRef = collection(db, "profiles");
-    const searchQuery = query(profilesRef, where("mainUserId", "==", `${currentUser?.uid}`));
+    const profilesRef = collection(db, 'profiles');
+    const searchQuery = query(
+      profilesRef,
+      where('mainUserId', '==', `${currentUser?.uid}`),
+    );
 
     const querySnapshot = await getDocs(searchQuery);
     if (querySnapshot.size > 0) {
-      setProfilesExist(true)
-      querySnapshot.forEach((doc) => {
-        setProfiles(prevProfiles => [...prevProfiles, doc.data()])
+      setProfilesExist(true);
+      querySnapshot.forEach(doc => {
+        setProfiles(prevProfiles => [...prevProfiles, doc.data()]);
       });
     } else {
-      setProfilesExist(false)
+      setProfilesExist(false);
     }
   }
 
   function handleClick(state: string | undefined, profile?: DocumentData) {
-    setBtnClicked(state)
+    setBtnClicked(state);
     switch (state) {
       case 'CreateProfile':
-        setComponent(<CreateProfileForm profilesExist={profilesExist} />)
+        setComponent(<CreateProfileForm profilesExist={profilesExist} />);
         break;
       case 'EnterPIN':
-        setComponent(<EnterProfile name={profile?.name} pin={profile?.pin} parent={profile?.parent} />)
+        setComponent(
+          <EnterProfile
+            name={profile?.name}
+            pin={profile?.pin}
+            parent={profile?.parent}
+          />,
+        );
         break;
       default:
-        setComponent(undefined)
+        setComponent(undefined);
         break;
     }
   }
 
   return (
-    <><ImageBackground source={SelectFormMenu} style={styles.modal}>
-      <View
-        style={{
-          marginTop: smallScreen ? 80 : 150,
-          flex: 1,
-          alignItems: 'center',
-        }}
-      >
-        <Text type="header">Select profile to View</Text>
-      </View>
-      <View style={styles.MainView}>
+    <>
+      <ImageBackground source={SelectFormMenu} style={styles.modal}>
         <View
           style={{
-            width: '10%',
-            marginRight: 20,
-            alignContent: 'center',
-            justifyContent: 'center',
-            marginBottom: 20,
+            marginTop: smallScreen ? 80 : 150,
+            flex: 1,
+            alignItems: 'center',
           }}
         >
-          <Button
-            background="AddButtonImage"
-            onPress={() => handleClick('CreateProfile')} />
+          <Text type="header">Select profile to View</Text>
         </View>
-        <View style={styles.ProfilesView}>
-          {profiles.map((profile, index) => (
-            <TouchableOpacity
-              key={index}
-              onPress={() => handleClick('EnterPIN', profile)}
-            >
-              <View style={styles.profile}>
-                <View style={styles.Avatar}>
-                  <Image
-                    source={TigerAvatar}
-                    style={{
-                      width: smallScreen ? 50 : 75,
-                      height: smallScreen ? 50 : 75,
-                    }} />
-                </View>
+        <View style={styles.MainView}>
+          <View
+            style={{
+              width: '10%',
+              marginRight: 20,
+              alignContent: 'center',
+              justifyContent: 'center',
+              marginBottom: 20,
+            }}
+          >
+            <Button
+              background="AddButtonImage"
+              onPress={() => handleClick('CreateProfile')}
+            />
+          </View>
+          <View style={styles.ProfilesView}>
+            {profiles.map((profile, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleClick('EnterPIN', profile)}
+              >
+                <View style={styles.profile}>
+                  <View style={styles.Avatar}>
+                    <Image
+                      source={TigerAvatar}
+                      style={{
+                        width: smallScreen ? 50 : 75,
+                        height: smallScreen ? 50 : 75,
+                      }}
+                    />
+                  </View>
 
-                <Text type="text">{profile.name}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                  <Text type="text">{profile.name}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-      </View>
-    </ImageBackground>
-      <FormModal
-        onEmit={handleEmit}
-        component={component} />
+      </ImageBackground>
+      <FormModal onEmit={handleEmit} component={component} />
     </>
   );
 };

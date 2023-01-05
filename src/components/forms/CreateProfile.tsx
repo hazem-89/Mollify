@@ -1,5 +1,12 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { db } from '../../../firebaseConfig';
@@ -24,8 +31,10 @@ type CreateProfileProps = {
   onClose?: () => void;
 };
 
-
-export const CreateProfileForm = ({ profilesExist, onClose }: CreateProfileProps) => {
+export const CreateProfileForm = ({
+  profilesExist,
+  onClose,
+}: CreateProfileProps) => {
   const dimensions = useDimensions();
   const { currentUser } = useLogin();
   const [state, setState] = useState({
@@ -48,7 +57,10 @@ export const CreateProfileForm = ({ profilesExist, onClose }: CreateProfileProps
       if (profilesExist) {
         await addDoc(collection(db, 'profiles'), newProfile);
       } else {
-        await addDoc(collection(db, 'profiles'), { parent: true, ...newProfile });
+        await addDoc(collection(db, 'profiles'), {
+          parent: true,
+          ...newProfile,
+        });
       }
     } catch (err) {
       console.log(err);
@@ -57,11 +69,11 @@ export const CreateProfileForm = ({ profilesExist, onClose }: CreateProfileProps
 
   const styles = StyleSheet.create({
     container: {
-      height: "100%",
-      width: "100%",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
       paddingBottom: 60,
     },
   });
@@ -76,10 +88,13 @@ export const CreateProfileForm = ({ profilesExist, onClose }: CreateProfileProps
   return (
     <View style={styles.container}>
       <Text>Add Profile</Text>
-      {!profilesExist &&
-        <Text type="formText">Since this is the first profile on this account it will be used as the parent profile.
-          The parent profile is the one used to manage the to-do list's of the other profiles.</Text>
-      }
+      {!profilesExist && (
+        <Text type="formText">
+          Since this is the first profile on this account it will be used as the
+          parent profile. The parent profile is the one used to manage the to-do
+          list's of the other profiles.
+        </Text>
+      )}
       <TextInput
         placeholder="Name"
         keyboardType="email-address"
@@ -92,14 +107,23 @@ export const CreateProfileForm = ({ profilesExist, onClose }: CreateProfileProps
         secureTextEntry
         autoCapitalize="none"
         value={state.pin}
+        keyboardType="phone-pad"
         onChangeText={(text: string) => setState({ ...state, pin: text })}
       />
-      <Carousel titel='Choose avatar'
-        onEmit={(selectedItem: any) => setState({ ...state, avatar: selectedItem })}
-        data={avatars} />
-      <Carousel titel='Choose room'
-        onEmit={(selectedItem: any) => setState({ ...state, room: selectedItem })
-        } data={rooms} />
+      <Carousel
+        titel="Choose avatar"
+        onEmit={(selectedItem: any) =>
+          setState({ ...state, avatar: selectedItem })
+        }
+        data={avatars}
+      />
+      <Carousel
+        titel="Choose room"
+        onEmit={(selectedItem: any) =>
+          setState({ ...state, room: selectedItem })
+        }
+        data={rooms}
+      />
       <Button
         background="GreenForms"
         text="Add profile"

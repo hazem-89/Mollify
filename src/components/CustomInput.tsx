@@ -14,12 +14,14 @@ import { useDimensions } from '@react-native-community/hooks';
 
 interface TextInputProps extends RNTextInputProps {
   label?: string;
-  errorText?: string;
+  errorText?: string | undefined;
+  impStyle?: object;
 }
 
 export const TextInput = ({
   label = '',
   errorText = '',
+  impStyle,
   ...rest
 }: TextInputProps) => {
   const dimensions = useDimensions();
@@ -32,11 +34,11 @@ export const TextInput = ({
       borderBottomColor: colors.primary,
       borderBottomWidth: 1,
       width: smallScreen ? 200 : 250,
-      alignItems: 'flex-start',
+      // alignItems: 'flex-start',
     },
     labelText: {
       color: colors.gray,
-      fontSize: smallScreen ? 12 : 18,
+      fontSize: smallScreen ? 14 : 18,
     },
     textInput: {
       fontSize: smallScreen ? 10 : 14,
@@ -62,7 +64,7 @@ export const TextInput = ({
   }
 
   return (
-    <View style={styles.inputContainer}>
+    <View style={impStyle}>
       <Text style={[styles.labelText]}>{label}</Text>
       <RNTextInput style={styles.textInput} {...rest} />
       <View style={borderStyles} />
