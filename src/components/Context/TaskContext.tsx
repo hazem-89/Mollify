@@ -29,7 +29,7 @@ export default function (props: any) {
       console.log('No such document!');
     }
   };
-  const contextValue = { profileTasks, getProfileTasks, test };
+  const contextValue = { profileTasks, getProfileTasks };
 
   return (
     <TasksContext.Provider value={contextValue}>
