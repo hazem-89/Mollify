@@ -16,7 +16,7 @@ type roomProps = {
     React.SetStateAction<string | undefined>
   >;
 };
-const RoomUI = () => {
+export const RoomUI = () => {
   const { logout } = useLogin();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -111,7 +111,7 @@ const RoomUI = () => {
                 background="TodoButtonImage"
                 onPress={() => {
                   console.log('component', component);
-                  !parent ? handleClick('AddToDo') : handleClick('displayTask');
+                  parent ? handleClick('AddToDo') : handleClick('displayTask');
                 }}
               />
             </View>
