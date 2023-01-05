@@ -1,8 +1,8 @@
-import { ImageBackground, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
-import { Text } from '../Text';
-import TodoMenuHeaderImage from '../../../assets/Images/TodoMenuHeaderImage.png';
 import { useDimensions } from '@react-native-community/hooks';
+import React, { useState } from 'react';
+import { ImageBackground, StyleSheet } from 'react-native';
+import TodoMenuHeaderImage from '../../../assets/Images/TodoMenuHeaderImage.png';
+import { Text } from '../Text';
 
 type TodoMenuHeaderProps = {
   text: string;
@@ -11,24 +11,20 @@ type TodoMenuHeaderProps = {
 export const TodoMenuHeader = ({ text }: TodoMenuHeaderProps) => {
   const dimensions = useDimensions();
 
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     background: {
       width: smallScreen ? 300 : 450,
       height: smallScreen ? 110 : 150,
       alignContent: 'center',
       justifyContent: 'center',
-      // position: 'absolute',
-      // top: smallScreen ? -10 : -100,
       alignSelf: 'center',
-      zIndex: 100,
+      zIndex: 10,
     },
   });
   return (
-    <View>
-      <ImageBackground style={styles.background} source={TodoMenuHeaderImage}>
-        <Text type="header">{text}</Text>
-      </ImageBackground>
-    </View>
+    <ImageBackground style={styles.background} source={TodoMenuHeaderImage}>
+      <Text type="header">{text}</Text>
+    </ImageBackground>
   );
 };

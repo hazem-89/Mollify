@@ -1,6 +1,5 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
@@ -11,15 +10,15 @@ type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
   onEmit: Function;
-  component: JSX.Element | undefined;
+  component: ReactElement | undefined;
 };
 
 export default function FormModal({ component, onEmit, text }: ModalProps) {
-  const [componentState, setComponentState] = useState<JSX.Element>();
+  const [componentState, setComponentState] = useState<ReactElement>();
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const [todoForm, setTodoForm] = useState(false);
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
 
   useEffect(() => {
     if (componentState !== component) {
@@ -89,36 +88,23 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
             resizeMode="stretch"
             source={todoForm ? SelectFormMenu : PaperForm}
           >
-            {todoForm && (
-              <>
+            <>
+              <ScrollView style={styles.scrollView} horizontal={false}>
                 {componentState &&
-                  React.cloneElement(componentState, { onClose: handleClose })}
-                {componentState && (
-                  <View
-                    style={{
-                      position: 'absolute',
-                      right: smallScreen ? 10 : 20,
-                      top: smallScreen ? 40 : 50,
-                    }}
-                  >
-                    <Button background="Close" onPress={handleClose} />
-                  </View>
-                )}
-              </>
-            )}
-            {!todoForm && (
-              <>
-                <ScrollView style={styles.scrollView} horizontal={false}>
-                  {componentState &&
-                    React.cloneElement(componentState, {
-                      onClose: handleClose,
-                    })}
-                </ScrollView>
-                <View style={styles.btnPosition}>
-                  <Button background="Close" onPress={handleClose} />
-                </View>
-              </>
-            )}
+                  React.cloneElement(componentState, {
+                    onClose: () => handleClose(),
+                  })}
+              </ScrollView>
+              <View
+                style={{
+                  position: 'absolute',
+                  right: smallScreen ? 10 : 20,
+                  top: smallScreen ? 40 : 50,
+                }}
+              >
+                <Button background="Close" onPress={() => handleClose()} />
+              </View>
+            </>
           </ImageBackground>
         </Animated.View>
       )}

@@ -1,18 +1,18 @@
 import { Alert, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
+import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import uuid from 'react-native-uuid';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
 import DropDown from '../DropDown';
 import laundryBasket from '../../../assets/Images/Icons/basket.png';
-import uuid from 'react-native-uuid';
 import { Text } from '../../components/Text';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from '../../../firebaseConfig';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
+
 const CleaningTodo = [
   {
     title: 'Dirty clothes',
@@ -39,15 +39,18 @@ const CleaningTodo = [
     selected: false,
   },
 ];
+
 type ErrorType = {
   taskTitle?: string;
   taskDescription?: string;
   points?: string;
   time?: string;
 };
+
 type todoFormProps = {
   category: string;
 };
+
 export const AddTodoForm = ({ category }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
@@ -55,6 +58,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
   const [pointsDropDownOpen, setPointsDropDownOpen] = useState(false);
   const [timeValue, setTimeValue] = useState(null);
   const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [state, setState] = useState({
     taskTitle: '',
     taskDescription: '',
@@ -62,7 +66,28 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
   });
   uuid.v4(); // ⇨ '11edc52b-2918-4d71-9058-f7285e29d894'
 
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [time, setTime] = useState([
+    { label: '2 Hours', value: '2' },
+    { label: '4 Hours', value: '4' },
+    { label: '6 Hours', value: '6' },
+    { label: '8 Hours', value: '8' },
+    { label: '12 Hours', value: '12' },
+    { label: '1 day', value: '1' },
+    { label: '2 days', value: '2D' },
+    { label: '3 days', value: '3D' },
+  ]);
+  const [pointsValue, setPointsValue] = useState(null);
+  const [points, setPoints] = useState([
+    { label: '5 Points', value: '5' },
+    { label: '10 Points', value: '10' },
+    { label: '20 Points', value: '20' },
+    { label: '30 Points', value: '30' },
+    { label: '40 Points', value: '40' },
+    { label: '50 Points', value: '50' },
+  ]);
+
+  const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -83,7 +108,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       alignItems: 'center',
       marginTop: 40,
     },
-    DorpDonContainer: {
+    DropDownContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
@@ -117,26 +142,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       marginLeft: smallScreen ? 5 : 5,
     },
   });
-  const [time, setTime] = useState([
-    { label: '2 Hours', value: '2' },
-    { label: '4 Hours', value: '4' },
-    { label: '6 Hours', value: '6' },
-    { label: '8 Hours', value: '8' },
-    { label: '12 Hours', value: '12' },
-    { label: '1 day', value: '1' },
-    { label: '2 days', value: '2D' },
-    { label: '3 days', value: '3D' },
-  ]);
-  const [pointsValue, setPointsValue] = useState(null);
-  const [points, setPoints] = useState([
-    { label: '5 Points', value: '5' },
-    { label: '10 Points', value: '10' },
-    { label: '20 Points', value: '20' },
-    { label: '30 Points', value: '30' },
-    { label: '40 Points', value: '40' },
-    { label: '50 Points', value: '50' },
-  ]);
-  const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
+
   const addCleaningTask = async () => {
     const currDocRef = doc(db, 'profiles', profileId);
     const newTodo = {
@@ -145,7 +151,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       taskDescription: state.taskDescription,
       pointsValue,
       timeValue,
-      category: category,
+      category,
     };
     await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
   };
@@ -158,10 +164,9 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     if (!state.taskDescription) {
       nextErrors.taskDescription = 'This field is required.';
     }
-    !pointsValue ? (nextErrors.points = 'you need to set points') : '';
-    !timeValue ? (nextErrors.time = 'you need to set Time') : '';
+    if (!pointsValue) nextErrors.points = 'you need to set points';
+    if (!timeValue) nextErrors.time = 'you need to set Time';
     setErrors(nextErrors);
-    console.log(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
@@ -174,21 +179,36 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
-
     return null;
   };
+
+  function handlePress(todo: { description: string; title: string }) {
+    if (
+      state.taskDescription &&
+      state.taskDescription === todo.description &&
+      state.taskTitle &&
+      state.taskTitle === todo.title &&
+      state.selected === todo.title
+    ) {
+      setState({
+        ...state,
+        taskDescription: '',
+        selected: '',
+        taskTitle: '',
+      });
+    } else {
+      setState({
+        ...state,
+        taskDescription: todo.description,
+        selected: todo.title,
+        taskTitle: todo.title,
+      });
+    }
+  }
+
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          position: 'absolute',
-          top: smallScreen ? -15 : -15,
-          alignSelf: 'center',
-        }}
-      >
-        <TodoMenuHeader text={category} />
-      </View>
-      {category === 'Add Cleaning Task' && (
+    <View>
+      {category === 'Add cleaning task' && (
         <>
           <View
             style={{
@@ -200,28 +220,12 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
             }}
           >
             {CleaningTodo?.map(todo => {
+              console.log(todo);
+
               return (
                 <TouchableOpacity
                   key={todo.title}
-                  onPress={() => {
-                    state.taskDescription &&
-                    state.taskDescription === todo.description &&
-                    state.taskTitle &&
-                    state.taskTitle === todo.title &&
-                    state.selected === todo.title
-                      ? setState({
-                          ...state,
-                          taskDescription: '',
-                          selected: '',
-                          taskTitle: '',
-                        })
-                      : setState({
-                          ...state,
-                          taskDescription: todo.description,
-                          selected: todo.title,
-                          taskTitle: todo.title,
-                        });
-                  }}
+                  onPress={() => handlePress(todo)}
                 >
                   <View
                     style={
@@ -269,7 +273,8 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
           </View>
         </>
       )}
-      {category !== 'Add Cleaning Task' && (
+
+      {category !== 'Add cleaning task' && (
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Task title:"
@@ -296,8 +301,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
           />
         </View>
       )}
-
-      <View style={styles.DorpDonContainer}>
+      <View style={styles.DropDownContainer}>
         <View style={styles.DropDownView}>
           <DropDown
             open={timeDropDownOpen}
@@ -313,7 +317,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
             placeholder="Time"
             style={styles.DropDown}
             source={hourglass}
-            disabled={!state.taskTitle && !state.taskDescription ? true : false}
+            disabled={!!(!state.taskTitle && !state.taskDescription)}
           />
           <Text type="errorText">{errors.time}</Text>
         </View>
@@ -333,7 +337,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
             placeholder="Points"
             style={styles.DropDown}
             source={PointsIcon}
-            disabled={!state.taskTitle && !state.taskDescription ? true : false}
+            disabled={!!(!state.taskTitle && !state.taskDescription)}
           />
           <Text type="errorText">{errors.points}</Text>
         </View>

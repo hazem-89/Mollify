@@ -1,26 +1,28 @@
-import { StyleSheet, View, Image, ImageBackground } from 'react-native';
-import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import awardBadge from '../../assets/Images/awardBadge.png';
-import woodSignLarge from '../../assets/Images/woodSignLarge.png';
-import Button from './buttons/Buttons';
+import React, { ReactElement, useState } from 'react';
+import { Image, ImageBackground, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import awardBadge from '../../assets/Images/awardBadge.png';
 import roomExample from '../../assets/Images/roomExample.png';
+import woodSignLarge from '../../assets/Images/woodSignLarge.png';
+import { useLogin } from '../util/auth';
+import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import { AddToDo } from './ToDos/AddToDo';
-import { useLogin } from '../util/auth';
-type roomProps = {
-  addTaskBtnClicked: string;
-  setAddTaskBtnClicked: React.Dispatch<
-    React.SetStateAction<string | undefined>
-  >;
-};
+
+// type roomProps = {
+//   addTaskBtnClicked: string;
+//   setAddTaskBtnClicked: React.Dispatch<
+//     React.SetStateAction<string | undefined>
+//   >;
+// };
+
 export const RoomUI = () => {
   const { logout } = useLogin();
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [component, setComponent] = useState<JSX.Element | undefined>();
+  const [component, setComponent] = useState<ReactElement | undefined>();
   const [text, setText] = useState<string | undefined>();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
@@ -99,8 +101,6 @@ export const RoomUI = () => {
               <Button
                 background="TodoButtonImage"
                 onPress={() => {
-                  console.log(component);
-
                   handleClick('AddToDo');
                 }}
               />
@@ -131,5 +131,3 @@ export const RoomUI = () => {
     </ImageBackground>
   );
 };
-
-const styles = StyleSheet.create({});

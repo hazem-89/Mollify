@@ -1,19 +1,16 @@
+import { useDimensions } from '@react-native-community/hooks';
+import React, { ReactElement, useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
-import { TodoMenuHeader } from './TodoMenuSign';
 import TodoBackGroundImage from '../../../assets/Images/TodoBackGroundImage.png';
 import { Text } from '../../components/Text';
-import { useDimensions } from '@react-native-community/hooks';
-import { AddActivityTask } from '../ToDos/AddActivityTask';
-import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
-import { AddSchoolTask } from '../ToDos/AddSchoolTask';
-import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
-import FormModal from '../modals/FormModal';
+import { AddTodoForm } from '../forms/AddTodoForm';
+import { TodoMenuHeader } from './TodoMenuSign';
+
 const todoCategories = [
   {
     title: 'Add cleaning Task',
@@ -21,7 +18,7 @@ const todoCategories = [
   },
   {
     title: 'Add special task',
-    link: 'AddSpacialTask',
+    link: 'AddSpecialTask',
   },
   {
     title: 'Add school assignment',
@@ -32,43 +29,40 @@ const todoCategories = [
     link: 'AddActivityTask',
   },
 ];
+
 export const AddToDo = () => {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
-  const [component, setComponent] = useState<JSX.Element | undefined>();
-  const [formText, setFormText] = useState<string | undefined>();
+  const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
 
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {
       case 'AddActivityTask':
-        setComponent(<AddActivityTask />);
-        setFormText('addTask');
+        setSelectedForm(<AddTodoForm category="Add activity" />);
         break;
       case 'AddCleaningTask':
-        setComponent(<AddCleaningToDo />);
-        setFormText('addTask');
+        setSelectedForm(<AddTodoForm category="Add cleaning task" />);
         break;
       case 'AddSchoolAssignment':
-        setComponent(<AddSchoolTask />);
-        setFormText('addTask');
+        setSelectedForm(<AddTodoForm category="Add school assignment" />);
         break;
-      case 'AddSpacialTask':
-        setComponent(<AddSpacialTodo />);
-        setFormText('addTask');
+      case 'AddSpecialTask':
+        setSelectedForm(<AddTodoForm category="Add special task" />);
         break;
+      default:
     }
   }
-
-  const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      minHeight: smallScreen ? 380 : 530,
-      minWidth: smallScreen ? 550 : 750,
+      position: 'relative',
+      height: '100%',
+      width: '100%',
       justifyContent: 'center',
       padding: 50,
       marginTop: 20,
@@ -88,22 +82,16 @@ export const AddToDo = () => {
       justifyContent: 'center',
     },
   });
+
   return (
     <>
-      {!addTaskBtnClicked ? (
-        <>
-          <View
-            style={{
-              position: 'absolute',
-              top: smallScreen ? -10 : -15,
-              left: '20%',
-              zIndex: 100,
-            }}
-          >
-            <TodoMenuHeader text="Add Task" />
-          </View>
-          <View style={styles.container}>
+      <View style={styles.container}>
+        {/* menuheader should probably be in FormModal */}
+        <TodoMenuHeader text="Add Task" />
+        {!addTaskBtnClicked ? (
+          <>
             {todoCategories?.map(todoCategory => (
+              /* Shouldn't this be a button? */
               <TouchableOpacity
                 key={todoCategory.title}
                 onPress={() => {
@@ -121,14 +109,11 @@ export const AddToDo = () => {
                 </ImageBackground>
               </TouchableOpacity>
             ))}
-          </View>
-        </>
-      ) : null}
-      <FormModal
-        component={component}
-        onEmit={() => handleClick(undefined)}
-        text={formText}
-      />
+          </>
+        ) : (
+          selectedForm
+        )}
+      </View>
     </>
   );
 };
