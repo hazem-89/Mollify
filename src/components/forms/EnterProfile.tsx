@@ -13,18 +13,19 @@ type EnterProfileProps = {
   onClose?: () => void;
 };
 
-type Props = {
-  navigation: StackNavigationProp<MainStackParams, 'RoomScreen'>;
-};
-
-export const EnterProfile = (
-  { name, pin, parent, onClose }: EnterProfileProps,
-  { navigation }: Props,
-) => {
+export const EnterProfile = ({
+  name,
+  pin,
+  parent,
+  onClose,
+}: EnterProfileProps) => {
   const [PINState, setPINState] = useState('');
   const styles = StyleSheet.create({
     container: {},
   });
+
+  const navigation: StackNavigationProp<MainStackParams, 'RoomScreen'> =
+    'RoomScreen';
 
   const handleSubmit = () => {
     // Compare pin from db to entered pin.
@@ -37,7 +38,8 @@ export const EnterProfile = (
         if (onClose) onClose();
       } else {
         // Here the user gets navigated to their room.
-        navigation.navigate('RoomScreen', {});
+        console.log(navigation);
+        navigation.navigate('RoomScreen');
       }
     }
   };
