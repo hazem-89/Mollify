@@ -5,13 +5,7 @@ import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
-import { AddToDo } from '../ToDos/AddToDo';
 import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
-import { AddActivityTask } from '../ToDos/AddActivityTask';
-import { AddCleaningToDo } from '../ToDos/AddCleaningToDo';
-import { AddSchoolTask } from '../ToDos/AddSchoolTask';
-import { AddSpacialTodo } from '../ToDos/AddSpacialTodo';
-import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
@@ -22,13 +16,10 @@ type ModalProps = {
 
 export default function FormModal({ component, onEmit, text }: ModalProps) {
   const [componentState, setComponentState] = useState<JSX.Element>();
-  const [headerText, setHeaderText] = useState('');
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const [todoForm, setTodoForm] = useState(false);
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
-
-  // console.log('headerText', headerText);
 
   useEffect(() => {
     if (componentState !== component) {
@@ -39,8 +30,6 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
         setTodoForm(false);
       }
     }
-    console.log(component);
-    console.log('text', text);
   }, [component]);
 
   useEffect(() => {
