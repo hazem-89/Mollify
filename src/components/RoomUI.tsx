@@ -26,7 +26,6 @@ export const RoomUI = () => {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
-  const [parent, setParent] = useState(false);
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {

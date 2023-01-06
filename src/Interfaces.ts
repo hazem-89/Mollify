@@ -1,6 +1,8 @@
 export interface Tasks {
+  id?: string;
   taskTitle?: string;
   taskDescription?: string;
-  points?: string;
-  time?: string;
+  pointsValue?: string;
+  timeValue?: string;
+  category?: string;
 }
