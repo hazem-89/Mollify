@@ -17,6 +17,9 @@ import TodoButtonImage from '../../../assets/Images/todo.png';
 import BellButtonImage from '../../../assets/Images/bell.png';
 import SignButtonImage from '../../../assets/Images/sign.png';
 import TrophyButtonImage from '../../../assets/Images/trophy.png';
+import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
+import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
+import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -80,7 +83,7 @@ function Button({
       height: smallScreen ? 50 : 80,
     },
     todoStyle: {
-      width: smallScreen ? 50 : 80,
+      width: smallScreen ? 60 : 90,
       height: smallScreen ? 50 : 80,
     },
     bellStyle: {
@@ -94,6 +97,10 @@ function Button({
     trophyStyle: {
       width: smallScreen ? 35 : 45,
       height: smallScreen ? 40 : 50,
+    },
+    CategoriesStyle: {
+      width: smallScreen ? 50 : 70,
+      height: smallScreen ? 50 : 70,
     },
   });
 
@@ -134,6 +141,18 @@ function Button({
     } else if (background === 'TrophyButtonImage') {
       setSource(TrophyButtonImage);
       setStyle(styles.trophyStyle);
+    } else if (background === 'SchoolTasks') {
+      setSource(SchoolTasksIcon);
+      setStyle(styles.CategoriesStyle);
+    } else if (background === 'SpecialTasks') {
+      setSource(SpecialTaskIcon);
+      setStyle(styles.CategoriesStyle);
+    } else if (background === 'Activities') {
+      setSource(ActivityIcon);
+      setStyle(styles.CategoriesStyle);
+    } else if (background === 'CleaningTasks') {
+      setSource(TodoButtonImage);
+      setStyle(styles.todoStyle);
     }
   }, [background]);
 
