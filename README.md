@@ -1,3 +1,7 @@
+## Mollify
+
+# Mollify your family's to-do list with ease!
+
 # React Native School TypeScript Expo Template
 
 A simple Expo template with the following features:
@@ -28,15 +32,3 @@ expo init --template @react-native-school/expo-typescript-template
 - Format Code: `yarn format` or `npm run format`
 
 ## Screenshots
-
-List Screen
-![List Screen](./assets/screenshots/list.png)
-
-Text Screen
-![Text Screen](./assets/screenshots/text.png)
-
-Form Screen
-![Form Screen](./assets/screenshots/form.png)
-
-Button Screen
-![Button Screen](./assets/screenshots/button.png)

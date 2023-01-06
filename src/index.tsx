@@ -2,13 +2,12 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { Main } from './navigation/Main';
+import TaskContextProvide from './components/Context/TaskContext';
 
-// The main component for the app
 export default function App() {
   // Render the app
   return (
     <>
-      {/* Render the StatusBar component with the "auto" style */}
       <StatusBar style="auto" />
       {/* 
         Render the NavigationContainer component with the Main component as its child. 
@@ -17,7 +16,9 @@ export default function App() {
         appropriate navigation logic. 
       */}
       <NavigationContainer>
-        <Main />
+        <TaskContextProvide>
+          <Main />
+        </TaskContextProvide>
       </NavigationContainer>
     </>
   );
