@@ -6,6 +6,7 @@ import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
+import Scoreboard from './Scoreboard/Scoreboard';
 import { AddToDo } from './ToDos/AddToDo';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 
@@ -37,6 +38,10 @@ export default function RoomUI() {
       case 'displayTask':
         setComponent(<DisplayTasksCategories />);
         setText('addTask');
+        break;
+      case 'displayScoreboard':
+        setComponent(<Scoreboard />);
+        setText('Scoreboard');
         break;
       default:
         setComponent(undefined);
@@ -83,7 +88,7 @@ export default function RoomUI() {
     },
     trophyAlign: {
       position: 'absolute',
-      left: smallScreen ? 300 : 510,
+      left: smallScreen ? 260 : 510,
       top: smallScreen ? 17 : 25,
     },
     signAlign: {
@@ -120,7 +125,11 @@ export default function RoomUI() {
           <View style={styles.trophyAlign}>
             <Button
               background="TrophyButtonImage"
-              onPress={() => setBtnClicked(undefined)}
+              onPress={() => {
+                parent
+                  ? handleClick('Scoreboard')
+                  : handleClick('displayScoreboard');
+              }}
             />
           </View>
         </View>
@@ -139,3 +148,4 @@ export default function RoomUI() {
     </>
   );
 }
+
