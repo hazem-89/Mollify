@@ -42,16 +42,16 @@ export const AddToDo = () => {
     setAddTaskBtnClicked(state);
     switch (state) {
       case 'AddActivityTask':
-        setSelectedForm(<AddTodoForm category="Add activity" />);
+        setSelectedForm(<AddTodoForm category="Activities" />);
         break;
       case 'AddCleaningTask':
-        setSelectedForm(<AddTodoForm category="Add cleaning task" />);
+        setSelectedForm(<AddTodoForm category="Cleaning tasks" />);
         break;
       case 'AddSchoolAssignment':
-        setSelectedForm(<AddTodoForm category="Add school assignment" />);
+        setSelectedForm(<AddTodoForm category="School assignments" />);
         break;
       case 'AddSpecialTask':
-        setSelectedForm(<AddTodoForm category="Add special task" />);
+        setSelectedForm(<AddTodoForm category="Special tasks" />);
         break;
       default:
     }

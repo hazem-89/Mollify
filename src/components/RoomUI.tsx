@@ -9,7 +9,7 @@ import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import { AddToDo } from './ToDos/AddToDo';
-import { DisplayToDos } from './ToDos/DisplayToDos';
+import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 type roomProps = {
   addTaskBtnClicked: string;
   setAddTaskBtnClicked: React.Dispatch<
@@ -34,11 +34,12 @@ export const RoomUI = () => {
         setComponent(<AddToDo />);
         setText('addTask');
         break;
+      case 'displayTask':
+        setComponent(<DisplayTasksCategories />);
+        setText('addTask');
+        break;
       default:
         setComponent(undefined);
-        break;
-      case 'displayTask':
-        setComponent(<DisplayToDos />);
         break;
       // // case 'GoogleSignIn':
       // //   setComponent(undefined);
