@@ -208,7 +208,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
 
   return (
     <View>
-      {category === 'Add cleaning task' && (
+      {category === 'Cleaning tasks' && (
         <>
           <View
             style={{
