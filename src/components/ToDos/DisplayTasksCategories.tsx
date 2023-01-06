@@ -2,7 +2,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import Button from '../buttons/Buttons';
-import { useTasks } from '../Context/TaskContext';
+import { useTasks } from '../../util/context/TaskContext';
 import { Text } from '../../components/Text';
 
 const tasksCategories = [

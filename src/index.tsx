@@ -2,7 +2,7 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { Main } from './navigation/Main';
-import TaskContextProvide from './components/Context/TaskContext';
+import TaskContextProvide from './util/context/TaskContext';
 
 export default function App() {
   // Render the app
