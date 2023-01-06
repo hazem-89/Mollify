@@ -1,12 +1,5 @@
-import { useDimensions } from '@react-native-community/hooks';
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  getDoc,
-  updateDoc,
-} from 'firebase/firestore';
+/* eslint-disable react/no-unescaped-entities */
+import { addDoc, collection } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { db } from '../../../firebaseConfig';
@@ -35,7 +28,7 @@ export const CreateProfileForm = ({
   profilesExist,
   onClose,
 }: CreateProfileProps) => {
-  const dimensions = useDimensions();
+  // const dimensions = useDimensions();
   const { currentUser } = useLogin();
   const [state, setState] = useState({
     name: '',

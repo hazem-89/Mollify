@@ -9,7 +9,7 @@ import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   text?: string;
-  onEmit: Function;
+  onEmit?: Function;
   component: ReactElement | undefined;
 };
 
@@ -76,7 +76,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
 
   function handleClose() {
     setComponentState(undefined);
-    onEmit();
+    if (onEmit) onEmit();
   }
 
   return (
