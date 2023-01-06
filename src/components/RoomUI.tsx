@@ -112,7 +112,7 @@ export const RoomUI = () => {
                 background="TodoButtonImage"
                 onPress={() => {
                   console.log('component', component);
-                  parent ? handleClick('AddToDo') : handleClick('displayTask');
+                  handleClick('displayTask');
                 }}
               />
             </View>
