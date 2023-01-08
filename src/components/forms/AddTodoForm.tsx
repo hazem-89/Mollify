@@ -20,6 +20,7 @@ import { db } from '../../../firebaseConfig';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useTasks } from '../../util/Context/TaskContext';
 
 const CleaningTodo = [
   {
@@ -73,8 +74,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     selected: '',
   });
   uuid.v4(); // ⇨ '11edc52b-2918-4d71-9058-f7285e29d894'
-
-  const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
+  const { addCleaningTask } = useTasks();
 
   const styles = StyleSheet.create({
     container: {
@@ -145,20 +145,6 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     setEndTime(date);
     hideDatePicker();
   };
-  const addCleaningTask = async () => {
-    const currDocRef = doc(db, 'profiles', profileId);
-    const newTodo = {
-      id: uuid.v4(),
-      taskTitle: state.taskTitle,
-      taskDescription: state.taskDescription,
-      pointsValue,
-      endTime: endTime?.toString(),
-      category,
-      isDone: false,
-      hasRequest: false,
-    };
-    await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
-  };
 
   const submit = () => {
     const nextErrors: ErrorType = {};
@@ -174,7 +160,17 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
 
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
-      addCleaningTask();
+      const newTodo = {
+        id: uuid.v4(),
+        taskTitle: state.taskTitle,
+        taskDescription: state.taskDescription,
+        pointsValue,
+        endTime: endTime?.toString(),
+        category,
+        isDone: false,
+        hasRequest: false,
+      };
+      addCleaningTask(newTodo);
       Alert.alert(
         'Success!',
         `Title: ${state.taskTitle} \n Description: ${state.taskDescription}`,

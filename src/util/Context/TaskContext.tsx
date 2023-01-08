@@ -1,17 +1,33 @@
-import { collection, getDoc, doc } from 'firebase/firestore';
+import {
+  collection,
+  getDoc,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from 'firebase/firestore';
 import React, { createContext, useContext, useState } from 'react';
 import { db } from '../../../firebaseConfig';
 import { Tasks } from '../../Interfaces';
 interface TaskContext {
   profileTasks: Tasks[];
   getProfileTasks: () => void;
+  addCleaningTask: (newTodo: {}) => Promise<any>;
 }
 const TasksContext = React.createContext<TaskContext>({
   profileTasks: [],
-  getProfileTasks: () => [],
+  getProfileTasks: async () => [],
+  addCleaningTask: async () => {},
 });
 export default function (props: any) {
   const [profileTasks, setProfileTasks] = useState<Tasks[]>([]);
+  const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
+
+  const addCleaningTask = async (newTodo: {}) => {
+    const currDocRef = doc(db, 'profiles', profileId);
+
+    await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
+  };
+
   const getProfileTasks = async () => {
     const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
     const ProfilesDataWithId: any[] = [];
@@ -24,7 +40,7 @@ export default function (props: any) {
       console.log('No such document!');
     }
   };
-  const contextValue = { profileTasks, getProfileTasks };
+  const contextValue = { profileTasks, getProfileTasks, addCleaningTask };
 
   return (
     <TasksContext.Provider value={contextValue}>
