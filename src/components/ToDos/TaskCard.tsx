@@ -70,7 +70,7 @@ const TaskCard = ({ task }: Props) => {
         </View>
       )}
       <View style={styles.TextView}>
-        {/* <Text type="todoList">{task.taskDescription}</Text> */}
+        <Text type="todoList">{task.taskDescription}</Text>
         {/* <Text type="todoList">{date}</Text> */}
       </View>
       <ImageBackground
@@ -97,7 +97,7 @@ const TaskCard = ({ task }: Props) => {
             justifyContent: 'center',
           }}
         >
-          {/* <Text type="todoList">{task.timeValue}</Text> */}
+          <Text type="todoList">{task.endTime}</Text>
         </View>
       </ImageBackground>
     </View>

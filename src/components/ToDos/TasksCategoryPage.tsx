@@ -7,27 +7,59 @@ import { useDimensions } from '@react-native-community/hooks';
 import PointsBtnIcon from '../../../assets/Images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/Images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/Images/Icons/TimBtnIcon.png';
-import { TodoMenuHeader } from './TodoMenuSign';
 import { AddTodoForm } from '../forms/AddTodoForm';
 import Button from '../buttons/Buttons';
 type TasksCategoryPageProps = {
   category: string;
 };
 
-// const mockedTasksCategory =
+const mockedTasksCategory = [
+  {
+    category: 'Cleaning tasks',
+    endTime: 'Fri Jan 13 2023 12:00:00 GMT+0100 (CET)',
+    hasRequest: false,
+    id: 'a50bab81-b002-4e55-afe1-72d3760a3079',
+    isDone: false,
+    pointsValue: '50',
+    taskDescription: 'Put the dirty clothes in the laundry basket',
+    taskTitle: 'Dirty clothes',
+  },
+  {
+    category: 'Cleaning tasks',
+    endTime: 'Thu Jan 12 2023 12:00:00 GMT+0100 (CET)',
+    hasRequest: false,
+    id: 'fb1adc8c-ddc7-41ce-9c65-2824b0c77d25',
+    isDone: false,
+    pointsValue: '10',
+    taskDescription: 'Take the dishes to the kitchen',
+    taskTitle: 'Dirty Dishes',
+  },
+  {
+    category: 'Cleaning tasks',
+    endTime: 'Tue Jan 10 2023 12:00:00 GMT+0100 (CET)',
+    hasRequest: false,
+    id: 'aa918fad-646b-4958-9e3f-382e180123a4',
+    isDone: false,
+    pointsValue: '500',
+    taskDescription: 'Not too much not too little water',
+    taskTitle: 'Watering Plants',
+  },
+];
 export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
   const { getProfileTasks, profileTasks } = useTasks();
   const [tasks, setTasks] = useState<Tasks[]>();
 
-  useEffect(() => {
-    getProfileTasks();
-    const tasksFromDb = profileTasks?.filter(
-      task => task.category === category,
-    );
-    setTasks(tasksFromDb);
-  }, []);
-  console.log(profileTasks);
-  const tasksFromDb = profileTasks?.filter(task => task.category === category);
+  // useEffect(() => {
+  //   getProfileTasks();
+  //   const tasksFromDb = profileTasks?.filter(
+  //     task => task.category === category,
+  //   );
+  //   setTasks(tasksFromDb);
+  // }, []);
+  // console.log(profileTasks);
+  const tasksFromDb = mockedTasksCategory?.filter(
+    task => task.category === category,
+  );
   const dimensions = useDimensions();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
@@ -59,7 +91,6 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
       minHeight: smallScreen ? 250 : 430,
       minWidth: smallScreen ? 480 : 650,
       padding: smallScreen ? 30 : 50,
-      // marginBottom: 100,
       marginTop: 20,
       paddingBottom: 500,
     },

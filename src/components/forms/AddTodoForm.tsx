@@ -1,22 +1,12 @@
-import {
-  Alert,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  Platform,
-} from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import uuid from 'react-native-uuid';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
-import DropDown from '../DropDown';
 import laundryBasket from '../../../assets/Images/Icons/basket.png';
 import { Text } from '../../components/Text';
-import { db } from '../../../firebaseConfig';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
