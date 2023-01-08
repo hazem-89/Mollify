@@ -26,10 +26,12 @@ const TaskCard = ({ task }: Props) => {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginTop: 20,
+      marginTop: 10,
       borderBottomWidth: 1,
       borderBottomColor: colors.primary,
       maxHeight: smallScreen ? 50 : 75,
+      maxWidth: smallScreen ? 350 : 450,
+      marginLeft: smallScreen ? 30 : 50,
     },
     TextView: {
       flex: 1,
@@ -82,7 +84,7 @@ const TaskCard = ({ task }: Props) => {
             justifyContent: 'center',
           }}
         >
-          <Text>{task.pointsValue}</Text>
+          <Text type="todoList">{task.pointsValue}</Text>
         </View>
       </ImageBackground>
       <ImageBackground source={TimeBackground} style={styles.TimeBackground}>

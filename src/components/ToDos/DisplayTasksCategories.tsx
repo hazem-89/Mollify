@@ -36,7 +36,7 @@ export const DisplayTasksCategories = () => {
       switch (state) {
         case 'category':
           setComponent(<TasksCategoryPage category={category} />);
-          setText('addTask');
+          setText(category);
           break;
         default:
           setComponent(undefined);
