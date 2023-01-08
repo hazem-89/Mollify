@@ -63,6 +63,54 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
       taskTitle: 'Dirty clothes',
       timeValue: '4',
     },
+    {
+      category: 'Cleaning tasks',
+      id: '3deb9f6c-4cfe-4db5-811b-a877bf09ef9228',
+      pointsValue: '50',
+      taskDescription: 'Put the dirty clothes in the laundry basket',
+      taskTitle: 'Dirty clothes',
+      timeValue: '4',
+    },
+    {
+      category: 'Cleaning tasks',
+      id: '3deb9f6c-4cfe-4db5-811b-a877bf09ef918',
+      pointsValue: '50',
+      taskDescription: 'Put the dirty clothes in the laundry basket',
+      taskTitle: 'Dirty clothes',
+      timeValue: '4',
+    },
+    {
+      category: 'Cleaning tasks',
+      id: '3deb9f6c-4cfe-4db5-811b-a877bf09ef982',
+      pointsValue: '50',
+      taskDescription: 'Put the dirty clothes in the laundry basket',
+      taskTitle: 'Dirty clothes',
+      timeValue: '4',
+    },
+    {
+      category: 'Cleaning tasks',
+      id: '3deb9f6c-4cfe-4db5-811b-a877bf0rr9ef983',
+      pointsValue: '50',
+      taskDescription: 'Put the dirty clothes in the laundry basket',
+      taskTitle: 'Dirty clothes',
+      timeValue: '4',
+    },
+    {
+      category: 'Cleaning tasks',
+      id: '3deb9f6c-4cfe-4db5-811b-a877bf09eeef983',
+      pointsValue: '50',
+      taskDescription: 'Put the dirty clothes in the laundry basket',
+      taskTitle: 'Dirty clothes',
+      timeValue: '4',
+    },
+    {
+      category: 'Cleaning tasks',
+      id: '3deb9f6c-4cfe-4db5-811b-a877bf09efww983',
+      pointsValue: '50',
+      taskDescription: 'Put the dirty clothes in the laundry basket',
+      taskTitle: 'Dirty clothes',
+      timeValue: '4',
+    },
   ];
   // useEffect(() => {
   //   getProfileTasks();
@@ -82,13 +130,16 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
       minHeight: smallScreen ? 250 : 430,
       minWidth: smallScreen ? 480 : 650,
       padding: smallScreen ? 30 : 50,
-      marginTop: 50,
+      // marginBottom: 100,
+      paddingBottom: 500,
     },
     mainView: {},
     iconsView: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
+      maxWidth: smallScreen ? 350 : 450,
+      marginLeft: smallScreen ? 30 : 50,
     },
     icons: {
       width: smallScreen ? 40 : 50,
@@ -97,20 +148,7 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
   });
   return (
     <View style={styles.container}>
-      {/* <TodoMenuHeader text={category} /> */}
-      {/* <Text>{category}</Text> */}
       <View style={styles.mainView}>
-        <View style={styles.iconsView}>
-          <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>
-            <Image style={styles.icons} source={TaskBtnIcon} />
-          </View>
-          <View style={{ width: smallScreen ? 50 : 60, alignItems: 'center' }}>
-            <Image style={styles.icons} source={PointsBtnIcon} />
-          </View>
-          <View style={{ width: smallScreen ? 75 : 100, alignItems: 'center' }}>
-            <Image style={styles.icons} source={TimBtnIcon} />
-          </View>
-        </View>
         {tasksFromDb?.map((task: Tasks) => (
           <View key={task.id}>
             <TaskCard task={task} />
