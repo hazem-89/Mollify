@@ -6,7 +6,6 @@ import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
-import { AddToDo } from './ToDos/AddToDo';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 
 /* type roomProps = {
@@ -29,10 +28,6 @@ export default function RoomUI() {
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {
-      case 'AddToDo':
-        setComponent(<AddToDo />);
-        setText('addTask');
-        break;
       case 'displayTask':
         setComponent(<DisplayTasksCategories />);
         setText('addTask');
