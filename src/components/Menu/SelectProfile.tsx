@@ -6,7 +6,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -25,13 +25,13 @@ import { EnterProfile } from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
 
 const SelectProfile = () => {
-  const { currentUser, logout } = useLogin();
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [component, setComponent] = useState<JSX.Element | undefined>();
+  const { currentUser } = useLogin();
+  // const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  const [component, setComponent] = useState<ReactElement | undefined>();
   const [profilesExist, setProfilesExist] = useState<boolean>(false);
   const [profiles, setProfiles] = useState<DocumentData[]>([]);
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
 
   const styles = StyleSheet.create({
     modal: {
@@ -71,9 +71,9 @@ const SelectProfile = () => {
     },
   });
 
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop.
-  }, []);
+  // const handleEmit = useCallback((value: undefined) => {
+  //   setBtnClicked(value); // This function will be called by the child component to emit a prop.
+  // }, []);
 
   useEffect(() => {
     if (currentUser) getProfiles();
@@ -98,7 +98,7 @@ const SelectProfile = () => {
   }
 
   function handleClick(state: string | undefined, profile?: DocumentData) {
-    setBtnClicked(state);
+    // setBtnClicked(state);
     switch (state) {
       case 'CreateProfile':
         setComponent(<CreateProfileForm profilesExist={profilesExist} />);
@@ -146,9 +146,9 @@ const SelectProfile = () => {
             />
           </View>
           <View style={styles.ProfilesView}>
-            {profiles.map((profile, index) => (
+            {profiles.map(profile => (
               <TouchableOpacity
-                key={index}
+                key={profile.name}
                 onPress={() => handleClick('EnterPIN', profile)}
               >
                 <View style={styles.profile}>
@@ -169,7 +169,7 @@ const SelectProfile = () => {
           </View>
         </View>
       </ImageBackground>
-      <FormModal onEmit={handleEmit} component={component} />
+      <FormModal component={component} />
     </>
   );
 };

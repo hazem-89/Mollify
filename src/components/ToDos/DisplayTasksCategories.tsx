@@ -2,7 +2,7 @@ import { StyleSheet, View, Image } from 'react-native';
 import React, { ReactElement, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import Button from '../buttons/Buttons';
-import { useTasks } from '../../util/Context/TaskContext';
+import { useTasks } from '../../util/context/TaskContext';
 import { Text } from '../../components/Text';
 import FormModal from '../modals/FormModal';
 import { TasksCategoryPage } from './TasksCategoryPage';

@@ -1,5 +1,4 @@
-import { useDimensions } from '@react-native-community/hooks';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -10,7 +9,6 @@ type CarouselProps = {
 };
 
 export default function Carousel({ titel, data, onEmit }: CarouselProps) {
-  const dimensions = useDimensions();
   const [selectedItem, setSelectedItem] = useState();
 
   const styles = StyleSheet.create({
