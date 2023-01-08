@@ -1,4 +1,11 @@
-import { Alert, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
+import {
+  Alert,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  Platform,
+} from 'react-native';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
@@ -12,6 +19,7 @@ import { Text } from '../../components/Text';
 import { db } from '../../../firebaseConfig';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const CleaningTodo = [
   {
@@ -54,9 +62,9 @@ type todoFormProps = {
 export const AddTodoForm = ({ category }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
-  const [timeDropDownOpen, setTimeDropDownOpen] = useState(false);
-  const [pointsDropDownOpen, setPointsDropDownOpen] = useState(false);
-  const [timeValue, setTimeValue] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [endTime, setEndTime] = useState<Date>();
+  const [pointsValue, setPointsValue] = useState('');
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [state, setState] = useState({
@@ -66,33 +74,13 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
   });
   uuid.v4(); // ⇨ '11edc52b-2918-4d71-9058-f7285e29d894'
 
-  const [time, setTime] = useState([
-    { label: '2 Hours', value: '2' },
-    { label: '4 Hours', value: '4' },
-    { label: '6 Hours', value: '6' },
-    { label: '8 Hours', value: '8' },
-    { label: '12 Hours', value: '12' },
-    { label: '1 day', value: '1' },
-    { label: '2 days', value: '2D' },
-    { label: '3 days', value: '3D' },
-  ]);
-  const [pointsValue, setPointsValue] = useState(null);
-  const [points, setPoints] = useState([
-    { label: '5 Points', value: '5' },
-    { label: '10 Points', value: '10' },
-    { label: '20 Points', value: '20' },
-    { label: '30 Points', value: '30' },
-    { label: '40 Points', value: '40' },
-    { label: '50 Points', value: '50' },
-  ]);
-
   const profileId = 'Lgq9YJnPLLezb1iE4xHQ';
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      minHeight: smallScreen ? 380 : 530,
-      minWidth: smallScreen ? 550 : 750,
+      minHeight: smallScreen ? 380 : 400,
+      minWidth: smallScreen ? 550 : 500,
       padding: smallScreen ? 40 : 50,
     },
     input: {
@@ -108,20 +96,16 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       alignItems: 'center',
       marginTop: 40,
     },
-    DropDownContainer: {
+    TimePointsContainer: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       marginVertical: 20,
-      marginLeft: 50,
     },
-    DropDown: {
-      backgroundColor: 'transparent',
-      minHeight: 30,
-      width: smallScreen ? 80 : 100,
-    },
-    DropDownView: {
+    TimePointView: {
       width: smallScreen ? 150 : 200,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     AvatarContainer: {
       width: smallScreen ? 50 : 100,
@@ -138,11 +122,29 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'green',
-      borderRadius: 500,
       marginLeft: smallScreen ? 5 : 5,
+      borderRadius: 500,
+    },
+    icons: {
+      width: smallScreen ? 25 : 40,
+      height: smallScreen ? 40 : 70,
+      marginRight: 10,
     },
   });
 
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    console.warn('A date has been picked: ', date);
+    setEndTime(date);
+    hideDatePicker();
+  };
   const addCleaningTask = async () => {
     const currDocRef = doc(db, 'profiles', profileId);
     const newTodo = {
@@ -150,8 +152,10 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       taskTitle: state.taskTitle,
       taskDescription: state.taskDescription,
       pointsValue,
-      timeValue,
+      endTime: endTime?.toString(),
       category,
+      isDone: false,
+      hasRequest: false,
     };
     await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
   };
@@ -165,7 +169,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       nextErrors.taskDescription = 'This field is required.';
     }
     if (!pointsValue) nextErrors.points = 'you need to set points';
-    if (!timeValue) nextErrors.time = 'you need to set Time';
+    if (!endTime) nextErrors.time = 'you need to set Time';
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
@@ -176,6 +180,8 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
         `Title: ${state.taskTitle} \n Description: ${state.taskDescription}`,
       );
     }
+    setEndTime(new Date());
+    setPointsValue('');
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
@@ -272,7 +278,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
         </>
       )}
 
-      {category !== 'Add cleaning task' && (
+      {category !== 'Cleaning tasks' && (
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Task title:"
@@ -299,44 +305,44 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
           />
         </View>
       )}
-      <View style={styles.DropDownContainer}>
-        <View style={styles.DropDownView}>
-          <DropDown
-            open={timeDropDownOpen}
-            setOpen={() =>
-              timeDropDownOpen
-                ? setTimeDropDownOpen(false)
-                : setTimeDropDownOpen(true)
-            }
-            value={timeValue}
-            setValue={setTimeValue}
-            items={time}
-            setItems={setTime}
-            placeholder="Time"
-            style={styles.DropDown}
-            source={hourglass}
-            disabled={!!(!state.taskTitle && !state.taskDescription)}
+      <View style={styles.TimePointsContainer}>
+        <View style={styles.TimePointView}>
+          <TouchableOpacity
+            disabled={!state.taskTitle && !state.taskDescription}
+            onPress={showDatePicker}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+          >
+            <Image source={hourglass} style={styles.icons} />
+            <Text type="text">Set Time</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            style={{
+              shadowColor: '#fff',
+              shadowRadius: 0,
+              shadowOpacity: 1,
+              shadowOffset: { height: 0, width: 0 },
+            }}
+            isVisible={isDatePickerVisible}
+            mode="datetime"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            minimumDate={new Date()}
+            minuteInterval={10}
           />
           <Text type="errorText">{errors.time}</Text>
         </View>
 
-        <View style={styles.DropDownView}>
-          <DropDown
-            open={pointsDropDownOpen}
-            setOpen={() =>
-              pointsDropDownOpen
-                ? setPointsDropDownOpen(false)
-                : setPointsDropDownOpen(true)
-            }
-            value={pointsValue}
-            setValue={setPointsValue}
-            items={points}
-            setItems={setPoints}
-            placeholder="Points"
-            style={styles.DropDown}
-            source={PointsIcon}
-            disabled={!!(!state.taskTitle && !state.taskDescription)}
-          />
+        <View style={styles.TimePointView}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image source={PointsIcon} style={styles.icons} />
+            <TextInput
+              placeholder="Set task Points"
+              autoCapitalize="none"
+              value={pointsValue}
+              keyboardType="number-pad"
+              onChangeText={changedPin => setPointsValue(changedPin)}
+            />
+          </View>
           <Text type="errorText">{errors.points}</Text>
         </View>
       </View>
