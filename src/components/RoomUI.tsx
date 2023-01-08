@@ -109,7 +109,7 @@ export default function RoomUI() {
             <Button
               background="TodoButtonImage"
               onPress={() => {
-                parent ? handleClick('AddToDo') : handleClick('displayTask');
+                handleClick('displayTask');
               }}
             />
           </View>
