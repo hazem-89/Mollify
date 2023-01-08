@@ -30,7 +30,7 @@ const TaskCard = ({ task }: Props) => {
       borderBottomWidth: 1,
       borderBottomColor: colors.primary,
       maxHeight: smallScreen ? 50 : 75,
-      maxWidth: smallScreen ? 350 : 450,
+      maxWidth: smallScreen ? 350 : 500,
       marginLeft: smallScreen ? 30 : 50,
     },
     TextView: {
@@ -70,7 +70,8 @@ const TaskCard = ({ task }: Props) => {
         </View>
       )}
       <View style={styles.TextView}>
-        <Text type="todoList">{task.taskDescription}</Text>
+        {/* <Text type="todoList">{task.taskDescription}</Text> */}
+        {/* <Text type="todoList">{date}</Text> */}
       </View>
       <ImageBackground
         source={PointsBackground}
@@ -96,7 +97,7 @@ const TaskCard = ({ task }: Props) => {
             justifyContent: 'center',
           }}
         >
-          <Text type="todoList">{task.timeValue}</Text>
+          {/* <Text type="todoList">{task.timeValue}</Text> */}
         </View>
       </ImageBackground>
     </View>

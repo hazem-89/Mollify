@@ -85,7 +85,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       width: '100%',
       height: '100%',
       maxHeight: dimensions.window.height,
-      marginBottom: 20,
+      // marginBottom: 20,
     },
     formBackground: {
       paddingTop: 35,
@@ -102,10 +102,10 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      maxWidth: smallScreen ? 350 : 450,
+      maxWidth: smallScreen ? 350 : 500,
       marginLeft: smallScreen ? 30 : 50,
-      top: 100,
-      left: 60,
+      top: smallScreen ? 120 : 150,
+      left: smallScreen ? 65 : 100,
       zIndex: 99,
     },
     icons: {
@@ -139,7 +139,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
                 <Text>{text}</Text>
               </View>
             )}
-            {displayTasksOpen && (
+            {/* {displayTasksOpen && (
               <View style={styles.iconsView}>
                 <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>
                   <Image style={styles.icons} source={TaskBtnIcon} />
@@ -161,7 +161,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
                   <Image style={styles.icons} source={TimBtnIcon} />
                 </View>
               </View>
-            )}
+            )} */}
             <>
               <ScrollView style={styles.scrollView} horizontal={false}>
                 {componentState &&
