@@ -1,12 +1,6 @@
 import { useDimensions } from '@react-native-community/hooks';
-import {
-  collection,
-  DocumentData,
-  getDocs,
-  query,
-  where,
-} from 'firebase/firestore';
-import React, { ReactElement, useEffect, useState } from 'react';
+import { DocumentData } from 'firebase/firestore';
+import React, { ReactElement, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -16,22 +10,18 @@ import {
 } from 'react-native';
 import TigerAvatar from '../../../assets/Images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
-import { db } from '../../../firebaseConfig';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
-import { useLogin } from '../../util/auth';
+import { useDatabaseContext } from '../../util/context/DBContext';
 import { CreateProfileForm } from '../forms/CreateProfile';
-import { EnterProfile } from '../forms/EnterProfile';
+import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
 
 const SelectProfile = () => {
-  const { currentUser } = useLogin();
-  // const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
-  const [profilesExist, setProfilesExist] = useState<boolean>(false);
-  const [profiles, setProfiles] = useState<DocumentData[]>([]);
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const { profiles } = useDatabaseContext();
 
   const styles = StyleSheet.create({
     modal: {
@@ -71,46 +61,14 @@ const SelectProfile = () => {
     },
   });
 
-  // const handleEmit = useCallback((value: undefined) => {
-  //   setBtnClicked(value); // This function will be called by the child component to emit a prop.
-  // }, []);
-
-  useEffect(() => {
-    if (currentUser) getProfiles();
-  }, [currentUser]);
-
-  async function getProfiles() {
-    const profilesRef = collection(db, 'profiles');
-    const searchQuery = query(
-      profilesRef,
-      where('mainUserId', '==', `${currentUser?.uid}`),
-    );
-
-    const querySnapshot = await getDocs(searchQuery);
-    if (querySnapshot.size > 0) {
-      setProfilesExist(true);
-      querySnapshot.forEach(doc => {
-        setProfiles(prevProfiles => [...prevProfiles, doc.data()]);
-      });
-    } else {
-      setProfilesExist(false);
-    }
-  }
-
   function handleClick(state: string | undefined, profile?: DocumentData) {
     // setBtnClicked(state);
     switch (state) {
       case 'CreateProfile':
-        setComponent(<CreateProfileForm profilesExist={profilesExist} />);
+        setComponent(<CreateProfileForm profilesExist={!!profiles} />);
         break;
       case 'EnterPIN':
-        setComponent(
-          <EnterProfile
-            name={profile?.name}
-            pin={profile?.pin}
-            parent={profile?.parent}
-          />,
-        );
+        if (profile) setComponent(<EnterProfile selectedProfile={profile} />);
         break;
       default:
         setComponent(undefined);
@@ -146,9 +104,9 @@ const SelectProfile = () => {
             />
           </View>
           <View style={styles.ProfilesView}>
-            {profiles.map(profile => (
+            {profiles.map((profile: DocumentData | undefined) => (
               <TouchableOpacity
-                key={profile.name}
+                key={profile?.name}
                 onPress={() => handleClick('EnterPIN', profile)}
               >
                 <View style={styles.profile}>
@@ -162,7 +120,7 @@ const SelectProfile = () => {
                     />
                   </View>
 
-                  <Text type="text">{profile.name}</Text>
+                  <Text type="text">{profile?.name}</Text>
                 </View>
               </TouchableOpacity>
             ))}
