@@ -31,6 +31,7 @@ const TaskCard = ({ task }: Props) => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [parent, setParent] = useState(true);
+  const [swipeOn, setSwipeOn] = useState(false);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [taskRequestStatus, setTaskRequestStatus] = useState(task.hasRequest);
@@ -41,11 +42,11 @@ const TaskCard = ({ task }: Props) => {
         ...task,
         hasRequest: status,
       };
-    }
-    if (funName === 'taskDone') {
+    } else if (funName === 'updateTaskDone') {
       updateAcceptedReq = {
         ...task,
         isDone: status,
+        hasRequest: false,
       };
     }
 
@@ -73,6 +74,18 @@ const TaskCard = ({ task }: Props) => {
             text="Are You Sure"
             taskId={task.id}
             confirmBtnText="Delete"
+            funName="delete"
+          />,
+        );
+        break;
+      case 'TaskNotification':
+        setComponent(
+          <Confirm
+            text="Mark as Done?"
+            taskId={task.id}
+            confirmBtnText="Confirm"
+            funName="updateTaskDone"
+            markTaskDone={() => markTaskDone('updateTaskDone')}
           />,
         );
         break;
@@ -134,6 +147,7 @@ const TaskCard = ({ task }: Props) => {
       outputRange: [0, 1],
       extrapolate: 'clamp',
     });
+
     return (
       <View style={{ flexDirection: 'row', minWidth: parent ? 100 : 50 }}>
         {parent ? (
@@ -169,8 +183,8 @@ const TaskCard = ({ task }: Props) => {
 
   return (
     <View style={styles.CardContainer}>
-      {task.hasRequest && parent && (
-        <TouchableOpacity
+      {task.hasRequest && parent && !swipeOn && (
+        <View
           style={{
             position: 'absolute',
             zIndex: 9999,
@@ -178,12 +192,19 @@ const TaskCard = ({ task }: Props) => {
             left: -40,
           }}
         >
-          <Image style={styles.icons} source={TaskNotificationIcon} />
-        </TouchableOpacity>
+          <Button
+            background="TaskNotification"
+            onPress={() => handleClick('TaskNotification')}
+          />
+        </View>
       )}
       {!btnClicked ? (
         <TouchableOpacity activeOpacity={0.6}>
-          <Swipeable renderLeftActions={leftSwipe}>
+          <Swipeable
+            renderLeftActions={leftSwipe}
+            onBegan={() => setSwipeOn(true)}
+            onSwipeableClose={() => setSwipeOn(false)}
+          >
             <View style={styles.taskView}>
               <View style={styles.TextView}>
                 <Text type="todoList">{task.taskDescription}</Text>
