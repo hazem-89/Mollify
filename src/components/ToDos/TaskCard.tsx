@@ -5,10 +5,12 @@ import {
   TouchableOpacity,
   View,
   Animated,
+  Image,
 } from 'react-native';
 import { Tasks } from '../../Interfaces';
 import PointsBackground from '../../../assets/Images/Icons/PointsBackground.png';
 import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
+import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
 import { useDimensions } from '@react-native-community/hooks';
 import colors from '../../constants/colors';
 import { Text } from '../../components/Text';
@@ -18,6 +20,9 @@ import Button from '../buttons/Buttons';
 import { useTasks } from '../../util/Context/TaskContext';
 import { Confirm } from './Confirm';
 import FormModal from '../modals/FormModal';
+import { request } from 'express';
+import { setDoc, doc } from 'firebase/firestore';
+import { db } from '../../../firebaseConfig';
 interface Props {
   task: Tasks;
 }
@@ -28,6 +33,37 @@ const TaskCard = ({ task }: Props) => {
   const [parent, setParent] = useState(true);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  const [taskRequestStatus, setTaskRequestStatus] = useState(task.hasRequest);
+  let updateAcceptedReq = {};
+  const handleTaskRequestStatus = async (status: boolean, funName: string) => {
+    if (funName === 'updateRequest') {
+      updateAcceptedReq = {
+        ...task,
+        hasRequest: status,
+      };
+    }
+    if (funName === 'taskDone') {
+      updateAcceptedReq = {
+        ...task,
+        isDone: status,
+      };
+    }
+
+    if (task.id) {
+      try {
+        await setDoc(doc(db, 'Tasks', task?.id), updateAcceptedReq);
+        setTaskRequestStatus(status);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+  const UpdateTaskStatus = (funName: string) => {
+    handleTaskRequestStatus(true, funName);
+  };
+  const markTaskDone = (funName: string) => {
+    handleTaskRequestStatus(true, funName);
+  };
   function handleClick(state: string | undefined) {
     setBtnClicked(state);
     switch (state) {
@@ -62,6 +98,14 @@ const TaskCard = ({ task }: Props) => {
       height: 50,
       justifyContent: 'center',
     },
+    taskView: {
+      flexDirection: 'row',
+      width: smallScreen ? 350 : 500,
+      alignItems: 'center',
+      justifyContent: 'center',
+      borderBottomWidth: 1,
+      borderBottomColor: colors.primary,
+    },
     TimeBackground: {
       width: smallScreen ? 75 : 100,
       height: smallScreen ? 40 : 50,
@@ -69,6 +113,10 @@ const TaskCard = ({ task }: Props) => {
     PointsBackground: {
       width: smallScreen ? 40 : 60,
       height: smallScreen ? 40 : 60,
+    },
+    icons: {
+      width: smallScreen ? 40 : 50,
+      height: smallScreen ? 40 : 50,
     },
   });
   const leftSwipe = (
@@ -87,55 +135,56 @@ const TaskCard = ({ task }: Props) => {
       extrapolate: 'clamp',
     });
     return (
-      <View style={{ flexDirection: 'row', minWidth: 100 }}>
-        <Button
-          background="DeleteTask"
-          onPress={() => handleClick('confirm')}
-        />
-        <TouchableOpacity
-          style={{
-            width: smallScreen ? 30 : 50,
-            height: smallScreen ? 30 : 50,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Animated.Text style={{ transform: [{ scale: scale }] }}>
-            Edit
-          </Animated.Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
-  const leftSwipeChilde = () => {
-    return null;
-  };
-  const rightSwipe = () => {
-    return (
-      <View>
-        <Button background="DoneIcon" onPress={() => console.warn(task.id)} />
+      <View style={{ flexDirection: 'row', minWidth: parent ? 100 : 50 }}>
+        {parent ? (
+          <>
+            <Button
+              background="DeleteTask"
+              onPress={() => handleClick('confirm')}
+            />
+            <TouchableOpacity
+              style={{
+                width: smallScreen ? 30 : 50,
+                height: smallScreen ? 30 : 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Animated.Text style={{ transform: [{ scale: scale }] }}>
+                Edit
+              </Animated.Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <View>
+            <Button
+              background="DoneIcon"
+              onPress={() => UpdateTaskStatus('updateRequest')}
+            />
+          </View>
+        )}
       </View>
     );
   };
 
   return (
     <View style={styles.CardContainer}>
+      {task.hasRequest && parent && (
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            zIndex: 9999,
+            top: -10,
+            left: -40,
+          }}
+        >
+          <Image style={styles.icons} source={TaskNotificationIcon} />
+        </TouchableOpacity>
+      )}
       {!btnClicked ? (
         <TouchableOpacity activeOpacity={0.6}>
-          <Swipeable
-            renderLeftActions={parent ? leftSwipe : leftSwipeChilde}
-            renderRightActions={rightSwipe}
-          >
-            <View
-              style={{
-                flexDirection: 'row',
-                width: smallScreen ? 350 : 500,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderBottomWidth: 1,
-                borderBottomColor: colors.primary,
-              }}
-            >
+          <Swipeable renderLeftActions={leftSwipe}>
+            <View style={styles.taskView}>
               <View style={styles.TextView}>
                 <Text type="todoList">{task.taskDescription}</Text>
                 {/* <Text type="todoList">{date}</Text> */}
