@@ -82,16 +82,16 @@ function Button({
       height: smallScreen ? 40 : 60,
     },
     infoStyle: {
-      width: smallScreen ? 50 : 70,
-      height: smallScreen ? 50 : 70,
+      width: smallScreen ? 50 : 60,
+      height: smallScreen ? 50 : 60,
     },
     todoStyle: {
       width: smallScreen ? 60 : 70,
       height: smallScreen ? 50 : 60,
     },
     bellStyle: {
-      width: smallScreen ? 42 : 60,
-      height: smallScreen ? 45 : 65,
+      width: smallScreen ? 42 : 55,
+      height: smallScreen ? 45 : 60,
     },
     trophyStyle: {
       width: smallScreen ? 35 : 45,
