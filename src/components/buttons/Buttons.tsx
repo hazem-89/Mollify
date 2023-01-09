@@ -11,6 +11,7 @@ import GoldenButton from '../../../assets/Images/GoldenButton.png';
 import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
+import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
 import AddButtonImage from '../../../assets/Images/AddButton.png';
 import InfoButtonImage from '../../../assets/Images/info.png';
 import TodoButtonImage from '../../../assets/Images/todo.png';
@@ -169,6 +170,9 @@ function Button({
     } else if (background === 'Cancel') {
       setSource(CancelButton);
       setStyle(styles.GreenForms);
+    } else if (background === 'TaskNotification') {
+      setSource(TaskNotificationIcon);
+      setStyle(styles.DeleteTask);
     }
   }, [background]);
 
