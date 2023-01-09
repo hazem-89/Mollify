@@ -115,6 +115,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: colors.error,
       fontSize: smallScreen ? 10 : 12,
     },
+    Cancel: {
+      color: '#fff',
+      fontSize: smallScreen ? 10 : 12,
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -139,6 +143,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.todoList);
   } else if (type === 'errorText') {
     textStyles.push(styles.errorText);
+  } else if (type === 'Cancel') {
+    textStyles.push(styles.Cancel);
   }
 
   textStyles = [...textStyles, ...style];
