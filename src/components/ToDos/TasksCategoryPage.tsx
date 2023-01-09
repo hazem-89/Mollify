@@ -36,7 +36,7 @@ const mockedTasksCategory = [
   },
   {
     category: 'Cleaning tasks',
-    endTime: 'Tue Jan 10 2023 12:00:00 GMT+0100 (CET)',
+    endTime: 'Tue Jan 09 2023 12:00:00 GMT+0100 (CET)',
     hasRequest: false,
     id: 'aa918fad-646b-4958-9e3f-382e180123a4',
     isDone: false,

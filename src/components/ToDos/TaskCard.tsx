@@ -11,6 +11,7 @@ import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
 import { useDimensions } from '@react-native-community/hooks';
 import colors from '../../constants/colors';
 import { Text } from '../../components/Text';
+import { CountdownTimer } from './CountDown';
 
 interface Props {
   task: Tasks;
@@ -18,9 +19,11 @@ interface Props {
 
 const TaskCard = ({ task }: Props) => {
   const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [parent, setParent] = useState(true);
 
-  const [smallScreen] = useState(dimensions.screen.height < 600);
+  const endDate = new Date(task.endTime);
+
   const styles = StyleSheet.create({
     CardContainer: {
       flex: 1,
@@ -97,7 +100,8 @@ const TaskCard = ({ task }: Props) => {
             justifyContent: 'center',
           }}
         >
-          <Text type="todoList">{task.endTime}</Text>
+          <CountdownTimer date={endDate} />
+          {/* <Text type="todoList">{task.endTime}</Text> */}
         </View>
       </ImageBackground>
     </View>
