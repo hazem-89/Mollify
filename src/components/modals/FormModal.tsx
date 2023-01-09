@@ -1,10 +1,21 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import {
+  Animated,
+  ImageBackground,
+  StyleSheet,
+  View,
+  Image,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/Images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
-import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
+import SelectFormMenu from '../../../assets/Images/SelectFormMenu-1.png';
+import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
+import PointsBtnIcon from '../../../assets/Images/Icons/PointsBtnIcon.png';
+import TaskBtnIcon from '../../../assets/Images/Icons/TaskBtnIcon.png';
+import TimBtnIcon from '../../../assets/Images/Icons/TimBtnIcon.png';
+import { Text } from '../Text';
 
 type ModalProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
@@ -19,15 +30,29 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
   const [todoForm, setTodoForm] = useState(false);
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-
+  const [displayTasksOpen, setDisplayTasksOpen] = useState(false);
   useEffect(() => {
     if (componentState !== component) {
       setComponentState(component);
-      if (text === 'addTask') {
+      if (
+        text === 'addTask' ||
+        'displayTasks' ||
+        'Special tasks' ||
+        'School assignments' ||
+        'Activities'
+      ) {
         setTodoForm(true);
       } else {
         setTodoForm(false);
       }
+    }
+    if (
+      text === 'Cleaning tasks' ||
+      text === 'Special tasks' ||
+      text === 'School assignments' ||
+      text === 'Activities'
+    ) {
+      setDisplayTasksOpen(true);
     }
   }, [component]);
 
@@ -60,6 +85,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       width: '100%',
       height: '100%',
       maxHeight: dimensions.window.height,
+      marginBottom: 20,
     },
     formBackground: {
       paddingTop: 35,
@@ -71,6 +97,20 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       position: 'absolute',
       right: smallScreen ? 15 : 30,
       top: smallScreen ? 55 : 90,
+    },
+    iconsView: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      maxWidth: smallScreen ? 350 : 450,
+      marginLeft: smallScreen ? 30 : 50,
+      top: 100,
+      left: 60,
+      zIndex: 99,
+    },
+    icons: {
+      width: smallScreen ? 40 : 50,
+      height: smallScreen ? 40 : 50,
     },
   });
 
@@ -88,6 +128,40 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
             resizeMode="stretch"
             source={todoForm ? SelectFormMenu : PaperForm}
           >
+            {displayTasksOpen && (
+              <View
+                style={{
+                  position: 'absolute',
+                  left: '42%',
+                  top: 30,
+                }}
+              >
+                <Text>{text}</Text>
+              </View>
+            )}
+            {displayTasksOpen && (
+              <View style={styles.iconsView}>
+                <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>
+                  <Image style={styles.icons} source={TaskBtnIcon} />
+                </View>
+                <View
+                  style={{
+                    width: smallScreen ? 50 : 60,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image style={styles.icons} source={PointsBtnIcon} />
+                </View>
+                <View
+                  style={{
+                    width: smallScreen ? 75 : 100,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image style={styles.icons} source={TimBtnIcon} />
+                </View>
+              </View>
+            )}
             <>
               <ScrollView style={styles.scrollView} horizontal={false}>
                 {componentState &&

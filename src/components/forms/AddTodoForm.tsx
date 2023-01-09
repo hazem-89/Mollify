@@ -220,8 +220,6 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
             }}
           >
             {CleaningTodo?.map(todo => {
-              console.log(todo);
-
               return (
                 <TouchableOpacity
                   key={todo.title}

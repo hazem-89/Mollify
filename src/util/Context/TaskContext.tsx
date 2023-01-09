@@ -1,13 +1,7 @@
 import { collection, getDoc, doc } from 'firebase/firestore';
 import React, { createContext, useContext, useState } from 'react';
 import { db } from '../../../firebaseConfig';
-
-interface Tasks {
-  taskTitle?: string;
-  taskDescription?: string;
-  points?: string;
-  time?: string;
-}
+import { Tasks } from '../../Interfaces';
 interface TaskContext {
   profileTasks: Tasks[];
   getProfileTasks: () => void;

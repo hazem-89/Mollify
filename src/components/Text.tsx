@@ -106,9 +106,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
     todoList: {
       fontWeight: '400',
-      fontSize: smallScreen ? 12 : 16,
+      fontSize: smallScreen ? 12 : 14,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
+      textAlign: 'left',
     },
     errorText: {
       color: colors.error,
