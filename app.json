@@ -4,6 +4,7 @@
     "slug": "Mollify",
     "version": "1.0.0",
     "orientation": "landscape",
+    "userInterfaceStyle": "automatic",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",

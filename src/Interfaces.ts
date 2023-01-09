@@ -3,6 +3,8 @@ export interface Tasks {
   taskTitle?: string;
   taskDescription?: string;
   pointsValue?: string;
-  timeValue?: string;
+  endTime?: string;
   category?: string;
+  isDone: boolean;
+  hasRequest: boolean;
 }
