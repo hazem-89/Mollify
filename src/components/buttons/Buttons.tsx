@@ -75,8 +75,8 @@ function Button({
       height: smallScreen ? 40 : 60,
     },
     Add: {
-      width: smallScreen ? 60 : 75,
-      height: smallScreen ? 60 : 75,
+      width: smallScreen ? 40 : 60,
+      height: smallScreen ? 40 : 60,
     },
     infoStyle: {
       width: smallScreen ? 50 : 80,
@@ -157,7 +157,12 @@ function Button({
   }, [background]);
 
   return (
-    <TouchableOpacity activeOpacity={disable ? 1 : 0.2} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={disable ? 1 : 0.2}
+      onPress={() => {
+        disable ? null : onPress();
+      }}
+    >
       <ImageBackground source={source} style={style}>
         <Text type={background}>{text}</Text>
       </ImageBackground>
