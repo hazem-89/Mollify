@@ -183,7 +183,7 @@ const TaskCard = ({ task }: Props) => {
 
   return (
     <View style={styles.CardContainer}>
-      {task.hasRequest && parent && !swipeOn && (
+      {task.hasRequest && parent && !swipeOn && !btnClicked && (
         <View
           style={{
             position: 'absolute',
@@ -225,22 +225,22 @@ const TaskCard = ({ task }: Props) => {
                   <Text type="todoList">{task.pointsValue}</Text>
                 </View>
               </ImageBackground>
-              <ImageBackground
+              {/* <ImageBackground
                 source={TimeBackground}
                 style={styles.TimeBackground}
+              > */}
+              <View
+                style={{
+                  width: smallScreen ? 75 : 100,
+                  height: smallScreen ? 40 : 50,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                <View
-                  style={{
-                    width: smallScreen ? 75 : 100,
-                    height: smallScreen ? 40 : 50,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <CountdownTimer date={endDate} />
-                  {/* <Text type="todoList">{task.endTime}</Text> */}
-                </View>
-              </ImageBackground>
+                <CountdownTimer date={endDate} />
+                {/* <Text type="todoList">{task.endTime}</Text> */}
+              </View>
+              {/* </ImageBackground> */}
             </View>
           </Swipeable>
         </TouchableOpacity>

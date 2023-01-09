@@ -44,6 +44,7 @@ export const Confirm = ({
       minWidth: 400,
       minHeight: 200,
       flex: 1,
+      alignItems: 'center',
       // position: 'relative',
     },
   });
