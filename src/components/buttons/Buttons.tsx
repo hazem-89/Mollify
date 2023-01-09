@@ -16,6 +16,7 @@ import InfoButtonImage from '../../../assets/Images/info.png';
 import TodoButtonImage from '../../../assets/Images/todo.png';
 import BellButtonImage from '../../../assets/Images/bell.png';
 import SignButtonImage from '../../../assets/Images/sign.png';
+import CancelButton from '../../../assets/Images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/Images/trophy.png';
 import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
 import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
@@ -165,6 +166,9 @@ function Button({
     } else if (background === 'DoneIcon') {
       setSource(DoneIcon);
       setStyle(styles.DeleteTask);
+    } else if (background === 'Cancel') {
+      setSource(CancelButton);
+      setStyle(styles.GreenForms);
     }
   }, [background]);
 
