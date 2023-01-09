@@ -20,6 +20,8 @@ import TrophyButtonImage from '../../../assets/Images/trophy.png';
 import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
 import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
+import DeleteIcon from '../../../assets/Images/Icons/DeleteIcon.png';
+import DoneIcon from '../../../assets/Images/Icons/DoneIcon.png';
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -102,6 +104,10 @@ function Button({
       width: smallScreen ? 50 : 70,
       height: smallScreen ? 50 : 70,
     },
+    DeleteTask: {
+      width: smallScreen ? 30 : 50,
+      height: smallScreen ? 30 : 50,
+    },
   });
 
   useEffect(() => {
@@ -153,6 +159,12 @@ function Button({
     } else if (background === 'CleaningTasks') {
       setSource(TodoButtonImage);
       setStyle(styles.todoStyle);
+    } else if (background === 'DeleteTask') {
+      setSource(DeleteIcon);
+      setStyle(styles.DeleteTask);
+    } else if (background === 'DoneIcon') {
+      setSource(DoneIcon);
+      setStyle(styles.DeleteTask);
     }
   }, [background]);
 
