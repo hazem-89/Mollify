@@ -97,20 +97,6 @@ const TaskCard = ({ task }: Props) => {
 
   return (
     <View style={styles.CardContainer}>
-      {/* {parent && (
-        <View
-          style={{
-            position: 'absolute',
-            left: smallScreen ? -25 : -40,
-            height: smallScreen ? 20 : 30,
-            width: smallScreen ? 20 : 30,
-            backgroundColor: colors.background,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 50,
-          }}
-        ></View>
-      )} */}
       <TouchableOpacity activeOpacity={0.6}>
         <Swipeable
           renderLeftActions={parent ? leftSwipe : leftSwipeChilde}
