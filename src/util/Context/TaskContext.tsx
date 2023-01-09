@@ -16,7 +16,7 @@ import { db } from '../../../firebaseConfig';
 import { Tasks } from '../../Interfaces';
 interface TaskContext {
   profileTasks: Tasks[];
-  getTasks: () => void;
+  getTasks: () => Promise<any>;
   addCleaningTask: (newTodo: {}) => Promise<any>;
   deleteProfileTasks: (a: string) => Promise<any>;
 }
