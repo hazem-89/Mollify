@@ -9,19 +9,20 @@ import {
   DocumentReference,
   arrayRemove,
   addDoc,
+  getDocs,
 } from 'firebase/firestore';
 import React, { createContext, useContext, useState } from 'react';
 import { db } from '../../../firebaseConfig';
 import { Tasks } from '../../Interfaces';
 interface TaskContext {
   profileTasks: Tasks[];
-  getProfileTasks: () => void;
+  getTasks: () => void;
   addCleaningTask: (newTodo: {}) => Promise<any>;
-  deleteProfileTasks?: (a: string) => Promise<any>;
+  deleteProfileTasks: (a: string) => Promise<any>;
 }
 const TasksContext = React.createContext<TaskContext>({
   profileTasks: [],
-  getProfileTasks: async () => [],
+  getTasks: async () => [],
   addCleaningTask: async () => {},
   deleteProfileTasks: async () => {},
 });
@@ -39,22 +40,27 @@ export default function (props: any) {
     }
   };
 
-  const getProfileTasks = async () => {
-    const ProfilesDataWithId: any[] = [];
-    const docRef = doc(db, 'profiles', profileId);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      setProfileTasks(docSnap.data().todo);
-    } else {
-      // doc.data() will be undefined in this case
-      console.log('No such document!');
-    }
+  const getTasks = async () => {
+    const tasksDataWithId: any[] = [];
+    const querySnapshot = await getDocs(collection(db, 'Tasks'));
+    querySnapshot.forEach(doc => {
+      const data = doc.data();
+      data['id'] = doc.id;
+      tasksDataWithId.push(data);
+      const test = tasksDataWithId.filter(
+        (task: Tasks) => task.profileId === profileId,
+      );
+      setProfileTasks(test);
+    });
   };
-
+  const deleteProfileTasks = async (taskId: string) => {
+    await deleteDoc(doc(db, 'Tasks', taskId));
+  };
   const contextValue = {
     profileTasks,
-    getProfileTasks,
+    getTasks,
     addCleaningTask,
+    deleteProfileTasks,
   };
 
   return (

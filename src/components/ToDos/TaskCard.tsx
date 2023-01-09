@@ -15,11 +15,13 @@ import { Text } from '../../components/Text';
 import { CountdownTimer } from './CountDown';
 import { Swipeable } from 'react-native-gesture-handler';
 import Button from '../buttons/Buttons';
+import { useTasks } from '../../util/Context/TaskContext';
 interface Props {
   task: Tasks;
 }
 
 const TaskCard = ({ task }: Props) => {
+  const { deleteProfileTasks } = useTasks();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [parent, setParent] = useState(true);
@@ -68,7 +70,10 @@ const TaskCard = ({ task }: Props) => {
     });
     return (
       <View style={{ flexDirection: 'row', minWidth: 100 }}>
-        <Button background="DeleteTask" onPress={() => console.warn(task.id)} />
+        <Button
+          background="DeleteTask"
+          onPress={() => deleteProfileTasks(task.id)}
+        />
         <TouchableOpacity
           style={{
             width: smallScreen ? 30 : 50,
