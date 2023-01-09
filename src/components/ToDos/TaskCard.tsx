@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
@@ -16,16 +16,34 @@ import { CountdownTimer } from './CountDown';
 import { Swipeable } from 'react-native-gesture-handler';
 import Button from '../buttons/Buttons';
 import { useTasks } from '../../util/Context/TaskContext';
+import { Confirm } from './Confirm';
+import FormModal from '../modals/FormModal';
 interface Props {
   task: Tasks;
 }
 
 const TaskCard = ({ task }: Props) => {
-  const { deleteProfileTasks } = useTasks();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [parent, setParent] = useState(true);
-
+  const [component, setComponent] = useState<ReactElement | undefined>();
+  const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  function handleClick(state: string | undefined) {
+    setBtnClicked(state);
+    switch (state) {
+      case 'confirm':
+        setComponent(
+          <Confirm
+            text="Are You Sure"
+            taskId={task.id}
+            confirmBtnText="Delete"
+          />,
+        );
+        break;
+      default:
+        setComponent(undefined);
+    }
+  }
   const endDate = new Date(task.endTime);
 
   const styles = StyleSheet.create({
@@ -72,7 +90,7 @@ const TaskCard = ({ task }: Props) => {
       <View style={{ flexDirection: 'row', minWidth: 100 }}>
         <Button
           background="DeleteTask"
-          onPress={() => deleteProfileTasks(task.id)}
+          onPress={() => handleClick('confirm')}
         />
         <TouchableOpacity
           style={{
@@ -102,59 +120,69 @@ const TaskCard = ({ task }: Props) => {
 
   return (
     <View style={styles.CardContainer}>
-      <TouchableOpacity activeOpacity={0.6}>
-        <Swipeable
-          renderLeftActions={parent ? leftSwipe : leftSwipeChilde}
-          renderRightActions={rightSwipe}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              width: smallScreen ? 350 : 500,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderBottomWidth: 1,
-              borderBottomColor: colors.primary,
-            }}
+      {!btnClicked ? (
+        <TouchableOpacity activeOpacity={0.6}>
+          <Swipeable
+            renderLeftActions={parent ? leftSwipe : leftSwipeChilde}
+            renderRightActions={rightSwipe}
           >
-            <View style={styles.TextView}>
-              <Text type="todoList">{task.taskDescription}</Text>
-              {/* <Text type="todoList">{date}</Text> */}
+            <View
+              style={{
+                flexDirection: 'row',
+                width: smallScreen ? 350 : 500,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottomWidth: 1,
+                borderBottomColor: colors.primary,
+              }}
+            >
+              <View style={styles.TextView}>
+                <Text type="todoList">{task.taskDescription}</Text>
+                {/* <Text type="todoList">{date}</Text> */}
+              </View>
+              <ImageBackground
+                source={PointsBackground}
+                style={styles.PointsBackground}
+              >
+                <View
+                  style={{
+                    width: smallScreen ? 40 : 60,
+                    height: smallScreen ? 40 : 60,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Text type="todoList">{task.pointsValue}</Text>
+                </View>
+              </ImageBackground>
+              <ImageBackground
+                source={TimeBackground}
+                style={styles.TimeBackground}
+              >
+                <View
+                  style={{
+                    width: smallScreen ? 75 : 100,
+                    height: smallScreen ? 40 : 50,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CountdownTimer date={endDate} />
+                  {/* <Text type="todoList">{task.endTime}</Text> */}
+                </View>
+              </ImageBackground>
             </View>
-            <ImageBackground
-              source={PointsBackground}
-              style={styles.PointsBackground}
-            >
-              <View
-                style={{
-                  width: smallScreen ? 40 : 60,
-                  height: smallScreen ? 40 : 60,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Text type="todoList">{task.pointsValue}</Text>
-              </View>
-            </ImageBackground>
-            <ImageBackground
-              source={TimeBackground}
-              style={styles.TimeBackground}
-            >
-              <View
-                style={{
-                  width: smallScreen ? 75 : 100,
-                  height: smallScreen ? 40 : 50,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <CountdownTimer date={endDate} />
-                {/* <Text type="todoList">{task.endTime}</Text> */}
-              </View>
-            </ImageBackground>
-          </View>
-        </Swipeable>
-      </TouchableOpacity>
+          </Swipeable>
+        </TouchableOpacity>
+      ) : (
+        <View style={{ position: 'absolute', top: -100, left: '50%' }}>
+          <FormModal
+            component={component}
+            onEmit={() => handleClick(undefined)}
+            text="confirm"
+          />
+        </View>
+      )}
     </View>
   );
 };
