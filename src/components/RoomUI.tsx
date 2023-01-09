@@ -6,6 +6,7 @@ import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
+import Scoreboard from './Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 
 /* type roomProps = {
@@ -34,6 +35,10 @@ export default function RoomUI() {
         break;
       default:
         setComponent(undefined);
+        break;
+      case 'displayScoreboard':
+        setComponent(<Scoreboard />);
+        setText('Scoreboard');
         break;
       // // case 'GoogleSignIn':
       // //   setComponent(undefined);
@@ -114,7 +119,9 @@ export default function RoomUI() {
           <View style={styles.trophyAlign}>
             <Button
               background="TrophyButtonImage"
-              onPress={() => setBtnClicked(undefined)}
+              onPress={() => {
+                handleClick('displayScoreboard');
+              }}
             />
           </View>
         </View>
@@ -133,3 +140,4 @@ export default function RoomUI() {
     </>
   );
 }
+
