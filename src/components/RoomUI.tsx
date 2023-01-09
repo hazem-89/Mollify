@@ -6,6 +6,7 @@ import {
   ImageBackground,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 import awardBadge from '../../assets/Images/awardBadge.png';
 import woodSignLarge from '../../assets/Images/woodSignLarge.png';
@@ -13,6 +14,7 @@ import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
+import SignButtonImage from '../../assets/Images/sign.png';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -91,8 +93,12 @@ export default function RoomUI() {
       position: 'absolute',
       left: smallScreen ? 40 : 40,
       bottom: smallScreen ? 0 : -5,
+      width: smallScreen ? 100 : 165,
+      height: smallScreen ? 125 : 210,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
     },
-    rightSideButtons: {
+    SidesButtons: {
       flexDirection: 'row',
       alignItems: 'center',
       marginTop: smallScreen ? 50 : 60,
@@ -106,7 +112,19 @@ export default function RoomUI() {
       {!addTaskBtnClicked ? (
         <View style={{ height: '100%' }}>
           <View style={styles.imagesContainer}>
-            <Image source={woodSignLarge} style={styles.woodLargeStyle} />
+            <ImageBackground
+              source={woodSignLarge}
+              style={styles.woodLargeStyle}
+            >
+              <View style={styles.SidesButtons}>
+                <Button background="BellButtonImage" onPress={logout} />
+                <Button
+                  background="BellButtonImage"
+                  onPress={() => console.log('log')}
+                />
+              </View>
+            </ImageBackground>
+            {/* <Image source={woodSignLarge} style={styles.woodLargeStyle} /> */}
             <ImageBackground source={awardBadge} style={styles.awardBadgeStyle}>
               <Button
                 background="TrophyButtonImage"
@@ -118,7 +136,7 @@ export default function RoomUI() {
               source={woodSignLarge}
               style={styles.woodLargeStyle}
             >
-              <View style={styles.rightSideButtons}>
+              <View style={styles.SidesButtons}>
                 <Button
                   background="TodoButtonImage"
                   onPress={() => {
@@ -131,37 +149,16 @@ export default function RoomUI() {
                 />
               </View>
             </ImageBackground>
-            {/* <Image source={woodSignLarge} style={styles.woodLargeStyle} /> */}
-            {/* <View style={styles.infoAlign}>
-              <Button
-                background="InfoButtonImage"
-                onPress={() => setBtnClicked(undefined)}
-              />
-            </View>
-            <View style={styles.todoAlign}>
-              <Button
-                background="TodoButtonImage"
-                onPress={() => {
-                  handleClick('displayTask');
-                }}
-              />
-            </View> */}
-            <View style={styles.bellAlign}>
-              <Button background="BellButtonImage" onPress={logout} />
-            </View>
-            {/* <View style={styles.trophyAlign}>
-              <Button
-                background="TrophyButtonImage"
-                onPress={() => setBtnClicked(undefined)}
-              />
-            </View> */}
           </View>
-          <View style={styles.signAlign}>
-            <Button
-              background="SignButtonImage"
-              onPress={() => setBtnClicked(undefined)}
-            />
-          </View>
+          <ImageBackground source={SignButtonImage} style={styles.signAlign}>
+            <View
+              style={{
+                marginTop: smallScreen ? 15 : 30,
+              }}
+            >
+              <Text>Name</Text>
+            </View>
+          </ImageBackground>
         </View>
       ) : (
         <FormModal

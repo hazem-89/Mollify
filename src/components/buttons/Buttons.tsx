@@ -16,7 +16,6 @@ import AddButtonImage from '../../../assets/Images/AddButton.png';
 import InfoButtonImage from '../../../assets/Images/info.png';
 import TodoButtonImage from '../../../assets/Images/todo.png';
 import BellButtonImage from '../../../assets/Images/bell.png';
-import SignButtonImage from '../../../assets/Images/sign.png';
 import CancelButton from '../../../assets/Images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/Images/trophy.png';
 import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
@@ -94,10 +93,6 @@ function Button({
       width: smallScreen ? 42 : 60,
       height: smallScreen ? 45 : 65,
     },
-    signStyle: {
-      width: smallScreen ? 90 : 165,
-      height: smallScreen ? 100 : 210,
-    },
     trophyStyle: {
       width: smallScreen ? 35 : 45,
       height: smallScreen ? 40 : 50,
@@ -143,9 +138,6 @@ function Button({
     } else if (background === 'BellButtonImage') {
       setSource(BellButtonImage);
       setStyle(styles.bellStyle);
-    } else if (background === 'SignButtonImage') {
-      setSource(SignButtonImage);
-      setStyle(styles.signStyle);
     } else if (background === 'TrophyButtonImage') {
       setSource(TrophyButtonImage);
       setStyle(styles.trophyStyle);
