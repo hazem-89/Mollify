@@ -114,7 +114,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
     },
     mainTitleView: {
       alignItems: 'center',
-      minHeight: smallScreen ? 60 : 85,
+      minHeight: smallScreen ? 70 : 85,
       justifyContent: 'center',
     },
   });
@@ -134,7 +134,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
             source={todoForm ? SelectFormMenu : PaperForm}
           >
             <View style={styles.mainTitleView}>
-              <Text type={text}>{text}</Text>
+              <Text type="MenuTitle">{text}</Text>
             </View>
             {/* {displayTasksOpen && (
               <View

@@ -20,7 +20,6 @@ export const LoginForm = ({ onClose }: LoginProps) => {
   const styles = StyleSheet.create({
     Container: {
       flex: 1,
-      // padding: smallScreen ? 40 : 60,
       minHeight: smallScreen ? 200 : 300,
       MaxHeight: smallScreen ? 200 : 300,
       minWidth: smallScreen ? 400 : 600,

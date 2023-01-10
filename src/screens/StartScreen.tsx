@@ -72,7 +72,6 @@ export default function StartScreen() {
       case 'SignUp':
         setComponent(<SignUpForm />);
         setText('Sign Up');
-
         break;
       case 'GoogleSignIn':
         setComponent(undefined);

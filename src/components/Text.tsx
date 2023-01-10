@@ -119,7 +119,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: '#fff',
       fontSize: smallScreen ? 10 : 12,
     },
-    Login: {
+    MenuTitle: {
       fontSize: smallScreen ? 20 : 30,
     },
   });
@@ -148,8 +148,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.errorText);
   } else if (type === 'Cancel') {
     textStyles.push(styles.Cancel);
-  } else if (type === 'Login') {
-    textStyles.push(styles.Login);
+  } else if (type === 'MenuTitle') {
+    textStyles.push(styles.MenuTitle);
   }
 
   textStyles = [...textStyles, ...style];
