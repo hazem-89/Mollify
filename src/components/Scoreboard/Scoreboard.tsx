@@ -5,22 +5,11 @@ import Button from '../buttons/Buttons';
 import { Text } from '../Text';
 import { ScoreboardForm } from '../forms/ScoreboardForm';
 import FormModal from '../modals/FormModal';
-// import goldenBackground from '../../../assets/Images/goldenBadge.png';
-// import greenBadge from '../../../assets/Images/greenBadge.png';
-
-const testList = [
-  {
-    title: 'Liseberg',
-    points: '100',
-    total: 'Total',
-  },
-];
 
 const Scoreboard = () => {
   const [open, setOpen] = useState(false);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
-  const [text, setText] = useState<string | undefined>();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setAddScoreBtnClicked] = useState<string | undefined>();
 
@@ -121,7 +110,6 @@ const Scoreboard = () => {
       <View style={styles.textStyle}>
         <Text type="header">Scoreboard</Text>
       </View>
-
       <View
         style={{
           display: 'flex',
@@ -137,50 +125,6 @@ const Scoreboard = () => {
         />
       </View>
       <FormModal component={component} onEmit={() => handleClick(undefined)} />
-
-      <View>
-        {/* <View style={styles.container}>
-          <Image source={goldenBackground} style={styles.goldenStyle} />
-          <View style={styles.arrowStyle}>
-            <Button background="ArrowButton" onPress={() => setOpen(true)} />
-          </View>
-        </View>
-        <View style={styles.reverseArrowStyle}>
-          <Button
-            background="ReverseArrowButton"
-            onPress={() => setOpen(false)}
-          />
-        </View> */}
-
-        {/* {testList?.map(test => (
-          <View style={styles.labelStyle}>
-            <Text type="todoList">{test.title}</Text>
-            <View style={{ display: 'flex', flexDirection: 'row' }}>
-              <View style={styles.badgeContainer}>
-                <Image source={greenBadge} />
-                <View style={styles.totalStyle}>
-                  <Text>{test.total}</Text>
-                  <Text>{test.points}</Text>
-                </View>
-              </View>
-              <View style={styles.badgeContainer}>
-                <Image source={greenBadge} />
-                <View style={styles.totalStyle}>
-                  <Text>{test.total}</Text>
-                  <Text>{test.points}</Text>
-                </View>
-              </View>
-              <View style={styles.badgeContainer}>
-                <Image source={greenBadge} />
-                <View style={styles.totalStyle}>
-                  <Text>{test.total}</Text>
-                  <Text>{test.points}</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        ))} */}
-      </View>
     </View>
   );
 };
