@@ -114,7 +114,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
     },
     mainTitleView: {
       alignItems: 'center',
-      minHeight: smallScreen ? 70 : 85,
+      minHeight: smallScreen ? 65 : 85,
       justifyContent: 'center',
     },
   });
