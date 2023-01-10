@@ -13,6 +13,7 @@ import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
+import Scoreboard from './Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 import SignButtonImage from '../../assets/Images/sign.png';
 
@@ -39,6 +40,10 @@ export default function RoomUI() {
       case 'displayTask':
         setComponent(<DisplayTasksCategories />);
         setText('Tasks');
+        break;
+      case 'displayScoreboard':
+        setComponent(<Scoreboard />);
+        setText('Scoreboard');
         break;
       default:
         setComponent(undefined);
