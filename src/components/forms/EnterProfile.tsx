@@ -34,7 +34,6 @@ export default function EnterProfile({
         if (onClose) onClose();
       } else {
         // Here the user gets navigated to their room.
-        console.log(navigation);
         // Disabling the next line because all the item.targets are valid - that data just isn't getting picked up by TypeScript
         // @ts-ignore
         navigation.navigate('RoomScreen');
@@ -61,4 +60,4 @@ export default function EnterProfile({
       />
     </View>
   );
-};
+}
