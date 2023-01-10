@@ -5,6 +5,7 @@ import {
   query,
   where,
 } from 'firebase/firestore';
+import { useNavigation } from '@react-navigation/native';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from '../../../firebaseConfig';
@@ -34,12 +35,20 @@ export default function DatabaseProvider(props: any) {
   // TODO: Also needs to be updated when adding profiles.
   const [profiles, setProfiles] = useState<DocumentData[]>([]);
   const [loggedInProfile, setLoggedInProfile] = useState();
+  const navigation = useNavigation();
 
   useEffect(() => {
     // retrieve the asyncstorage
-    if (currentUser) {
+    console.log(currentUser);
+    if (currentUser?.uid) {
+      // currentUser exists
       retrieveProfiles();
       getAsyncData('loggedInProfile');
+    } else {
+      // currentUser doesn't exist
+      setLoggedInProfile(undefined);
+      // @ts-ignore
+      navigation.navigate('StartScreen');
     }
     // Disable esling for deps cause it works as intended.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -83,10 +92,9 @@ export default function DatabaseProvider(props: any) {
     );
 
     const querySnapshot = await getDocs(searchQuery);
-    if (querySnapshot.size > 0) {
-      querySnapshot.forEach(doc => {
-        setProfiles(prevProfiles => [...prevProfiles, doc.data()]);
-      });
+    if (!querySnapshot.empty) {
+      const data = querySnapshot.docs.map(doc => doc.data());
+      setProfiles(data);
     }
   }
 
@@ -95,7 +103,7 @@ export default function DatabaseProvider(props: any) {
       value={{
         profiles,
         loggedInProfile,
-        setLoggedInProfile,
+        retrieveProfiles,
         storeAsyncData,
       }}
       {...props}
