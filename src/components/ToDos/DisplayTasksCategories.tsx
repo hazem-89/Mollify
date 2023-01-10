@@ -1,9 +1,11 @@
 import { StyleSheet, View, Image } from 'react-native';
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import Button from '../buttons/Buttons';
 import { useTasks } from '../../util/context/TaskContext';
 import { Text } from '../../components/Text';
+import FormModal from '../modals/FormModal';
+import { TasksCategoryPage } from './TasksCategoryPage';
 
 const tasksCategories = [
   {
@@ -24,8 +26,23 @@ const tasksCategories = [
   },
 ];
 export const DisplayTasksCategories = () => {
-  const { getProfileTasks, profileTasks } = useTasks();
-  const [chosenCategory, setChosenCategory] = useState<string>('');
+  const [component, setComponent] = useState<ReactElement | undefined>();
+  const [text, setText] = useState<string | undefined>();
+  const [btnClicked, setAddTaskBtnClicked] = useState<string | undefined>();
+
+  function handleClick(state: string | undefined, category?: string) {
+    setAddTaskBtnClicked(state);
+    if (category) {
+      switch (state) {
+        case 'category':
+          setComponent(<TasksCategoryPage category={category} />);
+          setText(category);
+          break;
+        default:
+          setComponent(undefined);
+      }
+    }
+  }
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
@@ -52,27 +69,34 @@ export const DisplayTasksCategories = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 30 }}>
-        <View style={styles.textView}>
-          <Text type="header">Tasks</Text>
+      {!btnClicked ? (
+        <View style={{ marginTop: 30 }}>
+          <View style={styles.textView}>
+            <Text type="header">Tasks</Text>
+          </View>
+          <View style={styles.categoriesContainer}>
+            {tasksCategories.map(taskCategory => {
+              return (
+                <View key={taskCategory.title} style={styles.categoryView}>
+                  <Button
+                    background={taskCategory.background}
+                    onPress={() => {
+                      handleClick('category', taskCategory.title);
+                    }}
+                  />
+                  <Text type="text">{taskCategory.title}</Text>
+                </View>
+              );
+            })}
+          </View>
         </View>
-        <View style={styles.categoriesContainer}>
-          {tasksCategories.map(taskCategory => {
-            return (
-              <View key={taskCategory.title} style={styles.categoryView}>
-                <Button
-                  background={taskCategory.background}
-                  onPress={() => {
-                    console.log('component');
-                    setChosenCategory(taskCategory.title);
-                  }}
-                />
-                <Text type="text">{taskCategory.title}</Text>
-              </View>
-            );
-          })}
-        </View>
-      </View>
+      ) : (
+        <FormModal
+          component={component}
+          onEmit={() => handleClick(undefined)}
+          text={text}
+        />
+      )}
     </View>
   );
 };

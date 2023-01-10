@@ -106,12 +106,17 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
     todoList: {
       fontWeight: '400',
-      fontSize: smallScreen ? 12 : 16,
+      fontSize: smallScreen ? 12 : 14,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
+      textAlign: 'left',
     },
     errorText: {
       color: colors.error,
+      fontSize: smallScreen ? 10 : 12,
+    },
+    Cancel: {
+      color: '#fff',
       fontSize: smallScreen ? 10 : 12,
     },
   });
@@ -138,6 +143,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.todoList);
   } else if (type === 'errorText') {
     textStyles.push(styles.errorText);
+  } else if (type === 'Cancel') {
+    textStyles.push(styles.Cancel);
   }
 
   textStyles = [...textStyles, ...style];

@@ -100,7 +100,7 @@ export const CreateProfileForm = ({
         secureTextEntry
         autoCapitalize="none"
         value={state.pin}
-        keyboardType="phone-pad"
+        keyboardType="numeric"
         onChangeText={(text: string) => setState({ ...state, pin: text })}
       />
       <Carousel

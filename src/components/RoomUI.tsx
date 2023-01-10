@@ -27,17 +27,12 @@ export default function RoomUI() {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
-  const [parent, setParent] = useState(false);
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {
-      case 'AddToDo':
-        setComponent(<AddToDo />);
-        setText('addTask');
-        break;
       case 'displayTask':
         setComponent(<DisplayTasksCategories />);
-        setText('addTask');
+        setText('Tasks');
         break;
       case 'displayScoreboard':
         setComponent(<Scoreboard />);
@@ -115,7 +110,7 @@ export default function RoomUI() {
             <Button
               background="TodoButtonImage"
               onPress={() => {
-                parent ? handleClick('AddToDo') : handleClick('displayTask');
+                handleClick('displayTask');
               }}
             />
           </View>

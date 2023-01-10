@@ -51,6 +51,7 @@ export const EnterProfile = ({
         placeholder="Enter PIN code"
         secureTextEntry
         autoCapitalize="none"
+        keyboardType="numeric"
         value={PINState}
         onChangeText={changedPin => setPINState(changedPin)}
       />
