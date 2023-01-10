@@ -100,8 +100,8 @@ function Button({
       height: smallScreen ? 40 : 50,
     },
     CategoriesStyle: {
-      width: smallScreen ? 50 : 70,
-      height: smallScreen ? 50 : 70,
+      width: smallScreen ? 40 : 60,
+      height: smallScreen ? 40 : 60,
     },
     arrowStyle: {
       width: smallScreen ? 30 : 30,
@@ -158,7 +158,7 @@ function Button({
       setStyle(styles.CategoriesStyle);
     } else if (background === 'CleaningTasks') {
       setSource(TodoButtonImage);
-      setStyle(styles.todoStyle);
+      setStyle(styles.CategoriesStyle);
     } else if (background === 'ArrowButton') {
       setSource(ArrowButton);
       setStyle(styles.arrowStyle);
