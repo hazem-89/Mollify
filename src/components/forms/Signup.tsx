@@ -5,8 +5,10 @@ import Button from '../../components/buttons/Buttons';
 import { useLogin } from '../../util/auth';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
-
-export const SignUpForm = () => {
+type SignUpProps = {
+  onClose?: () => void;
+};
+export const SignUpForm = ({ onClose }: SignUpProps) => {
   const {
     errors,
     email,
@@ -17,13 +19,29 @@ export const SignUpForm = () => {
     setConfirmedPassword,
     submit,
   } = useLogin();
+  const handleCancel = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
 
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      padding: smallScreen ? 40 : 60,
+      minHeight: smallScreen ? 200 : 300,
+      MaxHeight: smallScreen ? 200 : 300,
+      minWidth: smallScreen ? 500 : 600,
+      MaxWidth: smallScreen ? 500 : 600,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    ButtonsView: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: smallScreen ? 200 : 350,
+      marginTop: smallScreen ? 30 : 20,
     },
   });
 
@@ -31,35 +49,49 @@ export const SignUpForm = () => {
     <View>
       <View style={styles.container}>
         <Text type="formText">Let’s register your account.</Text>
-        <TextInput
-          placeholder="Enter your email..."
-          value={email}
-          onChangeText={(text: string) => setEmail(text)}
-          errorText={errors.email}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          placeholder="Choose your password..."
-          onChangeText={(text: string) => setPassword(text)}
-          secureTextEntry
-          errorText={errors.password}
-          autoCapitalize="none"
-          value={password}
-        />
-        <TextInput
-          placeholder="Confirm Password"
-          value={confirmedPassword}
-          onChangeText={(text: string) => setConfirmedPassword(text)}
-          secureTextEntry
-          errorText={errors.confirmedPassword}
-          autoCapitalize="none"
-        />
-        <Button
-          background="GreenForms"
-          text="Create account"
-          onPress={() => submit('signUp')}
-        />
+        <View style={{ maxHeight: smallScreen ? 40 : 50 }}>
+          <TextInput
+            placeholder="Enter your email..."
+            value={email}
+            onChangeText={(text: string) => setEmail(text)}
+            errorText={errors.email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+        <View style={{ maxHeight: smallScreen ? 40 : 80 }}>
+          <TextInput
+            placeholder="Choose your password..."
+            onChangeText={(text: string) => setPassword(text)}
+            secureTextEntry
+            errorText={errors.password}
+            autoCapitalize="none"
+            value={password}
+          />
+        </View>
+        <View style={{ maxHeight: smallScreen ? 40 : 80 }}>
+          <TextInput
+            placeholder="Confirm Password"
+            value={confirmedPassword}
+            onChangeText={(text: string) => setConfirmedPassword(text)}
+            secureTextEntry
+            errorText={errors.confirmedPassword}
+            autoCapitalize="none"
+          />
+        </View>
+
+        <View style={styles.ButtonsView}>
+          <Button
+            background="GreenForms"
+            text="Login"
+            onPress={() => submit('login')}
+          />
+          <Button
+            background="Cancel"
+            onPress={() => handleCancel()}
+            text="Cancel"
+          />
+        </View>
       </View>
     </View>
   );

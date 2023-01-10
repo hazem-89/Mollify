@@ -33,7 +33,7 @@ export const TextInput = ({
       marginTop: smallScreen ? 20 : 30,
       borderBottomColor: colors.primary,
       borderBottomWidth: 1,
-      width: smallScreen ? 200 : 250,
+      minWidth: smallScreen ? 200 : 400,
       // alignItems: 'flex-start',
     },
     labelText: {
@@ -43,6 +43,7 @@ export const TextInput = ({
     textInput: {
       fontSize: smallScreen ? 10 : 14,
       fontWeight: '500',
+      minWidth: smallScreen ? 200 : 300,
     },
     border: {
       height: 1,

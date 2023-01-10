@@ -47,7 +47,7 @@ const mockedTasksCategory = [
 ];
 export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
   const { getTasks, profileTasks } = useTasks();
-  const [tasks, setTasks] = useState<Tasks[]>();
+  const [parent, setParent] = useState(true);
 
   useEffect(() => {
     getTasks();
@@ -104,14 +104,16 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
     <View style={styles.container}>
       {!addTaskBtnClicked ? (
         <>
-          <View style={{ position: 'absolute', top: 0, left: 0 }}>
-            <Button
-              background="AddButtonImage"
-              onPress={() => handleClick(category)}
-            />
-          </View>
+          {parent && (
+            <View style={{ position: 'absolute', top: 0, left: 0 }}>
+              <Button
+                background="AddButtonImage"
+                onPress={() => handleClick(category)}
+              />
+            </View>
+          )}
           <View style={styles.mainView}>
-            <View style={styles.iconsView}>
+            {/* <View style={styles.iconsView}>
               <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
               </View>
@@ -131,7 +133,7 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
               >
                 <Image style={styles.icons} source={TimBtnIcon} />
               </View>
-            </View>
+            </View> */}
             {tasksFromDb?.map((task: Tasks) => (
               <View key={task.id}>
                 <TaskCard task={task} />

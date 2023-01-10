@@ -25,11 +25,20 @@ const tasksCategories = [
     background: 'Activities',
   },
 ];
-export const DisplayTasksCategories = () => {
+type DisplayTasksCategoriesProps = {
+  onClose?: () => void;
+};
+export const DisplayTasksCategories = ({
+  onClose,
+}: DisplayTasksCategoriesProps) => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [text, setText] = useState<string | undefined>();
   const [btnClicked, setAddTaskBtnClicked] = useState<string | undefined>();
-
+  const handleCancel = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
   function handleClick(state: string | undefined, category?: string) {
     setAddTaskBtnClicked(state);
     if (category) {
@@ -48,22 +57,26 @@ export const DisplayTasksCategories = () => {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      minHeight: smallScreen ? 380 : 530,
-      minWidth: smallScreen ? 550 : 750,
-      padding: smallScreen ? 40 : 50,
+      minHeight: smallScreen ? 150 : 300,
+      MaxHeight: smallScreen ? 150 : 300,
+      MaxWidth: smallScreen ? 500 : 700,
+      minWidth: smallScreen ? 500 : 700,
     },
     textView: {
-      marginVertical: smallScreen ? 20 : 30,
+      marginVertical: smallScreen ? 10 : 10,
     },
     categoriesContainer: {
       flex: 1,
       flexDirection: 'row',
+      paddingHorizontal: 20,
+      marginTop: smallScreen ? 0 : 40,
     },
     categoryView: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'space-between',
       minHeight: smallScreen ? 70 : 100,
+      MaxWidth: smallScreen ? 30 : 50,
     },
   });
 
@@ -71,9 +84,6 @@ export const DisplayTasksCategories = () => {
     <View style={styles.container}>
       {!btnClicked ? (
         <View style={{ marginTop: 30 }}>
-          <View style={styles.textView}>
-            <Text type="header">Tasks</Text>
-          </View>
           <View style={styles.categoriesContainer}>
             {tasksCategories.map(taskCategory => {
               return (
@@ -88,6 +98,13 @@ export const DisplayTasksCategories = () => {
                 </View>
               );
             })}
+          </View>
+          <View style={{ marginTop: 40 }}>
+            <Button
+              background="Cancel"
+              onPress={() => handleCancel()}
+              text="Cancel"
+            />
           </View>
         </View>
       ) : (
