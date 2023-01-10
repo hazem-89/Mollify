@@ -1,5 +1,5 @@
-import { Alert, StyleSheet, View, Image } from 'react-native';
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Alert, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import Button from '../buttons/Buttons';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../Text';
@@ -9,6 +9,7 @@ import { db } from '../../../firebaseConfig';
 import { TextInput } from '../CustomInput';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 type ErrorType = {
   rewardTitle?: string;
@@ -21,39 +22,39 @@ export const ScoreboardForm = () => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  const [endTime, setEndTime] = useState<Date>();
   const [timeValue, setTimeValue] = useState(null);
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
-  }, []);
+  const [pointsValue, setPointsValue] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [state, setState] = useState({
     rewardTitle: '',
     selected: '',
   });
   uuid.v4();
 
-  const [time, setTime] = useState([
-    { label: '5 days', value: '1' },
-    { label: '7 days', value: '2D' },
-    { label: '10 days', value: '3D' },
-  ]);
-  const [pointsValue, setPointsValue] = useState(null);
-  const [points, setPoints] = useState([
-    { label: '25 Points', value: '20' },
-    { label: '50 Points', value: '30' },
-    { label: '75 Points', value: '40' },
-    { label: '100 Points', value: '50' },
-  ]);
-
   const addReward = async () => {
     const currDocRef = doc(db, 'profiles');
-    const newTodo = {
+    const newReward = {
       id: uuid.v4(),
       taskTitle: state.rewardTitle,
       pointsValue,
       timeValue,
     };
-    await updateDoc(currDocRef, { todo: arrayUnion(newTodo) });
+    await updateDoc(currDocRef, { todo: arrayUnion(newReward) });
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date: Date) => {
+    console.warn('A date has been picked: ', date);
+    setEndTime(date);
+    hideDatePicker();
   };
 
   const submit = () => {
@@ -85,6 +86,9 @@ export const ScoreboardForm = () => {
       padding: smallScreen ? 30 : 50,
       paddingBottom: 200,
     },
+    headerStyle: {
+      marginTop: smallScreen ? 30 : 50,
+    },
     input: {
       color: 'black',
     },
@@ -96,16 +100,27 @@ export const ScoreboardForm = () => {
       height: smallScreen ? 40 : 70,
       marginRight: 10,
     },
+    points: {
+      width: smallScreen ? 100 : 200,
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 20,
+    },
     time: {
       width: smallScreen ? 100 : 200,
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 20,
     },
   });
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 90 }}>
+      <View style={styles.headerStyle}>
         <Text type="header">Add Reward</Text>
       </View>
       <View style={styles.inputContainer}>
@@ -122,25 +137,41 @@ export const ScoreboardForm = () => {
             style={styles.input}
           />
         </View>
-        <View style={{ display: 'flex', flexDirection: 'row' }}>
+        <View style={styles.points}>
           <Image source={PointsIcon} style={styles.icons} />
           <TextInput
             placeholder="Points"
             keyboardType="number-pad"
             autoCapitalize="none"
             style={styles.input}
+            errorText={errors.rewardTitle}
           />
         </View>
         <View style={styles.time}>
-          <Image source={hourglass} style={styles.icons} />
-          <TextInput
-            placeholder="Time"
-            keyboardType="number-pad"
-            autoCapitalize="none"
-            style={styles.input}
+          <TouchableOpacity
+            disabled={!state.rewardTitle}
+            onPress={showDatePicker}
+            style={{ flexDirection: 'row', alignItems: 'center' }}
+          >
+            <Image source={hourglass} style={styles.icons} />
+            <Text type="text">Set Time</Text>
+          </TouchableOpacity>
+          <DateTimePickerModal
+            style={{
+              shadowColor: '#fff',
+              shadowRadius: 0,
+              shadowOpacity: 1,
+              shadowOffset: { height: 0, width: 0 },
+            }}
+            isVisible={isDatePickerVisible}
+            mode="datetime"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            minimumDate={new Date()}
+            minuteInterval={10}
           />
         </View>
-        <View style={{ marginBottom: smallScreen ? 10 : 0 }}>
+        <View style={{ marginTop: smallScreen ? 10 : 20 }}>
           <Button background="GreenForms" text="Add" onPress={() => submit()} />
         </View>
       </View>
