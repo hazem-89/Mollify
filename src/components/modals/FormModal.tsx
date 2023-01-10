@@ -35,7 +35,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
     if (componentState !== component) {
       setComponentState(component);
       if (
-        text === 'addTask' ||
+        text === 'Tasks' ||
         'displayTasks' ||
         'Special tasks' ||
         'School assignments' ||
@@ -128,7 +128,16 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
             resizeMode="stretch"
             source={todoForm ? SelectFormMenu : PaperForm}
           >
-            {displayTasksOpen && (
+            <View
+              style={{
+                position: 'absolute',
+                left: '42%',
+                top: 30,
+              }}
+            >
+              <Text>{text}</Text>
+            </View>
+            {/* {displayTasksOpen && (
               <View
                 style={{
                   position: 'absolute',
@@ -138,7 +147,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
               >
                 <Text>{text}</Text>
               </View>
-            )}
+            )} */}
             {/* {displayTasksOpen && (
               <View style={styles.iconsView}>
                 <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>

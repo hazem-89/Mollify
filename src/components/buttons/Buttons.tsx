@@ -11,15 +11,20 @@ import GoldenButton from '../../../assets/Images/GoldenButton.png';
 import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
 import GreenButtonImage from '../../../assets/Images/GreenButton.png';
+import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
 import AddButtonImage from '../../../assets/Images/AddButton.png';
 import InfoButtonImage from '../../../assets/Images/info.png';
 import TodoButtonImage from '../../../assets/Images/todo.png';
 import BellButtonImage from '../../../assets/Images/bell.png';
-import SignButtonImage from '../../../assets/Images/sign.png';
+import CancelButton from '../../../assets/Images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/Images/trophy.png';
 import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
 import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
+import ArrowButton from '../../../assets/Images/Polygon.png';
+import ReverseArrowButton from '../../../assets/Images/PolygonReverse.png';
+import DeleteIcon from '../../../assets/Images/Icons/DeleteIcon.png';
+import DoneIcon from '../../../assets/Images/Icons/DoneIcon.png';
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -79,20 +84,16 @@ function Button({
       height: smallScreen ? 40 : 60,
     },
     infoStyle: {
-      width: smallScreen ? 50 : 80,
-      height: smallScreen ? 50 : 80,
+      width: smallScreen ? 50 : 60,
+      height: smallScreen ? 50 : 60,
     },
     todoStyle: {
-      width: smallScreen ? 60 : 90,
-      height: smallScreen ? 50 : 80,
+      width: smallScreen ? 60 : 70,
+      height: smallScreen ? 50 : 60,
     },
     bellStyle: {
-      width: smallScreen ? 42 : 67,
-      height: smallScreen ? 45 : 70,
-    },
-    signStyle: {
-      width: smallScreen ? 90 : 165,
-      height: smallScreen ? 100 : 210,
+      width: smallScreen ? 42 : 55,
+      height: smallScreen ? 45 : 60,
     },
     trophyStyle: {
       width: smallScreen ? 35 : 45,
@@ -101,6 +102,14 @@ function Button({
     CategoriesStyle: {
       width: smallScreen ? 50 : 70,
       height: smallScreen ? 50 : 70,
+    },
+    arrowStyle: {
+      width: smallScreen ? 30 : 30,
+      height: smallScreen ? 30 : 30,
+    },
+    DeleteTask: {
+      width: smallScreen ? 30 : 50,
+      height: smallScreen ? 30 : 50,
     },
   });
 
@@ -135,9 +144,6 @@ function Button({
     } else if (background === 'BellButtonImage') {
       setSource(BellButtonImage);
       setStyle(styles.bellStyle);
-    } else if (background === 'SignButtonImage') {
-      setSource(SignButtonImage);
-      setStyle(styles.signStyle);
     } else if (background === 'TrophyButtonImage') {
       setSource(TrophyButtonImage);
       setStyle(styles.trophyStyle);
@@ -153,6 +159,24 @@ function Button({
     } else if (background === 'CleaningTasks') {
       setSource(TodoButtonImage);
       setStyle(styles.todoStyle);
+    } else if (background === 'ArrowButton') {
+      setSource(ArrowButton);
+      setStyle(styles.arrowStyle);
+    } else if (background === 'ReverseArrowButton') {
+      setSource(ReverseArrowButton);
+      setStyle(styles.arrowStyle);
+    } else if (background === 'DeleteTask') {
+      setSource(DeleteIcon);
+      setStyle(styles.DeleteTask);
+    } else if (background === 'DoneIcon') {
+      setSource(DoneIcon);
+      setStyle(styles.DeleteTask);
+    } else if (background === 'Cancel') {
+      setSource(CancelButton);
+      setStyle(styles.GreenForms);
+    } else if (background === 'TaskNotification') {
+      setSource(TaskNotificationIcon);
+      setStyle(styles.DeleteTask);
     }
   }, [background]);
 

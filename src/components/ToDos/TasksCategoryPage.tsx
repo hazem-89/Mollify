@@ -29,14 +29,14 @@ const mockedTasksCategory = [
     endTime: 'Thu Jan 12 2023 12:00:00 GMT+0100 (CET)',
     hasRequest: false,
     id: 'fb1adc8c-ddc7-41ce-9c65-2824b0c77d25',
-    isDone: false,
+    isDone: true,
     pointsValue: '10',
     taskDescription: 'Take the dishes to the kitchen',
     taskTitle: 'Dirty Dishes',
   },
   {
     category: 'Cleaning tasks',
-    endTime: 'Tue Jan 10 2023 12:00:00 GMT+0100 (CET)',
+    endTime: 'Tue Jan 09 2023 12:00:00 GMT+0100 (CET)',
     hasRequest: false,
     id: 'aa918fad-646b-4958-9e3f-382e180123a4',
     isDone: false,
@@ -46,20 +46,13 @@ const mockedTasksCategory = [
   },
 ];
 export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
-  const { getProfileTasks, profileTasks } = useTasks();
+  const { getTasks, profileTasks } = useTasks();
   const [tasks, setTasks] = useState<Tasks[]>();
 
-  // useEffect(() => {
-  //   getProfileTasks();
-  //   const tasksFromDb = profileTasks?.filter(
-  //     task => task.category === category,
-  //   );
-  //   setTasks(tasksFromDb);
-  // }, []);
-  // console.log(profileTasks);
-  const tasksFromDb = mockedTasksCategory?.filter(
-    task => task.category === category,
-  );
+  useEffect(() => {
+    getTasks();
+  }, []);
+  const tasksFromDb = profileTasks?.filter(task => task.category === category);
   const dimensions = useDimensions();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
