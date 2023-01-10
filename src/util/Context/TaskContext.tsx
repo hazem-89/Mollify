@@ -47,10 +47,10 @@ export default function (props: any) {
       const data = doc.data();
       data['id'] = doc.id;
       tasksDataWithId.push(data);
-      const test = tasksDataWithId.filter(
+      const ProfileTasksFromDb = tasksDataWithId.filter(
         (task: Tasks) => task.profileId === profileId,
       );
-      setProfileTasks(test);
+      setProfileTasks(ProfileTasksFromDb);
     });
   };
   const deleteProfileTasks = async (taskId: string) => {

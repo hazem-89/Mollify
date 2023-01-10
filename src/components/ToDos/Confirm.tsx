@@ -6,17 +6,28 @@ type ConfirmProps = {
   text: string;
   taskId: string;
   confirmBtnText: string;
+  funName?: string;
   onClose?: () => void;
+  markTaskDone?: (a: string) => void;
 };
 export const Confirm = ({
   text,
   taskId,
   confirmBtnText,
   onClose,
+  markTaskDone,
+  funName,
 }: ConfirmProps) => {
   const { deleteProfileTasks } = useTasks();
   const handleSubmit = () => {
-    deleteProfileTasks(taskId);
+    if (funName === 'delete') {
+      deleteProfileTasks(taskId);
+    }
+    if (funName === 'updateTaskDone') {
+      if (markTaskDone) {
+        markTaskDone(funName);
+      }
+    }
     if (onClose) {
       onClose();
     }
@@ -33,6 +44,7 @@ export const Confirm = ({
       minWidth: 400,
       minHeight: 200,
       flex: 1,
+      alignItems: 'center',
       // position: 'relative',
     },
   });
