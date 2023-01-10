@@ -159,6 +159,8 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
         category,
         isDone: false,
         hasRequest: false,
+        //need to replace profile with the current profile.id
+        profileId: 'Lgq9YJnPLLezb1iE4xHQ',
       };
       addCleaningTask(newTodo);
       Alert.alert(

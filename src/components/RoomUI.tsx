@@ -30,7 +30,7 @@ export default function RoomUI() {
     switch (state) {
       case 'displayTask':
         setComponent(<DisplayTasksCategories />);
-        setText('addTask');
+        setText('Tasks');
         break;
       default:
         setComponent(undefined);
