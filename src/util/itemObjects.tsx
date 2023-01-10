@@ -1,6 +1,14 @@
 /* Import all images */
 import { ImageSourcePropType } from 'react-native';
+
+/* Avatars */
 import TigerAvatar from '../../assets/Images/Avatars/Avatar-Tiger.png';
+
+/* Rooms */
+import loftBedsRoom from '../../assets/Images/rooms/loftBedsRoom.jpg';
+import teenFemininePurpleRoom from '../../assets/Images/rooms/teenFemininePurpleRoom.jpg';
+import plainNeutralRoom from '../../assets/Images/rooms/plainNeutralRoom.jpg';
+import pirateRoom from '../../assets/Images/rooms/pirateRoom.jpg';
 
 export interface assetInterface {
   id: string;
@@ -57,19 +65,19 @@ export const avatars: assetInterface[] = [
 
 export const rooms: assetInterface[] = [
   {
-    id: 'PirateRoom',
-    image: TigerAvatar,
+    id: 'pirateRoom',
+    image: pirateRoom,
   },
   {
-    id: 'AtticRoom',
-    image: TigerAvatar,
+    id: 'plainNeutralRoom',
+    image: plainNeutralRoom,
   },
   {
-    id: 'LoftBedRoom',
-    image: TigerAvatar,
+    id: 'loftBedsRoom',
+    image: loftBedsRoom,
   },
   {
-    id: 'PurpleRoom',
-    image: TigerAvatar,
+    id: 'teenFemininePurpleRoom',
+    image: teenFemininePurpleRoom,
   },
 ];

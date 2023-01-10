@@ -10,7 +10,7 @@ import { Text } from '../../components/Text';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useTasks } from '../../util/Context/TaskContext';
+import { useTasks } from '../../util/context/TaskContext';
 
 const CleaningTodo = [
   {

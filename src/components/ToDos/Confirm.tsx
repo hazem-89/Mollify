@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { ReactElement, useState } from 'react';
-import { useTasks } from '../../util/Context/TaskContext';
+import { useTasks } from '../../util/context/TaskContext';
 import Button from '../buttons/Buttons';
+
 type ConfirmProps = {
   text: string;
   taskId: string;
