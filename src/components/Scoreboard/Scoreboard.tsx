@@ -47,7 +47,7 @@ const Scoreboard = () => {
     reverseArrowStyle: {
       display: open ? 'flex' : 'none',
       position: 'absolute',
-      bottom: smallScreen ? 160 : -70,
+      bottom: smallScreen ? 160 : 160,
       left: 0,
       right: 0,
       justifyContent: 'center',
@@ -64,11 +64,16 @@ const Scoreboard = () => {
       alignItems: 'center',
     },
     textStyle: {
-      marginTop: open ? -200 : -300,
+      marginTop: open ? -100 : -300,
     },
     goldenStyle: {
       position: 'relative',
       height: open ? 220 : 100,
+      ...(smallScreen &&
+        open && {
+          height: 200,
+        }),
+      maxHeight: smallScreen ? 200 : 320,
       width: smallScreen ? 350 : 500,
       padding: 16,
       display: 'flex',
@@ -109,18 +114,6 @@ const Scoreboard = () => {
       <View style={styles.textStyle}>
         <Text type="header">Scoreboard</Text>
       </View>
-
-      {/* <View>
-          <Button 
-          background='AddButtonImage'
-          onPress={() => {
-            console.log(component);
-
-            handleClick('ScoreboardForm');
-          }}
-          />
-        </View> */}
-
       <View>
         <View style={styles.container}>
           <Image source={goldenBackground} style={styles.goldenStyle} />
@@ -134,7 +127,6 @@ const Scoreboard = () => {
             onPress={() => setOpen(false)}
           />
         </View>
-
         {testList?.map(test => (
           <View style={styles.labelStyle}>
             <Text type="todoList">{test.title}</Text>
