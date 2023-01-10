@@ -1,7 +1,8 @@
+import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { DocumentData } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDatabaseContext } from '../../util/context/DBContext';
 import Button from '../buttons/Buttons';
 import { TextInput } from '../CustomInput';
@@ -19,7 +20,30 @@ export default function EnterProfile({
   const [PINState, setPINState] = useState('');
   const navigation = useNavigation();
   const { storeAsyncData } = useDatabaseContext();
-
+  const handleCancel = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      minHeight: smallScreen ? 200 : 300,
+      MaxHeight: smallScreen ? 200 : 300,
+      minWidth: smallScreen ? 500 : 600,
+      MaxWidth: smallScreen ? 500 : 600,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    ButtonsView: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: smallScreen ? 200 : 350,
+      marginTop: smallScreen ? 30 : 20,
+    },
+  });
   const handleSubmit = () => {
     // Compare pin from db to entered pin.
     if (PINState === selectedProfile.pin) {
@@ -42,9 +66,9 @@ export default function EnterProfile({
   };
 
   return (
-    <View>
-      <Text>{`Welcome ${selectedProfile.name}`}</Text>
-      <Text type="formText">Enter your profile</Text>
+    <View style={styles.container}>
+      {/* <Text>{`Welcome ${selectedProfile.name}`}</Text> */}
+      <Text type="formText">Enter your pin</Text>
       <TextInput
         placeholder="Enter PIN code"
         secureTextEntry
@@ -53,11 +77,18 @@ export default function EnterProfile({
         value={PINState}
         onChangeText={changedPin => setPINState(changedPin)}
       />
-      <Button
-        background="GreenForms"
-        text="Enter profile"
-        onPress={handleSubmit}
-      />
+      <View style={styles.ButtonsView}>
+        <Button
+          background="GreenForms"
+          text="Enter profile"
+          onPress={handleSubmit}
+        />
+        <Button
+          background="Cancel"
+          onPress={() => handleCancel()}
+          text="Cancel"
+        />
+      </View>
     </View>
   );
 }

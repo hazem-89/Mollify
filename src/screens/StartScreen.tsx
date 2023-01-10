@@ -32,7 +32,7 @@ export default function StartScreen() {
       alignSelf: 'center',
       width: smallScreen ? 350 : 450,
       height: smallScreen ? 100 : 140,
-      top: 10,
+      top: smallScreen ? 10 : 20,
       marginBottom: 10,
       zIndex: 5,
     },
