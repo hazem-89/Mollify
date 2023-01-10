@@ -1,14 +1,21 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useState } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native';
 import awardBadge from '../../assets/Images/awardBadge.png';
 import woodSignLarge from '../../assets/Images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import Scoreboard from './Scoreboard/Scoreboard';
-import { AddToDo } from './ToDos/AddToDo';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
+import SignButtonImage from '../../assets/Images/sign.png';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -41,30 +48,31 @@ export default function RoomUI() {
       default:
         setComponent(undefined);
         break;
-      // // case 'GoogleSignIn':
-      // //   setComponent(undefined);
-      // //   break;
-      // // default:
-      // //   setComponent(undefined);
-      // //   break;
     }
   }
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     imagesContainer: {
-      display: 'flex',
+      width: ScreenWidth,
+      maxWidth: ScreenWidth,
+      flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginLeft: 10,
     },
     woodLargeStyle: {
-      width: smallScreen ? 210 : 310,
-      height: smallScreen ? 120 : 180,
-      marginTop: smallScreen ? -40 : -65,
+      width: smallScreen ? 210 : 300,
+      height: smallScreen ? 120 : 160,
+      marginTop: smallScreen ? -40 : -50,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
     },
     awardBadgeStyle: {
       width: smallScreen ? 130 : 170,
       height: smallScreen ? 70 : 100,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     infoAlign: {
       position: 'absolute',
@@ -78,69 +86,92 @@ export default function RoomUI() {
     },
     bellAlign: {
       position: 'absolute',
-      left: smallScreen ? 100 : 200,
+      left: smallScreen ? 150 : 200,
       top: smallScreen ? 20 : 30,
     },
     trophyAlign: {
       position: 'absolute',
-      left: smallScreen ? 260 : 510,
+      left: '50%',
       top: smallScreen ? 17 : 25,
     },
     signAlign: {
       position: 'absolute',
       left: smallScreen ? 40 : 40,
       bottom: smallScreen ? 0 : -5,
+      width: smallScreen ? 100 : 165,
+      height: smallScreen ? 125 : 210,
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    },
+    SidesButtons: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: smallScreen ? 50 : 60,
+      width: smallScreen ? 170 : 230,
+      justifyContent: 'space-between',
     },
   });
 
   return (
     <>
-      <View style={{ height: '100%' }}>
-        <View style={styles.imagesContainer}>
-          <Image source={woodSignLarge} style={styles.woodLargeStyle} />
-          <Image source={awardBadge} style={styles.awardBadgeStyle} />
-          <Image source={woodSignLarge} style={styles.woodLargeStyle} />
-          <View style={styles.infoAlign}>
-            <Button
-              background="InfoButtonImage"
-              onPress={() => setBtnClicked(undefined)}
-            />
+      {!addTaskBtnClicked ? (
+        <View style={{ height: '100%' }}>
+          <View style={styles.imagesContainer}>
+            <ImageBackground
+              source={woodSignLarge}
+              style={styles.woodLargeStyle}
+            >
+              <View style={styles.SidesButtons}>
+                <Button background="BellButtonImage" onPress={logout} />
+                <Button
+                  background="BellButtonImage"
+                  onPress={() => console.log('log')}
+                />
+              </View>
+            </ImageBackground>
+            {/* <Image source={woodSignLarge} style={styles.woodLargeStyle} /> */}
+            <ImageBackground source={awardBadge} style={styles.awardBadgeStyle}>
+              <Button
+                background="TrophyButtonImage"
+                onPress={() => setBtnClicked(undefined)}
+              />
+            </ImageBackground>
+            {/* <Image source={awardBadge} style={styles.awardBadgeStyle} /> */}
+            <ImageBackground
+              source={woodSignLarge}
+              style={styles.woodLargeStyle}
+            >
+              <View style={styles.SidesButtons}>
+                <Button
+                  background="TodoButtonImage"
+                  onPress={() => {
+                    handleClick('displayTask');
+                  }}
+                />
+                <Button
+                  background="InfoButtonImage"
+                  onPress={() => setBtnClicked(undefined)}
+                />
+              </View>
+            </ImageBackground>
           </View>
-          <View style={styles.todoAlign}>
-            <Button
-              background="TodoButtonImage"
-              onPress={() => {
-                handleClick('displayTask');
+          <ImageBackground source={SignButtonImage} style={styles.signAlign}>
+            <View
+              style={{
+                marginTop: smallScreen ? 15 : 30,
               }}
-            />
-          </View>
-          <View style={styles.bellAlign}>
-            <Button background="BellButtonImage" onPress={logout} />
-          </View>
-          <View style={styles.trophyAlign}>
-            <Button
-              background="TrophyButtonImage"
-              onPress={() => {
-                parent
-                  ? handleClick('Scoreboard')
-                  : handleClick('displayScoreboard');
-              }}
-            />
-          </View>
+            >
+              <Text>Name</Text>
+            </View>
+          </ImageBackground>
         </View>
-        <View style={styles.signAlign}>
-          <Button
-            background="SignButtonImage"
-            onPress={() => setBtnClicked(undefined)}
-          />
-        </View>
-      </View>
-      <FormModal
-        component={component}
-        onEmit={() => handleClick(undefined)}
-        text={text}
-      />
+      ) : (
+        <FormModal
+          component={component}
+          onEmit={() => handleClick(undefined)}
+          text={text}
+        />
+      )}
     </>
   );
 }
-

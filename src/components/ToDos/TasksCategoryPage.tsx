@@ -51,12 +51,7 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
 
   useEffect(() => {
     getTasks();
-    const tasksFromDb = profileTasks?.filter(
-      task => task.profileId === category,
-    );
-    setTasks(tasksFromDb);
   }, []);
-  // console.log(profileTasks);
   const tasksFromDb = profileTasks?.filter(task => task.category === category);
   const dimensions = useDimensions();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
