@@ -39,7 +39,6 @@ export default function DatabaseProvider(props: any) {
 
   useEffect(() => {
     // retrieve the asyncstorage
-    console.log(currentUser);
     if (currentUser?.uid) {
       // currentUser exists
       retrieveProfiles();
@@ -47,6 +46,7 @@ export default function DatabaseProvider(props: any) {
     } else {
       // currentUser doesn't exist
       setLoggedInProfile(undefined);
+      storeAsyncData('loggedInProfile', []);
       // @ts-ignore
       navigation.navigate('StartScreen');
     }
@@ -55,7 +55,6 @@ export default function DatabaseProvider(props: any) {
   }, [currentUser]);
 
   useEffect(() => {
-    // retrieve the asyncstorage
     if (loggedInProfile) {
       console.log(loggedInProfile);
     }
@@ -103,6 +102,7 @@ export default function DatabaseProvider(props: any) {
       value={{
         profiles,
         loggedInProfile,
+        setLoggedInProfile,
         retrieveProfiles,
         storeAsyncData,
       }}
