@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useTasks } from '../../util/Context/TaskContext';
+import { useTasks } from '../../util/context/TaskContext';
 import { Tasks } from '../../Interfaces';
 import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';

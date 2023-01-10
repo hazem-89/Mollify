@@ -2,7 +2,8 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { Main } from './navigation/Main';
-import TaskContextProvide from './util/Context/TaskContext';
+import TaskContextProvide from './util/context/TaskContext';
+import DatabaseProvider from './util/context/DBContext';
 
 export default function App() {
   // Render the app
@@ -16,9 +17,11 @@ export default function App() {
         appropriate navigation logic. 
       */}
       <NavigationContainer>
-        <TaskContextProvide>
-          <Main />
-        </TaskContextProvide>
+        <DatabaseProvider>
+          <TaskContextProvide>
+            <Main />
+          </TaskContextProvide>
+        </DatabaseProvider>
       </NavigationContainer>
     </>
   );

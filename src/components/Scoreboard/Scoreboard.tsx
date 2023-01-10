@@ -71,8 +71,8 @@ const Scoreboard = () => {
       height: open ? 220 : 100,
       ...(smallScreen &&
         open && {
-          height: 200,
-        }),
+        height: 200,
+      }),
       maxHeight: smallScreen ? 200 : 320,
       width: smallScreen ? 350 : 500,
       padding: 16,
@@ -161,6 +161,3 @@ const Scoreboard = () => {
 };
 
 export default Scoreboard;
-
-const styles = StyleSheet.create({});
-
