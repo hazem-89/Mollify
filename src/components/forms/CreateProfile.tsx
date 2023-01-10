@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { db } from '../../../firebaseConfig';
 import { useLogin } from '../../util/auth';
+import { useDatabaseContext } from '../../util/context/DBContext';
 import { avatars, rooms } from '../../util/itemObjects';
 import Button from '../buttons/Buttons';
 import Carousel from '../Carousel';
@@ -30,6 +31,7 @@ export const CreateProfileForm = ({
 }: CreateProfileProps) => {
   // const dimensions = useDimensions();
   const { currentUser } = useLogin();
+  const { retrieveProfiles } = useDatabaseContext();
   const [state, setState] = useState({
     name: '',
     pin: '',
@@ -47,14 +49,13 @@ export const CreateProfileForm = ({
     };
 
     try {
-      if (profilesExist) {
-        await addDoc(collection(db, 'profiles'), newProfile);
-      } else {
-        await addDoc(collection(db, 'profiles'), {
+      (profilesExist
+        ? addDoc(collection(db, 'profiles'), newProfile)
+        : addDoc(collection(db, 'profiles'), {
           parent: true,
           ...newProfile,
-        });
-      }
+        })
+      ).then(retrieveProfiles());
     } catch (err) {
       console.log(err);
     }
