@@ -95,8 +95,8 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
     },
     btnPosition: {
       position: 'absolute',
-      right: smallScreen ? 15 : 30,
-      top: smallScreen ? 55 : 90,
+      right: smallScreen ? 10 : 20,
+      top: smallScreen ? 30 : 50,
     },
     iconsView: {
       flex: 1,
@@ -111,6 +111,11 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
     icons: {
       width: smallScreen ? 40 : 50,
       height: smallScreen ? 40 : 50,
+    },
+    mainTitleView: {
+      alignItems: 'center',
+      minHeight: smallScreen ? 60 : 85,
+      justifyContent: 'center',
     },
   });
 
@@ -128,14 +133,8 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
             resizeMode="stretch"
             source={todoForm ? SelectFormMenu : PaperForm}
           >
-            <View
-              style={{
-                position: 'absolute',
-                left: '42%',
-                top: 30,
-              }}
-            >
-              <Text>{text}</Text>
+            <View style={styles.mainTitleView}>
+              <Text type={text}>{text}</Text>
             </View>
             {/* {displayTasksOpen && (
               <View
@@ -178,15 +177,9 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
                     onClose: () => handleClose(),
                   })}
               </ScrollView>
-              <View
-                style={{
-                  position: 'absolute',
-                  right: smallScreen ? 10 : 20,
-                  top: smallScreen ? 40 : 50,
-                }}
-              >
+              {/* <View style={styles.btnPosition}>
                 <Button background="Close" onPress={() => handleClose()} />
-              </View>
+              </View> */}
             </>
           </ImageBackground>
         </Animated.View>

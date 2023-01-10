@@ -30,7 +30,7 @@ export const useLogin = () => {
     React.useState({});
   const [currentUser, setCurrentUser] = useState<User>();
   const navigation = useNavigation();
-  const { setLoggedInProfile } = useDatabaseContext();
+  // const { setLoggedInProfile } = useDatabaseContext();
 
   const addUserToDb = (email: string, id: string) => {
     setDoc(doc(db, 'users', id), {
@@ -113,7 +113,7 @@ export const useLogin = () => {
     signOut(auth)
       .then(() => {
         setCurrentUser(undefined);
-        setLoggedInProfile(undefined);
+        // setLoggedInProfile(undefined);
         // @ts-ignore
         navigation.navigate('StartScreen');
       })

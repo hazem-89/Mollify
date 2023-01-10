@@ -119,6 +119,9 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: '#fff',
       fontSize: smallScreen ? 10 : 12,
     },
+    Login: {
+      fontSize: smallScreen ? 20 : 30,
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -145,6 +148,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.errorText);
   } else if (type === 'Cancel') {
     textStyles.push(styles.Cancel);
+  } else if (type === 'Login') {
+    textStyles.push(styles.Login);
   }
 
   textStyles = [...textStyles, ...style];

@@ -5,22 +5,39 @@ import { useLogin } from '../../util/auth';
 import { TextInput } from '../CustomInput';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../Text';
-
-export const LoginForm = () => {
+type LoginProps = {
+  onClose?: () => void;
+};
+export const LoginForm = ({ onClose }: LoginProps) => {
   const { errors, submit, email, password, setEmail, setPassword } = useLogin();
   const dimensions = useDimensions();
-
+  const handleCancel = () => {
+    if (onClose) {
+      onClose();
+    }
+  };
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
-    container: {
+    Container: {
       flex: 1,
-      padding: smallScreen ? 40 : 60,
+      // padding: smallScreen ? 40 : 60,
+      minHeight: smallScreen ? 200 : 300,
+      MaxHeight: smallScreen ? 200 : 300,
+      minWidth: smallScreen ? 400 : 600,
+      MaxWidth: smallScreen ? 400 : 600,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    ButtonsView: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      width: smallScreen ? 200 : 350,
+      marginTop: 20,
     },
   });
   return (
     <View>
-      <View style={styles.container}>
-        <Text type="formText">Login</Text>
+      <View style={styles.Container}>
         <TextInput
           placeholder="Enter your email..."
           value={email}
@@ -37,11 +54,18 @@ export const LoginForm = () => {
           autoCapitalize="none"
           value={password}
         />
-        <Button
-          background="GreenForms"
-          text="Login"
-          onPress={() => submit('login')}
-        />
+        <View style={styles.ButtonsView}>
+          <Button
+            background="GreenForms"
+            text="Login"
+            onPress={() => submit('login')}
+          />
+          <Button
+            background="Cancel"
+            onPress={() => handleCancel()}
+            text="Cancel"
+          />
+        </View>
       </View>
     </View>
   );

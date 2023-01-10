@@ -24,6 +24,7 @@ export default function StartScreen() {
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
   const { currentUser, logout } = useLogin();
+  const [text, setText] = useState<string | undefined>();
 
   const styles = StyleSheet.create({
     WelcomeSign: {
@@ -66,9 +67,12 @@ export default function StartScreen() {
     switch (state) {
       case 'Login':
         setComponent(<LoginForm />);
+        setText('Login');
         break;
       case 'SignUp':
         setComponent(<SignUpForm />);
+        setText('Sign Up');
+
         break;
       case 'GoogleSignIn':
         setComponent(undefined);
@@ -125,6 +129,7 @@ export default function StartScreen() {
             <FormModal
               component={component}
               onEmit={() => handleClick(undefined)}
+              text={text}
             />
             <Image source={Tiger} style={styles.tiger} />
           </>
