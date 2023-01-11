@@ -5,10 +5,10 @@ import uuid from 'react-native-uuid';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
-import laundryBasket from '../../../assets/Images/Icons/basket.png';
+import laundryBasket from '../../../assets/images/Icons/basket.png';
 import { Text } from '../../components/Text';
-import hourglass from '../../../assets/Images/Icons/hourglass.png';
-import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
+import hourglass from '../../../assets/images/Icons/hourglass.png';
+import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useTasks } from '../../util/context/TaskContext';
 

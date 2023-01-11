@@ -14,8 +14,8 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../../firebaseConfig';
 import { TextInput } from '../CustomInput';
-import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
-import hourglass from '../../../assets/Images/Icons/hourglass.png';
+import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
+import hourglass from '../../../assets/images/Icons/hourglass.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 type ErrorType = {

@@ -1,7 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { useState } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
-import TodoMenuHeaderImage from '../../../assets/Images/TodoMenuHeaderImage.png';
+import TodoMenuHeaderImage from '../../../assets/images/TodoMenuHeaderImage.png';
 import { Text } from '../Text';
 
 type TodoMenuHeaderProps = {
