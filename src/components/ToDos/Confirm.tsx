@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { ReactElement, useState } from 'react';
-import { useTasks } from '../../util/context/TaskContext';
+import { useTasks } from '../../util/context/AddtoDBContext';
 import Button from '../buttons/Buttons';
 
 type ConfirmProps = {
@@ -75,3 +75,4 @@ export const Confirm = ({
     </View>
   );
 };
+
