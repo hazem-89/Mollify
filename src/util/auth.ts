@@ -1,19 +1,16 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Alert } from 'react-native';
-import { auth, db } from '../../firebaseConfig';
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
   getAuth,
-  User,
-  UserInfo,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
   updateProfile,
+  User,
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { useDatabaseContext } from './context/DBContext';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Alert } from 'react-native';
+import { auth, db } from '../../firebaseConfig';
 
 type ErrorType = {
   email?: string;
@@ -29,8 +26,6 @@ export const useLogin = () => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [currentUser, setCurrentUser] = useState<User>();
-  const navigation = useNavigation();
-  const { setLoggedInProfile } = useDatabaseContext();
 
   const addUserToDb = (email: string, id: string) => {
     setDoc(doc(db, 'users', id), {
@@ -110,16 +105,9 @@ export const useLogin = () => {
   };
   const logout = async () => {
     const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        setCurrentUser(undefined);
-        setLoggedInProfile(undefined);
-        // @ts-ignore
-        navigation.navigate('StartScreen');
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    signOut(auth).catch(error => {
+      console.error(error);
+    });
   };
   return {
     submit,

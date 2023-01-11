@@ -30,7 +30,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
   const styles = StyleSheet.create({
     text: {
-      fontSize: smallScreen ? 12 : 16,
+      fontSize: smallScreen ? 12 : 14,
       textAlign: 'center',
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
@@ -119,6 +119,9 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: '#fff',
       fontSize: smallScreen ? 10 : 12,
     },
+    MenuTitle: {
+      fontSize: smallScreen ? 20 : 30,
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -145,6 +148,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.errorText);
   } else if (type === 'Cancel') {
     textStyles.push(styles.Cancel);
+  } else if (type === 'MenuTitle') {
+    textStyles.push(styles.MenuTitle);
   }
 
   textStyles = [...textStyles, ...style];
