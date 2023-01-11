@@ -25,7 +25,7 @@ export const useLogin = () => {
   const [errorMessage, setErrorMessage] = useState<boolean>(false);
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
-  const [currentUser, setCurrentUser] = useState<User>();
+  const [currentUser, setCurrentUser] = useState<User | undefined>(undefined);
 
   const addUserToDb = (email: string, id: string) => {
     setDoc(doc(db, 'users', id), {
