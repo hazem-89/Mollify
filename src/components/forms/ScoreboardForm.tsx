@@ -4,7 +4,14 @@ import Button from '../buttons/Buttons';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../Text';
 import uuid from 'react-native-uuid';
-import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  collection,
+  addDoc,
+} from 'firebase/firestore';
 import { db } from '../../../firebaseConfig';
 import { TextInput } from '../CustomInput';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
@@ -23,24 +30,26 @@ export const ScoreboardForm = () => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [endTime, setEndTime] = useState<Date>();
-  const [timeValue, setTimeValue] = useState(null);
-  const [pointsValue, setPointsValue] = useState(null);
+  const [pointsValue, setPointsValue] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [state, setState] = useState({
     rewardTitle: '',
     selected: '',
   });
-  uuid.v4();
 
   const addReward = async () => {
-    const currDocRef = doc(db, 'profiles');
     const newReward = {
-      id: uuid.v4(),
-      taskTitle: state.rewardTitle,
-      pointsValue,
-      timeValue,
+      title: state.rewardTitle,
+      points: pointsValue,
+      endTime,
     };
-    await updateDoc(currDocRef, { todo: arrayUnion(newReward) });
+    try {
+      await addDoc(collection(db, 'Rewards'), {
+        ...newReward,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const showDatePicker = () => {
@@ -63,7 +72,7 @@ export const ScoreboardForm = () => {
       nextErrors.rewardTitle = 'This field is required.';
     }
     !pointsValue ? (nextErrors.points = 'you need to set points') : '';
-    !timeValue ? (nextErrors.time = 'you need to set Time') : '';
+    !endTime ? (nextErrors.time = 'you need to set Time') : '';
     setErrors(nextErrors);
     console.log(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
@@ -143,6 +152,8 @@ export const ScoreboardForm = () => {
             placeholder="Points"
             keyboardType="number-pad"
             autoCapitalize="none"
+            onChangeText={changedPin => setPointsValue(changedPin)}
+            value={pointsValue}
             style={styles.input}
             errorText={errors.rewardTitle}
           />
