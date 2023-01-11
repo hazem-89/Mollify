@@ -2,20 +2,19 @@ import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useState } from 'react';
 import {
   Dimensions,
-  Image,
   ImageBackground,
   StyleSheet,
-  View,
   Text,
+  View,
 } from 'react-native';
 import awardBadge from '../../assets/images/awardBadge.png';
+import SignButtonImage from '../../assets/images/sign.png';
 import woodSignLarge from '../../assets/images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import Scoreboard from './Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
-import SignButtonImage from '../../assets/images/sign.png';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -51,10 +50,10 @@ export default function RoomUI() {
     }
   }
   const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
+  // const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     imagesContainer: {
-      width: ScreenWidth,
+      width: '100%',
       maxWidth: ScreenWidth,
       flex: 1,
       flexDirection: 'row',
@@ -115,7 +114,7 @@ export default function RoomUI() {
   return (
     <>
       {!addTaskBtnClicked ? (
-        <View style={{ height: '100%', position: 'absolute' }}>
+        <View style={{ height: '100%' }}>
           <View style={styles.imagesContainer}>
             <ImageBackground
               source={woodSignLarge}
@@ -177,4 +176,3 @@ export default function RoomUI() {
     </>
   );
 }
-

@@ -1,8 +1,8 @@
-// import { useDimensions } from '@react-native-community/hooks';
 import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
+  ImageSourcePropType,
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
@@ -10,10 +10,10 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Draggable from '../components/Draggable';
 import RoomUI from '../components/RoomUI';
 import { useDatabaseContext } from '../util/context/DBContext';
-import { rooms, roomInterface } from '../util/itemObjects';
+import { rooms } from '../util/itemObjects';
 
 export default function RoomScreen() {
-  const [roomObject, setRoomObject] = useState<roomInterface>();
+  const [profileRoom, setProfileRoom] = useState<ImageSourcePropType>();
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const [aspectRatio, setAspectRatio] = useState<number>(ScreenWidth);
@@ -21,17 +21,15 @@ export default function RoomScreen() {
 
   const styles = StyleSheet.create({
     Background: {
-      // position: 'relative',
-      // overflowX: 'scroll',
+      // use aspectRatio to make the image fit the height like perfect while creating horizontal scroll
       height: ScreenHeight,
       width: ScreenHeight * aspectRatio,
+      minWidth: ScreenWidth,
     },
     SafeArea: {
       position: 'absolute',
+      zIndex: 2,
       width: ScreenWidth,
-      maxWidth: ScreenWidth,
-      height: ScreenHeight,
-      maxHeight: ScreenHeight,
     },
   });
 
@@ -40,8 +38,9 @@ export default function RoomScreen() {
       // Get the room id from the profile loggedInProfile, sort through the roomObject and render the image with matching id.
       console.log(loggedInProfile.room);
       const foundRoom = rooms.find(room => room.id === loggedInProfile.room);
-      if (foundRoom) {
-        setRoomObject(foundRoom);
+      if (foundRoom?.image) {
+        setProfileRoom(foundRoom.image);
+        // Calculate aspect ratio
         setAspectRatio(foundRoom.width / foundRoom.height);
       }
     }
@@ -49,17 +48,18 @@ export default function RoomScreen() {
 
   return (
     <>
+      {/* Use safeAreaView to keep RoomUI away from notches and cameras on phones. */}
       <SafeAreaView style={styles.SafeArea}>
-        <ScrollView horizontal={true}>
-          <ImageBackground
-            resizeMode="contain"
-            source={roomObject?.image}
-            style={styles.Background}
-          />
-          <Draggable />
-        </ScrollView>
         <RoomUI />
       </SafeAreaView>
+      <ScrollView horizontal={true}>
+        <ImageBackground
+          resizeMode="cover"
+          source={profileRoom}
+          style={styles.Background}
+        />
+        <Draggable />
+      </ScrollView>
     </>
   );
 }
