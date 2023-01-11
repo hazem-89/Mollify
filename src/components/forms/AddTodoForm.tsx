@@ -10,7 +10,7 @@ import { Text } from '../../components/Text';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useTasks } from '../../util/Context/TaskContext';
+import { useTasks } from '../../util/context/TaskContext';
 
 const CleaningTodo = [
   {
@@ -70,7 +70,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     container: {
       flex: 1,
       minHeight: smallScreen ? 380 : 400,
-      minWidth: smallScreen ? 550 : 500,
+      maxWidth: smallScreen ? 550 : 300,
       padding: smallScreen ? 40 : 50,
     },
     input: {
@@ -104,7 +104,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       justifyContent: 'center',
       backgroundColor: '#FF7A00',
       borderRadius: 500,
-      marginLeft: smallScreen ? 5 : 5,
+      marginLeft: 5,
     },
     AvatarContainerSelected: {
       width: smallScreen ? 50 : 100,
@@ -112,7 +112,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'green',
-      marginLeft: smallScreen ? 5 : 5,
+      marginRight: 10,
       borderRadius: 500,
     },
     icons: {
@@ -159,6 +159,8 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
         category,
         isDone: false,
         hasRequest: false,
+        //need to replace profile with the current profile.id
+        profileId: 'Lgq9YJnPLLezb1iE4xHQ',
       };
       addCleaningTask(newTodo);
       Alert.alert(
@@ -205,10 +207,10 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
           <View
             style={{
               flexDirection: 'row',
-              width: smallScreen ? 500 : 700,
+              width: smallScreen ? 300 : 500,
               alignItems: 'center',
               justifyContent: 'center',
-              marginTop: smallScreen ? 60 : 80,
+              marginTop: smallScreen ? 20 : 30,
             }}
           >
             {CleaningTodo?.map(todo => {

@@ -1,59 +1,59 @@
-import { useDimensions } from '@react-native-community/hooks';
-import React, { useState } from 'react';
+// import { useDimensions } from '@react-native-community/hooks';
+import React, { useEffect, useState } from 'react';
 import {
+  Dimensions,
   // Image,
   ImageBackground,
+  ImageSourcePropType,
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
-import roomImage from '../../assets/Images/roomExample.png';
 import RoomUI from '../components/RoomUI';
+import { useDatabaseContext } from '../util/context/DBContext';
+import { rooms } from '../util/itemObjects';
 
 export default function RoomScreen() {
-  const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600);
+  // const dimensions = useDimensions();
+  // const [smallScreen] = useState(dimensions.screen.height < 600);
+  const [profileRoom, setProfileRoom] = useState<ImageSourcePropType>();
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
+  const { loggedInProfile } = useDatabaseContext();
 
   const styles = StyleSheet.create({
-    WelcomeSign: {
-      justifyContent: 'center',
-      alignSelf: 'center',
-      width: smallScreen ? 350 : 450,
-      height: smallScreen ? 100 : 140,
-      top: 10,
-      marginBottom: 10,
-      zIndex: 5,
-    },
     Background: {
       position: 'relative',
-      width: '100%',
-      height: '100%',
-    },
-    tiger: {
-      position: 'absolute',
-      bottom: 0,
-      left: smallScreen ? '15%' : '18%',
-      flex: 1,
-      height: 180,
-      width: 130,
+      overflowX: 'scroll',
+      height: ScreenHeight,
     },
     SafeArea: {
       overflow: 'hidden',
       position: 'absolute',
-      width: '100%',
-      maxWidth: '100%',
-      height: '100%',
-      maxHeight: '100%',
+      width: ScreenWidth,
+      maxWidth: ScreenWidth,
+      height: ScreenHeight,
+      maxHeight: ScreenHeight,
       display: 'flex',
       alignItems: 'center',
       zIndex: 1,
     },
   });
 
+  useEffect(() => {
+    if (loggedInProfile) {
+      // Get the room id from the profile loggedInProfile, sort through the roomObject and render the image with matching id.
+      console.log(loggedInProfile.room);
+      const roomObject = rooms.find(room => room.id === loggedInProfile.room);
+      console.log(roomObject);
+      setProfileRoom(roomObject?.image);
+    }
+  }, [loggedInProfile]);
+
   return (
     <>
       {/* {currentUser && ( */}
       <>
-        <ImageBackground source={roomImage} style={styles.Background} />
+        <ImageBackground source={profileRoom} style={styles.Background} />
         <SafeAreaView style={styles.SafeArea}>
           <RoomUI />
         </SafeAreaView>

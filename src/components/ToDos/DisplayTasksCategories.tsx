@@ -69,31 +69,34 @@ export const DisplayTasksCategories = () => {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginTop: 30 }}>
-        <View style={styles.textView}>
-          <Text type="header">Tasks</Text>
+      {!btnClicked ? (
+        <View style={{ marginTop: 30 }}>
+          <View style={styles.textView}>
+            <Text type="header">Tasks</Text>
+          </View>
+          <View style={styles.categoriesContainer}>
+            {tasksCategories.map(taskCategory => {
+              return (
+                <View key={taskCategory.title} style={styles.categoryView}>
+                  <Button
+                    background={taskCategory.background}
+                    onPress={() => {
+                      handleClick('category', taskCategory.title);
+                    }}
+                  />
+                  <Text type="text">{taskCategory.title}</Text>
+                </View>
+              );
+            })}
+          </View>
         </View>
-        <View style={styles.categoriesContainer}>
-          {tasksCategories.map(taskCategory => {
-            return (
-              <View key={taskCategory.title} style={styles.categoryView}>
-                <Button
-                  background={taskCategory.background}
-                  onPress={() => {
-                    handleClick('category', taskCategory.title);
-                  }}
-                />
-                <Text type="text">{taskCategory.title}</Text>
-              </View>
-            );
-          })}
-        </View>
-      </View>
-      <FormModal
-        component={component}
-        onEmit={() => handleClick(undefined)}
-        text={text}
-      />
+      ) : (
+        <FormModal
+          component={component}
+          onEmit={() => handleClick(undefined)}
+          text={text}
+        />
+      )}
     </View>
   );
 };
