@@ -101,8 +101,12 @@ function Button({
       height: smallScreen ? 30 : 30,
     },
     DeleteTask: {
-      width: smallScreen ? 30 : 40,
-      height: smallScreen ? 30 : 40,
+      width: smallScreen ? 50 : 60,
+      height: smallScreen ? 50 : 60,
+    },
+    TaskNotification: {
+      width: smallScreen ? 40 : 50,
+      height: smallScreen ? 40 : 50,
     },
   });
 
@@ -157,7 +161,7 @@ function Button({
       setStyle(styles.GreenForms);
     } else if (background === 'TaskNotification') {
       setSource(TaskNotificationIcon);
-      setStyle(styles.DeleteTask);
+      setStyle(styles.TaskNotification);
     }
   }, [background]);
 
