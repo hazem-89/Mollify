@@ -3,20 +3,13 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import Button from '../buttons/Buttons';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../Text';
-import uuid from 'react-native-uuid';
-
-import {
-  doc,
-  updateDoc,
-  arrayUnion,
-  collection,
-  addDoc,
-} from 'firebase/firestore';
+import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebaseConfig';
 import { TextInput } from '../CustomInput';
 import PointsIcon from '../../../assets/Images/Icons/PointsIcon.png';
 import hourglass from '../../../assets/Images/Icons/hourglass.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useTasks } from '../../util/context/AddtoDBContext';
 
 type ErrorType = {
   rewardTitle?: string;
@@ -32,25 +25,11 @@ export const ScoreboardForm = () => {
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const { addRewardScore } = useTasks();
   const [state, setState] = useState({
     rewardTitle: '',
     selected: '',
   });
-
-  const addReward = async () => {
-    const newReward = {
-      title: state.rewardTitle,
-      points: pointsValue,
-      endTime,
-    };
-    try {
-      await addDoc(collection(db, 'Rewards'), {
-        ...newReward,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -77,7 +56,12 @@ export const ScoreboardForm = () => {
     console.log(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
-      addReward();
+      const newReward = {
+        title: state.rewardTitle,
+        points: pointsValue,
+        endTime,
+      };
+      addRewardScore(newReward);
       Alert.alert('Success!', `Title: ${state.rewardTitle}`);
     }
     if (Object.keys(nextErrors).length > 0) {
@@ -181,6 +165,7 @@ export const ScoreboardForm = () => {
             minimumDate={new Date()}
             minuteInterval={10}
           />
+          <Text type="errorText">{errors.time}</Text>
         </View>
         <View style={{ marginTop: smallScreen ? 10 : 20 }}>
           <Button background="GreenForms" text="Add" onPress={() => submit()} />

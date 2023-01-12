@@ -19,12 +19,14 @@ interface TaskContext {
   getTasks: () => Promise<any>;
   addCleaningTask: (newTodo: {}) => Promise<any>;
   deleteProfileTasks: (a: string) => Promise<any>;
+  addRewardScore: (newReward: {}) => Promise<any>;
 }
-const TasksContext = React.createContext<TaskContext>({
+const AddtoDBContext = React.createContext<TaskContext>({
   profileTasks: [],
   getTasks: async () => [],
   addCleaningTask: async () => {},
   deleteProfileTasks: async () => {},
+  addRewardScore: async () => {},
 });
 export default function (props: any) {
   const [profileTasks, setProfileTasks] = useState<Tasks[]>([]);
@@ -34,6 +36,15 @@ export default function (props: any) {
     try {
       await addDoc(collection(db, 'Tasks'), {
         ...newTask,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const addRewardScore = async (newRewardScore: {}) => {
+    try {
+      await addDoc(collection(db, 'RewardScore'), {
+        ...newRewardScore,
       });
     } catch (err) {
       console.log(err);
@@ -61,12 +72,14 @@ export default function (props: any) {
     getTasks,
     addCleaningTask,
     deleteProfileTasks,
+    addRewardScore,
   };
 
   return (
-    <TasksContext.Provider value={contextValue}>
+    <AddtoDBContext.Provider value={contextValue}>
       {props.children}
-    </TasksContext.Provider>
+    </AddtoDBContext.Provider>
   );
 }
-export const useTasks = () => useContext(TasksContext);
+export const useTasks = () => useContext(AddtoDBContext);
+
