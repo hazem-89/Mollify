@@ -14,13 +14,10 @@ import GreenButtonImage from '../../../assets/Images/GreenButton.png';
 import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
 import AddButtonImage from '../../../assets/Images/AddButton.png';
 import InfoButtonImage from '../../../assets/Images/info.png';
-import TodoButtonImage from '../../../assets/Images/todo.png';
 import BellButtonImage from '../../../assets/Images/bell.png';
 import CancelButton from '../../../assets/Images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/Images/trophy.png';
-import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
-import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
-import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
+import TodoButtonImage from '../../../assets/Images/todo.png';
 import ArrowButton from '../../../assets/Images/Polygon.png';
 import ReverseArrowButton from '../../../assets/Images/PolygonReverse.png';
 import DeleteIcon from '../../../assets/Images/Icons/DeleteIcon.png';
@@ -99,17 +96,13 @@ function Button({
       width: smallScreen ? 35 : 45,
       height: smallScreen ? 40 : 50,
     },
-    CategoriesStyle: {
-      width: smallScreen ? 40 : 60,
-      height: smallScreen ? 40 : 60,
-    },
     arrowStyle: {
       width: smallScreen ? 30 : 30,
       height: smallScreen ? 30 : 30,
     },
     DeleteTask: {
-      width: smallScreen ? 30 : 50,
-      height: smallScreen ? 30 : 50,
+      width: smallScreen ? 30 : 40,
+      height: smallScreen ? 30 : 40,
     },
   });
 
@@ -147,18 +140,6 @@ function Button({
     } else if (background === 'TrophyButtonImage') {
       setSource(TrophyButtonImage);
       setStyle(styles.trophyStyle);
-    } else if (background === 'SchoolTasks') {
-      setSource(SchoolTasksIcon);
-      setStyle(styles.CategoriesStyle);
-    } else if (background === 'SpecialTasks') {
-      setSource(SpecialTaskIcon);
-      setStyle(styles.CategoriesStyle);
-    } else if (background === 'Activities') {
-      setSource(ActivityIcon);
-      setStyle(styles.CategoriesStyle);
-    } else if (background === 'CleaningTasks') {
-      setSource(TodoButtonImage);
-      setStyle(styles.CategoriesStyle);
     } else if (background === 'ArrowButton') {
       setSource(ArrowButton);
       setStyle(styles.arrowStyle);

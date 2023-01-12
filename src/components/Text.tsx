@@ -31,7 +31,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   const styles = StyleSheet.create({
     text: {
       fontSize: smallScreen ? 12 : 14,
-      textAlign: 'center',
+      // textAlign: 'center',
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.4)',
     },

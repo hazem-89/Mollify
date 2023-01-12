@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import { Tasks } from '../../Interfaces';
 import PointsBackground from '../../../assets/Images/Icons/PointsBackground.png';
-import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
-import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
 import { useDimensions } from '@react-native-community/hooks';
 import colors from '../../constants/colors';
 import { Text } from '../../components/Text';
@@ -20,7 +18,6 @@ import Button from '../buttons/Buttons';
 import { useTasks } from '../../util/context/TaskContext';
 import { Confirm } from './Confirm';
 import FormModal from '../modals/FormModal';
-import { request } from 'express';
 import { setDoc, doc } from 'firebase/firestore';
 import { db } from '../../../firebaseConfig';
 interface Props {
@@ -28,6 +25,7 @@ interface Props {
 }
 
 const TaskCard = ({ task }: Props) => {
+  const { getTasks } = useTasks();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [parent, setParent] = useState(true);
@@ -54,6 +52,7 @@ const TaskCard = ({ task }: Props) => {
       try {
         await setDoc(doc(db, 'Tasks', task?.id), updateAcceptedReq);
         setTaskRequestStatus(status);
+        getTasks();
       } catch (err) {
         console.log(err);
       }
@@ -97,25 +96,20 @@ const TaskCard = ({ task }: Props) => {
 
   const styles = StyleSheet.create({
     CardContainer: {
-      flex: 1,
-      flexDirection: 'row',
       marginTop: 10,
-
       maxHeight: smallScreen ? 50 : 75,
-      alignItems: 'center',
-      marginLeft: smallScreen ? 30 : 50,
+      paddingHorizontal: 20,
     },
     TextView: {
       flex: 1,
-      maxWidth: smallScreen ? 250 : 300,
+      maxWidth: smallScreen ? 250 : 400,
       height: 50,
       justifyContent: 'center',
     },
     taskView: {
       flexDirection: 'row',
-      width: smallScreen ? 350 : 500,
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       borderBottomWidth: 1,
       borderBottomColor: colors.primary,
     },
@@ -188,8 +182,8 @@ const TaskCard = ({ task }: Props) => {
           style={{
             position: 'absolute',
             zIndex: 9999,
-            top: -10,
-            left: -40,
+            top: -15,
+            left: 0,
           }}
         >
           <Button
@@ -217,7 +211,7 @@ const TaskCard = ({ task }: Props) => {
                 <View
                   style={{
                     width: smallScreen ? 40 : 60,
-                    height: smallScreen ? 40 : 60,
+                    height: smallScreen ? 40 : 50,
                     alignItems: 'center',
                     justifyContent: 'center',
                   }}
@@ -225,22 +219,16 @@ const TaskCard = ({ task }: Props) => {
                   <Text type="todoList">{task.pointsValue}</Text>
                 </View>
               </ImageBackground>
-              {/* <ImageBackground
-                source={TimeBackground}
-                style={styles.TimeBackground}
-              > */}
               <View
                 style={{
-                  width: smallScreen ? 75 : 100,
+                  width: smallScreen ? 90 : 100,
                   height: smallScreen ? 40 : 50,
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
               >
                 <CountdownTimer date={endDate} />
-                {/* <Text type="todoList">{task.endTime}</Text> */}
               </View>
-              {/* </ImageBackground> */}
             </View>
           </Swipeable>
         </TouchableOpacity>
