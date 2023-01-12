@@ -19,15 +19,15 @@ import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
 const tasksCategories = [
   {
-    title: 'Cleaning tasks',
+    title: 'Room',
     background: TodoButtonImage,
   },
   {
-    title: 'Special tasks',
+    title: 'Special',
     background: SpecialTaskIcon,
   },
   {
-    title: 'School assignments',
+    title: 'School',
     background: SchoolTasksIcon,
   },
   {
@@ -66,19 +66,19 @@ export const DisplayTasksCategories = ({
       height: ScreenHeight,
       justifyContent: 'center',
       alignItems: 'center',
-      minWidth: smallScreen ? 160 : 250,
+      minWidth: smallScreen ? 150 : 200,
+      marginLeft: 25,
     },
     categoryView: {
-      maxWidth: 150,
-      minHeight: smallScreen ? 70 : 120,
-      // justifyContent: 'center',
+      minHeight: smallScreen ? 80 : 120,
       alignItems: 'center',
     },
     CategoryTitleBg: {
-      width: smallScreen ? 100 : 180,
-      height: smallScreen ? 60 : 107,
+      width: smallScreen ? 120 : 180,
+      height: smallScreen ? 71 : 107,
       alignItems: 'center',
       justifyContent: 'center',
+      marginLeft: 10,
     },
     CategoryDetail: {
       alignItems: 'center',
@@ -90,8 +90,8 @@ export const DisplayTasksCategories = ({
       height: smallScreen ? 30 : 70,
     },
     GoldenArrow: {
-      width: smallScreen ? 200 : 500,
-      height: smallScreen ? 50 : 200,
+      width: smallScreen ? 350 : 500,
+      height: smallScreen ? 150 : 200,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -145,7 +145,7 @@ export const DisplayTasksCategories = ({
             alignItems: 'center',
             justifyContent: 'center',
             flex: 1,
-            minHeight: 500,
+            minHeight: '50%',
           }}
         >
           <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>

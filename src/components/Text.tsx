@@ -38,10 +38,9 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
     headerText: {
       fontWeight: '600',
-      fontSize: smallScreen ? 18 : 20,
-      marginBottom: 12,
+      fontSize: smallScreen ? 16 : 20,
       fontFamily: 'Inika',
-      color: 'rgba(0,0,0,.4)',
+      color: 'rgb(0,0,0)',
     },
 
     subHeaderText: {

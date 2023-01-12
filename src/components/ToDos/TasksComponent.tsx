@@ -32,13 +32,13 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       case 'Activities':
         setSelectedForm(<AddTodoForm category="Activities" />);
         break;
-      case 'Cleaning tasks':
+      case 'Cleaning':
         setSelectedForm(<AddTodoForm category="Cleaning tasks" />);
         break;
-      case 'School assignments':
+      case 'School':
         setSelectedForm(<AddTodoForm category="School assignments" />);
         break;
-      case 'Special tasks':
+      case 'Special':
         setSelectedForm(<AddTodoForm category="Special tasks" />);
         break;
       default:
@@ -49,10 +49,11 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     container: {
-      width: smallScreen ? 500 : 650,
-      maxWidth: 700,
-      height: ScreenHeight,
-      marginTop: 50,
+      width: smallScreen ? 580 : 700,
+      marginTop: smallScreen ? 5 : 15,
+      padding: 20,
+      maxHeight: '95%',
+      zIndex: 10,
     },
     mainView: {
       // width: smallScreen ? 500 : 700,
@@ -63,11 +64,11 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       justifyContent: 'space-between',
     },
     icons: {
-      width: smallScreen ? 40 : 50,
-      height: smallScreen ? 40 : 50,
+      width: smallScreen ? 40 : 75,
+      height: smallScreen ? 40 : 75,
     },
     scrollView: {
-      marginTop: 50,
+      marginTop: smallScreen ? 50 : 90,
       width: '100%',
       minHeight: ScreenHeight,
       maxHeight: ScreenHeight,
@@ -87,7 +88,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
           )} */}
           <View style={styles.mainView}>
             <View style={styles.iconsView}>
-              <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 400 }}>
+              <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
               </View>
               <View
@@ -100,14 +101,13 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
               </View>
               <View
                 style={{
-                  width: smallScreen ? 75 : 100,
+                  width: smallScreen ? 100 : 100,
                   alignItems: 'center',
                 }}
               >
                 <Image style={styles.icons} source={TimBtnIcon} />
               </View>
             </View>
-            <Text>{category}</Text>
             <ScrollView style={styles.scrollView} horizontal={false}>
               <View style={{ paddingBottom: 600 }}>
                 {tasksFromDb?.map((task: Tasks) => (

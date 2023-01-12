@@ -13,7 +13,7 @@ import WelcomeSign from '../../assets/Images/WelcomeSign.png';
 import Button from '../components/buttons/Buttons';
 import { LoginForm } from '../components/forms/Login';
 import { SignUpForm } from '../components/forms/Signup';
-import SelectProfile from '../components/Menu/SelectProfile';
+import SelectProfile from '../components/menu/SelectProfile';
 
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
@@ -138,4 +138,3 @@ export default function StartScreen() {
     </>
   );
 }
-
