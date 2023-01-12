@@ -9,7 +9,7 @@ export default function App() {
   // Render the app
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar hidden style="auto" />
       {/* 
         Render the NavigationContainer component with the Main component as its child. 
         The NavigationContainer component is the root component for the navigation system,
