@@ -256,6 +256,7 @@ const TaskCard = ({ task }: Props) => {
       </TouchableOpacity>
 
       <View style={{ position: 'absolute', top: -10, left: '50%' }}>
+        {/* Maybe consider moving it so it doesn't end up in the scroll view */}
         <FormModal
           component={component}
           onEmit={() => handleClick(undefined)}
