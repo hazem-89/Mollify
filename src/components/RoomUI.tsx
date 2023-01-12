@@ -16,6 +16,7 @@ import FormModal from './modals/FormModal';
 import Scoreboard from './Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 import SignButtonImage from '../../assets/Images/sign.png';
+import { useNavigation } from '@react-navigation/native';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -26,6 +27,7 @@ import SignButtonImage from '../../assets/Images/sign.png';
 
 export default function RoomUI() {
   const { logout } = useLogin();
+  const navigation = useNavigation();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
@@ -38,7 +40,7 @@ export default function RoomUI() {
     setAddTaskBtnClicked(state);
     switch (state) {
       case 'displayTask':
-        setComponent(<DisplayTasksCategories />);
+        // setComponent(<DisplayTasksCategories />);
         setText('Tasks');
         break;
       case 'displayScoreboard':
@@ -50,6 +52,15 @@ export default function RoomUI() {
         break;
     }
   }
+  const handelNav = (category?: string) => {
+    // @ts-ignore
+    navigation.navigate('TasksCategoryPage', {
+      paramKey: {
+        category: category,
+        content: 'DisplayTasks',
+      },
+    });
+  };
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
@@ -145,7 +156,8 @@ export default function RoomUI() {
                 <Button
                   background="TodoButtonImage"
                   onPress={() => {
-                    handleClick('displayTask');
+                    // handleClick('displayTask');
+                    handelNav();
                   }}
                 />
                 <Button
