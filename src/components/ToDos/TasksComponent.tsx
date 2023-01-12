@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { useTasks } from '../../util/context/TaskContext';
+import { useTasks } from '../../util/context/AddtoDBContext';
 import { Tasks } from '../../Interfaces';
 import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
@@ -125,3 +125,4 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     </View>
   );
 };
+

@@ -14,7 +14,7 @@ import { Text } from '../../components/Text';
 import { CountdownTimer } from './CountDown';
 import { Swipeable } from 'react-native-gesture-handler';
 import Button from '../buttons/Buttons';
-import { useTasks } from '../../util/context/TaskContext';
+import { useTasks } from '../../util/context/AddtoDBContext';
 import { Confirm } from './Confirm';
 import FormModal from '../modals/FormModal';
 import { setDoc, doc } from 'firebase/firestore';
@@ -268,3 +268,4 @@ const TaskCard = ({ task }: Props) => {
 };
 
 export default TaskCard;
+
