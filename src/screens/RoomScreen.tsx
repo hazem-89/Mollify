@@ -74,9 +74,7 @@ export default function RoomScreen() {
         draggableCoords.x >= viewPortCoords.x + ScreenWidth * 0.7
       ) {
         // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
-        console.log(
-          'not moving and supposedly inside the right third of the screen',
-        );
+        console.log('not moving and inside the right third of the screen');
         setIsDragging(false);
       } else {
         console.log('not moving');
@@ -108,11 +106,15 @@ export default function RoomScreen() {
           style={styles.BackgroundImage}
         />
         {/* For each task render a draggable with .map */}
+        {/* {tasks.map((task) => ( */}
         <Draggable
+          // key={task.id}
+          // task={task}
           onMove={(moving: boolean, draggableCoords?: coordinates) =>
             handleMove(moving, draggableCoords)
           }
         />
+        {/* ))} */}
       </ScrollView>
       {isDragging && <Disposal show={isDragging} />}
     </View>
