@@ -19,12 +19,12 @@ export default function EnterProfile({
 }: EnterProfileProps) {
   const [PINState, setPINState] = useState('');
   const navigation = useNavigation();
-  const { storeAsyncData } = useDatabaseContext();
   const handleCancel = () => {
     if (onClose) {
       onClose();
     }
   };
+  const { storeAsyncData, setLoggedInProfile } = useDatabaseContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
@@ -49,6 +49,7 @@ export default function EnterProfile({
     if (PINState === selectedProfile.pin) {
       // Store the logged in profile in asyncStorage so data persists between app sessions
       storeAsyncData('loggedInProfile', selectedProfile);
+      setLoggedInProfile(selectedProfile);
       if (selectedProfile.parent) {
         // If the profile is parent then navigate to selectProfile but with parent view
         // (parent wont need to enter pin for other profiles and wont see own profile again)

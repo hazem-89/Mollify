@@ -1,27 +1,38 @@
 import { StyleSheet, View, Image } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import Button from '../../components/buttons/Buttons';
-import { Text } from '../../components/Text';
+import Button from '../buttons/Buttons';
+import { Text } from '../Text';
+import { ScoreboardForm } from '../forms/ScoreboardForm';
+import FormModal from '../modals/FormModal';
 import goldenBackground from '../../../assets/Images/goldenBadge.png';
 import greenBadge from '../../../assets/Images/greenBadge.png';
 
-const testList = [
-  {
-    title: 'Liseberg',
-    points: '100',
-    total: 'Total',
-  },
-];
-
 const Scoreboard = () => {
   const [open, setOpen] = useState(false);
+  const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const handleEmit = useCallback((value: undefined) => {
-    setBtnClicked(value); // This function will be called by the child component to emit a prop
-  }, []);
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [btnClicked, setAddScoreBtnClicked] = useState<string | undefined>();
+
+  function handleClick(state: string | undefined) {
+    setAddScoreBtnClicked(state);
+    switch (state) {
+      case 'displayScoreboardForm':
+        setComponent(<ScoreboardForm />);
+        break;
+      default:
+        setComponent(undefined);
+    }
+  }
+
+  const testList = [
+    {
+      title: 'Liseberg',
+      points: '100',
+      total: 'Total',
+    },
+  ];
 
   const styles = StyleSheet.create({
     Background: {
@@ -64,15 +75,15 @@ const Scoreboard = () => {
       alignItems: 'center',
     },
     textStyle: {
-      marginTop: open ? -100 : -300,
+      marginTop: open ? -200 : -200,
     },
     goldenStyle: {
       position: 'relative',
       height: open ? 220 : 100,
       ...(smallScreen &&
         open && {
-        height: 200,
-      }),
+          height: 200,
+        }),
       maxHeight: smallScreen ? 200 : 320,
       width: smallScreen ? 350 : 500,
       padding: 16,
@@ -127,6 +138,26 @@ const Scoreboard = () => {
             onPress={() => setOpen(false)}
           />
         </View>
+
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            background="AddButtonImage"
+            onPress={() => {
+              handleClick('displayScoreboardForm');
+            }}
+          />
+        </View>
+        <FormModal
+          component={component}
+          onEmit={() => handleClick(undefined)}
+        />
+
         {testList?.map(test => (
           <View style={styles.labelStyle}>
             <Text type="todoList">{test.title}</Text>
@@ -161,3 +192,4 @@ const Scoreboard = () => {
 };
 
 export default Scoreboard;
+

@@ -144,7 +144,9 @@ export default function RoomUI() {
             <ImageBackground source={awardBadge} style={styles.awardBadgeStyle}>
               <Button
                 background="TrophyButtonImage"
-                onPress={() => setBtnClicked(undefined)}
+                onPress={() => {
+                  handleClick('displayScoreboard');
+                }}
               />
             </ImageBackground>
             {/* <Image source={awardBadge} style={styles.awardBadgeStyle} /> */}
@@ -187,3 +189,4 @@ export default function RoomUI() {
     </>
   );
 }
+
