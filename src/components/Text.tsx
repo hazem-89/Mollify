@@ -39,9 +39,9 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
     headerText: {
       fontWeight: '600',
-      fontSize: smallScreen ? 16 : 20,
+      fontSize: smallScreen ? 30 : 40,
       fontFamily: 'Inika',
-      color: 'rgb(0,0,0)',
+      color: 'rgba(0,0,0, .5)',
     },
 
     subHeaderText: {
@@ -118,6 +118,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     Cancel: {
       color: '#fff',
       fontSize: smallScreen ? 10 : 12,
+      textAlign: 'center',
     },
     MenuTitle: {
       fontSize: smallScreen ? 20 : 30,

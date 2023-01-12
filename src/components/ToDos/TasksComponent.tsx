@@ -101,7 +101,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
               </View>
               <View
                 style={{
-                  width: smallScreen ? 100 : 100,
+                  width: 150,
                   alignItems: 'center',
                 }}
               >

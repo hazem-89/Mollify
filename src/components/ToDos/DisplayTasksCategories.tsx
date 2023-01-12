@@ -118,7 +118,13 @@ export const DisplayTasksCategories = () => {
                       />
                     )}
 
-                    <Text type="text">{taskCategory.title}</Text>
+                    <Text
+                      type={
+                        text && text === taskCategory.title ? 'header' : 'text'
+                      }
+                    >
+                      {taskCategory.title}
+                    </Text>
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
