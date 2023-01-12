@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
@@ -35,20 +35,9 @@ const tasksCategories = [
     background: ActivityIcon,
   },
 ];
-type DisplayTasksCategoriesProps = {
-  onClose?: () => void;
-};
-export const DisplayTasksCategories = ({
-  onClose,
-}: DisplayTasksCategoriesProps) => {
-  const [component, setComponent] = useState<ReactElement | undefined>();
+// This Render the categories buttons and the category task based on the chosen category that saved in the text state
+export const DisplayTasksCategories = () => {
   const [text, setText] = useState<string | undefined>();
-  const [btnClicked, setAddTaskBtnClicked] = useState<string | undefined>();
-  const [test, setTest] = useState<boolean>();
-  const handleCancel = () => {
-    setText(undefined);
-  };
-
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
@@ -59,7 +48,6 @@ export const DisplayTasksCategories = ({
       width: ScreenWidth,
       maxWidth: ScreenWidth,
       height: ScreenHeight,
-      // alignItems: 'flex-start',
       flexDirection: 'row',
     },
     categoriesContainer: {
@@ -121,10 +109,15 @@ export const DisplayTasksCategories = ({
                   style={styles.CategoryTitleBg}
                 >
                   <View style={styles.CategoryDetail}>
-                    <Image
-                      source={taskCategory.background}
-                      style={styles.CategoryIcon}
-                    />
+                    {text && text === taskCategory.title ? (
+                      <></>
+                    ) : (
+                      <Image
+                        source={taskCategory.background}
+                        style={styles.CategoryIcon}
+                      />
+                    )}
+
                     <Text type="text">{taskCategory.title}</Text>
                   </View>
                 </ImageBackground>
