@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 type TextProps = {
   type?: string;
-  children: string | undefined;
+  children: string | number | undefined;
   style?: StyleProp<TextStyle>[];
 };
 
@@ -17,6 +17,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [fontsLoaded] = useFonts({
     Inika: require('../../assets/fonts/Inika/Inika-Regular.ttf'),
+    DigitalNumbers: require('../../assets/fonts/DigitalNum/DigitalNumbers-Regular.ttf'),
   });
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -121,6 +122,20 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     MenuTitle: {
       fontSize: smallScreen ? 20 : 30,
     },
+    DigitalNum: {
+      minWidth: 100,
+      fontFamily: 'DigitalNumbers',
+      textAlign: 'center',
+      fontSize: smallScreen ? 14 : 18,
+      color: '#fff',
+    },
+    CountDownDays: {
+      minWidth: 30,
+      textAlign: 'center',
+      fontWeight: 'bold',
+      fontSize: smallScreen ? 20 : 25,
+      color: '#fff',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -149,6 +164,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.Cancel);
   } else if (type === 'MenuTitle') {
     textStyles.push(styles.MenuTitle);
+  } else if (type === 'DigitalNum') {
+    textStyles.push(styles.DigitalNum);
+  } else if (type === 'CountDownDays') {
+    textStyles.push(styles.CountDownDays);
   }
 
   textStyles = [...textStyles, ...style];
