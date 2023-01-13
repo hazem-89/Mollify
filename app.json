@@ -2,6 +2,7 @@
   "expo": {
     "name": "Mollify",
     "slug": "Mollify",
+    "owner": "mollify",
     "version": "1.0.0",
     "orientation": "landscape",
     "userInterfaceStyle": "automatic",
@@ -9,7 +10,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "plugins": [
       [
@@ -30,9 +31,12 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#000000"
+      },
+      "package": "com.mollify.testpublishapp",
+      "versionCode": 1
     },
+
     "web": {
       "favicon": "./assets/favicon.png"
     }
