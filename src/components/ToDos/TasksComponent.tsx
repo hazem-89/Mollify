@@ -125,4 +125,3 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     </View>
   );
 };
-
