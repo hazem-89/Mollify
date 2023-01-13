@@ -9,3 +9,13 @@ export interface Tasks {
   hasRequest: boolean;
   profileId: string;
 }
+
+export interface Rewards {
+  id: string;
+  rewardTitle: string;
+  pointsValue: string;
+  endTime: string;
+  isDone: boolean;
+  hasRequest: boolean;
+  asignedProfileId: string;
+}

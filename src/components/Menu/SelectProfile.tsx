@@ -106,7 +106,7 @@ const SelectProfile = () => {
           <View style={styles.ProfilesView}>
             {profiles.map((profile: DocumentData | undefined) => (
               <TouchableOpacity
-                key={profile?.name}
+                key={profile?.id}
                 onPress={() => handleClick('EnterPIN', profile)}
               >
                 <View style={styles.profile}>
@@ -133,3 +133,4 @@ const SelectProfile = () => {
 };
 
 export default SelectProfile;
+

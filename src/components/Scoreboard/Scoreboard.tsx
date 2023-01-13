@@ -7,6 +7,7 @@ import { ScoreboardForm } from '../forms/ScoreboardForm';
 import FormModal from '../modals/FormModal';
 import goldenBackground from '../../../assets/Images/goldenBadge.png';
 import greenBadge from '../../../assets/Images/greenBadge.png';
+import { useTasks } from '../../util/context/AddtoDBContext';
 
 const Scoreboard = () => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ const Scoreboard = () => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [btnClicked, setAddScoreBtnClicked] = useState<string | undefined>();
+  const { getRewards, profileRewards } = useTasks();
 
   function handleClick(state: string | undefined) {
     setAddScoreBtnClicked(state);
@@ -153,11 +155,12 @@ const Scoreboard = () => {
             }}
           />
         </View>
-        <FormModal
-          component={component}
-          onEmit={() => handleClick(undefined)}
-        />
-
+        <View style={{ marginBottom: 900 }}>
+          <FormModal
+            component={component}
+            onEmit={() => handleClick(undefined)}
+          />
+        </View>
         {testList?.map(test => (
           <View style={styles.labelStyle}>
             <Text type="todoList">{test.title}</Text>
