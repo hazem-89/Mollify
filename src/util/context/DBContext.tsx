@@ -39,24 +39,28 @@ export default function DatabaseProvider(props: any) {
 
   useEffect(() => {
     // retrieve the asyncstorage
-    if (currentUser?.uid) {
-      // currentUser exists
-      retrieveProfiles();
-      getAsyncData('loggedInProfile');
-    } else {
-      // currentUser doesn't exist
-      setLoggedInProfile(undefined);
-      storeAsyncData('loggedInProfile', []);
-      // @ts-ignore
-      navigation.navigate('StartScreen');
+    if (currentUser !== undefined) {
+      if (currentUser?.uid) {
+        console.log('currentUser exists');
+        retrieveProfiles();
+        getAsyncData('loggedInProfile');
+      } else {
+        console.log('currentUser does not exist');
+        setLoggedInProfile(undefined);
+        storeAsyncData('loggedInProfile', []);
+        // @ts-ignore
+        navigation.navigate('StartScreen');
+      }
     }
-    // Disable esling for deps cause it works as intended.
+    // Disable eslint for deps cause it works as intended.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   useEffect(() => {
-    if (loggedInProfile) {
+    if (loggedInProfile && 'room' in loggedInProfile) {
       console.log(loggedInProfile);
+      // @ts-ignore
+      navigation.navigate('RoomScreen');
     }
     // Disable esling for deps cause it works as intended.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,7 +80,10 @@ export default function DatabaseProvider(props: any) {
     if (key === 'loggedInProfile') {
       try {
         const jsonValue = await AsyncStorage.getItem(key);
-        if (jsonValue != null) setLoggedInProfile(JSON.parse(jsonValue));
+        if (jsonValue != null) {
+          setLoggedInProfile(JSON.parse(jsonValue));
+          console.log(JSON.parse(jsonValue));
+        }
       } catch (e) {
         console.log(e);
       }

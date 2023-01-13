@@ -2,13 +2,13 @@
 import { ImageSourcePropType } from 'react-native';
 
 /* Avatars */
-import TigerAvatar from '../../assets/Images/Avatars/Avatar-Tiger.png';
+import TigerAvatar from '../../assets/images/Avatars/Avatar-Tiger.png';
 
 /* Rooms */
-import loftBedsRoom from '../../assets/Images/rooms/loftBedsRoom.jpg';
-import teenFemininePurpleRoom from '../../assets/Images/rooms/teenFemininePurpleRoom.jpg';
-import plainNeutralRoom from '../../assets/Images/rooms/plainNeutralRoom.jpg';
-import pirateRoom from '../../assets/Images/rooms/pirateRoom.jpg';
+import loftBedsRoom from '../../assets/images/rooms/loftBedsRoom.jpg';
+import teenFemininePurpleRoom from '../../assets/images/rooms/teenFemininePurpleRoom.jpg';
+import plainNeutralRoom from '../../assets/images/rooms/plainNeutralRoom.jpg';
+import pirateRoom from '../../assets/images/rooms/pirateRoom.jpg';
 
 export interface assetInterface {
   id: string;
@@ -63,21 +63,34 @@ export const avatars: assetInterface[] = [
   },
 ];
 
-export const rooms: assetInterface[] = [
+export interface roomInterface extends assetInterface {
+  width: number;
+  height: number;
+}
+
+export const rooms: roomInterface[] = [
   {
     id: 'pirateRoom',
     image: pirateRoom,
+    width: 2398,
+    height: 1024,
   },
   {
     id: 'plainNeutralRoom',
     image: plainNeutralRoom,
+    width: 2276,
+    height: 1024,
   },
   {
     id: 'loftBedsRoom',
     image: loftBedsRoom,
+    width: 3124,
+    height: 1034,
   },
   {
     id: 'teenFemininePurpleRoom',
     image: teenFemininePurpleRoom,
+    width: 2304,
+    height: 1024,
   },
 ];

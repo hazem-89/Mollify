@@ -1,5 +1,4 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { useNavigation } from '@react-navigation/native';
 import { DocumentData } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -18,7 +17,6 @@ export default function EnterProfile({
   onClose,
 }: EnterProfileProps) {
   const [PINState, setPINState] = useState('');
-  const navigation = useNavigation();
   const handleCancel = () => {
     if (onClose) {
       onClose();
@@ -26,7 +24,7 @@ export default function EnterProfile({
   };
   const { storeAsyncData, setLoggedInProfile } = useDatabaseContext();
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -57,11 +55,6 @@ export default function EnterProfile({
 
         console.log('This is a parent profile');
         if (onClose) onClose();
-      } else {
-        // Here the user gets navigated to their room.
-        // Disabling the next line because all the item.targets are valid - that data just isn't getting picked up by TypeScript
-        // @ts-ignore
-        navigation.navigate('RoomScreen');
       }
     }
   };

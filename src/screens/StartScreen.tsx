@@ -7,14 +7,13 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import MainBackGround from '../../assets/Images/MainBackGround.png';
-import Tiger from '../../assets/Images/tiger-min.png';
-import WelcomeSign from '../../assets/Images/WelcomeSign.png';
+import MainBackGround from '../../assets/images/MainBackGround.png';
+import Tiger from '../../assets/images/tiger-min.png';
+import WelcomeSign from '../../assets/images/WelcomeSign.png';
 import Button from '../components/buttons/Buttons';
 import { LoginForm } from '../components/forms/Login';
 import { SignUpForm } from '../components/forms/Signup';
-import SelectProfile from '../components/Menu/SelectProfile';
-
+import SelectProfile from '../components/menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
 import { useLogin } from '../util/auth';
@@ -138,4 +137,3 @@ export default function StartScreen() {
     </>
   );
 }
-
