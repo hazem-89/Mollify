@@ -8,13 +8,13 @@ import {
   Image,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import PaperForm from '../../../assets/Images/paperFormTEMP.png';
+import PaperForm from '../../../assets/images/paperFormTEMP.png';
 import Button from '../buttons/Buttons';
-import SelectFormMenu from '../../../assets/Images/SelectFormMenu-1.png';
+import SelectFormMenu from '../../../assets/images/SelectFormMenu-1.png';
 import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
-import PointsBtnIcon from '../../../assets/Images/Icons/PointsBtnIcon.png';
-import TaskBtnIcon from '../../../assets/Images/Icons/TaskBtnIcon.png';
-import TimBtnIcon from '../../../assets/Images/Icons/TimBtnIcon.png';
+import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
+import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
+import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
 import { Text } from '../Text';
 
 type ModalProps = {

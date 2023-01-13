@@ -6,25 +6,25 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import Close from '../../../assets/Images/Close.png';
-import GoldenButton from '../../../assets/Images/GoldenButton.png';
-import GoogleButtonBroken from '../../../assets/Images/GoogleButtonBroken.png';
-import GoogleButton from '../../../assets/Images/GoogleButtonWithIcon.png';
-import GreenButtonImage from '../../../assets/Images/GreenButton.png';
-import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
-import AddButtonImage from '../../../assets/Images/AddButton.png';
-import InfoButtonImage from '../../../assets/Images/info.png';
-import TodoButtonImage from '../../../assets/Images/todo.png';
-import BellButtonImage from '../../../assets/Images/bell.png';
-import CancelButton from '../../../assets/Images/CancelButton.png';
-import TrophyButtonImage from '../../../assets/Images/trophy.png';
-import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
-import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
-import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
-import ArrowButton from '../../../assets/Images/Polygon.png';
-import ReverseArrowButton from '../../../assets/Images/PolygonReverse.png';
-import DeleteIcon from '../../../assets/Images/Icons/DeleteIcon.png';
-import DoneIcon from '../../../assets/Images/Icons/DoneIcon.png';
+import Close from '../../../assets/images/Close.png';
+import GoldenButton from '../../../assets/images/GoldenButton.png';
+import GoogleButtonBroken from '../../../assets/images/GoogleButtonBroken.png';
+import GoogleButton from '../../../assets/images/GoogleButtonWithIcon.png';
+import GreenButtonImage from '../../../assets/images/GreenButton.png';
+import TaskNotificationIcon from '../../../assets/images/Icons/TaskNotificationIcon.png';
+import AddButtonImage from '../../../assets/images/AddButton.png';
+import InfoButtonImage from '../../../assets/images/info.png';
+import TodoButtonImage from '../../../assets/images/todo.png';
+import BellButtonImage from '../../../assets/images/bell.png';
+import CancelButton from '../../../assets/images/CancelButton.png';
+import TrophyButtonImage from '../../../assets/images/trophy.png';
+import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
+import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
+import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
+import ArrowButton from '../../../assets/images/Polygon.png';
+import ReverseArrowButton from '../../../assets/images/PolygonReverse.png';
+import DeleteIcon from '../../../assets/images/Icons/DeleteIcon.png';
+import DoneIcon from '../../../assets/images/Icons/DoneIcon.png';
 import { Text } from '../Text';
 
 type ButtonProps = {

@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import TigerAvatar from '../../../assets/Images/Avatars/Avatar-Tiger.png';
-import SelectFormMenu from '../../../assets/Images/SelectFormMenu.png';
+import TigerAvatar from '../../../assets/images/Avatars/Avatar-Tiger.png';
+import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useDatabaseContext } from '../../util/context/DBContext';

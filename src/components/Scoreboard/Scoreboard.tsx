@@ -5,9 +5,9 @@ import Button from '../buttons/Buttons';
 import { Text } from '../Text';
 import { ScoreboardForm } from '../forms/ScoreboardForm';
 import FormModal from '../modals/FormModal';
-import goldenBackground from '../../../assets/Images/goldenBadge.png';
-import greenBadge from '../../../assets/Images/greenBadge.png';
 import { useTasks } from '../../util/context/AddtoDBContext';
+import goldenBackground from '../../../assets/images/goldenBadge.png';
+import greenBadge from '../../../assets/images/greenBadge.png';
 
 const Scoreboard = () => {
   const [open, setOpen] = useState(false);
@@ -84,8 +84,8 @@ const Scoreboard = () => {
       height: open ? 220 : 100,
       ...(smallScreen &&
         open && {
-          height: 200,
-        }),
+        height: 200,
+      }),
       maxHeight: smallScreen ? 200 : 320,
       width: smallScreen ? 350 : 500,
       padding: 16,

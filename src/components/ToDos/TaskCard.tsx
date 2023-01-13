@@ -8,9 +8,9 @@ import {
   Image,
 } from 'react-native';
 import { Tasks } from '../../Interfaces';
-import PointsBackground from '../../../assets/Images/Icons/PointsBackground.png';
-import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
-import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
+import PointsBackground from '../../../assets/images/Icons/PointsBackground.png';
+import TimeBackground from '../../../assets/images/Icons/TimeBackground.png';
+import TaskNotificationIcon from '../../../assets/images/Icons/TaskNotificationIcon.png';
 import { useDimensions } from '@react-native-community/hooks';
 import colors from '../../constants/colors';
 import { Text } from '../../components/Text';
