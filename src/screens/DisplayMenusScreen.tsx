@@ -7,7 +7,7 @@ import {
   View,
   Image,
 } from 'react-native';
-import DisplayTasksBackGround from '../../assets/Images/DisplayTasksBackGround.png';
+import DisplayTasksBackGround from '../../assets/images/DisplayTasksBackGround.png';
 import { CreateProfileForm } from '../components/forms/CreateProfile';
 import { DisplayTasksCategories } from '../components/ToDos/DisplayTasksCategories';
 import { TasksComponent } from '../components/ToDos/TasksComponent';

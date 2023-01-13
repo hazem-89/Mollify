@@ -10,13 +10,13 @@ import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
-import TasksCategoryTitleBackGround from '../../../assets/Images/TasksCategoryTitleBackGround.png';
-import TasksCategoryTitleBackGroundActive from '../../../assets/Images/TasksCategoryTitleBackGroundActive.png';
-import SchoolTasksIcon from '../../../assets/Images/Icons/SchoolTasksIcon.png';
-import TodoButtonImage from '../../../assets/Images/todo.png';
-import GoldenArrow from '../../../assets/Images/GoldenArrow.png';
-import SpecialTaskIcon from '../../../assets/Images/Icons/SpecialTaskIcon.png';
-import ActivityIcon from '../../../assets/Images/Icons/ActivityIcon.png';
+import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround.png';
+import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive.png';
+import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
+import TodoButtonImage from '../../../assets/images/todo.png';
+import GoldenArrow from '../../../assets/images/GoldenArrow.png';
+import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
+import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
 const tasksCategories = [
   {
     title: 'Room',

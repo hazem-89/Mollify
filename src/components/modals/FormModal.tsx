@@ -2,8 +2,8 @@ import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import PaperForm from '../../../assets/Images/paperFormTEMP.png';
-import SelectFormMenu from '../../../assets/Images/SelectFormMenu-1.png';
+import PaperForm from '../../../assets/images/paperFormTEMP.png';
+import SelectFormMenu from '../../../assets/images/SelectFormMenu-1.png';
 import { Text } from '../Text';
 
 type ModalProps = {

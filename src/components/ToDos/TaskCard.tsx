@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import { Tasks } from '../../Interfaces';
-import TaskTextBg from '../../../assets/Images/TaskTextBg.png';
+import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { CountdownTimer } from './CountDown';
