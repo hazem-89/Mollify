@@ -201,7 +201,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
 
   return (
     <View>
-      {category === 'Cleaning tasks' && (
+      {category === 'Room' && (
         <>
           <View
             style={{
@@ -265,7 +265,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
         </>
       )}
 
-      {category !== 'Cleaning tasks' && (
+      {category !== 'Room' && (
         <View style={styles.inputContainer}>
           <TextInput
             placeholder="Task title:"
@@ -339,4 +339,3 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     </View>
   );
 };
-

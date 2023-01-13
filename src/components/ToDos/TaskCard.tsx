@@ -58,9 +58,6 @@ const TaskCard = ({ task }: Props) => {
     }
   };
   const UpdateTaskStatus = (funName: string) => {
-    console.log('====================================');
-    console.log('bbbbbbbbbbbbbbbbbb');
-    console.log('====================================');
     handleTaskRequestStatus(true, funName);
   };
   const markTaskDone = (funName: string) => {

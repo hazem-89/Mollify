@@ -42,6 +42,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontSize: smallScreen ? 30 : 40,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0, .5)',
+      textAlign: 'center',
     },
 
     subHeaderText: {
