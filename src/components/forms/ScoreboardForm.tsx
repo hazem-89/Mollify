@@ -1,5 +1,5 @@
 import { Alert, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Button from '../buttons/Buttons';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../Text';
@@ -10,6 +10,8 @@ import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
 import hourglass from '../../../assets/images/Icons/hourglass.png';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { useTasks } from '../../util/context/AddtoDBContext';
+import Reward from '../Scoreboard/Reward';
+import { Rewards } from '../../Interfaces';
 
 type ErrorType = {
   rewardTitle?: string;
@@ -19,6 +21,10 @@ type ErrorType = {
 
 export const ScoreboardForm = () => {
   const dimensions = useDimensions();
+  const { getRewards, profileRewards } = useTasks();
+  // useEffect(() => {
+  //   getRewards();
+  // }, []);
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
@@ -26,11 +32,11 @@ export const ScoreboardForm = () => {
   const [pointsValue, setPointsValue] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const { addRewardScore } = useTasks();
+  const rewardsFromDb = profileRewards?.filter(reward => reward);
   const [state, setState] = useState({
     rewardTitle: '',
     selected: '',
   });
-
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -60,6 +66,8 @@ export const ScoreboardForm = () => {
         title: state.rewardTitle,
         points: pointsValue,
         endTime,
+        asignedProfileId: 'pjVcsYpBE46nGlDmHmO0',
+        isDone: false,
       };
       addRewardScore(newReward);
       Alert.alert('Success!', `Title: ${state.rewardTitle}`);
