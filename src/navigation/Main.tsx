@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import DisplayMenusScreen from '../screens/DisplayMenusScreen';
 import RoomScreen from '../screens/RoomScreen';
 import StartScreen from '../screens/StartScreen';
 // import { useLogin } from '../util/auth';
@@ -9,6 +10,7 @@ import StartScreen from '../screens/StartScreen';
 export type MainStackParams = {
   StartScreen: any;
   RoomScreen: any;
+  TasksCategoryPage: { category: string; content: string };
 };
 
 const MainStack = createStackNavigator<MainStackParams>();
@@ -30,6 +32,10 @@ export const Main = () => {
     >
       <MainStack.Screen name="StartScreen" component={StartScreen} />
       <MainStack.Screen name="RoomScreen" component={RoomScreen} />
+      <MainStack.Screen
+        name="TasksCategoryPage"
+        component={DisplayMenusScreen}
+      />
     </MainStack.Navigator>
   );
 };

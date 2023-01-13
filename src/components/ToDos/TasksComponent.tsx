@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { useTasks } from '../../util/context/AddtoDBContext';
 import { Tasks } from '../../Interfaces';
@@ -9,49 +9,17 @@ import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
 import { AddTodoForm } from '../forms/AddTodoForm';
 import Button from '../buttons/Buttons';
+import { ScrollView } from 'react-native-gesture-handler';
 type TasksCategoryPageProps = {
   category: string;
 };
 
-const mockedTasksCategory = [
-  {
-    category: 'Cleaning tasks',
-    endTime: 'Fri Jan 13 2023 12:00:00 GMT+0100 (CET)',
-    hasRequest: false,
-    id: 'a50bab81-b002-4e55-afe1-72d3760a3079',
-    isDone: false,
-    pointsValue: '50',
-    taskDescription: 'Put the dirty clothes in the laundry basket',
-    taskTitle: 'Dirty clothes',
-  },
-  {
-    category: 'Cleaning tasks',
-    endTime: 'Thu Jan 12 2023 12:00:00 GMT+0100 (CET)',
-    hasRequest: false,
-    id: 'fb1adc8c-ddc7-41ce-9c65-2824b0c77d25',
-    isDone: true,
-    pointsValue: '10',
-    taskDescription: 'Take the dishes to the kitchen',
-    taskTitle: 'Dirty Dishes',
-  },
-  {
-    category: 'Cleaning tasks',
-    endTime: 'Tue Jan 09 2023 12:00:00 GMT+0100 (CET)',
-    hasRequest: false,
-    id: 'aa918fad-646b-4958-9e3f-382e180123a4',
-    isDone: false,
-    pointsValue: '500',
-    taskDescription: 'Not too much not too little water',
-    taskTitle: 'Watering Plants',
-  },
-];
-export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
-  const { getTasks, profileTasks } = useTasks();
+export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   const [parent, setParent] = useState(true);
-
+  const { getTasks, profileTasks } = useTasks();
   useEffect(() => {
     getTasks();
-  }, []);
+  }, [category]);
   const tasksFromDb = profileTasks?.filter(task => task.category === category);
   const dimensions = useDimensions();
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
@@ -64,57 +32,63 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
       case 'Activities':
         setSelectedForm(<AddTodoForm category="Activities" />);
         break;
-      case 'Cleaning tasks':
+      case 'Cleaning':
         setSelectedForm(<AddTodoForm category="Cleaning tasks" />);
         break;
-      case 'School assignments':
+      case 'School':
         setSelectedForm(<AddTodoForm category="School assignments" />);
         break;
-      case 'Special tasks':
+      case 'Special':
         setSelectedForm(<AddTodoForm category="Special tasks" />);
         break;
       default:
     }
   }
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      position: 'relative',
-      minHeight: smallScreen ? 250 : 430,
-      minWidth: smallScreen ? 480 : 650,
-      padding: smallScreen ? 30 : 50,
-      marginTop: 20,
-      paddingBottom: 500,
+      width: smallScreen ? 580 : 700,
+      marginTop: smallScreen ? 5 : 15,
+      padding: 20,
+      maxHeight: '95%',
+      zIndex: 10,
     },
-    mainView: {},
+    mainView: {
+      // width: smallScreen ? 500 : 700,
+    },
     iconsView: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
-      maxWidth: smallScreen ? 350 : 550,
-      marginLeft: smallScreen ? 30 : 50,
     },
     icons: {
-      width: smallScreen ? 40 : 50,
-      height: smallScreen ? 40 : 50,
+      width: smallScreen ? 40 : 75,
+      height: smallScreen ? 40 : 75,
+    },
+    scrollView: {
+      marginTop: smallScreen ? 50 : 90,
+      width: '100%',
+      minHeight: ScreenHeight,
+      maxHeight: ScreenHeight,
     },
   });
   return (
     <View style={styles.container}>
       {!addTaskBtnClicked ? (
         <>
-          {parent && (
-            <View style={{ position: 'absolute', top: 0, left: 0 }}>
+          {/* {parent && (
+            <View style={{ position: 'absolute', top: 50, left: 0 }}>
               <Button
                 background="AddButtonImage"
                 onPress={() => handleClick(category)}
               />
             </View>
-          )}
+          )} */}
           <View style={styles.mainView}>
-            {/* <View style={styles.iconsView}>
-              <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>
+            <View style={styles.iconsView}>
+              <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
               </View>
               <View
@@ -127,18 +101,22 @@ export const TasksCategoryPage = ({ category }: TasksCategoryPageProps) => {
               </View>
               <View
                 style={{
-                  width: smallScreen ? 75 : 100,
+                  width: 150,
                   alignItems: 'center',
                 }}
               >
                 <Image style={styles.icons} source={TimBtnIcon} />
               </View>
-            </View> */}
-            {tasksFromDb?.map((task: Tasks) => (
-              <View key={task.id}>
-                <TaskCard task={task} />
+            </View>
+            <ScrollView style={styles.scrollView} horizontal={false}>
+              <View style={{ paddingBottom: 600 }}>
+                {tasksFromDb?.map((task: Tasks) => (
+                  <View key={task.id}>
+                    <TaskCard task={task} />
+                  </View>
+                ))}
               </View>
-            ))}
+            </ScrollView>
           </View>
         </>
       ) : (

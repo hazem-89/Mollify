@@ -1,20 +1,9 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
-import {
-  Animated,
-  ImageBackground,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/images/paperFormTEMP.png';
-import Button from '../buttons/Buttons';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu-1.png';
-import { TodoMenuHeader } from '../ToDos/TodoMenuSign';
-import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
-import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
-import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
 import { Text } from '../Text';
 
 type ModalProps = {
@@ -98,20 +87,6 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       right: smallScreen ? 10 : 20,
       top: smallScreen ? 30 : 50,
     },
-    iconsView: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      maxWidth: smallScreen ? 350 : 500,
-      marginLeft: smallScreen ? 30 : 50,
-      top: smallScreen ? 120 : 150,
-      left: smallScreen ? 65 : 100,
-      zIndex: 99,
-    },
-    icons: {
-      width: smallScreen ? 40 : 50,
-      height: smallScreen ? 40 : 50,
-    },
     mainTitleView: {
       alignItems: 'center',
       minHeight: smallScreen ? 65 : 85,
@@ -136,40 +111,6 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
             <View style={styles.mainTitleView}>
               <Text type="MenuTitle">{text}</Text>
             </View>
-            {/* {displayTasksOpen && (
-              <View
-                style={{
-                  position: 'absolute',
-                  left: '42%',
-                  top: 30,
-                }}
-              >
-                <Text>{text}</Text>
-              </View>
-            )} */}
-            {/* {displayTasksOpen && (
-              <View style={styles.iconsView}>
-                <View style={{ flex: 1, maxWidth: smallScreen ? 250 : 300 }}>
-                  <Image style={styles.icons} source={TaskBtnIcon} />
-                </View>
-                <View
-                  style={{
-                    width: smallScreen ? 50 : 60,
-                    alignItems: 'center',
-                  }}
-                >
-                  <Image style={styles.icons} source={PointsBtnIcon} />
-                </View>
-                <View
-                  style={{
-                    width: smallScreen ? 75 : 100,
-                    alignItems: 'center',
-                  }}
-                >
-                  <Image style={styles.icons} source={TimBtnIcon} />
-                </View>
-              </View>
-            )} */}
             <>
               <ScrollView style={styles.scrollView} horizontal={false}>
                 {componentState &&
@@ -177,9 +118,6 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
                     onClose: () => handleClose(),
                   })}
               </ScrollView>
-              {/* <View style={styles.btnPosition}>
-                <Button background="Close" onPress={() => handleClose()} />
-              </View> */}
             </>
           </ImageBackground>
         </Animated.View>

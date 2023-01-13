@@ -14,13 +14,10 @@ import GreenButtonImage from '../../../assets/images/GreenButton.png';
 import TaskNotificationIcon from '../../../assets/images/Icons/TaskNotificationIcon.png';
 import AddButtonImage from '../../../assets/images/AddButton.png';
 import InfoButtonImage from '../../../assets/images/info.png';
-import TodoButtonImage from '../../../assets/images/todo.png';
 import BellButtonImage from '../../../assets/images/bell.png';
 import CancelButton from '../../../assets/images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/images/trophy.png';
-import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
-import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
-import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
+import TodoButtonImage from '../../../assets/images/todo.png';
 import ArrowButton from '../../../assets/images/Polygon.png';
 import ReverseArrowButton from '../../../assets/images/PolygonReverse.png';
 import DeleteIcon from '../../../assets/images/Icons/DeleteIcon.png';
@@ -99,17 +96,17 @@ function Button({
       width: smallScreen ? 35 : 45,
       height: smallScreen ? 40 : 50,
     },
-    CategoriesStyle: {
-      width: smallScreen ? 40 : 60,
-      height: smallScreen ? 40 : 60,
-    },
     arrowStyle: {
       width: smallScreen ? 30 : 30,
       height: smallScreen ? 30 : 30,
     },
     DeleteTask: {
-      width: smallScreen ? 30 : 50,
-      height: smallScreen ? 30 : 50,
+      width: smallScreen ? 50 : 60,
+      height: smallScreen ? 50 : 60,
+    },
+    TaskNotification: {
+      width: smallScreen ? 40 : 50,
+      height: smallScreen ? 40 : 50,
     },
   });
 
@@ -147,18 +144,6 @@ function Button({
     } else if (background === 'TrophyButtonImage') {
       setSource(TrophyButtonImage);
       setStyle(styles.trophyStyle);
-    } else if (background === 'SchoolTasks') {
-      setSource(SchoolTasksIcon);
-      setStyle(styles.CategoriesStyle);
-    } else if (background === 'SpecialTasks') {
-      setSource(SpecialTaskIcon);
-      setStyle(styles.CategoriesStyle);
-    } else if (background === 'Activities') {
-      setSource(ActivityIcon);
-      setStyle(styles.CategoriesStyle);
-    } else if (background === 'CleaningTasks') {
-      setSource(TodoButtonImage);
-      setStyle(styles.CategoriesStyle);
     } else if (background === 'ArrowButton') {
       setSource(ArrowButton);
       setStyle(styles.arrowStyle);
@@ -176,7 +161,7 @@ function Button({
       setStyle(styles.GreenForms);
     } else if (background === 'TaskNotification') {
       setSource(TaskNotificationIcon);
-      setStyle(styles.DeleteTask);
+      setStyle(styles.TaskNotification);
     }
   }, [background]);
 

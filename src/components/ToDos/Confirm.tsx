@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { ReactElement, useState } from 'react';
 import { useTasks } from '../../util/context/AddtoDBContext';
 import Button from '../buttons/Buttons';
-
+import { Text } from '../Text';
 type ConfirmProps = {
   text: string;
   taskId: string;
@@ -10,6 +10,7 @@ type ConfirmProps = {
   funName?: string;
   onClose?: () => void;
   markTaskDone?: (a: string) => void;
+  UpdateReqStatus?: (a: string) => void;
 };
 export const Confirm = ({
   text,
@@ -17,16 +18,20 @@ export const Confirm = ({
   confirmBtnText,
   onClose,
   markTaskDone,
+  UpdateReqStatus,
   funName,
 }: ConfirmProps) => {
   const { deleteProfileTasks } = useTasks();
   const handleSubmit = () => {
     if (funName === 'delete') {
       deleteProfileTasks(taskId);
-    }
-    if (funName === 'updateTaskDone') {
+    } else if (funName === 'updateTaskDone') {
       if (markTaskDone) {
         markTaskDone(funName);
+      }
+    } else if (funName === 'updateRequest') {
+      if (UpdateReqStatus) {
+        UpdateReqStatus(funName);
       }
     }
     if (onClose) {
@@ -41,24 +46,24 @@ export const Confirm = ({
 
   const styles = StyleSheet.create({
     container: {
-      marginTop: 50,
+      // marginTop: 50,
       minWidth: 400,
-      minHeight: 200,
+      maxHeight: 200,
       flex: 1,
       alignItems: 'center',
-      // position: 'relative',
+      justifyContent: 'space-between',
     },
   });
   return (
     <View style={styles.container}>
-      <Text>{text}</Text>
+      <Text type="text">{text}</Text>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          flex: 1,
-          width: 400,
-          justifyContent: 'center',
+          width: 350,
+          marginVertical: 30,
+          justifyContent: 'space-between',
         }}
       >
         <Button

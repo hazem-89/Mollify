@@ -1,120 +1,157 @@
-import { StyleSheet, View, Image } from 'react-native';
-import React, { ReactElement, useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  ImageBackground,
+} from 'react-native';
+import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import Button from '../buttons/Buttons';
-import { useTasks } from '../../util/context/AddtoDBContext';
 import { Text } from '../../components/Text';
-import FormModal from '../modals/FormModal';
-import { TasksCategoryPage } from './TasksCategoryPage';
-
+import { TasksComponent } from './TasksComponent';
+import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround.png';
+import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive.png';
+import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
+import TodoButtonImage from '../../../assets/images/todo.png';
+import GoldenArrow from '../../../assets/images/GoldenArrow.png';
+import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
+import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
 const tasksCategories = [
   {
-    title: 'Cleaning tasks',
-    background: 'CleaningTasks',
+    title: 'Room',
+    background: TodoButtonImage,
   },
   {
-    title: 'Special tasks',
-    background: 'SpecialTasks',
+    title: 'Special',
+    background: SpecialTaskIcon,
   },
   {
-    title: 'School assignments',
-    background: 'SchoolTasks',
+    title: 'School',
+    background: SchoolTasksIcon,
   },
   {
     title: 'Activities',
-    background: 'Activities',
+    background: ActivityIcon,
   },
 ];
-type DisplayTasksCategoriesProps = {
-  onClose?: () => void;
-};
-export const DisplayTasksCategories = ({
-  onClose,
-}: DisplayTasksCategoriesProps) => {
-  const [component, setComponent] = useState<ReactElement | undefined>();
+// This Render the categories buttons and the category task based on the chosen category that saved in the text state
+export const DisplayTasksCategories = () => {
   const [text, setText] = useState<string | undefined>();
-  const [btnClicked, setAddTaskBtnClicked] = useState<string | undefined>();
-  const handleCancel = () => {
-    if (onClose) {
-      onClose();
-    }
-  };
-  function handleClick(state: string | undefined, category?: string) {
-    setAddTaskBtnClicked(state);
-    if (category) {
-      switch (state) {
-        case 'category':
-          setComponent(<TasksCategoryPage category={category} />);
-          setText(category);
-          break;
-        default:
-          setComponent(undefined);
-      }
-    }
-  }
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      minHeight: smallScreen ? 150 : 300,
-      MaxHeight: smallScreen ? 150 : 300,
-      MaxWidth: smallScreen ? 500 : 700,
-      minWidth: smallScreen ? 500 : 700,
-    },
-    textView: {
-      marginVertical: smallScreen ? 10 : 10,
+      width: ScreenWidth,
+      maxWidth: ScreenWidth,
+      height: ScreenHeight,
+      flexDirection: 'row',
     },
     categoriesContainer: {
-      flex: 1,
-      flexDirection: 'row',
-      paddingHorizontal: 20,
-      marginTop: smallScreen ? 0 : 40,
+      height: ScreenHeight,
+      justifyContent: 'center',
+      alignItems: 'center',
+      minWidth: smallScreen ? 150 : 200,
+      marginLeft: 25,
     },
     categoryView: {
-      flex: 1,
+      minHeight: smallScreen ? 80 : 120,
       alignItems: 'center',
-      justifyContent: 'space-between',
-      minHeight: smallScreen ? 70 : 100,
-      MaxWidth: smallScreen ? 30 : 50,
+    },
+    CategoryTitleBg: {
+      width: smallScreen ? 120 : 180,
+      height: smallScreen ? 71 : 107,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginLeft: 10,
+    },
+    CategoryDetail: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      maxHeight: smallScreen ? 60 : 105,
+    },
+    CategoryIcon: {
+      width: smallScreen ? 30 : 70,
+      height: smallScreen ? 30 : 70,
+    },
+    GoldenArrow: {
+      width: smallScreen ? 350 : 500,
+      height: smallScreen ? 150 : 200,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 
   return (
     <View style={styles.container}>
-      {!btnClicked ? (
-        <View style={{ marginTop: 30 }}>
-          <View style={styles.categoriesContainer}>
-            {tasksCategories.map(taskCategory => {
-              return (
-                <View key={taskCategory.title} style={styles.categoryView}>
-                  <Button
-                    background={taskCategory.background}
-                    onPress={() => {
-                      handleClick('category', taskCategory.title);
-                    }}
-                  />
-                  <Text type="text">{taskCategory.title}</Text>
-                </View>
-              );
-            })}
+      <View style={styles.categoriesContainer}>
+        {tasksCategories.map(taskCategory => {
+          return (
+            <View key={taskCategory.title} style={styles.categoryView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setText(
+                    text && text === taskCategory.title
+                      ? undefined
+                      : taskCategory.title,
+                  );
+                }}
+              >
+                <ImageBackground
+                  source={
+                    text && text === taskCategory.title
+                      ? TasksCategoryTitleBackGroundActive
+                      : TasksCategoryTitleBackGround
+                  }
+                  style={styles.CategoryTitleBg}
+                >
+                  <View style={styles.CategoryDetail}>
+                    {text && text === taskCategory.title ? (
+                      <></>
+                    ) : (
+                      <Image
+                        source={taskCategory.background}
+                        style={styles.CategoryIcon}
+                      />
+                    )}
+
+                    <Text
+                      type={
+                        text && text === taskCategory.title ? 'header' : 'text'
+                      }
+                    >
+                      {taskCategory.title}
+                    </Text>
+                  </View>
+                </ImageBackground>
+              </TouchableOpacity>
+            </View>
+          );
+        })}
+      </View>
+      {text ? (
+        <>
+          <View style={{ flex: 1 }}>
+            <TasksComponent category={text} />
           </View>
-          <View style={{ marginTop: 40 }}>
-            <Button
-              background="Cancel"
-              onPress={() => handleCancel()}
-              text="Cancel"
-            />
-          </View>
-        </View>
+        </>
       ) : (
-        <FormModal
-          component={component}
-          onEmit={() => handleClick(undefined)}
-          text={text}
-        />
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            minHeight: '50%',
+          }}
+        >
+          <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
+            <Text type="header">Pleas Select a Category</Text>
+          </ImageBackground>
+        </View>
       )}
     </View>
   );
 };
-
