@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
@@ -17,6 +17,7 @@ import TodoButtonImage from '../../../assets/images/todo.png';
 import GoldenArrow from '../../../assets/images/GoldenArrow.png';
 import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
+import Button from '../buttons/Buttons';
 const tasksCategories = [
   {
     title: 'Room',
@@ -45,6 +46,7 @@ export const DisplayTasksCategories = () => {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
+  const [test, setTest] = useState(false);
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     container: {
@@ -56,18 +58,22 @@ export const DisplayTasksCategories = () => {
     },
     categoriesContainer: {
       height: ScreenHeight,
-      justifyContent: 'center',
+      // justifyContent: 'center',
+      marginTop: smallScreen ? 30 : 50,
       alignItems: 'center',
       minWidth: smallScreen ? 150 : 200,
       marginLeft: 25,
     },
     categoryView: {
       minHeight: smallScreen ? 80 : 120,
-      alignItems: 'center',
+      // alignSelf: 'flex-start',
+    },
+    categoryViewHidden: {
+      display: 'none',
     },
     CategoryTitleBg: {
-      width: smallScreen ? 120 : 180,
-      height: smallScreen ? 71 : 107,
+      width: smallScreen ? 140 : 195,
+      height: smallScreen ? 85 : 120,
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: 10,
@@ -94,7 +100,14 @@ export const DisplayTasksCategories = () => {
       <View style={styles.categoriesContainer}>
         {tasksCategories.map(taskCategory => {
           return (
-            <View key={taskCategory.title} style={styles.categoryView}>
+            <View
+              key={taskCategory.title}
+              style={
+                text && text !== taskCategory.title
+                  ? styles.categoryViewHidden
+                  : styles.categoryView
+              }
+            >
               <TouchableOpacity
                 onPress={() => {
                   setText(
@@ -163,6 +176,15 @@ export const DisplayTasksCategories = () => {
           );
         })}
       </View>
+      {text && (
+        <View style={{ position: 'absolute', bottom: 40, left: 30 }}>
+          <Button
+            background="Cancel"
+            text="All categories"
+            onPress={() => setText(undefined)}
+          />
+        </View>
+      )}
       {text ? (
         <>
           <View style={{ flex: 1 }}>
