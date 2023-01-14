@@ -144,6 +144,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: 'rgba(0,0,0, .5)',
       textAlign: 'center',
+      maxWidth: smallScreen ? 100 : 150,
     },
   });
 
