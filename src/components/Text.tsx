@@ -31,10 +31,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
   const styles = StyleSheet.create({
     text: {
-      fontSize: smallScreen ? 12 : 14,
+      fontSize: smallScreen ? 14 : 16,
       // textAlign: 'center',
       fontFamily: 'Inika',
-      color: 'rgba(0,0,0,.4)',
+      color: 'rgba(0,0,0,.6)',
     },
 
     headerText: {
