@@ -1,15 +1,26 @@
 import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
+import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
 import { AddTodoForm } from '../forms/AddTodoForm';
 import Button from '../buttons/Buttons';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Text } from '../../components/Text';
+import AddButtonImage from '../../../assets/images/AddButton.png';
+
 import { loadAsync } from 'expo-font';
 
 type TasksCategoryPageProps = {
@@ -55,7 +66,12 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   }, [category]);
 
   function handleClick(state: string | undefined) {
-    setSelectedForm(<AddTodoForm category={category} />);
+    setSelectedForm(
+      <AddTodoForm
+        category={category}
+        setAddTaskBtnClicked={setAddTaskBtnClicked}
+      />,
+    );
     setAddTaskBtnClicked(state);
   }
 
@@ -91,12 +107,42 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       {!addTaskBtnClicked ? (
         <>
           {parent && (
-            <View style={{ position: 'absolute', top: 0, left: 150 }}>
-              <Button
-                background="AddButtonImage"
-                onPress={() => handleClick(category)}
-              />
-            </View>
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: smallScreen ? 120 : 160,
+                left: smallScreen ? -135 : -180,
+              }}
+              onPress={() => handleClick(category)}
+            >
+              <ImageBackground
+                source={CountDownGreenBg}
+                style={{
+                  alignItems: 'center',
+                  width: smallScreen ? 130 : 180,
+                  height: smallScreen ? 80 : 110,
+                  justifyContent: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 10,
+                  }}
+                >
+                  <Image
+                    source={AddButtonImage}
+                    style={{
+                      width: smallScreen ? 40 : 50,
+                      height: smallScreen ? 40 : 50,
+                    }}
+                  />
+                  <Text type="text"> Add A Task</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
           )}
           <View style={styles.mainView}>
             <View style={styles.iconsView}>
