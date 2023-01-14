@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, DocumentData } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { db } from '../../../firebaseConfig';
 import { useLogin } from '../../util/auth';
-import { useDatabaseContext } from '../../util/context/DBContext';
+import { useDataContext } from '../../util/context/DataContext';
 import { avatars, rooms } from '../../util/itemObjects';
 import Button from '../buttons/Buttons';
 import Carousel from '../Carousel';
@@ -31,7 +31,7 @@ export const CreateProfileForm = ({
 }: CreateProfileProps) => {
   // const dimensions = useDimensions();
   const { currentUser } = useLogin();
-  const { retrieveProfiles } = useDatabaseContext();
+  const { retrieveFSData, setProfiles } = useDataContext();
   const [state, setState] = useState({
     name: '',
     pin: '',
@@ -47,7 +47,6 @@ export const CreateProfileForm = ({
       room: state.room,
       mainUserId: currentUser?.uid,
     };
-
     try {
       (profilesExist
         ? addDoc(collection(db, 'profiles'), newProfile)
@@ -55,7 +54,13 @@ export const CreateProfileForm = ({
           parent: true,
           ...newProfile,
         })
-      ).then(retrieveProfiles());
+      ).then(
+        retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
+          (data: DocumentData[]) => {
+            if (data) setProfiles(data);
+          },
+        ),
+      );
     } catch (err) {
       console.log(err);
     }

@@ -1,37 +1,38 @@
+import { useDimensions } from '@react-native-community/hooks';
+import { doc, setDoc } from 'firebase/firestore';
 import React, { ReactElement, useState } from 'react';
 import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
   View,
-  Animated,
-  Image,
 } from 'react-native';
-import { Tasks } from '../../Interfaces';
-import TaskTextBg from '../../../assets/images/TaskTextBg.png';
-import { useDimensions } from '@react-native-community/hooks';
-import { Text } from '../../components/Text';
-import { CountdownTimer } from './CountDown';
 import { Swipeable } from 'react-native-gesture-handler';
-import Button from '../buttons/Buttons';
-import { useTasks } from '../../util/context/AddtoDBContext';
-import { Confirm } from './Confirm';
-import FormModal from '../modals/FormModal';
-import { setDoc, doc } from 'firebase/firestore';
+import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import { db } from '../../../firebaseConfig';
+import { Text } from '../../components/Text';
+import { Tasks } from '../../Interfaces';
+// import { useTasks } from '../../util/context/AddtoDBContext';
+import { useDataContext } from '../../util/context/DataContext';
+import Button from '../buttons/Buttons';
+import FormModal from '../modals/FormModal';
+import { Confirm } from './Confirm';
+import { CountdownTimer } from './CountDown';
+
 interface Props {
   task: Tasks;
 }
 
 const TaskCard = ({ task }: Props) => {
-  const { getTasks } = useTasks();
+  const { retrieveFSData, setTasks } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const [parent, setParent] = useState(false);
+  const [parent, setParent] = useState(true);
   const [swipeOn, setSwipeOn] = useState(false);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [taskRequestStatus, setTaskRequestStatus] = useState(task.hasRequest);
+
   let updateAcceptedReq = {};
   const handleTaskRequestStatus = async (status: boolean, funName: string) => {
     if (funName === 'updateRequest') {
@@ -51,7 +52,12 @@ const TaskCard = ({ task }: Props) => {
       try {
         await setDoc(doc(db, 'Tasks', task?.id), updateAcceptedReq);
         setTaskRequestStatus(status);
-        getTasks();
+        // Replace Lgq9YJnPLLezb1iE4xHQ with actual id.
+        retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       } catch (err) {
         console.log(err);
       }
@@ -260,7 +266,7 @@ const TaskCard = ({ task }: Props) => {
         <FormModal
           component={component}
           onEmit={() => handleClick(undefined)}
-          // text="confirm"
+        // text="confirm"
         />
       </View>
     </View>

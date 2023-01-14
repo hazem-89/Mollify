@@ -1,21 +1,20 @@
-import { StyleSheet, View, Image } from 'react-native';
-import React, { ReactElement, useCallback, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import Button from '../buttons/Buttons';
-import { Text } from '../Text';
-import { ScoreboardForm } from '../forms/ScoreboardForm';
-import FormModal from '../modals/FormModal';
-import { useTasks } from '../../util/context/AddtoDBContext';
+import React, { ReactElement, useState } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
 import goldenBackground from '../../../assets/images/goldenBadge.png';
 import greenBadge from '../../../assets/images/greenBadge.png';
+import Button from '../buttons/Buttons';
+import { ScoreboardForm } from '../forms/ScoreboardForm';
+import FormModal from '../modals/FormModal';
+import { Text } from '../Text';
 
 const Scoreboard = () => {
   const [open, setOpen] = useState(false);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setAddScoreBtnClicked] = useState<string | undefined>();
-  const { getRewards, profileRewards } = useTasks();
+  // const { getRewards, profileRewards } = useTasks();
 
   function handleClick(state: string | undefined) {
     setAddScoreBtnClicked(state);
@@ -195,4 +194,3 @@ const Scoreboard = () => {
 };
 
 export default Scoreboard;
-

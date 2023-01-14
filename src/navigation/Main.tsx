@@ -4,7 +4,7 @@ import DisplayMenusScreen from '../screens/DisplayMenusScreen';
 import RoomScreen from '../screens/RoomScreen';
 import StartScreen from '../screens/StartScreen';
 // import { useLogin } from '../util/auth';
-// import { useDatabaseContext } from '../util/context/DBContext';
+// import { useDataContext } from '../util/context/DBContext';
 
 // Define the parameters that can be passed to each screen in the stack
 export type MainStackParams = {
@@ -16,7 +16,7 @@ export type MainStackParams = {
 const MainStack = createStackNavigator<MainStackParams>();
 
 export const Main = () => {
-  // const { loggedInProfile } = useDatabaseContext();
+  // const { loggedInProfile } = useDataContext();
   // const { currentUser } = useLogin();
 
   return (

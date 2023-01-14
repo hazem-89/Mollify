@@ -13,7 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Disposal from '../components/room/Disposal';
 import Draggable from '../components/room/Draggable';
 import RoomUI from '../components/RoomUI';
-import { useDatabaseContext } from '../util/context/DBContext';
+import { useDataContext } from '../util/context/DataContext';
 import { rooms } from '../util/itemObjects';
 
 export interface coordinates {
@@ -32,7 +32,7 @@ export default function RoomScreen() {
     x: 0,
     y: 0,
   });
-  const { loggedInProfile } = useDatabaseContext();
+  const { loggedInProfile } = useDataContext();
 
   const styles = StyleSheet.create({
     BackgroundImage: {

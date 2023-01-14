@@ -1,8 +1,9 @@
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import React, { ReactElement, useState } from 'react';
-import { useTasks } from '../../util/context/AddtoDBContext';
+import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { Text } from '../Text';
+
 type ConfirmProps = {
   text: string;
   taskId: string;
@@ -12,6 +13,7 @@ type ConfirmProps = {
   markTaskDone?: (a: string) => void;
   UpdateReqStatus?: (a: string) => void;
 };
+
 export const Confirm = ({
   text,
   taskId,
@@ -21,10 +23,11 @@ export const Confirm = ({
   UpdateReqStatus,
   funName,
 }: ConfirmProps) => {
-  const { deleteProfileTasks } = useTasks();
+  const { deleteDocFromFS } = useDataContext();
+
   const handleSubmit = () => {
     if (funName === 'delete') {
-      deleteProfileTasks(taskId);
+      deleteDocFromFS('Tasks', taskId);
     } else if (funName === 'updateTaskDone') {
       if (markTaskDone) {
         markTaskDone(funName);
@@ -54,6 +57,7 @@ export const Confirm = ({
       justifyContent: 'space-between',
     },
   });
+
   return (
     <View style={styles.container}>
       <Text type="text">{text}</Text>
@@ -80,4 +84,3 @@ export const Confirm = ({
     </View>
   );
 };
-
