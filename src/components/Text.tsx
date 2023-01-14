@@ -138,6 +138,13 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontSize: smallScreen ? 20 : 25,
       color: '#fff',
     },
+    categoryTitles: {
+      fontWeight: '600',
+      fontSize: smallScreen ? 18 : 25,
+      fontFamily: 'Inika',
+      color: 'rgba(0,0,0, .5)',
+      textAlign: 'center',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -170,6 +177,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.DigitalNum);
   } else if (type === 'CountDownDays') {
     textStyles.push(styles.CountDownDays);
+  } else if (type === 'categoryTitles') {
+    textStyles.push(styles.categoryTitles);
   }
 
   textStyles = [...textStyles, ...style];
