@@ -44,6 +44,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       return 0;
     },
   );
+
   const sortedTasks = dateSortedTask.sort((a: { hasRequest: any }) =>
     a.hasRequest ? 1 : -1,
   );
@@ -83,9 +84,6 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       maxHeight: '95%',
       zIndex: 10,
     },
-    mainView: {
-      // width: smallScreen ? 500 : 700,
-    },
     iconsView: {
       flex: 1,
       flexDirection: 'row',
@@ -111,7 +109,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
               style={{
                 position: 'absolute',
                 top: smallScreen ? 120 : 160,
-                left: smallScreen ? -135 : -180,
+                left: smallScreen ? -135 : -185,
               }}
               onPress={() => handleClick(category)}
             >
@@ -144,7 +142,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
               </ImageBackground>
             </TouchableOpacity>
           )}
-          <View style={styles.mainView}>
+          <View>
             <View style={styles.iconsView}>
               <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
@@ -166,6 +164,19 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                 <Image style={styles.icons} source={TimBtnIcon} />
               </View>
             </View>
+
+            {!tasksFromDb.length && (
+              <View
+                style={{
+                  alignItems: 'center',
+                  marginTop: smallScreen ? 145 : 215,
+                  height: ScreenHeight,
+                }}
+              >
+                <Text type="header">There is no tasks to display</Text>
+              </View>
+            )}
+
             <ScrollView style={styles.scrollView} horizontal={false}>
               <View style={{ paddingBottom: 600 }}>
                 {sortedTasks?.map((task: Tasks) => (

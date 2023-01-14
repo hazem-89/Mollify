@@ -6,7 +6,7 @@ import {
   Image,
   ImageBackground,
 } from 'react-native';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -20,6 +20,7 @@ import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
 import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
 import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
+import InputBg from '../../../assets/images/InputBg.png';
 
 import { useDataContext } from '../../util/context/DataContext';
 
@@ -73,6 +74,8 @@ export const AddTodoForm = ({
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
+  const [titleInputExample, setTitleInputExample] = useState('');
+  const [descriptionInputExample, setDescriptionInputExample] = useState('');
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [state, setState] = useState({
@@ -84,6 +87,31 @@ export const AddTodoForm = ({
   const test = () => {
     setAddTaskBtnClicked(undefined);
   };
+  useEffect(() => {
+    switch (category) {
+      case 'Special':
+        setTitleInputExample('Inter a title: E.g. Baby site');
+        setDescriptionInputExample(
+          'Inter a description: E.g. Baby site your baby brother for 20 min',
+        );
+        break;
+      case 'School':
+        setTitleInputExample('Inter a title: E.g. Math exercises');
+        setDescriptionInputExample(
+          'Inter a description: E.g. Practice multiplication for 1 hour',
+        );
+        break;
+      case 'Activities':
+        setTitleInputExample('Inter a title: E.g. Dance Practice');
+        setDescriptionInputExample(
+          'Inter a description: E.g. Practice dancing 1 hour',
+        );
+        break;
+
+      default:
+        break;
+    }
+  }, []);
   const styles = StyleSheet.create({
     container: {
       // maxWidth: smallScreen ? 580 : 700,
@@ -94,13 +122,13 @@ export const AddTodoForm = ({
       justifyContent: 'center',
     },
     input: {
-      justifyContent: 'center',
-      maxHeight: 40,
-      marginTop: smallScreen ? 20 : 30,
-      borderBottomColor: colors.primary,
-      borderBottomWidth: 1,
-      width: smallScreen ? 250 : 350,
-      alignItems: 'flex-start',
+      // justifyContent: 'center',
+      // maxHeight: 40,
+      // marginTop: smallScreen ? 20 : 30,
+      // borderBottomColor: colors.primary,
+      // borderBottomWidth: 1,
+      width: smallScreen ? 300 : 400,
+      // alignItems: 'flex-start',
     },
     PointsInput: {
       width: smallScreen ? 80 : 100,
@@ -112,9 +140,7 @@ export const AddTodoForm = ({
     TimePointsContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
-      marginVertical: smallScreen ? 0 : 20,
-      // maxWidth: 300,
-      // width: smallScreen ? 580 : 700,
+      marginVertical: smallScreen ? 15 : 30,
     },
     TimePointView: {
       width: smallScreen ? 150 : 200,
@@ -126,29 +152,33 @@ export const AddTodoForm = ({
       height: smallScreen ? 95 : 110,
       alignItems: 'center',
       justifyContent: 'center',
-      // backgroundColor: '#FF7A00',
       borderRadius: 500,
       marginLeft: 20,
       marginBottom: 10,
     },
     icons: {
-      width: smallScreen ? 25 : 40,
-      height: smallScreen ? 40 : 70,
+      width: smallScreen ? 40 : 55,
+      minHeight: smallScreen ? 80 : 90,
+      maxHeight: smallScreen ? 65 : 120,
       marginRight: 10,
     },
     CleaningTasksInfo: {
-      // maxHeight: 100,
       maxWidth: smallScreen ? 150 : 200,
       position: 'absolute',
-      left: smallScreen ? -270 : -280,
+      left: smallScreen ? -220 : -280,
       top: smallScreen ? 110 : 140,
     },
     OtherTasksInfo: {
-      // maxHeight: 100,
       maxWidth: smallScreen ? 150 : 200,
       position: 'absolute',
-      left: smallScreen ? -300 : -350,
-      top: smallScreen ? 60 : 140,
+      left: smallScreen ? -250 : -280,
+      top: smallScreen ? 60 : 110,
+    },
+    InputBg: {
+      width: smallScreen ? 350 : 500,
+      height: smallScreen ? 65 : 90,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 
@@ -307,29 +337,33 @@ export const AddTodoForm = ({
             <View style={styles.OtherTasksInfo}>
               <Text type="MenuTitle">Here you can Add a {category} task</Text>
             </View>
-            <TextInput
-              placeholder="Task title:"
-              value={state.taskTitle}
-              onChangeText={(text: string) =>
-                setState({ ...state, taskTitle: text })
-              }
-              errorText={errors.taskTitle}
-              keyboardType="default"
-              autoCapitalize="none"
-              impStyle={styles.input}
-            />
-            <TextInput
-              placeholder="Task description:"
-              value={state.taskDescription}
-              onChangeText={(text: string) =>
-                setState({ ...state, taskDescription: text })
-              }
-              errorText={errors.taskDescription}
-              keyboardType="default"
-              autoCapitalize="none"
-              multiline={true}
-              impStyle={styles.input}
-            />
+            <ImageBackground source={InputBg} style={styles.InputBg}>
+              <TextInput
+                placeholder={titleInputExample}
+                value={state.taskTitle}
+                onChangeText={(text: string) =>
+                  setState({ ...state, taskTitle: text })
+                }
+                errorText={errors.taskTitle}
+                keyboardType="default"
+                autoCapitalize="none"
+                impStyle={styles.input}
+              />
+            </ImageBackground>
+            <ImageBackground source={InputBg} style={styles.InputBg}>
+              <TextInput
+                placeholder={descriptionInputExample}
+                value={state.taskDescription}
+                onChangeText={(text: string) =>
+                  setState({ ...state, taskDescription: text })
+                }
+                errorText={errors.taskDescription}
+                keyboardType="default"
+                autoCapitalize="none"
+                multiline={true}
+                impStyle={styles.input}
+              />
+            </ImageBackground>
           </View>
         )}
         <View style={styles.TimePointsContainer}>
@@ -340,9 +374,11 @@ export const AddTodoForm = ({
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Image source={hourglass} style={styles.icons} />
-              <Text type={endTime ? 'DigitalNum' : 'text'}>
-                {endTime ? endTime.toISOString().slice(0, 10) : 'Select Time'}
-              </Text>
+              <View style={{ marginBottom: 10 }}>
+                <Text type={endTime ? 'DigitalNum' : 'text'}>
+                  {endTime ? endTime.toISOString().slice(0, 10) : 'Select Time'}
+                </Text>
+              </View>
             </TouchableOpacity>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}

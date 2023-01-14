@@ -178,11 +178,21 @@ export const DisplayTasksCategories = () => {
       </View>
       {text && (
         <View style={{ position: 'absolute', bottom: 40, left: 30 }}>
-          <Button
-            background="Cancel"
-            text="All categories"
-            onPress={() => setText(undefined)}
-          />
+          <TouchableOpacity onPress={() => setText(undefined)}>
+            <ImageBackground
+              source={GoldenArrow}
+              style={{
+                width: smallScreen ? 150 : 200,
+                height: smallScreen ? 60 : 85,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
+                <Text type="text">All categories</Text>
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
         </View>
       )}
       {text ? (
