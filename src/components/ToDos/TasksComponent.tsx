@@ -1,49 +1,57 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { useTasks } from '../../util/context/AddtoDBContext';
-import { Tasks } from '../../Interfaces';
 import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
+import { Tasks } from '../../Interfaces';
+import { useDataContext } from '../../util/context/DataContext';
 import { AddTodoForm } from '../forms/AddTodoForm';
 import Button from '../buttons/Buttons';
 import { ScrollView } from 'react-native-gesture-handler';
 import { loadAsync } from 'expo-font';
+
 type TasksCategoryPageProps = {
   category: string;
 };
 
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   const [parent, setParent] = useState(true);
-  const [items, setItems] = useState<Tasks[]>([]);
-  const { getTasks, profileTasks } = useTasks();
-
-  const tasksFromDb = profileTasks?.filter(task => task.category === category);
-  const dateSortedTask = tasksFromDb.sort((task1, task2) => {
-    if (new Date(task1.endTime) > new Date(task2.endTime)) {
-      return -1;
-    }
-    return 0;
-  });
-  const sortedTasks = dateSortedTask.sort(a => (a.hasRequest ? 1 : -1));
-  const dimensions = useDimensions();
+  const { retrieveFSData, tasks, setTasks } = useDataContext();
+  const tasksFromDb = tasks?.filter(
+    (task: { category: string }) => task.category === category,
+  );
+  const dateSortedTask = tasksFromDb.sort(
+    (
+      task1: { endTime: string | number | Date },
+      task2: { endTime: string | number | Date },
+    ) => {
+      if (new Date(task1.endTime) > new Date(task2.endTime)) {
+        return -1;
+      }
+      return 0;
+    },
+  );
+  const sortedTasks = dateSortedTask.sort((a: { hasRequest: any }) =>
+    a.hasRequest ? 1 : -1,
+  );
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
   const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
 
   useEffect(() => {
-    getTasks();
-    handleClick(undefined);
+    // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
+    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
+      (data: any) => {
+        if (data) setTasks(data);
+      },
+    );
   }, [category]);
 
   function handleClick(state: string | undefined) {
@@ -51,9 +59,6 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     setAddTaskBtnClicked(state);
   }
 
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
-  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     container: {
       width: smallScreen ? 580 : 700,
