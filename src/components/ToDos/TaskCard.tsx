@@ -135,9 +135,10 @@ const TaskCard = ({ task }: Props) => {
       justifyContent: 'space-between',
     },
     CountDownView: {
-      width: smallScreen ? 150 : 140,
-      height: smallScreen ? 60 : 80,
+      width: smallScreen ? 110 : 140,
+      height: smallScreen ? 70 : 80,
       alignItems: 'center',
+      padding: 5,
     },
     PointsBackground: {
       width: smallScreen ? 60 : 75,
