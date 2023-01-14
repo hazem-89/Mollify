@@ -1,23 +1,41 @@
+import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
 import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
 import { AddTodoForm } from '../forms/AddTodoForm';
-import TaskCard from './TaskCard';
+import Button from '../buttons/Buttons';
+import { ScrollView } from 'react-native-gesture-handler';
+import { loadAsync } from 'expo-font';
 
 type TasksCategoryPageProps = {
   category: string;
 };
 
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
-  // const [parent, setParent] = useState(true);
+  const [parent, setParent] = useState(true);
   const { retrieveFSData, tasks, setTasks } = useDataContext();
-  const tasksFromDb = tasks?.filter((task: any) => task.category === category);
+  const tasksFromDb = tasks?.filter(
+    (task: { category: string }) => task.category === category,
+  );
+  const dateSortedTask = tasksFromDb.sort(
+    (
+      task1: { endTime: string | number | Date },
+      task2: { endTime: string | number | Date },
+    ) => {
+      if (new Date(task1.endTime) > new Date(task2.endTime)) {
+        return -1;
+      }
+      return 0;
+    },
+  );
+  const sortedTasks = dateSortedTask.sort((a: { hasRequest: any }) =>
+    a.hasRequest ? 1 : -1,
+  );
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
@@ -37,22 +55,8 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   }, [category]);
 
   function handleClick(state: string | undefined) {
+    setSelectedForm(<AddTodoForm category={category} />);
     setAddTaskBtnClicked(state);
-    switch (state) {
-      case 'Activities':
-        setSelectedForm(<AddTodoForm category="Activities" />);
-        break;
-      case 'Cleaning':
-        setSelectedForm(<AddTodoForm category="Cleaning tasks" />);
-        break;
-      case 'School':
-        setSelectedForm(<AddTodoForm category="School assignments" />);
-        break;
-      case 'Special':
-        setSelectedForm(<AddTodoForm category="Special tasks" />);
-        break;
-      default:
-    }
   }
 
   const styles = StyleSheet.create({
@@ -86,14 +90,14 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     <View style={styles.container}>
       {!addTaskBtnClicked ? (
         <>
-          {/* {parent && (
-            <View style={{ position: 'absolute', top: 50, left: 0 }}>
+          {parent && (
+            <View style={{ position: 'absolute', top: 0, left: 150 }}>
               <Button
                 background="AddButtonImage"
                 onPress={() => handleClick(category)}
               />
             </View>
-          )} */}
+          )}
           <View style={styles.mainView}>
             <View style={styles.iconsView}>
               <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
@@ -118,7 +122,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
             </View>
             <ScrollView style={styles.scrollView} horizontal={false}>
               <View style={{ paddingBottom: 600 }}>
-                {tasksFromDb?.map((task: Tasks) => (
+                {sortedTasks?.map((task: Tasks) => (
                   <View key={task.id}>
                     <TaskCard task={task} />
                   </View>

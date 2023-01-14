@@ -168,15 +168,6 @@ export default function RoomUI() {
               </View>
             </ImageBackground>
           </View>
-          <ImageBackground source={SignButtonImage} style={styles.signAlign}>
-            <View
-              style={{
-                marginTop: smallScreen ? 15 : 30,
-              }}
-            >
-              <Text>Name</Text>
-            </View>
-          </ImageBackground>
         </View>
       ) : (
         <FormModal

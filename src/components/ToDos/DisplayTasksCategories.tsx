@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
-import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround.png';
-import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive.png';
+import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround1.png';
+import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive1.png';
 import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
 import TodoButtonImage from '../../../assets/images/todo.png';
 import GoldenArrow from '../../../assets/images/GoldenArrow.png';
@@ -21,18 +21,22 @@ const tasksCategories = [
   {
     title: 'Room',
     background: TodoButtonImage,
+    displayName: 'Clean Your Room!',
   },
   {
     title: 'Special',
     background: SpecialTaskIcon,
+    displayName: 'Extra For You!',
   },
   {
     title: 'School',
     background: SchoolTasksIcon,
+    displayName: 'Extra Study?!',
   },
   {
     title: 'Activities',
     background: ActivityIcon,
+    displayName: 'More Practice!',
   },
 ];
 // This Render the categories buttons and the category task based on the chosen category that saved in the text state
@@ -78,8 +82,8 @@ export const DisplayTasksCategories = () => {
       height: smallScreen ? 30 : 70,
     },
     GoldenArrow: {
-      width: smallScreen ? 350 : 500,
-      height: smallScreen ? 150 : 200,
+      width: smallScreen ? 450 : 600,
+      height: smallScreen ? 200 : 250,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -117,14 +121,41 @@ export const DisplayTasksCategories = () => {
                         style={styles.CategoryIcon}
                       />
                     )}
-
-                    <Text
-                      type={
-                        text && text === taskCategory.title ? 'header' : 'text'
-                      }
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                     >
-                      {taskCategory.title}
-                    </Text>
+                      <Text
+                        type={
+                          text && text === taskCategory.title
+                            ? 'header'
+                            : 'text'
+                        }
+                      >
+                        "
+                      </Text>
+                      <Text
+                        type={
+                          text && text === taskCategory.title
+                            ? 'categoryTitles'
+                            : 'text'
+                        }
+                      >
+                        {taskCategory.displayName}
+                      </Text>
+                      <Text
+                        type={
+                          text && text === taskCategory.title
+                            ? 'header'
+                            : 'text'
+                        }
+                      >
+                        "
+                      </Text>
+                    </View>
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
@@ -148,7 +179,9 @@ export const DisplayTasksCategories = () => {
           }}
         >
           <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
-            <Text type="header">Pleas Select a Category</Text>
+            <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
+              <Text type="header">Pleas Select a Category</Text>
+            </View>
           </ImageBackground>
         </View>
       )}

@@ -6,16 +6,25 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
-import TaskTextBg from '../../../assets/images/TaskTextBg.png';
-import { db } from '../../../firebaseConfig';
 import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
 // import { useTasks } from '../../util/context/AddtoDBContext';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import FormModal from '../modals/FormModal';
+import { db } from '../../../firebaseConfig';
+// Images
+import TaskTextBg from '../../../assets/images/TaskTextBg.png';
+import TaskInReviewTextBg from '../../../assets/images/TaskInReviewTextBg.png';
+import CountDownBg from '../../../assets/images/CountDownStoneBg.png';
+import CountDownRedBg from '../../../assets/images/CountDownRedBg.png';
+import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
+import PointsBg from '../../../assets/images/PointsBg.png';
+import PointsGreenBg from '../../../assets/images/PointsGreenBg.png';
+import TaskInReviewNotifChilled from '../../../assets/images/Icons/TaskInReviewNotifChilled.png';
 import { Confirm } from './Confirm';
 import { CountdownTimer } from './CountDown';
 
@@ -64,9 +73,6 @@ const TaskCard = ({ task }: Props) => {
     }
   };
   const UpdateTaskStatus = (funName: string) => {
-    console.log('====================================');
-    console.log('bbbbbbbbbbbbbbbbbb');
-    console.log('====================================');
     handleTaskRequestStatus(true, funName);
   };
   const markTaskDone = (funName: string) => {
@@ -116,17 +122,17 @@ const TaskCard = ({ task }: Props) => {
   const styles = StyleSheet.create({
     CardContainer: {
       marginTop: 20,
-      maxHeight: smallScreen ? 50 : 100,
+      maxHeight: smallScreen ? 60 : 100,
       maxWidth: 800,
     },
     TextView: {
       flex: 1,
       maxWidth: smallScreen ? 300 : 400,
-      height: smallScreen ? 50 : 70,
+      height: smallScreen ? 60 : 80,
       justifyContent: 'center',
     },
     TextViewBg: {
-      height: smallScreen ? 50 : 70,
+      height: smallScreen ? 60 : 80,
       justifyContent: 'center',
       paddingHorizontal: 20,
     },
@@ -136,21 +142,16 @@ const TaskCard = ({ task }: Props) => {
       justifyContent: 'space-between',
     },
     CountDownView: {
-      width: smallScreen ? 150 : 150,
-      height: smallScreen ? 60 : 70,
+      width: smallScreen ? 110 : 140,
+      height: smallScreen ? 70 : 80,
       alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: 'rgba(144, 47, 5, 0.8)',
-      padding: 10,
-      borderRadius: 25,
+      padding: 5,
     },
     PointsBackground: {
-      width: smallScreen ? 60 : 80,
-      height: smallScreen ? 60 : 80,
+      width: smallScreen ? 60 : 75,
+      height: smallScreen ? 60 : 78,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'rgba(144, 47, 5, 0.8)',
-      borderRadius: 50,
     },
     icons: {
       width: smallScreen ? 40 : 50,
@@ -163,6 +164,7 @@ const TaskCard = ({ task }: Props) => {
       alignItems: 'center',
     },
   });
+
   const leftSwipe = (
     progress: any,
     dragX: {
@@ -233,6 +235,21 @@ const TaskCard = ({ task }: Props) => {
           />
         </View>
       )}
+      {task.hasRequest && !parent && !swipeOn && !btnClicked && (
+        <View
+          style={{
+            position: 'absolute',
+            zIndex: 9999,
+            top: -20,
+            left: smallScreen ? 280 : 370,
+          }}
+        >
+          <Image
+            source={TaskInReviewNotifChilled}
+            style={{ width: 50, height: 50 }}
+          ></Image>
+        </View>
+      )}
 
       <TouchableOpacity
         onPress={() =>
@@ -247,16 +264,25 @@ const TaskCard = ({ task }: Props) => {
         >
           <View style={styles.taskView}>
             <View style={styles.TextView}>
-              <ImageBackground source={TaskTextBg} style={styles.TextViewBg}>
+              <ImageBackground
+                source={task.hasRequest ? TaskInReviewTextBg : TaskTextBg}
+                style={styles.TextViewBg}
+              >
                 <Text type="text">{task.taskDescription}</Text>
               </ImageBackground>
             </View>
-            <View style={styles.PointsBackground}>
+            <ImageBackground
+              source={task.hasRequest ? PointsGreenBg : PointsBg}
+              style={styles.PointsBackground}
+            >
               <Text type="DigitalNum">{task.pointsValue}</Text>
-            </View>
-            <View style={styles.CountDownView}>
+            </ImageBackground>
+            <ImageBackground
+              source={task.hasRequest ? CountDownGreenBg : CountDownBg}
+              style={styles.CountDownView}
+            >
               <CountdownTimer date={endDate} />
-            </View>
+            </ImageBackground>
           </View>
         </Swipeable>
       </TouchableOpacity>
@@ -266,7 +292,7 @@ const TaskCard = ({ task }: Props) => {
         <FormModal
           component={component}
           onEmit={() => handleClick(undefined)}
-        // text="confirm"
+          // text="confirm"
         />
       </View>
     </View>
