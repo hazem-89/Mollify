@@ -10,8 +10,8 @@ import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
-import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround.png';
-import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive.png';
+import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround1.png';
+import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive1.png';
 import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
 import TodoButtonImage from '../../../assets/images/todo.png';
 import GoldenArrow from '../../../assets/images/GoldenArrow.png';
@@ -121,14 +121,41 @@ export const DisplayTasksCategories = () => {
                         style={styles.CategoryIcon}
                       />
                     )}
-
-                    <Text
-                      type={
-                        text && text === taskCategory.title ? 'header' : 'text'
-                      }
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
                     >
-                      {taskCategory.displayName}
-                    </Text>
+                      <Text
+                        type={
+                          text && text === taskCategory.title
+                            ? 'header'
+                            : 'text'
+                        }
+                      >
+                        "
+                      </Text>
+                      <Text
+                        type={
+                          text && text === taskCategory.title
+                            ? 'categoryTitles'
+                            : 'text'
+                        }
+                      >
+                        {taskCategory.displayName}
+                      </Text>
+                      <Text
+                        type={
+                          text && text === taskCategory.title
+                            ? 'header'
+                            : 'text'
+                        }
+                      >
+                        "
+                      </Text>
+                    </View>
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
