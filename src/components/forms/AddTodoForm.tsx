@@ -2,6 +2,7 @@ import { Alert, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import uuid from 'react-native-uuid';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
@@ -9,8 +10,7 @@ import laundryBasket from '../../../assets/images/Icons/basket.png';
 import { Text } from '../../components/Text';
 import hourglass from '../../../assets/images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useTasks } from '../../util/context/AddtoDBContext';
+import { useDataContext } from '../../util/context/DataContext';
 
 const CleaningTodo = [
   {
@@ -63,7 +63,7 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     taskDescription: '',
     selected: '',
   });
-  const { addCleaningTask } = useTasks();
+  const { addDocToFS } = useDataContext();
 
   const styles = StyleSheet.create({
     container: {
@@ -158,10 +158,10 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
         category,
         isDone: false,
         hasRequest: false,
-        //need to replace profile with the current profile.id
+        // need to replace profile with the current profile.id
         profileId: 'Lgq9YJnPLLezb1iE4xHQ',
       };
-      addCleaningTask(newTodo);
+      addDocToFS('Tasks', newTodo);
       Alert.alert(
         'Success!',
         `Title: ${state.taskTitle} \n Description: ${state.taskDescription}`,
@@ -339,4 +339,3 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     </View>
   );
 };
-

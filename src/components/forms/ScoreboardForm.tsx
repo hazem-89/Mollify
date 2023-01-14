@@ -1,17 +1,13 @@
-import { Alert, StyleSheet, View, Image, TouchableOpacity } from 'react-native';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import Button from '../buttons/Buttons';
 import { useDimensions } from '@react-native-community/hooks';
-import { Text } from '../Text';
-import { collection, addDoc } from 'firebase/firestore';
-import { db } from '../../../firebaseConfig';
-import { TextInput } from '../CustomInput';
-import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
-import hourglass from '../../../assets/images/Icons/hourglass.png';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { Alert, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useTasks } from '../../util/context/AddtoDBContext';
-import Reward from '../Scoreboard/Reward';
-import { Rewards } from '../../Interfaces';
+import hourglass from '../../../assets/images/Icons/hourglass.png';
+import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
+import { useDataContext } from '../../util/context/DataContext';
+import Button from '../buttons/Buttons';
+import { TextInput } from '../CustomInput';
+import { Text } from '../Text';
 
 type ErrorType = {
   rewardTitle?: string;
@@ -21,18 +17,18 @@ type ErrorType = {
 
 export const ScoreboardForm = () => {
   const dimensions = useDimensions();
-  const { getRewards, profileRewards } = useTasks();
+  // const { rewards } = useDataContext();
   // useEffect(() => {
   //   getRewards();
   // }, []);
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const { addRewardScore } = useTasks();
-  const rewardsFromDb = profileRewards?.filter(reward => reward);
+  const { addDocToFS } = useDataContext();
+  // const rewardsFromDb = profileRewards?.filter(reward => reward);
   const [state, setState] = useState({
     rewardTitle: '',
     selected: '',
@@ -69,7 +65,7 @@ export const ScoreboardForm = () => {
         asignedProfileId: 'pjVcsYpBE46nGlDmHmO0',
         isDone: false,
       };
-      addRewardScore(newReward);
+      addDocToFS('Rewards', newReward);
       Alert.alert('Success!', `Title: ${state.rewardTitle}`);
     }
     if (Object.keys(nextErrors).length > 0) {
@@ -182,4 +178,3 @@ export const ScoreboardForm = () => {
     </View>
   );
 };
-

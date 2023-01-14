@@ -1,31 +1,41 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
-import React, { ReactElement, useEffect, useState } from 'react';
-import { useTasks } from '../../util/context/AddtoDBContext';
-import { Tasks } from '../../Interfaces';
-import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
+import React, { ReactElement, useEffect, useState } from 'react';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
+import { Tasks } from '../../Interfaces';
+import { useDataContext } from '../../util/context/DataContext';
 import { AddTodoForm } from '../forms/AddTodoForm';
-import Button from '../buttons/Buttons';
-import { ScrollView } from 'react-native-gesture-handler';
+import TaskCard from './TaskCard';
+
 type TasksCategoryPageProps = {
   category: string;
 };
 
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
-  const [parent, setParent] = useState(true);
-  const { getTasks, profileTasks } = useTasks();
-  useEffect(() => {
-    getTasks();
-  }, [category]);
-  const tasksFromDb = profileTasks?.filter(task => task.category === category);
-  const dimensions = useDimensions();
+  // const [parent, setParent] = useState(true);
+  const { retrieveFSData, tasks, setTasks } = useDataContext();
+  const tasksFromDb = tasks?.filter((task: any) => task.category === category);
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
   const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
+
+  useEffect(() => {
+    // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
+    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
+      (data: any) => {
+        if (data) setTasks(data);
+      },
+    );
+  }, [category]);
+
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (state) {
@@ -44,9 +54,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       default:
     }
   }
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
-  const [smallScreen] = useState(dimensions.screen.height < 600);
+
   const styles = StyleSheet.create({
     container: {
       width: smallScreen ? 580 : 700,

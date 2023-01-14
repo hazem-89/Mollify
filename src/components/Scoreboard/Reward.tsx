@@ -1,24 +1,24 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  ImageBackground,
+  // ImageBackground,
   StyleSheet,
-  TouchableOpacity,
+  // TouchableOpacity,
   View,
-  Animated,
-  Image,
+  // Animated,
+  // Image,
 } from 'react-native';
-import { Rewards } from '../../Interfaces';
-import PointsBackground from '../../../assets/Images/Icons/PointsBackground.png';
-import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
-import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
 import { useDimensions } from '@react-native-community/hooks';
-import colors from '../../constants/colors';
-import { Text } from '../../components/Text';
-import { Swipeable } from 'react-native-gesture-handler';
-import Button from '../buttons/Buttons';
-import { useTasks } from '../../util/context/AddtoDBContext';
-import FormModal from '../modals/FormModal';
+// import { Swipeable } from 'react-native-gesture-handler';
 import { setDoc, doc } from 'firebase/firestore';
+import { Rewards } from '../../Interfaces';
+// import PointsBackground from '../../../assets/Images/Icons/PointsBackground.png';
+// import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
+// import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
+// import colors from '../../constants/colors';
+import { Text } from '../../components/Text';
+// import Button from '../buttons/Buttons';
+// import { useTasks } from '../../util/context/AddtoDBContext';
+// import FormModal from '../modals/FormModal';
 import { db } from '../../../firebaseConfig';
 
 interface Props {
@@ -99,4 +99,3 @@ const Reward = ({ reward }: Props) => {
 };
 
 export default Reward;
-

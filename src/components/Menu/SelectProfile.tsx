@@ -12,7 +12,7 @@ import TigerAvatar from '../../../assets/images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
-import { useDatabaseContext } from '../../util/context/DBContext';
+import { useDataContext } from '../../util/context/DataContext';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
@@ -21,7 +21,7 @@ const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { profiles } = useDatabaseContext();
+  const { profiles } = useDataContext();
 
   const styles = StyleSheet.create({
     modal: {

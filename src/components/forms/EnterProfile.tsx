@@ -2,7 +2,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { DocumentData } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { useDatabaseContext } from '../../util/context/DBContext';
+import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
@@ -22,7 +22,7 @@ export default function EnterProfile({
       onClose();
     }
   };
-  const { storeAsyncData, setLoggedInProfile } = useDatabaseContext();
+  const { storeAsyncData, setLoggedInProfile } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
