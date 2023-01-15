@@ -11,7 +11,6 @@ import { useDimensions } from '@react-native-community/hooks';
 import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TextInput } from '../CustomInput';
-import colors from '../../constants/colors';
 import Button from '../buttons/Buttons';
 import laundryBasket from '../../../assets/images/Icons/basket.png';
 import { Text } from '../../components/Text';
@@ -52,7 +51,6 @@ const CleaningTodo = [
 ];
 
 type ErrorType = {
-  taskTitle?: string;
   taskDescription?: string;
   points?: string;
   time?: string;
@@ -79,7 +77,6 @@ export const AddTodoForm = ({
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [state, setState] = useState({
-    taskTitle: '',
     taskDescription: '',
     selected: '',
   });
@@ -114,21 +111,12 @@ export const AddTodoForm = ({
   }, []);
   const styles = StyleSheet.create({
     container: {
-      // maxWidth: smallScreen ? 580 : 700,
       minHeight: smallScreen ? 300 : 500,
       flexDirection: 'row',
-      // alignItems: 'flex-end',
-      // alignItems: 'center',
       justifyContent: 'center',
     },
     input: {
-      // justifyContent: 'center',
-      // maxHeight: 40,
-      // marginTop: smallScreen ? 20 : 30,
-      // borderBottomColor: colors.primary,
-      // borderBottomWidth: 1,
       width: smallScreen ? 300 : 400,
-      // alignItems: 'flex-start',
     },
     PointsInput: {
       width: smallScreen ? 80 : 100,
@@ -198,9 +186,6 @@ export const AddTodoForm = ({
 
   const submit = () => {
     const nextErrors: ErrorType = {};
-    if (!state.taskTitle) {
-      nextErrors.taskTitle = 'This field is required.';
-    }
     if (!state.taskDescription) {
       nextErrors.taskDescription = 'This field is required.';
     }
@@ -212,7 +197,6 @@ export const AddTodoForm = ({
       console.log('no err');
       const newTodo = {
         id: uuid.v4(),
-        taskTitle: state.taskTitle,
         taskDescription: state.taskDescription,
         pointsValue,
         endTime: endTime?.toString(),
@@ -223,10 +207,7 @@ export const AddTodoForm = ({
         profileId: 'Lgq9YJnPLLezb1iE4xHQ',
       };
       addDocToFS('Tasks', newTodo);
-      Alert.alert(
-        'Success!',
-        `Title: ${state.taskTitle} \n Description: ${state.taskDescription}`,
-      );
+      Alert.alert('Success!', `Description: ${state.taskDescription}`);
     }
     setEndTime(new Date());
     setPointsValue('');
@@ -240,22 +221,18 @@ export const AddTodoForm = ({
     if (
       state.taskDescription &&
       state.taskDescription === todo.description &&
-      state.taskTitle &&
-      state.taskTitle === todo.title &&
       state.selected === todo.title
     ) {
       setState({
         ...state,
         taskDescription: '',
         selected: '',
-        taskTitle: '',
       });
     } else {
       setState({
         ...state,
         taskDescription: todo.description,
         selected: todo.title,
-        taskTitle: todo.title,
       });
     }
   }
@@ -339,19 +316,6 @@ export const AddTodoForm = ({
             </View>
             <ImageBackground source={InputBg} style={styles.InputBg}>
               <TextInput
-                placeholder={titleInputExample}
-                value={state.taskTitle}
-                onChangeText={(text: string) =>
-                  setState({ ...state, taskTitle: text })
-                }
-                errorText={errors.taskTitle}
-                keyboardType="default"
-                autoCapitalize="none"
-                impStyle={styles.input}
-              />
-            </ImageBackground>
-            <ImageBackground source={InputBg} style={styles.InputBg}>
-              <TextInput
                 placeholder={descriptionInputExample}
                 value={state.taskDescription}
                 onChangeText={(text: string) =>
@@ -369,7 +333,7 @@ export const AddTodoForm = ({
         <View style={styles.TimePointsContainer}>
           <View style={styles.TimePointView}>
             <TouchableOpacity
-              disabled={!state.taskTitle && !state.taskDescription}
+              disabled={!state.taskDescription}
               onPress={showDatePicker}
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
