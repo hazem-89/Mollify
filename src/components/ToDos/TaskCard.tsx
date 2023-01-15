@@ -268,7 +268,9 @@ const TaskCard = ({ task }: Props) => {
                 source={task.hasRequest ? TaskInReviewTextBg : TaskTextBg}
                 style={styles.TextViewBg}
               >
-                <Text type="text">{task.taskDescription}</Text>
+                <View style={{ marginBottom: 5 }}>
+                  <Text type="text">{task.taskDescription}</Text>
+                </View>
               </ImageBackground>
             </View>
             <ImageBackground
