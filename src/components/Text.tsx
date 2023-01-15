@@ -32,14 +32,13 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   const styles = StyleSheet.create({
     text: {
       fontSize: smallScreen ? 14 : 16,
-      // textAlign: 'center',
       fontFamily: 'Inika',
       color: 'rgba(0,0,0,.6)',
     },
 
     headerText: {
       fontWeight: '600',
-      fontSize: smallScreen ? 30 : 40,
+      fontSize: smallScreen ? 20 : 30,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0, .5)',
       textAlign: 'center',
