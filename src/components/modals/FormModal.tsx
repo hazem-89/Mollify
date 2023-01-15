@@ -19,7 +19,6 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
   const [todoForm, setTodoForm] = useState(false);
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const [displayTasksOpen, setDisplayTasksOpen] = useState(false);
   useEffect(() => {
     if (componentState !== component) {
       setComponentState(component);
@@ -34,14 +33,6 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       } else {
         setTodoForm(false);
       }
-    }
-    if (
-      text === 'Cleaning tasks' ||
-      text === 'Special tasks' ||
-      text === 'School assignments' ||
-      text === 'Activities'
-    ) {
-      setDisplayTasksOpen(true);
     }
   }, [component]);
 
