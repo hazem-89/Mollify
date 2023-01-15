@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
@@ -17,7 +17,6 @@ import TodoButtonImage from '../../../assets/images/todo.png';
 import GoldenArrow from '../../../assets/images/GoldenArrow.png';
 import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
-import Button from '../buttons/Buttons';
 const tasksCategories = [
   {
     title: 'Room',
@@ -58,15 +57,13 @@ export const DisplayTasksCategories = () => {
     },
     categoriesContainer: {
       height: ScreenHeight,
-      // justifyContent: 'center',
-      marginTop: smallScreen ? 30 : 50,
+      marginTop: smallScreen ? 28 : 50,
       alignItems: 'center',
       minWidth: smallScreen ? 150 : 200,
       marginLeft: 25,
     },
     categoryView: {
       minHeight: smallScreen ? 80 : 120,
-      // alignSelf: 'flex-start',
     },
     categoryViewHidden: {
       display: 'none',
