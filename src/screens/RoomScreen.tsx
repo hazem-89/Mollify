@@ -91,6 +91,14 @@ export default function RoomScreen() {
         // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
         console.log('not moving and inside the right third of the screen');
         updateFSDoc('Tasks', task.id, { hasRequest: true });
+        retrieveFSData(
+          'Tasks',
+          'profileId',
+          // replace Lgq9YJnPLLezb1iE4xHQ with `${loggedInProfile?.mainUserId}`,
+          'Lgq9YJnPLLezb1iE4xHQ',
+        ).then((data: any) => {
+          if (data) setTasks(data);
+        });
         setIsDragging(false);
       } else {
         console.log('not moving');
@@ -123,15 +131,17 @@ export default function RoomScreen() {
         />
         {/* For each task render a draggable with .map */}
         {tasks &&
-          tasks.map((task: Tasks) => (
-            <Draggable
-              key={task.id}
-              task={task}
-              onMove={(moving: boolean, draggableCoords?: coordinates) =>
-                handleMove(moving, task, draggableCoords)
-              }
-            />
-          ))}
+          tasks.map((task: Tasks) =>
+            task.hasRequest === false ? (
+              <Draggable
+                key={task.id}
+                task={task}
+                onMove={(moving: boolean, draggableCoords?: coordinates) =>
+                  handleMove(moving, task, draggableCoords)
+                }
+              />
+            ) : null,
+          )}
       </ScrollView>
       {isDragging && <Disposal show={isDragging} />}
     </View>
