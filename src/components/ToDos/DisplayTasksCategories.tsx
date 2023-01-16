@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
 import { Text } from '../../components/Text';
 import { TasksComponent } from './TasksComponent';
@@ -17,26 +17,32 @@ import TodoButtonImage from '../../../assets/images/todo.png';
 import GoldenArrow from '../../../assets/images/GoldenArrow.png';
 import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
+import { useDataContext } from '../../util/context/DataContext';
+import { Tasks } from '../../Interfaces';
 const tasksCategories = [
   {
     title: 'Room',
     background: TodoButtonImage,
     displayName: 'Clean Your Room!',
+    length: 0,
   },
   {
     title: 'Special',
     background: SpecialTaskIcon,
     displayName: 'Extra For You!',
+    length: 0,
   },
   {
     title: 'School',
     background: SchoolTasksIcon,
     displayName: 'Extra Study?!',
+    length: 0,
   },
   {
     title: 'Activities',
     background: ActivityIcon,
     displayName: 'More Practice!',
+    length: 0,
   },
 ];
 // This Render the categories buttons and the category task based on the chosen category that saved in the text state
@@ -46,6 +52,30 @@ export const DisplayTasksCategories = () => {
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
   const [test, setTest] = useState(false);
+  const { retrieveFSData, tasks, setTasks } = useDataContext();
+  useEffect(() => {
+    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
+      (data: any) => {
+        if (data) setTasks(data);
+      },
+    );
+
+    //   }
+  }, []);
+  const setCategoryLength = () => {
+    tasksCategories.forEach(category => {
+      category.length = 0;
+    });
+    tasks?.forEach((task: Tasks) => {
+      tasksCategories.forEach(category => {
+        if (task.category === category.title) {
+          category.length += 1;
+        }
+      });
+    });
+  };
+  setCategoryLength();
+  console.log(tasksCategories);
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     container: {
@@ -89,6 +119,17 @@ export const DisplayTasksCategories = () => {
       height: smallScreen ? 200 : 250,
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    tasksLength: {
+      position: 'absolute',
+      backgroundColor: 'rgba(86, 222, 245, 1)',
+      width: smallScreen ? 20 : 30,
+      height: smallScreen ? 20 : 30,
+      alignItems: 'center',
+      zIndex: 99,
+      // bottom: smallScreen ? 0 : 200,
+      left: smallScreen ? 140 : 190,
+      borderRadius: 50,
     },
   });
 
@@ -169,6 +210,13 @@ export const DisplayTasksCategories = () => {
                   </View>
                 </ImageBackground>
               </TouchableOpacity>
+              {taskCategory.length ? (
+                <>
+                  <View style={styles.tasksLength}>
+                    <Text type="NotificationNum">{taskCategory.length}</Text>
+                  </View>
+                </>
+              ) : null}
             </View>
           );
         })}

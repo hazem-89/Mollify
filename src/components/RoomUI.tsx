@@ -1,21 +1,21 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
   StyleSheet,
-  Text,
+  Image,
   View,
 } from 'react-native';
 import awardBadge from '../../assets/images/awardBadge.png';
-import SignButtonImage from '../../assets/images/sign.png';
 import woodSignLarge from '../../assets/images/woodSignLarge.png';
 import { useLogin } from '../util/auth';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import Scoreboard from './Scoreboard/Scoreboard';
-import { DisplayTasksCategories } from './ToDos/DisplayTasksCategories';
 import { useNavigation } from '@react-navigation/native';
+import { useDataContext } from '../util/context/DataContext';
+import { Text } from '../components/Text';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -25,6 +25,16 @@ import { useNavigation } from '@react-navigation/native';
 }; */
 
 export default function RoomUI() {
+  const { tasks, setTasks, retrieveFSData } = useDataContext();
+  useEffect(() => {
+    // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
+    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
+      (data: any) => {
+        if (data) setTasks(data);
+      },
+    );
+  }, []);
+
   const { logout } = useLogin();
   const navigation = useNavigation();
   const dimensions = useDimensions();
@@ -120,6 +130,17 @@ export default function RoomUI() {
       width: smallScreen ? 170 : 230,
       justifyContent: 'space-between',
     },
+    tasksLength: {
+      position: 'absolute',
+      backgroundColor: 'rgba(86, 222, 245, .8)',
+      width: smallScreen ? 20 : 30,
+      height: smallScreen ? 20 : 30,
+      alignItems: 'center',
+      zIndex: 99,
+      bottom: smallScreen ? 0 : -10,
+      left: smallScreen ? -5 : -10,
+      borderRadius: 50,
+    },
   });
 
   return (
@@ -154,6 +175,9 @@ export default function RoomUI() {
               style={styles.woodLargeStyle}
             >
               <View style={styles.SidesButtons}>
+                {tasks.length ? <><View style={styles.tasksLength}>
+                  <Text type="NotificationNum">{tasks.length}</Text>
+                </View></> : null}
                 <Button
                   background="TodoButtonImage"
                   onPress={() => {

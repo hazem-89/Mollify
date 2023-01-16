@@ -30,15 +30,18 @@ type TasksCategoryPageProps = {
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   const [parent, setParent] = useState(true);
   const { retrieveFSData, tasks, setTasks } = useDataContext();
-  const tasksFromDb = tasks?.filter(
+  const categoryTasks = tasks?.filter(
     (task: { category: string }) => task.category === category,
   );
-  const dateSortedTask = tasksFromDb.sort(
+  const dateSortedTask = categoryTasks.sort(
     (
       task1: { endTime: string | number | Date },
       task2: { endTime: string | number | Date },
     ) => {
       if (new Date(task1.endTime) > new Date(task2.endTime)) {
+        return -1;
+      }
+      if (new Date(task1.endTime) < new Date()) {
         return -1;
       }
       return 0;
@@ -165,7 +168,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
               </View>
             </View>
 
-            {!tasksFromDb.length && (
+            {!categoryTasks.length && (
               <View
                 style={{
                   alignItems: 'center',

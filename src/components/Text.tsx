@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 type TextProps = {
   type?: string;
-  children: string | number | undefined;
+  children: React.ReactNode;
   style?: StyleProp<TextStyle>[];
 };
 
@@ -146,6 +146,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       textAlign: 'center',
       maxWidth: smallScreen ? 100 : 150,
     },
+    NotificationNum: {
+      fontSize: smallScreen ? 14 : 18,
+      fontWeight: 'bold',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -180,6 +184,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.CountDownDays);
   } else if (type === 'categoryTitles') {
     textStyles.push(styles.categoryTitles);
+  } else if (type === 'NotificationNum') {
+    textStyles.push(styles.NotificationNum);
   }
 
   textStyles = [...textStyles, ...style];
