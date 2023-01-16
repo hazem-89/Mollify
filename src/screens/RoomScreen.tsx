@@ -13,6 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Disposal from '../components/room/Disposal';
 import Draggable from '../components/room/Draggable';
 import RoomUI from '../components/RoomUI';
+import { Tasks } from '../Interfaces';
 import { useDataContext } from '../util/context/DataContext';
 import { rooms } from '../util/itemObjects';
 
@@ -32,7 +33,8 @@ export default function RoomScreen() {
     x: 0,
     y: 0,
   });
-  const { loggedInProfile } = useDataContext();
+  const { loggedInProfile, retrieveFSData, setTasks, tasks, updateFSDoc } =
+    useDataContext();
 
   const styles = StyleSheet.create({
     BackgroundImage: {
@@ -51,21 +53,34 @@ export default function RoomScreen() {
   useEffect(() => {
     if (loggedInProfile) {
       // Get the room id from the profile loggedInProfile, sort through the roomObject and render the image with matching id.
-      console.log(loggedInProfile.room);
       const foundRoom = rooms.find(room => room.id === loggedInProfile.room);
       if (foundRoom?.image) {
         setProfileRoom(foundRoom.image);
         // Calculate aspect ratio
         setAspectRatio(foundRoom.width / foundRoom.height);
       }
+      // Get the tasks for rendering dragables
+      retrieveFSData(
+        'Tasks',
+        'profileId',
+        // replace Lgq9YJnPLLezb1iE4xHQ with `${loggedInProfile?.mainUserId}`,
+        'Lgq9YJnPLLezb1iE4xHQ',
+      ).then((data: any) => {
+        if (data) setTasks(data);
+      });
     }
   }, [loggedInProfile]);
 
-  function handleMove(moving: boolean, draggableCoords?: coordinates) {
+  function handleMove(
+    moving: boolean,
+    task: Tasks,
+    draggableCoords?: coordinates,
+  ) {
     if (moving) {
       // When moving the Disposal component is rendered.
       setIsDragging(true);
       console.log(viewPortCoords);
+      console.log(task);
     } else {
       console.log(draggableCoords);
       if (
@@ -75,6 +90,7 @@ export default function RoomScreen() {
       ) {
         // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
         console.log('not moving and inside the right third of the screen');
+        updateFSDoc('Tasks', task.id, { hasRequest: true });
         setIsDragging(false);
       } else {
         console.log('not moving');
@@ -106,15 +122,16 @@ export default function RoomScreen() {
           style={styles.BackgroundImage}
         />
         {/* For each task render a draggable with .map */}
-        {/* {tasks.map((task) => ( */}
-        <Draggable
-          // key={task.id}
-          // task={task}
-          onMove={(moving: boolean, draggableCoords?: coordinates) =>
-            handleMove(moving, draggableCoords)
-          }
-        />
-        {/* ))} */}
+        {tasks &&
+          tasks.map((task: Tasks) => (
+            <Draggable
+              key={task.id}
+              task={task}
+              onMove={(moving: boolean, draggableCoords?: coordinates) =>
+                handleMove(moving, task, draggableCoords)
+              }
+            />
+          ))}
       </ScrollView>
       {isDragging && <Disposal show={isDragging} />}
     </View>

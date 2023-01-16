@@ -1,7 +1,8 @@
 import { Alert, StyleSheet, TouchableOpacity, View, Image } from 'react-native';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import uuid from 'react-native-uuid';
+// Uninstall
+// import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TextInput } from '../CustomInput';
 import colors from '../../constants/colors';
@@ -150,7 +151,6 @@ export const AddTodoForm = ({ category }: todoFormProps) => {
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
       const newTodo = {
-        id: uuid.v4(),
         taskTitle: state.taskTitle,
         taskDescription: state.taskDescription,
         pointsValue,
