@@ -1,23 +1,56 @@
+import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
+import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
 import { AddTodoForm } from '../forms/AddTodoForm';
-import TaskCard from './TaskCard';
+import Button from '../buttons/Buttons';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Text } from '../../components/Text';
+import AddButtonImage from '../../../assets/images/AddButton.png';
+
+import { loadAsync } from 'expo-font';
 
 type TasksCategoryPageProps = {
   category: string;
 };
 
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
-  // const [parent, setParent] = useState(true);
+  const [parent, setParent] = useState(true);
   const { retrieveFSData, tasks, setTasks } = useDataContext();
-  const tasksFromDb = tasks?.filter((task: any) => task.category === category);
+  const categoryTasks = tasks?.filter(
+    (task: { category: string }) => task.category === category,
+  );
+  const dateSortedTask = categoryTasks.sort(
+    (
+      task1: { endTime: string | number | Date },
+      task2: { endTime: string | number | Date },
+    ) => {
+      if (new Date(task1.endTime) > new Date(task2.endTime)) {
+        return -1;
+      }
+      if (new Date(task1.endTime) < new Date()) {
+        return -1;
+      }
+      return 0;
+    },
+  );
+
+  const sortedTasks = dateSortedTask.sort((a: { hasRequest: any }) =>
+    a.hasRequest ? 1 : -1,
+  );
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
@@ -37,22 +70,13 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   }, [category]);
 
   function handleClick(state: string | undefined) {
+    setSelectedForm(
+      <AddTodoForm
+        category={category}
+        setAddTaskBtnClicked={setAddTaskBtnClicked}
+      />,
+    );
     setAddTaskBtnClicked(state);
-    switch (state) {
-      case 'Activities':
-        setSelectedForm(<AddTodoForm category="Activities" />);
-        break;
-      case 'Cleaning':
-        setSelectedForm(<AddTodoForm category="Cleaning tasks" />);
-        break;
-      case 'School':
-        setSelectedForm(<AddTodoForm category="School assignments" />);
-        break;
-      case 'Special':
-        setSelectedForm(<AddTodoForm category="Special tasks" />);
-        break;
-      default:
-    }
   }
 
   const styles = StyleSheet.create({
@@ -62,9 +86,6 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       padding: 20,
       maxHeight: '95%',
       zIndex: 10,
-    },
-    mainView: {
-      // width: smallScreen ? 500 : 700,
     },
     iconsView: {
       flex: 1,
@@ -86,15 +107,45 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     <View style={styles.container}>
       {!addTaskBtnClicked ? (
         <>
-          {/* {parent && (
-            <View style={{ position: 'absolute', top: 50, left: 0 }}>
-              <Button
-                background="AddButtonImage"
-                onPress={() => handleClick(category)}
-              />
-            </View>
-          )} */}
-          <View style={styles.mainView}>
+          {parent && (
+            <TouchableOpacity
+              style={{
+                position: 'absolute',
+                top: smallScreen ? 120 : 160,
+                left: smallScreen ? -135 : -185,
+              }}
+              onPress={() => handleClick(category)}
+            >
+              <ImageBackground
+                source={CountDownGreenBg}
+                style={{
+                  alignItems: 'center',
+                  width: smallScreen ? 130 : 180,
+                  height: smallScreen ? 80 : 110,
+                  justifyContent: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 10,
+                  }}
+                >
+                  <Image
+                    source={AddButtonImage}
+                    style={{
+                      width: smallScreen ? 40 : 50,
+                      height: smallScreen ? 40 : 50,
+                    }}
+                  />
+                  <Text type="text"> Add A Task</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+          )}
+          <View>
             <View style={styles.iconsView}>
               <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
@@ -116,9 +167,22 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                 <Image style={styles.icons} source={TimBtnIcon} />
               </View>
             </View>
+
+            {!categoryTasks.length && (
+              <View
+                style={{
+                  alignItems: 'center',
+                  marginTop: smallScreen ? 145 : 215,
+                  height: ScreenHeight,
+                }}
+              >
+                <Text type="header">There is no tasks to display</Text>
+              </View>
+            )}
+
             <ScrollView style={styles.scrollView} horizontal={false}>
               <View style={{ paddingBottom: 600 }}>
-                {tasksFromDb?.map((task: Tasks) => (
+                {sortedTasks?.map((task: Tasks) => (
                   <View key={task.id}>
                     <TaskCard task={task} />
                   </View>

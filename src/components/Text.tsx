@@ -7,7 +7,7 @@ import * as SplashScreen from 'expo-splash-screen';
 
 type TextProps = {
   type?: string;
-  children: string | number | undefined;
+  children: React.ReactNode;
   style?: StyleProp<TextStyle>[];
 };
 
@@ -31,17 +31,17 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
 
   const styles = StyleSheet.create({
     text: {
-      fontSize: smallScreen ? 12 : 14,
-      // textAlign: 'center',
+      fontSize: smallScreen ? 14 : 16,
       fontFamily: 'Inika',
-      color: 'rgba(0,0,0,.4)',
+      color: 'rgba(0,0,0,.6)',
     },
 
     headerText: {
       fontWeight: '600',
-      fontSize: smallScreen ? 30 : 40,
+      fontSize: smallScreen ? 20 : 30,
       fontFamily: 'Inika',
       color: 'rgba(0,0,0, .5)',
+      textAlign: 'center',
     },
 
     subHeaderText: {
@@ -137,6 +137,18 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontSize: smallScreen ? 20 : 25,
       color: '#fff',
     },
+    categoryTitles: {
+      fontWeight: '600',
+      fontSize: smallScreen ? 18 : 25,
+      fontFamily: 'Inika',
+      color: 'rgba(0,0,0, .5)',
+      textAlign: 'center',
+      maxWidth: smallScreen ? 100 : 150,
+    },
+    NotificationNum: {
+      fontSize: smallScreen ? 14 : 18,
+      fontWeight: 'bold',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -169,6 +181,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.DigitalNum);
   } else if (type === 'CountDownDays') {
     textStyles.push(styles.CountDownDays);
+  } else if (type === 'categoryTitles') {
+    textStyles.push(styles.categoryTitles);
+  } else if (type === 'NotificationNum') {
+    textStyles.push(styles.NotificationNum);
   }
 
   textStyles = [...textStyles, ...style];

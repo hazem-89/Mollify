@@ -53,8 +53,8 @@ function Button({
     },
     GreenForms: {
       justifyContent: 'center',
-      width: smallScreen ? 90 : 150,
-      height: smallScreen ? 25 : 40,
+      width: smallScreen ? 150 : 200,
+      height: smallScreen ? 40 : 55,
       alignSelf: 'center',
       // marginTop: smallScreen ? 20 : 30,
     },
