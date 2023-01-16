@@ -1,26 +1,8 @@
 import React, { useState } from 'react';
-import {
-  // ImageBackground,
-  StyleSheet,
-  // TouchableOpacity,
-  View,
-  // Animated,
-  // Image,
-} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useDimensions } from '@react-native-community/hooks';
-// import { Swipeable } from 'react-native-gesture-handler';
-import { setDoc, doc } from 'firebase/firestore';
 import { Rewards } from '../../Interfaces';
-// import PointsBackground from '../../../assets/Images/Icons/PointsBackground.png';
-// import TimeBackground from '../../../assets/Images/Icons/TimeBackground.png';
-// import TaskNotificationIcon from '../../../assets/Images/Icons/TaskNotificationIcon.png';
-// import colors from '../../constants/colors';
 import { Text } from '../../components/Text';
-// import Button from '../buttons/Buttons';
-// import { useTasks } from '../../util/context/AddtoDBContext';
-// import FormModal from '../modals/FormModal';
-import { db } from '../../../firebaseConfig';
-
 interface Props {
   reward: Rewards;
 }
@@ -28,10 +10,9 @@ interface Props {
 const Reward = ({ reward }: Props) => {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [RewardRequestStatus, setRewardRequestStatus] = useState(
-    reward.hasRequest,
-  );
+  // const [RewardRequestStatus, setRewardRequestStatus] = useState(
+  //   reward.hasRequest,
+  // );
 
   let updateAcceptedReq = {};
   const handleRewardRequestStatus = async (
@@ -51,14 +32,14 @@ const Reward = ({ reward }: Props) => {
       };
     }
 
-    if (reward.id) {
-      try {
-        await setDoc(doc(db, 'Rewards', reward?.id), updateAcceptedReq);
-        setRewardRequestStatus(status);
-      } catch (err) {
-        console.log(err);
-      }
-    }
+    // if (reward.id) {
+    //   try {
+    //     await setDoc(doc(db, 'Rewards', reward?.id), updateAcceptedReq);
+    //     setRewardRequestStatus(status);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // }
   };
 
   const endDate = new Date(reward.endTime);
@@ -91,8 +72,8 @@ const Reward = ({ reward }: Props) => {
   return (
     <View style={styles.CardContainer}>
       <View style={styles.taskView}>
-        <Text type="todoList">{reward.rewardTitle}</Text>
-        <Text type="todoList">{reward.pointsValue}</Text>
+        <Text type="todoList">{reward.title}</Text>
+        <Text type="todoList">{reward.points}</Text>
       </View>
     </View>
   );

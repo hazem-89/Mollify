@@ -8,9 +8,8 @@ import {
   Image,
 } from 'react-native';
 import DisplayTasksBackGround from '../../assets/images/DisplayTasksBackGround.png';
-import { CreateProfileForm } from '../components/forms/CreateProfile';
+import Scoreboard from '../components/Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from '../components/ToDos/DisplayTasksCategories';
-import { TasksComponent } from '../components/ToDos/TasksComponent';
 
 const DisplayMenusScreen = ({ route }: any) => {
   const [component, setComponent] = useState<ReactElement>();
@@ -22,9 +21,11 @@ const DisplayMenusScreen = ({ route }: any) => {
   useEffect(() => {
     const test = () => {
       content === 'DisplayTasks' && setComponent(<DisplayTasksCategories />);
+      content === 'DisplayRewards' && setComponent(<Scoreboard />);
     };
     test();
   }, []);
+
   const styles = StyleSheet.create({
     Background: {
       position: 'relative',
