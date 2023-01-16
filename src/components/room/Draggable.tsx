@@ -54,7 +54,7 @@ export default function Draggable({ onMove, task }: DraggableProps) {
   }, [inactivePan]);
 
   useEffect(() => {
-    onMove(false, inactivePan);
+    if (pan !== inactivePan) onMove(false, inactivePan);
   }, [inactivePan]);
 
   const styles = StyleSheet.create({
@@ -70,7 +70,7 @@ export default function Draggable({ onMove, task }: DraggableProps) {
   return (
     <View style={styles.draggable} {...panResponderRef.current?.panHandlers}>
       {/* The content of the draggable component goes here */}
-      <Text>{task.taskTitle}</Text>
+      <Text>{task.taskDescription}</Text>
     </View>
   );
 }
