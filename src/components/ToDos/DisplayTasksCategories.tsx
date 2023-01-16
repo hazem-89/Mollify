@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ImageBackground,
+  BackHandler,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
@@ -15,10 +16,13 @@ import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCate
 import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
 import TodoButtonImage from '../../../assets/images/todo.png';
 import GoldenArrow from '../../../assets/images/GoldenArrow.png';
+import GoBackArrow from '../../../assets/images/GoBackArrow.png';
 import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
 import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
 import { useDataContext } from '../../util/context/DataContext';
 import { Tasks } from '../../Interfaces';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+
 const tasksCategories = [
   {
     title: 'Room',
@@ -51,7 +55,7 @@ export const DisplayTasksCategories = () => {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
-  const [test, setTest] = useState(false);
+  const navigation = useNavigation();
   const { retrieveFSData, tasks, setTasks } = useDataContext();
   useEffect(() => {
     retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
@@ -62,6 +66,10 @@ export const DisplayTasksCategories = () => {
 
     //   }
   }, []);
+  const handelGoBack = () => {
+    // @ts-ignore
+    navigation.navigate('RoomScreen');
+  };
   const setCategoryLength = () => {
     tasksCategories.forEach(category => {
       category.length = 0;
@@ -75,7 +83,6 @@ export const DisplayTasksCategories = () => {
     });
   };
   setCategoryLength();
-  console.log(tasksCategories);
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     container: {
@@ -115,8 +122,8 @@ export const DisplayTasksCategories = () => {
       height: smallScreen ? 30 : 70,
     },
     GoldenArrow: {
-      width: smallScreen ? 450 : 600,
-      height: smallScreen ? 200 : 250,
+      width: smallScreen ? 350 : 500,
+      height: smallScreen ? 150 : 200,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -127,14 +134,36 @@ export const DisplayTasksCategories = () => {
       height: smallScreen ? 20 : 30,
       alignItems: 'center',
       zIndex: 99,
-      // bottom: smallScreen ? 0 : 200,
       left: smallScreen ? 140 : 190,
       borderRadius: 50,
+    },
+    GoBackButton: {
+      position: 'absolute',
+      right: 30,
+      top: smallScreen ? 30 : 40,
+    },
+    GoBackArrowImageStyle: {
+      width: smallScreen ? 150 : 200,
+      height: smallScreen ? 75 : 100,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 
   return (
     <View style={styles.container}>
+      <View style={styles.GoBackButton}>
+        <TouchableOpacity onPress={handelGoBack}>
+          <ImageBackground
+            source={GoBackArrow}
+            style={styles.GoBackArrowImageStyle}
+          >
+            <View style={{ marginRight: 50 }}>
+              <Text type="header">Room</Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
+      </View>
       <View style={styles.categoriesContainer}>
         {tasksCategories.map(taskCategory => {
           return (
@@ -257,7 +286,7 @@ export const DisplayTasksCategories = () => {
         >
           <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
             <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
-              <Text type="header">Pleas Select a Category</Text>
+              <Text type="header">Please Select a Category</Text>
             </View>
           </ImageBackground>
         </View>
