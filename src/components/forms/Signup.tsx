@@ -40,36 +40,47 @@ export const SignUpForm = ({ onClose }: SignUpProps) => {
     ButtonsView: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: smallScreen ? 200 : 350,
-      marginTop: smallScreen ? 30 : 20,
+      // width: smallScreen ? 200 : 450,
+      marginTop: smallScreen ? 20 : 40,
+    },
+    inputAlign: {
+      maxHeight: smallScreen ? 40 : 50,
+      marginTop: smallScreen ? 20 : 40,
+      width: 220,
+    },
+    inputStyle: {
+      fontSize: smallScreen ? 15 : 20,
+      marginBottom: 7,
     },
   });
 
   return (
     <View>
       <View style={styles.container}>
-        <Text type="formText">Let’s register your account.</Text>
-        <View style={{ maxHeight: smallScreen ? 40 : 50 }}>
+        <Text type="MenuTitle">Let’s register your account</Text>
+        <View style={styles.inputAlign}>
           <TextInput
-            placeholder="Enter your email..."
+            placeholder="Enter your email"
             value={email}
             onChangeText={(text: string) => setEmail(text)}
             errorText={errors.email}
             keyboardType="email-address"
             autoCapitalize="none"
+            style={styles.inputStyle}
           />
         </View>
-        <View style={{ maxHeight: smallScreen ? 40 : 80 }}>
+        <View style={styles.inputAlign}>
           <TextInput
-            placeholder="Choose your password..."
+            placeholder="Choose your password"
             onChangeText={(text: string) => setPassword(text)}
             secureTextEntry
             errorText={errors.password}
             autoCapitalize="none"
             value={password}
+            style={styles.inputStyle}
           />
         </View>
-        <View style={{ maxHeight: smallScreen ? 40 : 80 }}>
+        <View style={styles.inputAlign}>
           <TextInput
             placeholder="Confirm Password"
             value={confirmedPassword}
@@ -77,6 +88,7 @@ export const SignUpForm = ({ onClose }: SignUpProps) => {
             secureTextEntry
             errorText={errors.confirmedPassword}
             autoCapitalize="none"
+            style={styles.inputStyle}
           />
         </View>
 
@@ -96,3 +108,4 @@ export const SignUpForm = ({ onClose }: SignUpProps) => {
     </View>
   );
 };
+
