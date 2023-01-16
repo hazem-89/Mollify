@@ -34,20 +34,20 @@ export const TextInput = ({
       borderBottomColor: colors.primary,
       borderBottomWidth: 1,
       minWidth: smallScreen ? 200 : 400,
-      // alignItems: 'flex-start',
     },
     labelText: {
-      color: colors.gray,
+      color: 'black',
       fontSize: smallScreen ? 14 : 18,
     },
     textInput: {
       fontSize: smallScreen ? 10 : 14,
       fontWeight: '500',
       minWidth: smallScreen ? 200 : 300,
+      color: 'black',
     },
     border: {
       height: 1,
-      backgroundColor: colors.border,
+      backgroundColor: 'black',
     },
     borderError: {
       backgroundColor: colors.error,
@@ -66,7 +66,7 @@ export const TextInput = ({
 
   return (
     <View style={impStyle}>
-      <Text style={[styles.labelText]}>{label}</Text>
+      {/* <Text style={[styles.labelText]}>{label}</Text> */}
       <RNTextInput style={styles.textInput} {...rest} />
       <View style={borderStyles} />
       <Text style={[styles.errorText]}>{errorText}</Text>

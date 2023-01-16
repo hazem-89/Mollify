@@ -45,6 +45,7 @@ export const DisplayTasksCategories = () => {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
+  const [test, setTest] = useState(false);
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     container: {
@@ -56,18 +57,20 @@ export const DisplayTasksCategories = () => {
     },
     categoriesContainer: {
       height: ScreenHeight,
-      justifyContent: 'center',
+      marginTop: smallScreen ? 28 : 50,
       alignItems: 'center',
       minWidth: smallScreen ? 150 : 200,
       marginLeft: 25,
     },
     categoryView: {
       minHeight: smallScreen ? 80 : 120,
-      alignItems: 'center',
+    },
+    categoryViewHidden: {
+      display: 'none',
     },
     CategoryTitleBg: {
-      width: smallScreen ? 120 : 180,
-      height: smallScreen ? 71 : 107,
+      width: smallScreen ? 140 : 195,
+      height: smallScreen ? 85 : 120,
       alignItems: 'center',
       justifyContent: 'center',
       marginLeft: 10,
@@ -94,7 +97,14 @@ export const DisplayTasksCategories = () => {
       <View style={styles.categoriesContainer}>
         {tasksCategories.map(taskCategory => {
           return (
-            <View key={taskCategory.title} style={styles.categoryView}>
+            <View
+              key={taskCategory.title}
+              style={
+                text && text !== taskCategory.title
+                  ? styles.categoryViewHidden
+                  : styles.categoryView
+              }
+            >
               <TouchableOpacity
                 onPress={() => {
                   setText(
@@ -163,6 +173,25 @@ export const DisplayTasksCategories = () => {
           );
         })}
       </View>
+      {text && (
+        <View style={{ position: 'absolute', bottom: 40, left: 30 }}>
+          <TouchableOpacity onPress={() => setText(undefined)}>
+            <ImageBackground
+              source={GoldenArrow}
+              style={{
+                width: smallScreen ? 150 : 200,
+                height: smallScreen ? 60 : 85,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
+                <Text type="text">All categories</Text>
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+        </View>
+      )}
       {text ? (
         <>
           <View style={{ flex: 1 }}>
