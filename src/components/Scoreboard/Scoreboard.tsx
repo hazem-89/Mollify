@@ -98,7 +98,7 @@ const Scoreboard = () => {
       minWidth: 0.1 * ScreenWidth,
     },
     RewardMainTitleBg: {
-      width: smallScreen ? 0.2 * ScreenWidth : 0.3 * ScreenWidth,
+      width: smallScreen ? 0.25 * ScreenWidth : 0.3 * ScreenWidth,
       height: 0.2 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
