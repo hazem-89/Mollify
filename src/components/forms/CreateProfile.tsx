@@ -31,7 +31,8 @@ export const CreateProfileForm = ({
 }: CreateProfileProps) => {
   // const dimensions = useDimensions();
   const { currentUser } = useLogin();
-  const { retrieveFSData, setProfiles } = useDataContext();
+  const { retrieveFSData, setProfiles, profiles, addDocToFS } =
+    useDataContext();
   const [state, setState] = useState({
     name: '',
     pin: '',
@@ -49,10 +50,11 @@ export const CreateProfileForm = ({
     };
     try {
       (profilesExist
-        ? addDoc(collection(db, 'profiles'), newProfile)
-        : addDoc(collection(db, 'profiles'), {
-          parent: true,
+        ? addDocToFS('profiles', newProfile)
+        : addDocToFS('profiles', {
           ...newProfile,
+          room: null,
+          parent: true,
         })
       ).then(
         retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
@@ -116,13 +118,15 @@ export const CreateProfileForm = ({
         }
         data={avatars}
       />
-      <Carousel
-        titel="Choose room"
-        onEmit={(selectedItem: any) =>
-          setState({ ...state, room: selectedItem })
-        }
-        data={rooms}
-      />
+      {profilesExist && (
+        <Carousel
+          titel="Choose room"
+          onEmit={(selectedItem: any) =>
+            setState({ ...state, room: selectedItem })
+          }
+          data={rooms}
+        />
+      )}
       <Button
         background="GreenForms"
         text="Add profile"

@@ -22,7 +22,7 @@ export default function EnterProfile({
       onClose();
     }
   };
-  const { storeAsyncData, setLoggedInProfile } = useDataContext();
+  const { setAsyncData, setLoggedInProfile } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
@@ -46,7 +46,7 @@ export default function EnterProfile({
     // Compare pin from db to entered pin.
     if (PINState === selectedProfile.pin) {
       // Store the logged in profile in asyncStorage so data persists between app sessions
-      storeAsyncData('loggedInProfile', selectedProfile);
+      setAsyncData('loggedInProfile', selectedProfile);
       setLoggedInProfile(selectedProfile);
       if (selectedProfile.parent) {
         // If the profile is parent then navigate to selectProfile but with parent view
