@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { useDimensions } from '@react-native-community/hooks';
 import { Rewards } from '../../Interfaces';
 import { Text } from '../Text';
@@ -66,9 +66,12 @@ const RewardCard = ({ reward }: Props) => {
   };
 
   const endDate = new Date(reward.endTime);
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
-    CardContainer: {},
+    CardContainer: {
+      width: 0.6 * ScreenWidth,
+    },
     TextView: {
       flex: 1,
       maxWidth: smallScreen ? 250 : 300,
@@ -97,7 +100,7 @@ const RewardCard = ({ reward }: Props) => {
       <View style={styles.taskView}>
         <Text type="todoList">{reward.title}</Text>
         <Text type="todoList">{reward.points}</Text>
-        <Image source={imageSource}></Image>
+        {/* <Image source={imageSource}></Image> */}
       </View>
     </View>
   );

@@ -62,7 +62,6 @@ const Scoreboard = () => {
     if (rewards?.length > 0) {
       setSelectedReward(rewards[0]);
       setText(rewards[0].title);
-      console.log('selectedReward', selectedReward);
     }
   }, [rewards]);
   const handelNav = (navigationValue: string) => {
@@ -122,12 +121,14 @@ const Scoreboard = () => {
       justifyContent: 'flex-start',
     },
     RewardsScrollView: {
-      width: 0.25 * ScreenWidth,
+      width: 0.1 * ScreenWidth,
       maxWidth: 0.25 * ScreenWidth,
       maxHeight: 0.55 * ScreenHeight,
-      marginLeft: 0.05 * ScreenWidth,
+      marginLeft: 0.04 * ScreenWidth,
     },
-    RewardDetails: {},
+    RewardDetails: {
+      maxWidth: 0.5 * ScreenWidth,
+    },
     GoBackToRoomImageStyle: {
       width: 0.15 * ScreenWidth,
       height: 0.17 * ScreenHeight,
@@ -185,86 +186,81 @@ const Scoreboard = () => {
       {/* display rewards and rewards <details></details> */}
       <View style={styles.RewardsBody}>
         <ScrollView style={styles.RewardsScrollView} horizontal={false}>
-          <>
-            {rewards?.map((reward: any) => {
-              // earnedPoints need  to be replaced withe profile.points
-              const earnedPoints = 150;
-              const test = +reward.points;
+          {rewards?.map((reward: any) => {
+            // earnedPoints need  to be replaced withe profile.points
+            const earnedPoints = 150;
+            const test = +reward.points;
 
-              const percentageProgress = (earnedPoints / test) * 100;
-              let imageSource;
-              if (percentageProgress > 20 && percentageProgress < 40) {
-                imageSource = Twenty;
-              } else if (percentageProgress >= 40 && percentageProgress < 60) {
-                imageSource = Forty;
-              } else if (percentageProgress >= 60 && percentageProgress < 80) {
-                imageSource = Sixty;
-              } else if (percentageProgress >= 80 && percentageProgress < 100) {
-                imageSource = Eighty;
-              } else if (percentageProgress >= 100) {
-                imageSource = FullScore;
-              } else if (percentageProgress <= 0) {
-                imageSource = Zero;
-              }
+            const percentageProgress = (earnedPoints / test) * 100;
+            let imageSource;
+            if (percentageProgress > 20 && percentageProgress < 40) {
+              imageSource = Twenty;
+            } else if (percentageProgress >= 40 && percentageProgress < 60) {
+              imageSource = Forty;
+            } else if (percentageProgress >= 60 && percentageProgress < 80) {
+              imageSource = Sixty;
+            } else if (percentageProgress >= 80 && percentageProgress < 100) {
+              imageSource = Eighty;
+            } else if (percentageProgress >= 100) {
+              imageSource = FullScore;
+            } else if (percentageProgress <= 0) {
+              imageSource = Zero;
+            }
 
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setText(
-                      text && text === reward.title ? undefined : reward.title,
-                    );
-                    setSelectedReward(reward);
-                  }}
-                  style={{
-                    position: 'relative',
-                    marginBottom: 0.05 * ScreenHeight,
-                  }}
+            return (
+              <TouchableOpacity
+                onPress={() => {
+                  setText(
+                    text && text === reward.title ? undefined : reward.title,
+                  );
+                  setSelectedReward(reward);
+                }}
+                style={{
+                  position: 'relative',
+                  marginBottom: 0.05 * ScreenHeight,
+                }}
+              >
+                <ImageBackground
+                  source={AwardTitleBg}
+                  style={styles.RewardButtonBg}
                 >
-                  <ImageBackground
-                    source={AwardTitleBg}
-                    style={styles.RewardButtonBg}
-                  >
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        marginTop: 0.055 * ScreenHeight,
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        width: '70%',
-                        marginLeft: 0.04 * ScreenWidth,
-                      }}
-                    >
-                      <Text>{reward.title}</Text>
-                      <Text>{percentageProgress}%</Text>
-                    </View>
-                  </ImageBackground>
-                  <Image
-                    source={imageSource}
-                    style={styles.ProgressBar}
-                  ></Image>
                   <View
                     style={{
-                      position: 'absolute',
-                      left: '0%',
-                      top: '0%',
+                      flexDirection: 'row',
+                      marginTop: 0.055 * ScreenHeight,
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      width: '70%',
+                      marginLeft: 0.04 * ScreenWidth,
                     }}
                   >
-                    <Image
-                      source={
-                        text && text === reward.title
-                          ? ActiveViewIcon
-                          : NotActiveViewIcon
-                      }
-                      style={{
-                        width: 0.036 * ScreenWidth,
-                        height: 0.07 * ScreenHeight,
-                      }}
-                    ></Image>
+                    <Text>{reward.title}</Text>
+                    <Text>{percentageProgress}%</Text>
                   </View>
-                </TouchableOpacity>
-              );
-            })}
-          </>
+                </ImageBackground>
+                <Image source={imageSource} style={styles.ProgressBar}></Image>
+                <View
+                  style={{
+                    position: 'absolute',
+                    left: '0%',
+                    top: '0%',
+                  }}
+                >
+                  <Image
+                    source={
+                      text && text === reward.title
+                        ? ActiveViewIcon
+                        : NotActiveViewIcon
+                    }
+                    style={{
+                      width: 0.036 * ScreenWidth,
+                      height: 0.07 * ScreenHeight,
+                    }}
+                  ></Image>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
         </ScrollView>
         {/* Reward details View */}
         {selectedReward && (
@@ -328,7 +324,7 @@ const Scoreboard = () => {
             source={GoBackArrow}
             style={styles.GoBackToRoomImageStyle}
           >
-            <View style={{ marginRight: 50 }}>
+            <View style={{ marginRight: '25%' }}>
               <Text type="header">Room</Text>
             </View>
           </ImageBackground>
