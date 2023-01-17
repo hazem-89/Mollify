@@ -33,6 +33,8 @@ interface ContextInterface {
   retrieveFSData: Function;
   loggedInProfile: DocumentData | undefined;
   setLoggedInProfile: Function;
+  selectedChild: DocumentData;
+  setSelectedChild: Function;
   /** This function is used to store or remove an object value in the async storage on the device.
    * The function takes in a key and a data{}, if you want to remove the key value leave the data prop undefined.
    */
@@ -61,6 +63,8 @@ export const DataContext = createContext<ContextInterface>({
   setRewards: () => false,
   loggedInProfile: [],
   setLoggedInProfile: () => false,
+  selectedChild: [],
+  setSelectedChild: () => false,
   retrieveFSData: () => false,
   setAsyncData: () => false,
   addDocToFS: () => false,
@@ -73,6 +77,8 @@ export default function DataProvider(props: any) {
   const [profiles, setProfiles] = useState<DocumentData[]>();
   // the currently logged in profile, we need a state for when the logged in profile is a parent inspecting a childs room.
   const [loggedInProfile, setLoggedInProfile] = useState<ProfileInterface>();
+  // The current child profile being managed
+  const [selectedChild, setSelectedChild] = useState<ProfileInterface>();
   // The filtered profiles that are rendered when logged in as parent.
   const [filteredProfiles, setFilteredProfiles] = useState<DocumentData>();
   // Here 👇 the tasks for the selected profile are stored.
@@ -110,6 +116,9 @@ export default function DataProvider(props: any) {
         // Navigate to room if child profile
         // @ts-ignore
         navigation.navigate('RoomScreen');
+      } else if (selectedChild) {
+        // @ts-ignore
+        navigation.navigate('RoomScreen', selectedChild);
       } else if (profiles) {
         // Stay on selectProfile and remove parent profile from selectable profiles if loggedInProfile is parent.
         const filter = profiles.filter(
@@ -124,7 +133,7 @@ export default function DataProvider(props: any) {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInProfile && profiles]);
+  }, [loggedInProfile, profiles, selectedChild]);
 
   /** This function is used to store or remove an object value in the async storage on the device. */
   async function setAsyncData(key: string, data: any[] | undefined) {
@@ -215,6 +224,8 @@ export default function DataProvider(props: any) {
         setIsLoading,
         profiles,
         setProfiles,
+        selectedChild,
+        setSelectedChild,
         filteredProfiles,
         tasks,
         setTasks,
