@@ -73,7 +73,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       textAlign: 'center',
     },
     GreenForms: {
-      fontSize: smallScreen ? 10 : 15,
+      fontSize: smallScreen ? 20 : 25,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: '#0F6209',
@@ -117,7 +117,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
     Cancel: {
       color: '#fff',
-      fontSize: smallScreen ? 10 : 12,
+      fontSize: smallScreen ? 20 : 25,
       textAlign: 'center',
     },
     MenuTitle: {
@@ -195,3 +195,4 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     </RNText>
   );
 };
+
