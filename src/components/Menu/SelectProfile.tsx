@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useDimensions } from '@react-native-community/hooks';
 import { DocumentData } from 'firebase/firestore';
 import React, { ReactElement, useState } from 'react';
@@ -21,7 +22,7 @@ const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { profiles } = useDataContext();
+  const { profiles, loggedInProfile, filteredProfiles } = useDataContext();
 
   const styles = StyleSheet.create({
     modal: {
@@ -86,7 +87,13 @@ const SelectProfile = () => {
             alignItems: 'center',
           }}
         >
-          <Text type="header">Select profile to View</Text>
+          {loggedInProfile && loggedInProfile.parent ? (
+            <Text>
+              Welcome {loggedInProfile.name}, select profile to manage
+            </Text>
+          ) : (
+            <Text type="header">Select profile to View</Text>
+          )}
         </View>
         <View style={styles.MainView}>
           <View
@@ -104,26 +111,45 @@ const SelectProfile = () => {
             />
           </View>
           <View style={styles.ProfilesView}>
-            {profiles.map((profile: DocumentData | undefined) => (
-              <TouchableOpacity
-                key={profile?.id}
-                onPress={() => handleClick('EnterPIN', profile)}
-              >
-                <View style={styles.profile}>
-                  <View style={styles.Avatar}>
-                    <Image
-                      source={TigerAvatar}
-                      style={{
-                        width: smallScreen ? 50 : 75,
-                        height: smallScreen ? 50 : 75,
-                      }}
-                    />
+            {filteredProfiles
+              ? filteredProfiles?.map((profile: DocumentData) => (
+                <TouchableOpacity
+                  key={profile?.id}
+                  onPress={() => handleClick('EnterPIN', profile)}
+                >
+                  <View style={styles.profile}>
+                    <View style={styles.Avatar}>
+                      <Image
+                        source={TigerAvatar}
+                        style={{
+                          width: smallScreen ? 50 : 75,
+                          height: smallScreen ? 50 : 75,
+                        }}
+                      />
+                    </View>
+                    <Text type="text">{profile?.name}</Text>
                   </View>
-
-                  <Text type="text">{profile?.name}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+                </TouchableOpacity>
+              ))
+              : profiles?.map((profile: DocumentData) => (
+                <TouchableOpacity
+                  key={profile?.id}
+                  onPress={() => handleClick('EnterPIN', profile)}
+                >
+                  <View style={styles.profile}>
+                    <View style={styles.Avatar}>
+                      <Image
+                        source={TigerAvatar}
+                        style={{
+                          width: smallScreen ? 50 : 75,
+                          height: smallScreen ? 50 : 75,
+                        }}
+                      />
+                    </View>
+                    <Text type="text">{profile?.name}</Text>
+                  </View>
+                </TouchableOpacity>
+              ))}
           </View>
         </View>
       </ImageBackground>
@@ -133,4 +159,3 @@ const SelectProfile = () => {
 };
 
 export default SelectProfile;
-

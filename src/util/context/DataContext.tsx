@@ -14,10 +14,14 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from '../../../firebaseConfig';
 import { useLogin } from '../auth';
+import { ProfileInterface } from '../../Interfaces';
 
 interface ContextInterface {
+  isLoading: boolean;
+  setIsLoading: Function;
   profiles: DocumentData;
   setProfiles: Function;
+  filteredProfiles: DocumentData;
   tasks: DocumentData;
   setTasks: Function;
   rewards: DocumentData;
@@ -29,8 +33,10 @@ interface ContextInterface {
   retrieveFSData: Function;
   loggedInProfile: DocumentData | undefined;
   setLoggedInProfile: Function;
-  /** This function is used to store an object value in the async storage on the device. */
-  storeAsyncData: Function;
+  /** This function is used to store or remove an object value in the async storage on the device.
+   * The function takes in a key and a data{}, if you want to remove the key value leave the data prop undefined.
+   */
+  setAsyncData: Function;
   /** Add document to firestore.
    * Takes in collectionName and data{}.
    * No need to add id referencing the doc in the data object, it gets added in addDocToFS func.
@@ -44,8 +50,11 @@ interface ContextInterface {
 }
 
 export const DataContext = createContext<ContextInterface>({
+  isLoading: true,
+  setIsLoading: () => false,
   profiles: [],
   setProfiles: () => false,
+  filteredProfiles: [],
   tasks: [],
   setTasks: () => false,
   rewards: [],
@@ -53,21 +62,24 @@ export const DataContext = createContext<ContextInterface>({
   loggedInProfile: [],
   setLoggedInProfile: () => false,
   retrieveFSData: () => false,
-  storeAsyncData: () => false,
+  setAsyncData: () => false,
   addDocToFS: () => false,
   updateFSDoc: () => false,
   deleteDocFromFS: () => false,
 });
 
 export default function DataProvider(props: any) {
-  // Here 👇 the profiles are stored each time the currentUser state changes.
-  const [profiles, setProfiles] = useState<DocumentData[]>([]);
+  // Here 👇 all the profiles are stored each time the currentUser state changes.
+  const [profiles, setProfiles] = useState<DocumentData[]>();
   // the currently logged in profile, we need a state for when the logged in profile is a parent inspecting a childs room.
-  const [loggedInProfile, setLoggedInProfile] = useState();
+  const [loggedInProfile, setLoggedInProfile] = useState<ProfileInterface>();
+  // The filtered profiles that are rendered when logged in as parent.
+  const [filteredProfiles, setFilteredProfiles] = useState<DocumentData>();
   // Here 👇 the tasks for the selected profile are stored.
   const [tasks, setTasks] = useState<DocumentData[]>([]);
   // Here 👇 the rewards for the selected profile are stored.
   const [rewards, setRewards] = useState<DocumentData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { currentUser } = useLogin();
   const navigation = useNavigation();
 
@@ -83,7 +95,8 @@ export default function DataProvider(props: any) {
         getAsyncData('loggedInProfile');
       } else {
         setLoggedInProfile(undefined);
-        storeAsyncData('loggedInProfile', []);
+        setFilteredProfiles(undefined);
+        setAsyncData('loggedInProfile', undefined);
         // @ts-ignore
         navigation.navigate('StartScreen');
       }
@@ -92,41 +105,54 @@ export default function DataProvider(props: any) {
   }, [currentUser]);
 
   useEffect(() => {
-    if (loggedInProfile && 'room' in loggedInProfile) {
-      console.log(loggedInProfile);
-      // @ts-ignore
-      navigation.navigate('RoomScreen');
+    if (loggedInProfile !== undefined) {
+      if (!loggedInProfile.parent) {
+        // Navigate to room if child profile
+        // @ts-ignore
+        navigation.navigate('RoomScreen');
+      } else if (profiles) {
+        // Stay on selectProfile and remove parent profile from selectable profiles if loggedInProfile is parent.
+        const filter = profiles.filter(
+          (profile: DocumentData) => profile.id !== loggedInProfile.id,
+        );
+        setFilteredProfiles(filter);
+        // @ts-ignore
+        navigation.navigate('StartScreen');
+      } else {
+        // @ts-ignore
+        navigation.navigate('StartScreen');
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInProfile]);
+  }, [loggedInProfile && profiles]);
 
-  /** This function is used to store an object value in the async storage on the device. */
-  async function storeAsyncData(key: string, data: any[]) {
+  /** This function is used to store or remove an object value in the async storage on the device. */
+  async function setAsyncData(key: string, data: any[] | undefined) {
     try {
-      const jsonValue = JSON.stringify(data);
-      await AsyncStorage.setItem(key, jsonValue);
-    } catch (e) {
-      console.error(e);
-    }
-  }
-
-  /** This function is used to get an object value in the async storage on the device. */
-  async function getAsyncData(key: string) {
-    try {
-      const jsonValue = await AsyncStorage.getItem(key);
-      if (jsonValue != null) {
-        setLoggedInProfile(JSON.parse(jsonValue));
-        console.log(JSON.parse(jsonValue));
+      if (data !== undefined) {
+        const jsonValue = JSON.stringify(data);
+        await AsyncStorage.setItem(key, jsonValue);
+      } else {
+        await AsyncStorage.removeItem(key);
       }
     } catch (e) {
       console.error(e);
     }
   }
 
-  /** Retrieve firestore data function.
-   * Uses querying to retrieve documents where the prop value in the document = the value passed to the function.
-   * For example usage see DBContext.
-   */
+  // This function is used to get an object value in the async storage on the device.
+  async function getAsyncData(key: string) {
+    try {
+      const jsonValue = await AsyncStorage.getItem(key);
+      if (jsonValue != null) {
+        setLoggedInProfile(JSON.parse(jsonValue));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  // Retrieve firestore data function.
   // eslint-disable-next-line consistent-return
   async function retrieveFSData(
     collectionName: string,
@@ -159,7 +185,7 @@ export default function DataProvider(props: any) {
     }
   }
 
-  //  Update document in firestore
+  // Update document in firestore
   async function updateFSDoc(
     collectionName: string,
     document: string,
@@ -173,7 +199,7 @@ export default function DataProvider(props: any) {
     }
   }
 
-  /** Delete document from firestore */
+  // Delete document from firestore
   async function deleteDocFromFS(collectionName: string, documentId: string) {
     try {
       await deleteDoc(doc(db, collectionName, documentId));
@@ -185,8 +211,11 @@ export default function DataProvider(props: any) {
   return (
     <DataContext.Provider
       value={{
+        isLoading,
+        setIsLoading,
         profiles,
         setProfiles,
+        filteredProfiles,
         tasks,
         setTasks,
         rewards,
@@ -194,7 +223,7 @@ export default function DataProvider(props: any) {
         loggedInProfile,
         setLoggedInProfile,
         retrieveFSData,
-        storeAsyncData,
+        setAsyncData,
         addDocToFS,
         updateFSDoc,
         deleteDocFromFS,

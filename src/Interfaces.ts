@@ -17,3 +17,13 @@ export interface Rewards {
   isDone: boolean;
   assignedProfileId: string;
 }
+
+export interface ProfileInterface {
+  avatar: string;
+  id: string;
+  mainUserId: string;
+  name: string;
+  parent?: boolean;
+  pin: string;
+  room: string;
+}
