@@ -70,7 +70,9 @@ export const DisplayTasksCategories = () => {
     });
     setCategoryLength();
   }, []);
-
+  const handelGoBack = () => {
+    navigation.goBack();
+  };
   const setCategoryLength = () => {
     tasksCategories.forEach(category => {
       category.length = 0;
@@ -153,23 +155,6 @@ export const DisplayTasksCategories = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.GoBackButton}>
-        <TouchableOpacity
-          onPress={() =>
-            // @ts-ignore
-            navigation.navigate('RoomScreen')
-          }
-        >
-          <ImageBackground
-            source={GoBackArrow}
-            style={styles.GoBackArrowImageStyle}
-          >
-            <View style={{ marginRight: 50 }}>
-              <Text type="header">Room</Text>
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-      </View>
       <View style={styles.categoriesContainer}>
         {tasksCategories.map(taskCategory => {
           return (
@@ -282,20 +267,34 @@ export const DisplayTasksCategories = () => {
           </View>
         </>
       ) : (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1,
-            minHeight: '50%',
-          }}
-        >
-          <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
-            <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
-              <Text type="header">Please Select a Category</Text>
-            </View>
-          </ImageBackground>
-        </View>
+        <>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              minHeight: '50%',
+            }}
+          >
+            <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
+              <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
+                <Text type="header">Please Select a Category</Text>
+              </View>
+            </ImageBackground>
+          </View>
+          <View style={styles.GoBackButton}>
+            <TouchableOpacity onPress={handelGoBack}>
+              <ImageBackground
+                source={GoBackArrow}
+                style={styles.GoBackArrowImageStyle}
+              >
+                <View style={{ marginRight: 50 }}>
+                  <Text type="header">Room</Text>
+                </View>
+              </ImageBackground>
+            </TouchableOpacity>
+          </View>
+        </>
       )}
     </View>
   );

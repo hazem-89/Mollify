@@ -30,30 +30,42 @@ export default function RoomUI() {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
+  // this not used right now maybe we will need it
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
-    switch (state) {
-      case 'displayTask':
-        // setComponent(<DisplayTasksCategories />);
-        setText('Tasks');
-        break;
-      case 'displayScoreboard':
-        setComponent(<Scoreboard />);
-        setText('Scoreboard');
-        break;
-      default:
-        setComponent(undefined);
-        break;
+    switch (
+      state
+      // case 'displayTask':
+      //   // setComponent(<DisplayTasksCategories />);
+      //   setText('Tasks');
+      //   break;
+      // case 'displayScoreboard':
+      //   setComponent(<Scoreboard />);
+      //   setText('Scoreboard');
+      //   break;
+      // default:
+      //   setComponent(undefined);
+      //   break;
+    ) {
     }
   }
-  const handelNav = (category?: string) => {
-    // @ts-ignore
-    navigation.navigate('TasksCategoryPage', {
-      paramKey: {
-        category,
-        content: 'DisplayTasks',
-      },
-    });
+  const handelNav = (navigationValue: string) => {
+    // console.log(navigationValue);
+
+    navigationValue === 'DisplayTasks' &&
+      // @ts-ignore
+      navigation.navigate('TasksCategoryPage', {
+        paramKey: {
+          content: 'DisplayTasks',
+        },
+      });
+    navigationValue === 'DisplayRewards' &&
+      // @ts-ignore
+      navigation.navigate('TasksCategoryPage', {
+        paramKey: {
+          content: 'DisplayRewards',
+        },
+      });
   };
   const ScreenWidth = Dimensions.get('window').width;
   // const ScreenHeight = Dimensions.get('window').height;
@@ -74,8 +86,8 @@ export default function RoomUI() {
       flexDirection: 'row',
     },
     awardBadgeStyle: {
-      width: smallScreen ? 130 : 170,
-      height: smallScreen ? 70 : 100,
+      width: smallScreen ? 160 : 200,
+      height: smallScreen ? 80 : 105,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -150,7 +162,7 @@ export default function RoomUI() {
               <Button
                 background="TrophyButtonImage"
                 onPress={() => {
-                  handleClick('displayScoreboard');
+                  handelNav('DisplayRewards');
                 }}
               />
             </ImageBackground>
@@ -171,7 +183,7 @@ export default function RoomUI() {
                   background="TodoButtonImage"
                   onPress={() => {
                     // handleClick('displayTask');
-                    handelNav();
+                    handelNav('DisplayTasks');
                   }}
                 />
                 <Button
