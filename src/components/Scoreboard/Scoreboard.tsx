@@ -22,7 +22,7 @@ import Twenty from '../../../assets/images/Twenty.png';
 import Zero from '../../../assets/images/Zero.png';
 import FullScore from '../../../assets/images/FullScore.png';
 import Sixty from '../../../assets/images/Sixty.png';
-
+import RewardCard from './RewardCard';
 // images
 import TrophyBig from '../../../assets/images/TrophyBig.png';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -31,7 +31,7 @@ import { DocumentData } from 'firebase/firestore';
 const Scoreboard = () => {
   const [text, setText] = useState<string | undefined>();
   const [parent, setParent] = useState(true);
-  const [percentage, setPercentage] = useState();
+  const [selectedReward, setSelectedReward] = useState<any>();
   const navigation = useNavigation();
   const dimensions = useDimensions();
   const [rewardsProcessed, setRewardsProcessed] = useState(false);
@@ -45,17 +45,23 @@ const Scoreboard = () => {
         if (data) {
           setRewards(data);
           setRewardsProcessed(true);
-          // getRewardsProgress();
         }
       },
     );
   }, []);
+
   useEffect(() => {
     if (!rewardsProcessed) {
       setRewardsProcessed(true);
     }
   }, [rewards]);
-
+  useEffect(() => {
+    // console.log(rewards);
+    if (rewards?.length > 0) {
+      setSelectedReward(rewards[0]);
+      console.log('selectedReward', selectedReward);
+    }
+  }, [rewards]);
   const handelNav = (navigationValue: string) => {
     // console.log(navigationValue);
 
@@ -169,24 +175,31 @@ const Scoreboard = () => {
               const earnedPoints = 150;
               const test = +reward.points;
 
-              const percentageDiff = (earnedPoints / test) * 100;
+              const percentageProgress = (earnedPoints / test) * 100;
               let imageSource;
-              if (percentageDiff > 20 && percentageDiff < 40) {
+              if (percentageProgress > 20 && percentageProgress < 40) {
                 imageSource = Twenty;
-              } else if (percentageDiff >= 40 && percentageDiff < 60) {
+              } else if (percentageProgress >= 40 && percentageProgress < 60) {
                 imageSource = Forty;
-              } else if (percentageDiff >= 60 && percentageDiff < 80) {
+              } else if (percentageProgress >= 60 && percentageProgress < 80) {
                 imageSource = Sixty;
-              } else if (percentageDiff >= 80 && percentageDiff < 100) {
+              } else if (percentageProgress >= 80 && percentageProgress < 100) {
                 imageSource = Eighty;
-              } else if (percentageDiff >= 100) {
+              } else if (percentageProgress >= 100) {
                 imageSource = FullScore;
-              } else if (percentageDiff <= 0) {
+              } else if (percentageProgress <= 0) {
                 imageSource = Zero;
               }
 
               return (
-                <TouchableOpacity onPress={() => console.log(reward)}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setText(
+                      text && text === reward.title ? undefined : reward.title,
+                    );
+                    setSelectedReward(reward);
+                  }}
+                >
                   <ImageBackground
                     source={awardBadge}
                     style={styles.RewardButtonBg}
@@ -197,42 +210,16 @@ const Scoreboard = () => {
                     source={imageSource}
                     style={styles.ProgressBar}
                   ></Image>
+                  <Text>{percentageProgress}</Text>
                 </TouchableOpacity>
               );
             })}
           </>
         </ScrollView>
         {/* Reward details View */}
-        {text ? (
+        {selectedReward && (
           <>
-            <View style={styles.RewardDetails}>
-              <Text>
-                blaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-              </Text>
-            </View>
-          </>
-        ) : (
-          <>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flex: 1,
-                marginBottom: 60,
-              }}
-            >
-              <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
-                <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
-                  <Text type="header">
-                    Select a Reward for more information
-                  </Text>
-                </View>
-              </ImageBackground>
-            </View>
-            {/* <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
-              <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
-              </View>
-            </ImageBackground> */}
+            <RewardCard reward={selectedReward} />
           </>
         )}
       </View>
