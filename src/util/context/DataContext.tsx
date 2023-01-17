@@ -16,6 +16,7 @@ import { db } from '../../../firebaseConfig';
 import { useLogin } from '../auth';
 
 interface ContextInterface {
+  isLoading: boolean;
   profiles: DocumentData;
   setProfiles: Function;
   tasks: DocumentData;
@@ -44,6 +45,7 @@ interface ContextInterface {
 }
 
 export const DataContext = createContext<ContextInterface>({
+  isLoading: true,
   profiles: [],
   setProfiles: () => false,
   tasks: [],
@@ -68,6 +70,7 @@ export default function DataProvider(props: any) {
   const [tasks, setTasks] = useState<DocumentData[]>([]);
   // Here 👇 the rewards for the selected profile are stored.
   const [rewards, setRewards] = useState<DocumentData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { currentUser } = useLogin();
   const navigation = useNavigation();
 
@@ -89,12 +92,12 @@ export default function DataProvider(props: any) {
         navigation.navigate('StartScreen');
       }
     }
+    setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
   useEffect(() => {
-    if (loggedInProfile && 'room' in loggedInProfile) {
-      console.log(loggedInProfile);
+    if (loggedInProfile && !('parent' in loggedInProfile)) {
       // @ts-ignore
       navigation.navigate('RoomScreen');
     }
@@ -186,6 +189,7 @@ export default function DataProvider(props: any) {
   return (
     <DataContext.Provider
       value={{
+        isLoading,
         profiles,
         setProfiles,
         tasks,
