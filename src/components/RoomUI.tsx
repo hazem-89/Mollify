@@ -1,21 +1,15 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React, { ReactElement, useEffect, useState } from 'react';
-import {
-  Dimensions,
-  ImageBackground,
-  StyleSheet,
-  Image,
-  View,
-} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { ReactElement, useState } from 'react';
+import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
 import awardBadge from '../../assets/images/awardBadge.png';
 import woodSignLarge from '../../assets/images/woodSignLarge.png';
+import { Text } from '../components/Text';
 import { useLogin } from '../util/auth';
+import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
 import FormModal from './modals/FormModal';
 import Scoreboard from './Scoreboard/Scoreboard';
-import { useNavigation } from '@react-navigation/native';
-import { useDataContext } from '../util/context/DataContext';
-import { Text } from '../components/Text';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -25,16 +19,7 @@ import { Text } from '../components/Text';
 }; */
 
 export default function RoomUI() {
-  const { tasks, setTasks, retrieveFSData } = useDataContext();
-  useEffect(() => {
-    // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
-    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
-      (data: any) => {
-        if (data) setTasks(data);
-      },
-    );
-  }, []);
-
+  const { tasks } = useDataContext();
   const { logout } = useLogin();
   const navigation = useNavigation();
   const dimensions = useDimensions();
@@ -65,7 +50,7 @@ export default function RoomUI() {
     // @ts-ignore
     navigation.navigate('TasksCategoryPage', {
       paramKey: {
-        category: category,
+        category,
         content: 'DisplayTasks',
       },
     });
@@ -175,9 +160,13 @@ export default function RoomUI() {
               style={styles.woodLargeStyle}
             >
               <View style={styles.SidesButtons}>
-                {tasks.length ? <><View style={styles.tasksLength}>
-                  <Text type="NotificationNum">{tasks.length}</Text>
-                </View></> : null}
+                {tasks.length ? (
+                  <>
+                    <View style={styles.tasksLength}>
+                      <Text type="NotificationNum">{tasks.length}</Text>
+                    </View>
+                  </>
+                ) : null}
                 <Button
                   background="TodoButtonImage"
                   onPress={() => {

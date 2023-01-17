@@ -13,7 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Disposal from '../components/room/Disposal';
 import Draggable from '../components/room/Draggable';
 import RoomUI from '../components/RoomUI';
-import { Tasks } from '../Interfaces';
+import { ProfileInterface, Tasks } from '../Interfaces';
 import { useDataContext } from '../util/context/DataContext';
 import { rooms } from '../util/itemObjects';
 
@@ -33,8 +33,14 @@ export default function RoomScreen() {
     x: 0,
     y: 0,
   });
-  const { loggedInProfile, retrieveFSData, setTasks, tasks, updateFSDoc } =
-    useDataContext();
+  const {
+    loggedInProfile,
+    retrieveFSData,
+    setTasks,
+    tasks,
+    updateFSDoc,
+    selectedChild,
+  } = useDataContext();
 
   const styles = StyleSheet.create({
     BackgroundImage: {
@@ -51,25 +57,37 @@ export default function RoomScreen() {
   });
 
   useEffect(() => {
-    if (loggedInProfile) {
-      // Get the room id from the profile loggedInProfile, sort through the roomObject and render the image with matching id.
-      const foundRoom = rooms.find(room => room.id === loggedInProfile.room);
-      if (foundRoom?.image) {
-        setProfileRoom(foundRoom.image);
-        // Calculate aspect ratio
-        setAspectRatio(foundRoom.width / foundRoom.height);
-      }
-      // Get the tasks for rendering dragables
+    if (
+      loggedInProfile &&
+      loggedInProfile.parent &&
+      selectedChild !== undefined
+    ) {
+      // Logged in profile is a parent, find and render selected child's room
+      handleData(selectedChild as ProfileInterface)
+    } else if (loggedInProfile && loggedInProfile.room) {
+      // Logged in profile is a kid, find and render kid's room.
+      handleData(loggedInProfile as ProfileInterface)
+    }
+  }, [loggedInProfile]);
+
+  function handleData(profileProp: ProfileInterface) {
+    // find and render child's room
+    const foundRoom = rooms.find(room => room.id === profileProp.room);
+    if (foundRoom && foundRoom.image) {
+      setProfileRoom(foundRoom.image);
+      // Calculate aspect ratio
+      setAspectRatio(foundRoom.width / foundRoom.height);
+      // Get the tasks for rendering draggables
+      console.log(profileProp.id);
       retrieveFSData(
         'Tasks',
         'profileId',
-        // replace Lgq9YJnPLLezb1iE4xHQ with `${loggedInProfile?.mainUserId}`,
-        'Lgq9YJnPLLezb1iE4xHQ',
+        `${profileProp.id}`,
       ).then((data: any) => {
         if (data) setTasks(data);
       });
     }
-  }, [loggedInProfile]);
+  }
 
   function handleMove(
     moving: boolean,
@@ -79,10 +97,7 @@ export default function RoomScreen() {
     if (moving) {
       // When moving the Disposal component is rendered.
       setIsDragging(true);
-      console.log(viewPortCoords);
-      console.log(task);
     } else {
-      console.log(draggableCoords);
       if (
         draggableCoords &&
         viewPortCoords &&
@@ -94,8 +109,7 @@ export default function RoomScreen() {
         retrieveFSData(
           'Tasks',
           'profileId',
-          // replace Lgq9YJnPLLezb1iE4xHQ with `${loggedInProfile?.mainUserId}`,
-          'Lgq9YJnPLLezb1iE4xHQ',
+          `${loggedInProfile?.mainUserId}`,
         ).then((data: any) => {
           if (data) setTasks(data);
         });
@@ -130,7 +144,7 @@ export default function RoomScreen() {
           style={styles.BackgroundImage}
         />
         {/* For each task render a draggable with .map */}
-        {tasks &&
+        {tasks && loggedInProfile && !loggedInProfile.parent &&
           tasks.map((task: Tasks) =>
             task.hasRequest === false ? (
               <Draggable
