@@ -1,6 +1,7 @@
+/* eslint-disable prettier/prettier */
 import { useDimensions } from '@react-native-community/hooks';
 import { DocumentData } from 'firebase/firestore';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -21,10 +22,7 @@ const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { profiles, loggedInProfile } = useDataContext();
-  const [filteredProfiles, setFilteredProfiles] = useState<
-    DocumentData | undefined
-  >();
+  const { profiles, loggedInProfile, filteredProfiles } = useDataContext();
 
   const styles = StyleSheet.create({
     modal: {
@@ -78,19 +76,6 @@ const SelectProfile = () => {
         break;
     }
   }
-
-  useEffect(() => {
-    if (loggedInProfile?.parent && profiles) {
-      const filter = profiles.filter(
-        (profile: DocumentData) => profile.id !== loggedInProfile.id,
-      );
-      console.log('All 👇');
-      console.log(profiles);
-      console.log('filter 👇');
-      console.log(filter);
-      setFilteredProfiles(filter);
-    }
-  }, [loggedInProfile]);
 
   return (
     <>
