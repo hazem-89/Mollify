@@ -149,6 +149,16 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontSize: smallScreen ? 14 : 18,
       fontWeight: 'bold',
     },
+    rewardHeader: {
+      fontSize: smallScreen ? 40 : 50,
+      fontFamily: 'Inika',
+      color: '#fff',
+    },
+    rewardDetails: {
+      fontSize: smallScreen ? 20 : 25,
+      fontFamily: 'Inika',
+      color: '#fff',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -185,6 +195,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.categoryTitles);
   } else if (type === 'NotificationNum') {
     textStyles.push(styles.NotificationNum);
+  } else if (type === 'rewardHeader') {
+    textStyles.push(styles.rewardHeader);
+  } else if (type === 'rewardDetails') {
+    textStyles.push(styles.rewardDetails);
   }
 
   textStyles = [...textStyles, ...style];

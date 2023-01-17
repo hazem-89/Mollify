@@ -153,11 +153,11 @@ const Scoreboard = () => {
       top: 0.07 * ScreenHeight,
     },
     RewardButtonBg: {
-      width: smallScreen ? 0.18 * ScreenWidth : 0.22 * ScreenWidth,
+      width: 0.22 * ScreenWidth,
       height: 0.18 * ScreenHeight,
     },
     ProgressBar: {
-      width: smallScreen ? 0.18 * ScreenWidth : 0.22 * ScreenWidth,
+      width: 0.22 * ScreenWidth,
       height: 0.07 * ScreenHeight,
     },
   });
@@ -174,7 +174,7 @@ const Scoreboard = () => {
             source={RewardMainTitleBg}
             style={styles.RewardMainTitleBg}
           >
-            <View style={{ marginBottom: '15%' }}>
+            <View style={{ marginBottom: '10%' }}>
               <Text type="header">Rewards</Text>
             </View>
           </ImageBackground>
@@ -263,7 +263,7 @@ const Scoreboard = () => {
           })}
         </ScrollView>
         {/* Reward details View */}
-        {selectedReward && (
+        {selectedReward && text && (
           <>
             <RewardCard reward={selectedReward} />
           </>
