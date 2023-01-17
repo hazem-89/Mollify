@@ -11,23 +11,26 @@ import {
 import { useDataContext } from '../../util/context/DataContext';
 import { Text } from '../../components/Text';
 import { Rewards } from '../../Interfaces';
-import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
-import AddButtonImage from '../../../assets/images/AddButton.png';
-import GoldenArrow from '../../../assets/images/GoldenArrow.png';
-import GoBackArrow from '../../../assets/images/GoBackArrow.png';
-import awardBadge from '../../../assets/images/awardBadge.png';
-import Eighty from '../../../assets/images/Eighty.png';
-import Forty from '../../../assets/images/Forty.png';
-import Twenty from '../../../assets/images/Twenty.png';
-import Zero from '../../../assets/images/Zero.png';
-import FullScore from '../../../assets/images/FullScore.png';
-import Sixty from '../../../assets/images/Sixty.png';
 import RewardCard from './RewardCard';
-// images
-import TrophyBig from '../../../assets/images/TrophyBig.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { DocumentData } from 'firebase/firestore';
+// images
+import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
+import AddButtonImage from '../../../assets/images/AddButton.png';
+import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
+import GoBackArrow from '../../../assets/images/GoBackArrow.png';
+import AwardTitleBg from '../../../assets/images/AwardTitleBg.png';
+import Zero from '../../../assets/images/Zero.png';
+import Twenty from '../../../assets/images/Twenty.png';
+import Forty from '../../../assets/images/Forty.png';
+import Sixty from '../../../assets/images/Sixty.png';
+import Eighty from '../../../assets/images/Eighty.png';
+import FullScore from '../../../assets/images/FullScore.png';
+import TrophyBig from '../../../assets/images/TrophyBig.png';
+import ArrowDown from '../../../assets/images/ArrowDown.png';
+import ActiveViewIcon from '../../../assets/images/ActiveViewIcon.png';
+import NotActiveViewIcon from '../../../assets/images/NotActiveViewIcon.png';
 const Scoreboard = () => {
   const [text, setText] = useState<string | undefined>();
   const [parent, setParent] = useState(true);
@@ -56,15 +59,13 @@ const Scoreboard = () => {
     }
   }, [rewards]);
   useEffect(() => {
-    // console.log(rewards);
     if (rewards?.length > 0) {
       setSelectedReward(rewards[0]);
+      setText(rewards[0].title);
       console.log('selectedReward', selectedReward);
     }
   }, [rewards]);
   const handelNav = (navigationValue: string) => {
-    // console.log(navigationValue);
-
     navigationValue === 'DisplayTasks' &&
       // @ts-ignore
       navigation.navigate('TasksCategoryPage', {
@@ -74,9 +75,7 @@ const Scoreboard = () => {
       });
     navigationValue === 'Room' && navigation.goBack();
   };
-  function handlePercentage(state: number) {
-    // setAddTaskBtnClicked(state);
-  }
+
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
@@ -87,84 +86,101 @@ const Scoreboard = () => {
       height: ScreenHeight,
       alignItems: 'center',
     },
-    TitleView: {
+    HederView: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
-      width: smallScreen ? 250 : 320,
-      marginTop: smallScreen ? 10 : 20,
+      justifyContent: 'center',
+      width: 0.5 * ScreenWidth,
+      marginTop: '3%',
+      transform: [{ translateX: -50 }],
+      maxHeight: 0.2 * ScreenHeight,
     },
+    TitleView: {
+      minWidth: 0.1 * ScreenWidth,
+    },
+    RewardMainTitleBg: {
+      width: smallScreen ? 0.2 * ScreenWidth : 0.3 * ScreenWidth,
+      height: 0.2 * ScreenHeight,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+
     TrophyBigStyleLeft: {
       transform: [{ rotate: '30deg' }],
-      height: smallScreen ? 100 : 120,
-      width: smallScreen ? 80 : 90,
+      height: '100%',
+      width: '100%',
     },
     TrophyBigStyleRight: {
       transform: [{ rotate: '-30deg' }],
-      height: smallScreen ? 100 : 120,
-      width: smallScreen ? 80 : 90,
+      height: '100%',
+      width: '100%',
     },
     RewardsBody: {
       flexDirection: 'row',
       flex: 1,
-      // width: '100%',
-      minWidth: smallScreen ? 750 : 850,
+      minWidth: ScreenWidth,
       justifyContent: 'flex-start',
     },
     RewardsScrollView: {
-      maxWidth: smallScreen ? 160 : 250,
-      maxHeight: smallScreen ? 220 : 370,
+      width: 0.25 * ScreenWidth,
+      maxWidth: 0.25 * ScreenWidth,
+      maxHeight: 0.55 * ScreenHeight,
+      marginLeft: 0.05 * ScreenWidth,
     },
     RewardDetails: {},
-    GoldenArrow: {
-      width: smallScreen ? 350 : 500,
-      height: smallScreen ? 150 : 200,
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
     GoBackToRoomImageStyle: {
-      width: smallScreen ? 150 : 200,
-      height: smallScreen ? 75 : 100,
+      width: 0.15 * ScreenWidth,
+      height: 0.17 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
     },
     GoToTasksArrowImageStyle: {
-      width: smallScreen ? 150 : 200,
-      height: smallScreen ? 75 : 100,
+      width: 0.15 * ScreenWidth,
+      height: 0.17 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
       transform: [{ scaleX: -1 }],
     },
     GoBackButton: {
       position: 'absolute',
-      right: 30,
-      top: smallScreen ? 30 : 40,
+      right: 0.05 * ScreenWidth,
+      top: 0.07 * ScreenHeight,
     },
     GoToTasksButton: {
       position: 'absolute',
-      left: 30,
-      top: smallScreen ? 30 : 40,
+      left: 0.05 * ScreenWidth,
+      top: 0.07 * ScreenHeight,
     },
     RewardButtonBg: {
-      width: smallScreen ? 150 : 250,
-      height: smallScreen ? 75 : 130,
-      alignItems: 'center',
-      justifyContent: 'center',
+      width: smallScreen ? 0.18 * ScreenWidth : 0.22 * ScreenWidth,
+      height: 0.18 * ScreenHeight,
     },
     ProgressBar: {
-      width: smallScreen ? 150 : 250,
-      height: smallScreen ? 30 : 50,
-      marginBottom: smallScreen ? 15 : 15,
+      width: smallScreen ? 0.18 * ScreenWidth : 0.22 * ScreenWidth,
+      height: 0.07 * ScreenHeight,
     },
   });
   return (
     <View style={styles.Container}>
       {/* Display rewards section */}
       {/* Screen Title View */}
-      <View style={styles.TitleView}>
-        <Image source={TrophyBig} style={styles.TrophyBigStyleLeft} />
-        <Text type="header">Rewards</Text>
-        <Image source={TrophyBig} style={styles.TrophyBigStyleRight} />
+      <View style={styles.HederView}>
+        <View style={styles.TitleView}>
+          <Image source={TrophyBig} style={styles.TrophyBigStyleLeft} />
+        </View>
+        <View style={{ minWidth: smallScreen ? '20%' : '30%' }}>
+          <ImageBackground
+            source={RewardMainTitleBg}
+            style={styles.RewardMainTitleBg}
+          >
+            <View style={{ marginBottom: '15%' }}>
+              <Text type="header">Rewards</Text>
+            </View>
+          </ImageBackground>
+        </View>
+        <View style={styles.TitleView}>
+          <Image source={TrophyBig} style={styles.TrophyBigStyleRight} />
+        </View>
       </View>
       {/* display rewards and rewards <details></details> */}
       <View style={styles.RewardsBody}>
@@ -199,18 +215,52 @@ const Scoreboard = () => {
                     );
                     setSelectedReward(reward);
                   }}
+                  style={{
+                    position: 'relative',
+                    marginBottom: 0.05 * ScreenHeight,
+                  }}
                 >
                   <ImageBackground
-                    source={awardBadge}
+                    source={AwardTitleBg}
                     style={styles.RewardButtonBg}
                   >
-                    <Text>{reward.title}</Text>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: 0.055 * ScreenHeight,
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        width: '70%',
+                        marginLeft: 0.04 * ScreenWidth,
+                      }}
+                    >
+                      <Text>{reward.title}</Text>
+                      <Text>{percentageProgress}%</Text>
+                    </View>
                   </ImageBackground>
                   <Image
                     source={imageSource}
                     style={styles.ProgressBar}
                   ></Image>
-                  <Text>{percentageProgress}</Text>
+                  <View
+                    style={{
+                      position: 'absolute',
+                      left: '0%',
+                      top: '0%',
+                    }}
+                  >
+                    <Image
+                      source={
+                        text && text === reward.title
+                          ? ActiveViewIcon
+                          : NotActiveViewIcon
+                      }
+                      style={{
+                        width: 0.036 * ScreenWidth,
+                        height: 0.07 * ScreenHeight,
+                      }}
+                    ></Image>
+                  </View>
                 </TouchableOpacity>
               );
             })}
@@ -224,6 +274,15 @@ const Scoreboard = () => {
         )}
       </View>
       {/* Position absolute Views  */}
+      <View
+        style={{
+          position: 'absolute',
+          left: '10%',
+          top: smallScreen ? '10%' : '15%',
+        }}
+      >
+        <Image source={ArrowDown}></Image>
+      </View>
       {/* Add button View */}
       {/* {parent && (
         <TouchableOpacity
