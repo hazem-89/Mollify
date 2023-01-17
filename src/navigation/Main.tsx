@@ -1,5 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { ProfileInterface } from '../Interfaces';
 import DisplayMenusScreen from '../screens/DisplayMenusScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import RoomScreen from '../screens/RoomScreen';
@@ -9,7 +10,7 @@ import StartScreen from '../screens/StartScreen';
 export type MainStackParams = {
   LoadingScreen: any;
   StartScreen: any;
-  RoomScreen: any;
+  RoomScreen: { selectedProfile: ProfileInterface };
   TasksCategoryPage: { category: string; content: string };
 };
 
