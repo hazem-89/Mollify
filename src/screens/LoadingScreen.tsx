@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 export default function LoadingScreen() {
@@ -10,10 +10,6 @@ export default function LoadingScreen() {
       backgroundColor: 'black',
     },
   });
-
-  useEffect(() => {
-    console.log('Render LoadingScreen');
-  }, []);
 
   return (
     <View style={styles.container}>

@@ -1,27 +1,26 @@
-import {
-  StyleSheet,
-  View,
-  Image,
-  Dimensions,
-  TouchableOpacity,
-  ImageBackground,
-  BackHandler,
-} from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import { Text } from '../../components/Text';
-import { TasksComponent } from './TasksComponent';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import GoBackArrow from '../../../assets/images/GoBackArrow.png';
+import GoldenArrow from '../../../assets/images/GoldenArrow.png';
+import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
+import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
+import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
 import TasksCategoryTitleBackGround from '../../../assets/images/TasksCategoryTitleBackGround1.png';
 import TasksCategoryTitleBackGroundActive from '../../../assets/images/TasksCategoryTitleBackGroundActive1.png';
-import SchoolTasksIcon from '../../../assets/images/Icons/SchoolTasksIcon.png';
 import TodoButtonImage from '../../../assets/images/todo.png';
-import GoldenArrow from '../../../assets/images/GoldenArrow.png';
-import GoBackArrow from '../../../assets/images/GoBackArrow.png';
-import SpecialTaskIcon from '../../../assets/images/Icons/SpecialTaskIcon.png';
-import ActivityIcon from '../../../assets/images/Icons/ActivityIcon.png';
-import { useDataContext } from '../../util/context/DataContext';
+import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useDataContext } from '../../util/context/DataContext';
+import { TasksComponent } from './TasksComponent';
 
 const tasksCategories = [
   {
@@ -56,20 +55,22 @@ export const DisplayTasksCategories = () => {
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
   const navigation = useNavigation();
-  const { retrieveFSData, tasks, setTasks } = useDataContext();
-  useEffect(() => {
-    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
-      (data: any) => {
-        if (data) setTasks(data);
-      },
-    );
+  const { retrieveFSData, tasks, setTasks, selectedChild, loggedInProfile } =
+    useDataContext();
 
-    //   }
+  useEffect(() => {
+    let profileID = '';
+    if (selectedChild) {
+      profileID = selectedChild.id;
+    } else if (loggedInProfile) {
+      profileID = loggedInProfile.id;
+    }
+    retrieveFSData('Tasks', 'profileId', profileID).then((data: any) => {
+      if (data) setTasks(data);
+    });
+    setCategoryLength();
   }, []);
-  const handelGoBack = () => {
-    // @ts-ignore
-    navigation.navigate('RoomScreen');
-  };
+
   const setCategoryLength = () => {
     tasksCategories.forEach(category => {
       category.length = 0;
@@ -82,8 +83,8 @@ export const DisplayTasksCategories = () => {
       });
     });
   };
-  setCategoryLength();
-  const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -153,7 +154,12 @@ export const DisplayTasksCategories = () => {
   return (
     <View style={styles.container}>
       <View style={styles.GoBackButton}>
-        <TouchableOpacity onPress={handelGoBack}>
+        <TouchableOpacity
+          onPress={() =>
+            // @ts-ignore
+            navigation.navigate('RoomScreen')
+          }
+        >
           <ImageBackground
             source={GoBackArrow}
             style={styles.GoBackArrowImageStyle}

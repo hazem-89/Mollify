@@ -22,7 +22,7 @@ const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { profiles, loggedInProfile, filteredProfiles } = useDataContext();
+  const { profiles, loggedInProfile, filteredProfiles, setSelectedChild } = useDataContext();
 
   const styles = StyleSheet.create({
     modal: {
@@ -71,6 +71,9 @@ const SelectProfile = () => {
       case 'EnterPIN':
         if (profile) setComponent(<EnterProfile selectedProfile={profile} />);
         break;
+      case 'ManageProfile':
+        if (profile) setSelectedChild(profile);
+        break;
       default:
         setComponent(undefined);
         break;
@@ -115,7 +118,7 @@ const SelectProfile = () => {
               ? filteredProfiles?.map((profile: DocumentData) => (
                 <TouchableOpacity
                   key={profile?.id}
-                  onPress={() => handleClick('EnterPIN', profile)}
+                  onPress={() => handleClick('ManageProfile', profile)}
                 >
                   <View style={styles.profile}>
                     <View style={styles.Avatar}>

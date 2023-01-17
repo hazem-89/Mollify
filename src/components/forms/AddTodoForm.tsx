@@ -73,6 +73,7 @@ export const AddTodoForm = ({
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
+  const { selectedChild } = useDataContext();
   const [titleInputExample, setTitleInputExample] = useState('');
   const [descriptionInputExample, setDescriptionInputExample] = useState('');
   const dimensions = useDimensions();
@@ -206,7 +207,7 @@ export const AddTodoForm = ({
         isDone: false,
         hasRequest: false,
         // need to replace profile with the current profile.id
-        profileId: 'Lgq9YJnPLLezb1iE4xHQ',
+        profileId: selectedChild.id,
       };
       addDocToFS('Tasks', newTodo);
       Alert.alert('Success!', `Description: ${state.taskDescription}`);
