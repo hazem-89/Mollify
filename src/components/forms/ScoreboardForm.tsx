@@ -61,7 +61,7 @@ export const ScoreboardForm = () => {
       const newReward = {
         title: state.rewardTitle,
         points: pointsValue,
-        endTime,
+        endTime: endTime?.toString(),
         asignedProfileId: 'pjVcsYpBE46nGlDmHmO0',
         isDone: false,
       };

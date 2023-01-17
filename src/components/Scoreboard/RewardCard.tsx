@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { useDimensions } from '@react-native-community/hooks';
 import { Rewards } from '../../Interfaces';
@@ -10,17 +10,26 @@ import Forty from '../../../assets/images/Forty.png';
 import Sixty from '../../../assets/images/Sixty.png';
 import Eighty from '../../../assets/images/Eighty.png';
 import FullScore from '../../../assets/images/FullScore.png';
+import lightningBig from '../../../assets/images/lightningBig.png';
+import hourglassBig from '../../../assets/images/hourglassBig.png';
+import { CountdownTimer } from '../ToDos/CountDown';
 interface Props {
   reward: Rewards;
 }
 const RewardCard = ({ reward }: Props) => {
   const dimensions = useDimensions();
+  const [teasDate, setTestDate] = useState();
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const endDate = new Date(reward.endTime);
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   // const [RewardRequestStatus, setRewardRequestStatus] = useState(
   //   reward.hasRequest,
   // );
+
   const earnedPoints = 150;
   const test = +reward.points;
+  const PointsLeft = test - earnedPoints;
 
   const percentageProgress = (earnedPoints / test) * 100;
   let imageSource;
@@ -54,53 +63,93 @@ const RewardCard = ({ reward }: Props) => {
         hasRequest: false,
       };
     }
-
-    // if (reward.id) {
-    //   try {
-    //     await setDoc(doc(db, 'Rewards', reward?.id), updateAcceptedReq);
-    //     setRewardRequestStatus(status);
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // }
   };
 
-  const endDate = new Date(reward.endTime);
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     CardContainer: {
       width: 0.6 * ScreenWidth,
+      height: ScreenHeight,
+      alignItems: 'center',
+      // justifyContent: 'center',
     },
     TextView: {
-      flex: 1,
-      maxWidth: smallScreen ? 250 : 300,
-      height: 50,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+
+    PointsIconTitle: {
+      width: 0.025 * ScreenWidth,
+      height: 0.08 * ScreenHeight,
+    },
+    PointsView: {
+      flexDirection: 'row',
+      minHeight: 0.2 * ScreenHeight,
+      width: ScreenWidth,
+      alignItems: 'center',
       justifyContent: 'center',
     },
-    taskView: {
+    PointsIcon: {
+      width: 0.05 * ScreenWidth,
+      height: 0.165 * ScreenHeight,
+    },
+
+    PointsDetails: {
+      marginLeft: 0.05 * ScreenWidth,
+      width: 0.45 * ScreenWidth,
+    },
+    ProgressBar: {
+      width: 0.35 * ScreenWidth,
+      height: 0.13 * ScreenHeight,
+    },
+    TimeView: {
       flexDirection: 'row',
+      minHeight: 0.2 * ScreenHeight,
+      width: ScreenWidth,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
-    TimeBackground: {
-      width: smallScreen ? 75 : 100,
-      height: smallScreen ? 40 : 50,
-    },
-    PointsBackground: {
-      width: smallScreen ? 40 : 60,
-      height: smallScreen ? 40 : 60,
-    },
-    icons: {
-      width: smallScreen ? 40 : 50,
-      height: smallScreen ? 40 : 50,
+
+    TimeDetails: {
+      width: 0.45 * ScreenWidth,
+      marginLeft: 0.05 * ScreenWidth,
     },
   });
 
   return (
     <View style={styles.CardContainer}>
-      <View style={styles.taskView}>
-        <Text type="todoList">{reward.title}</Text>
-        <Text type="todoList">{reward.points}</Text>
-        {/* <Image source={imageSource}></Image> */}
+      <View style={styles.TextView}>
+        <Text type="rewardHeader">
+          {reward.title}\{reward.points}
+        </Text>
+        <Image source={lightningBig} style={styles.PointsIconTitle}></Image>
+      </View>
+      <View style={styles.PointsView}>
+        <Image source={lightningBig} style={styles.PointsIcon}></Image>
+        <View style={styles.PointsDetails}>
+          <Image source={imageSource} style={styles.ProgressBar}></Image>
+          <Text type="rewardDetails">
+            You need {PointsLeft} more points{' '}
+            <Image source={lightningBig} style={styles.PointsIconTitle}></Image>{' '}
+            to earn this reward
+          </Text>
+        </View>
+      </View>
+      <View>
+        <Text type="rewardDetails">&</Text>
+      </View>
+      <View style={styles.TimeView}>
+        <View>
+          <Image source={hourglassBig} style={styles.PointsIcon}></Image>
+        </View>
+        <View>
+          <View style={styles.TimeDetails}>
+            <Text type="rewardDetails">
+              You Have <CountdownTimer date={endDate} /> To earn it.
+            </Text>
+          </View>
+          {/* <CountdownTimer date={endDate} /> */}
+        </View>
+        {/* <Text type="todoList">{endDate.toString()}</Text> */}
       </View>
     </View>
   );
