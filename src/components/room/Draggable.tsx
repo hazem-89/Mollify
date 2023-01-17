@@ -7,13 +7,15 @@ import {
   PanResponderInstance,
   Dimensions,
 } from 'react-native';
+import { Tasks } from '../../Interfaces';
 import { coordinates } from '../../screens/RoomScreen';
 
 type DraggableProps = {
   onMove: Function;
+  task: Tasks;
 };
 
-export default function Draggable({ onMove }: DraggableProps) {
+export default function Draggable({ onMove, task }: DraggableProps) {
   // State to keep track of the current x and y offset of the component, the initial value is where the draggable will start
   const ScreenHeight = Dimensions.get('window').height;
   const ScreenWidth = Dimensions.get('window').width;
@@ -52,7 +54,7 @@ export default function Draggable({ onMove }: DraggableProps) {
   }, [inactivePan]);
 
   useEffect(() => {
-    onMove(false, inactivePan);
+    if (pan !== inactivePan) onMove(false, inactivePan);
   }, [inactivePan]);
 
   const styles = StyleSheet.create({
@@ -68,7 +70,7 @@ export default function Draggable({ onMove }: DraggableProps) {
   return (
     <View style={styles.draggable} {...panResponderRef.current?.panHandlers}>
       {/* The content of the draggable component goes here */}
-      <Text>Drag me</Text>
+      <Text>{task.taskDescription}</Text>
     </View>
   );
 }

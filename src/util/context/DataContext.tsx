@@ -1,11 +1,12 @@
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
   DocumentData,
   getDocs,
   query,
+  setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
@@ -21,11 +22,24 @@ interface ContextInterface {
   setTasks: Function;
   rewards: DocumentData;
   setRewards: Function;
+  /** Retrieve firestore data function.
+   * Uses querying to retrieve documents where the prop value in the document = the value passed to the function.
+   * For example usage see DBContext.
+   */
   retrieveFSData: Function;
   loggedInProfile: DocumentData | undefined;
   setLoggedInProfile: Function;
+  /** This function is used to store an object value in the async storage on the device. */
   storeAsyncData: Function;
+  /** Add document to firestore.
+   * Takes in collectionName and data{}.
+   * No need to add id referencing the doc in the data object, it gets added in addDocToFS func.
+   * */
   addDocToFS: Function;
+  /** Update document in firestore.
+   * Takes collectionName, document and data{}
+   */
+  updateFSDoc: Function;
   deleteDocFromFS: Function;
 }
 
@@ -41,6 +55,7 @@ export const DataContext = createContext<ContextInterface>({
   retrieveFSData: () => false,
   storeAsyncData: () => false,
   addDocToFS: () => false,
+  updateFSDoc: () => false,
   deleteDocFromFS: () => false,
 });
 
@@ -91,7 +106,7 @@ export default function DataProvider(props: any) {
       const jsonValue = JSON.stringify(data);
       await AsyncStorage.setItem(key, jsonValue);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -104,7 +119,7 @@ export default function DataProvider(props: any) {
         console.log(JSON.parse(jsonValue));
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
   }
 
@@ -112,33 +127,49 @@ export default function DataProvider(props: any) {
    * Uses querying to retrieve documents where the prop value in the document = the value passed to the function.
    * For example usage see DBContext.
    */
+  // eslint-disable-next-line consistent-return
   async function retrieveFSData(
     collectionName: string,
     prop: string,
     value: string,
   ) {
-    const ref = collection(db, collectionName);
-    const searchQuery = query(ref, where(prop, '==', value));
+    try {
+      const ref = collection(db, collectionName);
+      const searchQuery = query(ref, where(prop, '==', value));
 
-    const querySnapshot = await getDocs(searchQuery);
-    if (!querySnapshot.empty) {
-      const data = querySnapshot.docs.map(document => document.data());
-      return data;
+      const querySnapshot = await getDocs(searchQuery);
+      if (!querySnapshot.empty) {
+        const data = querySnapshot.docs.map(document => document.data());
+        return data;
+      }
+    } catch (err) {
+      console.error(
+        `No data found for ${collectionName} where ${prop} = ${value}: ${err}`,
+      );
     }
-    // Handle empty querySnapshot
-    throw new Error(
-      `No data found for ${collectionName} where ${prop} = ${value}`,
-    );
   }
 
-  /** Add document to firestore */
+  // Add document to firestore.
   async function addDocToFS(collectionName: string, data: {}) {
     try {
-      await addDoc(collection(db, collectionName), {
-        ...data,
-      });
+      const newDocRef = doc(collection(db, collectionName));
+      await setDoc(newDocRef, { ...data, id: newDocRef.id });
     } catch (err) {
-      console.log(err);
+      console.error(err);
+    }
+  }
+
+  //  Update document in firestore
+  async function updateFSDoc(
+    collectionName: string,
+    document: string,
+    data: {},
+  ) {
+    try {
+      const docRef = doc(db, collectionName, document);
+      await updateDoc(docRef, data);
+    } catch (error) {
+      console.error(`Error updating document: ${error}`);
     }
   }
 
@@ -147,7 +178,7 @@ export default function DataProvider(props: any) {
     try {
       await deleteDoc(doc(db, collectionName, documentId));
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 
@@ -165,6 +196,7 @@ export default function DataProvider(props: any) {
         retrieveFSData,
         storeAsyncData,
         addDocToFS,
+        updateFSDoc,
         deleteDocFromFS,
       }}
       {...props}

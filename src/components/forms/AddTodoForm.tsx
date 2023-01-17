@@ -8,7 +8,8 @@ import {
 } from 'react-native';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
-import uuid from 'react-native-uuid';
+// Uninstall
+// import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TextInput } from '../CustomInput';
 import Button from '../buttons/Buttons';
@@ -77,6 +78,7 @@ export const AddTodoForm = ({
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [state, setState] = useState({
+    taskTitle: '',
     taskDescription: '',
     selected: '',
   });
@@ -196,7 +198,7 @@ export const AddTodoForm = ({
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
       const newTodo = {
-        id: uuid.v4(),
+        taskTitle: state.taskTitle,
         taskDescription: state.taskDescription,
         pointsValue,
         endTime: endTime?.toString(),
