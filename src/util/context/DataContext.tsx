@@ -33,6 +33,7 @@ interface ContextInterface {
   setLoggedInProfile: Function;
   selectedChild: DocumentData;
   setSelectedChild: Function;
+  onboarding: boolean;
   /** This function is used to store or remove an object value in the async storage on the device.
    * The function takes in a key and a data{}, if you want to remove the key value leave the data prop undefined.
    */
@@ -61,6 +62,7 @@ export const DataContext = createContext<ContextInterface>({
   setLoggedInProfile: () => false,
   selectedChild: [],
   setSelectedChild: () => false,
+  onboarding: true,
   retrieveFSData: () => false,
   setAsyncData: () => false,
   addDocToFS: () => false,
@@ -81,6 +83,7 @@ export default function DataProvider(props: any) {
   const [tasks, setTasks] = useState<DocumentData[]>([]);
   // Here 👇 the rewards for the selected profile are stored.
   const [rewards, setRewards] = useState<DocumentData[]>([]);
+  const [onboarding, setOnboarding] = useState<boolean>();
   const { currentUser } = useLogin();
   const navigation = useNavigation();
 
@@ -93,7 +96,16 @@ export default function DataProvider(props: any) {
             if (data) setProfiles(data);
           },
         );
-        getAsyncData('loggedInProfile');
+        getAsyncData('loggedInProfile').then(data => {
+          if (data) setLoggedInProfile(data);
+        });
+        getAsyncData('onboarding').then(data => {
+          if (data) {
+            setOnboarding(data);
+          } else {
+            setOnboarding(true);
+          }
+        });
       } else {
         setLoggedInProfile(undefined);
         setFilteredProfiles(undefined);
@@ -150,15 +162,15 @@ export default function DataProvider(props: any) {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
       if (jsonValue != null) {
-        setLoggedInProfile(JSON.parse(jsonValue));
+        return JSON.parse(jsonValue);
       }
     } catch (e) {
       console.error(e);
     }
+    return null;
   }
 
   // Retrieve firestore data function.
-  // eslint-disable-next-line consistent-return
   async function retrieveFSData(
     collectionName: string,
     prop: string,
@@ -178,6 +190,7 @@ export default function DataProvider(props: any) {
         `No data found for ${collectionName} where ${prop} = ${value}: ${err}`,
       );
     }
+    return null;
   }
 
   // Add document to firestore.
@@ -227,6 +240,7 @@ export default function DataProvider(props: any) {
         setRewards,
         loggedInProfile,
         setLoggedInProfile,
+        onboarding,
         retrieveFSData,
         setAsyncData,
         addDocToFS,
