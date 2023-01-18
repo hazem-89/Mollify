@@ -5,6 +5,7 @@ import {
   View,
   Image,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
@@ -14,7 +15,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TextInput } from '../CustomInput';
 import Button from '../buttons/Buttons';
 import laundryBasket from '../../../assets/images/Icons/basket.png';
-import { Text } from '../../components/Text';
+import { Text } from '../Text';
 import hourglass from '../../../assets/images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
 import TaskTextBg from '../../../assets/images/TaskTextBg.png';
@@ -58,60 +59,72 @@ type ErrorType = {
 };
 
 type todoFormProps = {
-  category: string;
-  setAddTaskBtnClicked: React.Dispatch<
+  category?: string;
+  setAddTaskBtnClicked?: React.Dispatch<
     React.SetStateAction<string | undefined>
   >;
+  ParentComponent: string;
+  setAddRewardBtnClicked?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AddTodoForm = ({
   category,
   setAddTaskBtnClicked,
+  ParentComponent,
+  setAddRewardBtnClicked,
 }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
-  const { selectedChild } = useDataContext();
-  const [titleInputExample, setTitleInputExample] = useState('');
   const [descriptionInputExample, setDescriptionInputExample] = useState('');
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const { selectedChild } = useDataContext();
+
   const [state, setState] = useState({
     taskTitle: '',
     taskDescription: '',
     selected: '',
   });
   const { addDocToFS } = useDataContext();
-  const test = () => {
-    setAddTaskBtnClicked(undefined);
+  const closeAdd = () => {
+    if (setAddTaskBtnClicked) {
+      setAddTaskBtnClicked(undefined);
+    }
+    if (setAddRewardBtnClicked) {
+      setAddRewardBtnClicked(false);
+    }
   };
   useEffect(() => {
     switch (category) {
       case 'Special':
-        setTitleInputExample('Inter a title: E.g. Baby site');
         setDescriptionInputExample(
-          'Inter a description: E.g. Baby site your baby brother for 20 min',
+          'Enter a task: E.g. Baby site your baby brother for 20 min',
         );
         break;
       case 'School':
-        setTitleInputExample('Inter a title: E.g. Math exercises');
         setDescriptionInputExample(
-          'Inter a description: E.g. Practice multiplication for 1 hour',
+          'Enter a task: E.g. Practice multiplication for 1 hour',
         );
         break;
       case 'Activities':
-        setTitleInputExample('Inter a title: E.g. Dance Practice');
         setDescriptionInputExample(
-          'Inter a description: E.g. Practice dancing 1 hour',
+          'Enter a task: E.g. Practice dancing 1 hour',
         );
+        break;
+      case 'Reward':
+        setDescriptionInputExample('Enter a Reward:');
         break;
 
       default:
         break;
     }
   }, []);
+
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     container: {
       minHeight: smallScreen ? 300 : 500,
@@ -170,6 +183,13 @@ export const AddTodoForm = ({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    errorsView: {
+      backgroundColor: 'rgba(255, 255, 255, .7)',
+      width: 0.15 * ScreenWidth,
+      padding: 5,
+      alignItems: 'center',
+      borderRadius: 25,
+    },
   });
 
   const showDatePicker = () => {
@@ -197,19 +217,30 @@ export const AddTodoForm = ({
 
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
-      const newTodo = {
-        taskTitle: state.taskTitle,
-        taskDescription: state.taskDescription,
-        pointsValue,
-        endTime: endTime?.toString(),
-        category,
-        isDone: false,
-        hasRequest: false,
-        // need to replace profile with the current profile.id
-        profileId: selectedChild.id,
-      };
-      addDocToFS('Tasks', newTodo);
-      Alert.alert('Success!', `Description: ${state.taskDescription}`);
+      if (ParentComponent === 'Tasks') {
+        const newTodo = {
+          taskTitle: state.taskTitle,
+          taskDescription: state.taskDescription,
+          pointsValue,
+          endTime: endTime?.toString(),
+          category,
+          isDone: false,
+          hasRequest: false,
+          profileId: selectedChild.id,
+        };
+        addDocToFS('Tasks', newTodo);
+
+        Alert.alert('Success!', `Description: ${state.taskDescription}`);
+      } else if (ParentComponent === 'Reward') {
+        console.log('rewards');
+        const newReward = {
+          title: state.taskDescription,
+          points: pointsValue,
+          endTime: endTime?.toString(),
+          profileId: selectedChild.id,
+        };
+        addDocToFS('Rewards', newReward);
+      }
     }
     setEndTime(new Date());
     setPointsValue('');
@@ -311,9 +342,11 @@ export const AddTodoForm = ({
 
         {category !== 'Room' && (
           <View style={styles.inputContainer}>
-            <View style={styles.OtherTasksInfo}>
-              <Text type="MenuTitle">Here you can add a {category} task</Text>
-            </View>
+            {ParentComponent !== 'Reward' && (
+              <View style={styles.OtherTasksInfo}>
+                <Text type="MenuTitle">Here you can Add a {category} task</Text>
+              </View>
+            )}
             <ImageBackground source={InputBg} style={styles.InputBg}>
               <TextInput
                 placeholder={descriptionInputExample}
@@ -352,8 +385,11 @@ export const AddTodoForm = ({
               minimumDate={new Date()}
               minuteInterval={10}
             />
-
-            <Text type="errorText">{errors.time}</Text>
+            {errors.time && (
+              <View style={styles.errorsView}>
+                <Text type="errorText">{errors.time}</Text>
+              </View>
+            )}
           </View>
 
           <View style={styles.TimePointView}>
@@ -368,7 +404,11 @@ export const AddTodoForm = ({
                 impStyle={styles.PointsInput}
               />
             </View>
-            <Text type="errorText">{errors.points}</Text>
+            {errors.points && (
+              <View style={styles.errorsView}>
+                <Text type="errorText">{errors.points}</Text>
+              </View>
+            )}
           </View>
         </View>
         <View
@@ -381,10 +421,13 @@ export const AddTodoForm = ({
           }}
         >
           <Button background="GreenForms" text="Add" onPress={() => submit()} />
-          <Button background="Cancel" text="Cancel" onPress={() => test()} />
+          <Button
+            background="Cancel"
+            text="Cancel"
+            onPress={() => closeAdd()}
+          />
         </View>
       </View>
     </View>
   );
 };
-

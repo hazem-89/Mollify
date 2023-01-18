@@ -57,17 +57,18 @@ export const useLogin = () => {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
+      Alert.alert('login Success!', `Email: ${email}`);
     } else if (
       Object.keys(nextErrors).length === 0 &&
       functionName === 'signUp'
     ) {
       signup(email, password);
+      Alert.alert('Sign up Success!', `Email: ${email}`);
     }
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
 
-    Alert.alert('Success!', `Email: ${email} \n Password: ${password}`);
     return null;
   };
 
@@ -89,6 +90,7 @@ export const useLogin = () => {
       console.error(error);
     }
   };
+
   const login = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password).catch(error => {

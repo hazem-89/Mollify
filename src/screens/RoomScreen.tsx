@@ -40,6 +40,8 @@ export default function RoomScreen() {
     tasks,
     updateFSDoc,
     selectedChild,
+    rewards,
+    setRewards,
   } = useDataContext();
 
   const styles = StyleSheet.create({
@@ -63,12 +65,12 @@ export default function RoomScreen() {
       selectedChild !== undefined
     ) {
       // Logged in profile is a parent, find and render selected child's room
-      handleData(selectedChild as ProfileInterface)
+      handleData(selectedChild as ProfileInterface);
     } else if (loggedInProfile && loggedInProfile.room) {
       // Logged in profile is a kid, find and render kid's room.
-      handleData(loggedInProfile as ProfileInterface)
+      handleData(loggedInProfile as ProfileInterface);
     }
-  }, [loggedInProfile]);
+  }, [loggedInProfile, selectedChild]);
 
   function handleData(profileProp: ProfileInterface) {
     // find and render child's room
@@ -78,13 +80,17 @@ export default function RoomScreen() {
       // Calculate aspect ratio
       setAspectRatio(foundRoom.width / foundRoom.height);
       // Get the tasks for rendering draggables
-      retrieveFSData(
-        'Tasks',
-        'profileId',
-        `${profileProp.id}`,
-      ).then((data: any) => {
-        if (data) setTasks(data);
-      });
+      console.log(profileProp.id);
+      retrieveFSData('Tasks', 'profileId', `${profileProp.id}`).then(
+        (data: any) => {
+          if (data) setTasks(data);
+        },
+      );
+      retrieveFSData('Rewards', 'profileId', `${profileProp.id}`).then(
+        (data: any) => {
+          if (data) setRewards(data);
+        },
+      );
     }
   }
 
@@ -141,7 +147,9 @@ export default function RoomScreen() {
           style={styles.BackgroundImage}
         />
         {/* For each task render a draggable with .map */}
-        {tasks && loggedInProfile && !loggedInProfile.parent &&
+        {tasks &&
+          loggedInProfile &&
+          !loggedInProfile.parent &&
           tasks.map((task: Tasks) =>
             task.hasRequest === false ? (
               <Draggable

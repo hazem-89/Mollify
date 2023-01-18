@@ -6,6 +6,7 @@ import {
   StyleProp,
   ViewStyle,
   TextInputProps as RNTextInputProps,
+  Dimensions,
 } from 'react-native';
 
 import { Text } from './Text';
@@ -25,6 +26,8 @@ export const TextInput = ({
   ...rest
 }: TextInputProps) => {
   const dimensions = useDimensions();
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
   const styles = StyleSheet.create({
     inputContainer: {
@@ -52,6 +55,15 @@ export const TextInput = ({
     borderError: {
       backgroundColor: colors.error,
     },
+    errorsView: {
+      // backgroundColor: 'rgba(255, 255, 255, .7)',
+      // width: 0.15 * ScreenWidth,
+      // padding: 5,
+      // alignItems: 'center',
+      // borderRadius: 25,
+      // position: 'absolute',
+      // bottom: -0.1 * ScreenHeight,
+    },
     errorText: {
       marginTop: 5,
       color: colors.error,
@@ -69,7 +81,11 @@ export const TextInput = ({
       {/* <Text style={[styles.labelText]}>{label}</Text> */}
       <RNTextInput style={styles.textInput} {...rest} />
       <View style={borderStyles} />
-      <Text style={[styles.errorText]}>{errorText}</Text>
+      {errorText && (
+        <View style={styles.errorsView}>
+          <Text style={[styles.errorText]}>{errorText}</Text>
+        </View>
+      )}
     </View>
   );
 };

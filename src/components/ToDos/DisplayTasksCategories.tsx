@@ -55,7 +55,7 @@ export const DisplayTasksCategories = () => {
   const ScreenHeight = Dimensions.get('window').height;
   const dimensions = useDimensions();
   const navigation = useNavigation();
-  const { retrieveFSData, tasks, setTasks, selectedChild, loggedInProfile } =
+  const { retrieveFSData, tasks, setRewards, selectedChild, loggedInProfile } =
     useDataContext();
 
   useEffect(() => {
@@ -66,7 +66,7 @@ export const DisplayTasksCategories = () => {
       profileID = loggedInProfile.id;
     }
     retrieveFSData('Tasks', 'profileId', profileID).then((data: any) => {
-      if (data) setTasks(data);
+      if (data) setRewards(data);
     });
     setCategoryLength();
   }, []);

@@ -17,6 +17,7 @@ interface Profiles {
   pin: string;
   avatar: string;
   room: string;
+  points: string;
 }
 
 type CreateProfileProps = {
@@ -47,15 +48,17 @@ export const CreateProfileForm = ({
       avatar: state.avatar,
       room: state.room,
       mainUserId: currentUser?.uid,
+      points: '0',
     };
     try {
       (profilesExist
         ? addDocToFS('profiles', newProfile)
         : addDocToFS('profiles', {
-          ...newProfile,
-          room: null,
-          parent: true,
-        })
+            ...newProfile,
+            room: null,
+            parent: true,
+            points: null,
+          })
       ).then(
         retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
           (data: DocumentData[]) => {
@@ -75,7 +78,7 @@ export const CreateProfileForm = ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      paddingBottom: 60,
+      paddingBottom: 600,
     },
   });
 

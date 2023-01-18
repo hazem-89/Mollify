@@ -13,25 +13,35 @@ import FullScore from '../../../assets/images/FullScore.png';
 import lightningBig from '../../../assets/images/lightningBig.png';
 import hourglassBig from '../../../assets/images/hourglassBig.png';
 import { CountdownTimer } from '../ToDos/CountDown';
+import { useDataContext } from '../../util/context/DataContext';
 interface Props {
   reward: Rewards;
 }
 const RewardCard = ({ reward }: Props) => {
+  const [profilePoints, setProfilePoints] = useState<number>(0);
   const dimensions = useDimensions();
-  const [teasDate, setTestDate] = useState();
-  const [smallScreen] = useState(dimensions.screen.height < 600);
   const endDate = new Date(reward.endTime);
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
-  // const [RewardRequestStatus, setRewardRequestStatus] = useState(
-  //   reward.hasRequest,
-  // );
+  const { rewards, loggedInProfile, selectedChild } = useDataContext();
+  useEffect(() => {
+    if (loggedInProfile) {
+      const profilePointsNum = +loggedInProfile.points;
+      setProfilePoints(profilePointsNum);
+      console.log(typeof loggedInProfile.points, loggedInProfile.points);
+    }
+    if (selectedChild) {
+      const profilePointsNum = +selectedChild.points;
+      setProfilePoints(profilePointsNum);
+      console.log('selectedChild', selectedChild);
+      console.log(typeof selectedChild.points, selectedChild.points);
+    }
+  }, [rewards]);
+  const rewardPoints = +reward.points;
 
-  const earnedPoints = 150;
-  const test = +reward.points;
-  const PointsLeft = test - earnedPoints;
+  const PointsLeft = rewardPoints - profilePoints;
 
-  const percentageProgress = (earnedPoints / test) * 100;
+  const percentageProgress = (profilePoints / rewardPoints) * 100;
   let imageSource;
   if (percentageProgress > 20 && percentageProgress < 40) {
     imageSource = Twenty;
@@ -43,7 +53,7 @@ const RewardCard = ({ reward }: Props) => {
     imageSource = Eighty;
   } else if (percentageProgress >= 100) {
     imageSource = FullScore;
-  } else if (percentageProgress <= 0) {
+  } else if (percentageProgress <= 10) {
     imageSource = Zero;
   }
   let updateAcceptedReq = {};
@@ -65,6 +75,7 @@ const RewardCard = ({ reward }: Props) => {
     }
   };
 
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     CardContainer: {
       width: 0.6 * ScreenWidth,
@@ -94,7 +105,7 @@ const RewardCard = ({ reward }: Props) => {
     },
 
     PointsDetails: {
-      marginLeft: 0.05 * ScreenWidth,
+      marginLeft: 0.04 * ScreenWidth,
       width: 0.45 * ScreenWidth,
     },
     ProgressBar: {
@@ -111,7 +122,7 @@ const RewardCard = ({ reward }: Props) => {
 
     TimeDetails: {
       width: 0.45 * ScreenWidth,
-      marginLeft: 0.05 * ScreenWidth,
+      marginLeft: 0.04 * ScreenWidth,
     },
   });
 
@@ -147,9 +158,7 @@ const RewardCard = ({ reward }: Props) => {
               You Have <CountdownTimer date={endDate} /> To earn it.
             </Text>
           </View>
-          {/* <CountdownTimer date={endDate} /> */}
         </View>
-        {/* <Text type="todoList">{endDate.toString()}</Text> */}
       </View>
     </View>
   );
