@@ -83,8 +83,8 @@ export const SignUpForm = ({ onClose }: SignUpProps) => {
         <View style={styles.ButtonsView}>
           <Button
             background="GreenForms"
-            text="Login"
-            onPress={() => submit('login')}
+            text="signUp"
+            onPress={() => submit('signUp')}
           />
           <Button
             background="Cancel"

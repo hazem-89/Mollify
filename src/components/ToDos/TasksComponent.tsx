@@ -17,7 +17,7 @@ import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
 import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
-import { AddTodoForm } from '../forms/AddTodoForm';
+import { AddTodoForm } from '../forms/AddForm';
 import TaskCard from './TaskCard';
 
 type TasksCategoryPageProps = {
@@ -69,6 +69,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     setSelectedForm(
       <AddTodoForm
         category={category}
+        ParentComponent="Tasks"
         setAddTaskBtnClicked={setAddTaskBtnClicked}
       />,
     );
