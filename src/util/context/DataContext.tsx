@@ -147,7 +147,7 @@ export default function DataProvider(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInProfile, profiles, selectedChild]);
 
-  /** This function is used to store or remove an object value in the async storage on the device. */
+  // This function is used to store or remove an object value in the async storage on the device.
   async function setAsyncData(key: string, data: any[] | undefined) {
     try {
       if (data !== undefined) {
