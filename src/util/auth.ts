@@ -73,9 +73,6 @@ export const useLogin = () => {
   };
 
   const signup = (email: string, password: string) => {
-    console.log('====================================');
-    console.log('sing up');
-    console.log('====================================');
     try {
       createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
