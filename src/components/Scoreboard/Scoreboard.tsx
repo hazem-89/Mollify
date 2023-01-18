@@ -16,7 +16,6 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { DocumentData } from 'firebase/firestore';
 // images
-import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
 import AddButtonImage from '../../../assets/images/AddButton.png';
 import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
 import GoBackArrow from '../../../assets/images/GoBackArrow.png';
@@ -45,14 +44,8 @@ const Scoreboard = () => {
   const [addRewardBtnClicked, setAddRewardBtnClicked] =
     useState<boolean>(false);
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const {
-    retrieveFSData,
-    rewards,
-    setRewards,
-    loggedInProfile,
-    selectedChild,
-    updateFSDoc,
-  } = useDataContext();
+  const { rewards, loggedInProfile, selectedChild, updateFSDoc } =
+    useDataContext();
 
   useEffect(() => {
     if (!rewardsProcessed) {
@@ -66,7 +59,8 @@ const Scoreboard = () => {
       if (loggedInProfile) {
         const profilePoints = +loggedInProfile.points;
         setProfilePoints(profilePoints);
-      } else if (selectedChild) {
+      }
+      if (selectedChild) {
         const profilePoints = +selectedChild.points;
         setProfilePoints(profilePoints);
       }
@@ -266,7 +260,7 @@ const Scoreboard = () => {
                         }}
                       >
                         <Text>{reward.title}</Text>
-                        <Text>{percentageProgress}%</Text>
+                        <Text>{Math.trunc(percentageProgress)}%</Text>
                       </View>
                     </ImageBackground>
                     <Image

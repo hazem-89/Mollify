@@ -23,37 +23,25 @@ const RewardCard = ({ reward }: Props) => {
   const endDate = new Date(reward.endTime);
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
-  // const [RewardRequestStatus, setRewardRequestStatus] = useState(
-  //   reward.hasRequest,
-  // );
-  const {
-    retrieveFSData,
-    rewards,
-    setRewards,
-    loggedInProfile,
-    selectedChild,
-    updateFSDoc,
-  } = useDataContext();
+  const { rewards, loggedInProfile, selectedChild } = useDataContext();
   useEffect(() => {
     if (loggedInProfile) {
-      const profilePoints = +loggedInProfile.points;
-      setProfilePoints(profilePoints);
-    } else if (selectedChild) {
-      const profilePoints = +selectedChild.points;
-      setProfilePoints(profilePoints);
+      const profilePointsNum = +loggedInProfile.points;
+      setProfilePoints(profilePointsNum);
+      console.log(typeof loggedInProfile.points, loggedInProfile.points);
     }
-    console.log('====================================');
-    console.log(loggedInProfile);
-    console.log('====================================');
-  }, []);
+    if (selectedChild) {
+      const profilePointsNum = +selectedChild.points;
+      setProfilePoints(profilePointsNum);
+      console.log('selectedChild', selectedChild);
+      console.log(typeof selectedChild.points, selectedChild.points);
+    }
+  }, [rewards]);
   const rewardPoints = +reward.points;
 
   const PointsLeft = rewardPoints - profilePoints;
 
   const percentageProgress = (profilePoints / rewardPoints) * 100;
-  // console.log('====================================');
-  // console.log(percentageProgress);
-  // console.log('====================================');
   let imageSource;
   if (percentageProgress > 20 && percentageProgress < 40) {
     imageSource = Twenty;
@@ -170,9 +158,7 @@ const RewardCard = ({ reward }: Props) => {
               You Have <CountdownTimer date={endDate} /> To earn it.
             </Text>
           </View>
-          {/* <CountdownTimer date={endDate} /> */}
         </View>
-        {/* <Text type="todoList">{endDate.toString()}</Text> */}
       </View>
     </View>
   );
