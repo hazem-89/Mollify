@@ -34,6 +34,7 @@ export default function LoadingScreen() {
       color: 'white',
       fontWeight: 'bold',
       textAlign: 'center',
+      opacity: showButton ? 1 : 0,
     },
   });
 
@@ -58,16 +59,21 @@ export default function LoadingScreen() {
     <View style={styles.container}>
       <ActivityIndicator size={50} color="#ff6a00" />
       <Animated.View style={{ opacity: fadeAnim }}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            setShowButton(false);
-            // @ts-ignore
-            navigation.navigate('StartScreen');
-          }}
-        >
-          <Text style={styles.buttonText}>Go to Start Screen</Text>
-        </TouchableOpacity>
+        <Text style={styles.buttonText}>
+          This is taking longer than expected
+        </Text>
+        <View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              setShowButton(false);
+              // @ts-ignore
+              navigation.navigate('StartScreen');
+            }}
+          >
+            <Text style={styles.buttonText}>Go home</Text>
+          </TouchableOpacity>
+        </View>
       </Animated.View>
     </View>
   );
