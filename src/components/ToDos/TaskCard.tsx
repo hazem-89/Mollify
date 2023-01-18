@@ -33,7 +33,7 @@ interface Props {
 const TaskCard = ({ task }: Props) => {
   const {
     retrieveFSData,
-    setTasks,
+    setRewards,
     loggedInProfile,
     selectedChild,
     updateFSDoc,
@@ -65,14 +65,14 @@ const TaskCard = ({ task }: Props) => {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', selectedChild.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              if (data) setRewards(data);
             },
           );
         } else if (loggedInProfile) {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              if (data) setRewards(data);
             },
           );
         }
@@ -307,7 +307,7 @@ const TaskCard = ({ task }: Props) => {
         <FormModal
           component={component}
           onEmit={() => handleClick(undefined)}
-        // text="confirm"
+          // text="confirm"
         />
       </View>
     </View>

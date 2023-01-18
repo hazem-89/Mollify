@@ -55,16 +55,6 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     a.hasRequest ? 1 : -1,
   );
 
-  // Is this fetch necessary? I can't tell cause I'm not sure what the component does but the tasks are already set in the roomScreen
-  // useEffect(() => {
-  //   // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
-  //   retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
-  //     (data: any) => {
-  //       if (data) setTasks(data);
-  //     },
-  //   );
-  // }, [category]);
-
   function handleClick(state: string | undefined) {
     setSelectedForm(
       <AddTodoForm
