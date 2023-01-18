@@ -1,3 +1,4 @@
+import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -41,17 +42,24 @@ export const useLogin = () => {
     return unsubscribe;
   }, [onAuthStateChanged, auth]);
 
+  const nextErrors: ErrorType = {}
+
   const submit = (functionName: string) => {
-    const nextErrors: ErrorType = {};
     if (email.length === 0) {
-      nextErrors.email = 'This field is required.';
+      nextErrors.email = 'Please enter an email';
+    } else if ( email.indexOf("@") < 1  ){
+      nextErrors.email = 'Please enter a valid email';
     }
     if (password.length === 0) {
-      nextErrors.password = 'This field is required.';
+      nextErrors.password = 'Please enter a password';
     } else if (password.length < 6) {
       nextErrors.password = 'Password should be at least 6 characters.';
     }
     if (password !== confirmedPassword && functionName === 'signUp') {
+      nextErrors.confirmedPassword = 'Passwords do not match';
+    } else if (confirmedPassword.length === 0) {
+      nextErrors.confirmedPassword = 'You need to confirm your password';
+    } else if (password !== confirmedPassword){
       nextErrors.confirmedPassword = 'Passwords do not match';
     }
     setErrors(nextErrors);
@@ -84,7 +92,7 @@ export const useLogin = () => {
           }
         })
         .catch((error: any) => {
-          console.error(error);
+           console.log(error);
         });
     } catch (error) {
       console.error(error);
@@ -95,6 +103,7 @@ export const useLogin = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password).catch(error => {
         setErrorMessage(true);
+        console.log(error);
       });
       if (auth.currentUser && !errorMessage) {
         setCurrentUser(auth.currentUser);
