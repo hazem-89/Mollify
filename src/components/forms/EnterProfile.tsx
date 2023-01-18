@@ -38,7 +38,6 @@ export default function EnterProfile({
     ButtonsView: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: smallScreen ? 200 : 350,
       marginTop: smallScreen ? 30 : 20,
     },
   });
@@ -55,15 +54,18 @@ export default function EnterProfile({
   return (
     <View style={styles.container}>
       {/* <Text>{`Welcome ${selectedProfile.name}`}</Text> */}
-      <Text type="formText">Enter your pin</Text>
-      <TextInput
-        placeholder="Enter PIN code"
-        secureTextEntry
-        autoCapitalize="none"
-        keyboardType="numeric"
-        value={PINState}
-        onChangeText={changedPin => setPINState(changedPin)}
-      />
+      <Text type="MenuTitle">Enter your pin</Text>
+      <View style={{ marginTop: 20 }}>
+        <TextInput
+          placeholder="Enter PIN code"
+          secureTextEntry
+          autoCapitalize="none"
+          keyboardType="numeric"
+          value={PINState}
+          onChangeText={changedPin => setPINState(changedPin)}
+          style={{ fontSize: 20, marginBottom: 7, minWidth: 50 }}
+        />
+      </View>
       <View style={styles.ButtonsView}>
         <Button
           background="GreenForms"
@@ -79,3 +81,4 @@ export default function EnterProfile({
     </View>
   );
 }
+

@@ -105,7 +105,7 @@ export default function StartScreen() {
           </>
         ) : (
           <>
-            <View>
+            <View style={{ marginTop: 20 }}>
               <Button
                 disable={!!btnClicked}
                 background="Gold"
@@ -116,7 +116,7 @@ export default function StartScreen() {
                 <Button
                   disable={!!btnClicked}
                   background="Google"
-                  text="sign in with Google"
+                  text="Sign in with Google"
                   onPress={() => handleClick('GoogleSignIn')}
                 />
               ) : (
@@ -146,3 +146,4 @@ export default function StartScreen() {
     </>
   );
 }
+
