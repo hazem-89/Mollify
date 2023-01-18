@@ -32,8 +32,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   const styles = StyleSheet.create({
     text: {
       fontSize: smallScreen ? 14 : 16,
-      fontFamily: 'Inika',
       color: 'rgba(0,0,0,.6)',
+      fontFamily: 'Inika',
     },
 
     headerText: {
@@ -209,4 +209,3 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     </RNText>
   );
 };
-
