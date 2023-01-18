@@ -45,7 +45,7 @@ const CleaningTodo = [
   },
   {
     title: 'Watering Plants',
-    description: 'Not too much not too little water',
+    description: 'You need to water your plants',
     img: laundryBasket,
     selected: false,
   },
@@ -145,7 +145,6 @@ export const AddTodoForm = ({
       justifyContent: 'center',
       borderRadius: 500,
       marginLeft: 20,
-      marginBottom: 10,
     },
     icons: {
       width: smallScreen ? 40 : 55,
@@ -246,9 +245,7 @@ export const AddTodoForm = ({
         {category === 'Room' && (
           <>
             <View style={styles.CleaningTasksInfo}>
-              <Text type="MenuTitle">
-                Here you can Add a room cleaning task
-              </Text>
+              <Text type="MenuTitle">Here you can add a cleaning task</Text>
               {/* <Text type="MenuTitle">
                 Adding a task will automatically add an item to the room
               </Text> */}
@@ -315,7 +312,7 @@ export const AddTodoForm = ({
         {category !== 'Room' && (
           <View style={styles.inputContainer}>
             <View style={styles.OtherTasksInfo}>
-              <Text type="MenuTitle">Here you can Add a {category} task</Text>
+              <Text type="MenuTitle">Here you can add a {category} task</Text>
             </View>
             <ImageBackground source={InputBg} style={styles.InputBg}>
               <TextInput
@@ -380,6 +377,7 @@ export const AddTodoForm = ({
             minWidth: smallScreen ? 350 : 450,
             justifyContent: 'space-between',
             alignItems: 'center',
+            marginTop: -15,
           }}
         >
           <Button background="GreenForms" text="Add" onPress={() => submit()} />
@@ -389,3 +387,4 @@ export const AddTodoForm = ({
     </View>
   );
 };
+
