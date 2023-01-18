@@ -17,8 +17,6 @@ import { useLogin } from '../auth';
 import { ProfileInterface } from '../../Interfaces';
 
 interface ContextInterface {
-  isLoading: boolean;
-  setIsLoading: Function;
   profiles: DocumentData;
   setProfiles: Function;
   filteredProfiles: DocumentData;
@@ -52,8 +50,6 @@ interface ContextInterface {
 }
 
 export const DataContext = createContext<ContextInterface>({
-  isLoading: true,
-  setIsLoading: () => false,
   profiles: [],
   setProfiles: () => false,
   filteredProfiles: [],
@@ -85,7 +81,6 @@ export default function DataProvider(props: any) {
   const [tasks, setTasks] = useState<DocumentData[]>([]);
   // Here 👇 the rewards for the selected profile are stored.
   const [rewards, setRewards] = useState<DocumentData[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { currentUser } = useLogin();
   const navigation = useNavigation();
 
@@ -102,6 +97,7 @@ export default function DataProvider(props: any) {
       } else {
         setLoggedInProfile(undefined);
         setFilteredProfiles(undefined);
+        setSelectedChild(undefined);
         setAsyncData('loggedInProfile', undefined);
         // @ts-ignore
         navigation.navigate('StartScreen');
@@ -220,8 +216,6 @@ export default function DataProvider(props: any) {
   return (
     <DataContext.Provider
       value={{
-        isLoading,
-        setIsLoading,
         profiles,
         setProfiles,
         selectedChild,

@@ -52,8 +52,6 @@ export default function EnterProfile({
         // If the profile is parent then navigate to selectProfile but with parent view
         // (parent wont need to enter pin for other profiles and wont see own profile again)
         // Set a global parent state to true
-
-        console.log('This is a parent profile');
         if (onClose) onClose();
       }
     }
