@@ -79,7 +79,9 @@ export const LoginForm = ({ onClose }: LoginProps) => {
           <Button
             background="GreenForms"
             text="Login"
-            onPress={() => submit('login')}
+            onPress={() => {
+              submit('login');
+            }}
           />
           <Button
             background="Cancel"
@@ -91,4 +93,3 @@ export const LoginForm = ({ onClose }: LoginProps) => {
     </View>
   );
 };
-

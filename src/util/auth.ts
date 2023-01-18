@@ -42,12 +42,12 @@ export const useLogin = () => {
     return unsubscribe;
   }, [onAuthStateChanged, auth]);
 
-  const nextErrors: ErrorType = {}
+  const nextErrors: ErrorType = {};
 
   const submit = (functionName: string) => {
     if (email.length === 0) {
       nextErrors.email = 'Please enter an email';
-    } else if ( email.indexOf("@") < 1  ){
+    } else if (email.indexOf('@') < 1) {
       nextErrors.email = 'Please enter a valid email';
     }
     if (password.length === 0) {
@@ -57,12 +57,13 @@ export const useLogin = () => {
     }
     if (password !== confirmedPassword && functionName === 'signUp') {
       nextErrors.confirmedPassword = 'Passwords do not match';
-    } else if (confirmedPassword.length === 0) {
+    } else if (confirmedPassword.length === 0 && functionName === 'signUp') {
       nextErrors.confirmedPassword = 'You need to confirm your password';
-    } else if (password !== confirmedPassword){
-      nextErrors.confirmedPassword = 'Passwords do not match';
     }
     setErrors(nextErrors);
+    console.log('====================================');
+    console.log(nextErrors);
+    console.log('====================================');
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
       Alert.alert('login Success!', `Email: ${email}`);
@@ -92,7 +93,7 @@ export const useLogin = () => {
           }
         })
         .catch((error: any) => {
-           console.log(error);
+          console.log(error);
         });
     } catch (error) {
       console.error(error);
