@@ -78,7 +78,6 @@ export default function RoomScreen() {
       // Calculate aspect ratio
       setAspectRatio(foundRoom.width / foundRoom.height);
       // Get the tasks for rendering draggables
-      console.log(profileProp.id);
       retrieveFSData(
         'Tasks',
         'profileId',
@@ -104,7 +103,6 @@ export default function RoomScreen() {
         draggableCoords.x >= viewPortCoords.x + ScreenWidth * 0.7
       ) {
         // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
-        console.log('not moving and inside the right third of the screen');
         updateFSDoc('Tasks', task.id, { hasRequest: true });
         retrieveFSData(
           'Tasks',
@@ -115,7 +113,6 @@ export default function RoomScreen() {
         });
         setIsDragging(false);
       } else {
-        console.log('not moving');
         // If end draggableCoords don't overlap then just remove Disposal component.
         setIsDragging(false);
       }
