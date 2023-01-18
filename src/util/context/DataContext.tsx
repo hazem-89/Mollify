@@ -107,9 +107,13 @@ export default function DataProvider(props: any) {
           }
         });
       } else {
+        // Logging out, reset relevant states
+        console.log('logged out');
         setLoggedInProfile(undefined);
         setFilteredProfiles(undefined);
         setSelectedChild(undefined);
+        setTasks([]);
+        setRewards([]);
         setAsyncData('loggedInProfile', undefined);
         // @ts-ignore
         navigation.navigate('StartScreen');
@@ -126,7 +130,7 @@ export default function DataProvider(props: any) {
         navigation.navigate('RoomScreen');
       } else if (selectedChild) {
         // @ts-ignore
-        navigation.navigate('RoomScreen', selectedChild);
+        navigation.navigate('RoomScreen');
       } else if (profiles) {
         // Stay on selectProfile and remove parent profile from selectable profiles if loggedInProfile is parent.
         const filter = profiles.filter(

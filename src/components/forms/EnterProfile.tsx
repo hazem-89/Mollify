@@ -48,12 +48,7 @@ export default function EnterProfile({
       // Store the logged in profile in asyncStorage so data persists between app sessions
       setAsyncData('loggedInProfile', selectedProfile);
       setLoggedInProfile(selectedProfile);
-      if (selectedProfile.parent) {
-        // If the profile is parent then navigate to selectProfile but with parent view
-        // (parent wont need to enter pin for other profiles and wont see own profile again)
-        // Set a global parent state to true
-        if (onClose) onClose();
-      }
+      if (onClose) onClose();
     }
   };
 
