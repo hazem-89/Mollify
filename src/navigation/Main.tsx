@@ -1,35 +1,30 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
+import { ProfileInterface } from '../Interfaces';
 import DisplayMenusScreen from '../screens/DisplayMenusScreen';
+import LoadingScreen from '../screens/LoadingScreen';
 import RoomScreen from '../screens/RoomScreen';
 import StartScreen from '../screens/StartScreen';
-// import { useLogin } from '../util/auth';
-// import { useDataContext } from '../util/context/DBContext';
 
 // Define the parameters that can be passed to each screen in the stack
 export type MainStackParams = {
+  LoadingScreen: any;
   StartScreen: any;
-  RoomScreen: any;
+  RoomScreen: { selectedProfile: ProfileInterface };
   TasksCategoryPage: { category: string; content: string };
 };
 
 const MainStack = createStackNavigator<MainStackParams>();
 
 export const Main = () => {
-  // const { loggedInProfile } = useDataContext();
-  // const { currentUser } = useLogin();
-
   return (
     <MainStack.Navigator
-      initialRouteName={
-        'StartScreen'
-        // The idea was to use the stored loggedInProfile to always go to the profiles room but it's not working right, maybe we could use a splashscreen as a loading screen to do this.
-        // state ? 'RoomScreen' : 'StartScreen'
-      }
+      initialRouteName="LoadingScreen"
       screenOptions={{
         headerShown: false,
       }}
     >
+      <MainStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <MainStack.Screen name="StartScreen" component={StartScreen} />
       <MainStack.Screen name="RoomScreen" component={RoomScreen} />
       <MainStack.Screen

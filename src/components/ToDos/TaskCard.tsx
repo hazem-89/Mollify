@@ -2,29 +2,27 @@ import { useDimensions } from '@react-native-community/hooks';
 import { doc, setDoc } from 'firebase/firestore';
 import React, { ReactElement, useState } from 'react';
 import {
+  Image,
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
   View,
-  Image,
 } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
-// import { useTasks } from '../../util/context/AddtoDBContext';
+import { db } from '../../../firebaseConfig';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import FormModal from '../modals/FormModal';
-import { db } from '../../../firebaseConfig';
 // Images
-import TaskTextBg from '../../../assets/images/TaskTextBg.png';
-import TaskInReviewTextBg from '../../../assets/images/TaskInReviewTextBg.png';
-import CountDownBg from '../../../assets/images/CountDownStoneBg.png';
-import CountDownRedBg from '../../../assets/images/CountDownRedBg.png';
 import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
+import CountDownBg from '../../../assets/images/CountDownStoneBg.png';
+import TaskInReviewNotifChilled from '../../../assets/images/Icons/TaskInReviewNotifChilled.png';
 import PointsBg from '../../../assets/images/PointsBg.png';
 import PointsGreenBg from '../../../assets/images/PointsGreenBg.png';
-import TaskInReviewNotifChilled from '../../../assets/images/Icons/TaskInReviewNotifChilled.png';
+import TaskInReviewTextBg from '../../../assets/images/TaskInReviewTextBg.png';
+import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import { Confirm } from './Confirm';
 import { CountdownTimer } from './CountDown';
 
@@ -33,51 +31,57 @@ interface Props {
 }
 
 const TaskCard = ({ task }: Props) => {
-  const { retrieveFSData, setTasks } = useDataContext();
+  const {
+    retrieveFSData,
+    setRewards,
+    loggedInProfile,
+    selectedChild,
+    updateFSDoc,
+  } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const [parent, setParent] = useState(true);
   const [swipeOn, setSwipeOn] = useState(false);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [taskRequestStatus, setTaskRequestStatus] = useState(task.hasRequest);
-
   let updateAcceptedReq = {};
-  const handleTaskRequestStatus = async (status: boolean, funName: string) => {
+  const endDate = new Date(task.endTime);
+
+  const handleTaskRequestStatus = async (funName: string) => {
     if (funName === 'updateRequest') {
       updateAcceptedReq = {
         ...task,
-        hasRequest: status,
+        hasRequest: true,
       };
     } else if (funName === 'updateTaskDone') {
       updateAcceptedReq = {
         ...task,
-        isDone: status,
+        isDone: true,
         hasRequest: false,
       };
     }
-
     if (task.id) {
       try {
-        await setDoc(doc(db, 'Tasks', task?.id), updateAcceptedReq);
-        setTaskRequestStatus(status);
-        // Replace Lgq9YJnPLLezb1iE4xHQ with actual id.
-        retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
-          (data: any) => {
-            if (data) setTasks(data);
-          },
-        );
+        if (selectedChild) {
+          await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
+          retrieveFSData('Tasks', 'profileId', selectedChild.id).then(
+            (data: any) => {
+              if (data) setRewards(data);
+            },
+          );
+        } else if (loggedInProfile) {
+          await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
+          retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
+            (data: any) => {
+              if (data) setRewards(data);
+            },
+          );
+        }
       } catch (err) {
         console.log(err);
       }
     }
   };
-  const UpdateTaskStatus = (funName: string) => {
-    handleTaskRequestStatus(true, funName);
-  };
-  const markTaskDone = (funName: string) => {
-    handleTaskRequestStatus(true, funName);
-  };
+
   function handleClick(state: string | undefined) {
     setBtnClicked(state);
     switch (state) {
@@ -98,7 +102,7 @@ const TaskCard = ({ task }: Props) => {
             taskId={task.id}
             confirmBtnText="Confirm"
             funName="updateTaskDone"
-            markTaskDone={() => markTaskDone('updateTaskDone')}
+            markTaskDone={() => handleTaskRequestStatus('updateTaskDone')}
           />,
         );
         break;
@@ -109,7 +113,7 @@ const TaskCard = ({ task }: Props) => {
             taskId={task.id}
             confirmBtnText="Yes"
             funName="updateRequest"
-            UpdateReqStatus={() => UpdateTaskStatus('updateRequest')}
+            UpdateReqStatus={() => handleTaskRequestStatus('updateRequest')}
           />,
         );
         break;
@@ -117,7 +121,6 @@ const TaskCard = ({ task }: Props) => {
         setComponent(undefined);
     }
   }
-  const endDate = new Date(task.endTime);
 
   const styles = StyleSheet.create({
     CardContainer: {
@@ -191,7 +194,7 @@ const TaskCard = ({ task }: Props) => {
           borderRadius: 25,
         }}
       >
-        {parent ? (
+        {loggedInProfile && loggedInProfile.parent ? (
           <View style={styles.ParentButtonView}>
             <Button
               background="DeleteTask"
@@ -220,40 +223,50 @@ const TaskCard = ({ task }: Props) => {
 
   return (
     <View style={styles.CardContainer}>
-      {task.hasRequest && parent && !swipeOn && !btnClicked && (
-        <View
-          style={{
-            position: 'absolute',
-            zIndex: 9999,
-            top: -20,
-            left: smallScreen ? 280 : 370,
-          }}
-        >
-          <Button
-            background="TaskNotification"
-            onPress={() => handleClick('TaskNotification')}
-          />
-        </View>
-      )}
-      {task.hasRequest && !parent && !swipeOn && !btnClicked && (
-        <View
-          style={{
-            position: 'absolute',
-            zIndex: 9999,
-            top: -20,
-            left: smallScreen ? 280 : 370,
-          }}
-        >
-          <Image
-            source={TaskInReviewNotifChilled}
-            style={{ width: 50, height: 50 }}
-          ></Image>
-        </View>
-      )}
+      {task.hasRequest &&
+        loggedInProfile &&
+        loggedInProfile.parent &&
+        !swipeOn &&
+        !btnClicked && (
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 9999,
+              top: -20,
+              left: smallScreen ? 280 : 370,
+            }}
+          >
+            <Button
+              background="TaskNotification"
+              onPress={() => handleClick('TaskNotification')}
+            />
+          </View>
+        )}
+      {task.hasRequest &&
+        loggedInProfile &&
+        !loggedInProfile.parent &&
+        !swipeOn &&
+        !btnClicked && (
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 9999,
+              top: -20,
+              left: smallScreen ? 280 : 370,
+            }}
+          >
+            <Image
+              source={TaskInReviewNotifChilled}
+              style={{ width: 50, height: 50 }}
+            />
+          </View>
+        )}
 
       <TouchableOpacity
         onPress={() =>
-          !parent && !task.hasRequest ? handleClick('updateRequest') : null
+          loggedInProfile && !loggedInProfile.parent && !task.hasRequest
+            ? handleClick('updateRequest')
+            : null
         }
         activeOpacity={0.6}
       >

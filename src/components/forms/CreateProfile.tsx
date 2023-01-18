@@ -17,6 +17,7 @@ interface Profiles {
   pin: string;
   avatar: string;
   room: string;
+  points: string;
 }
 
 type CreateProfileProps = {
@@ -31,7 +32,8 @@ export const CreateProfileForm = ({
 }: CreateProfileProps) => {
   // const dimensions = useDimensions();
   const { currentUser } = useLogin();
-  const { retrieveFSData, setProfiles } = useDataContext();
+  const { retrieveFSData, setProfiles, profiles, addDocToFS } =
+    useDataContext();
   const [state, setState] = useState({
     name: '',
     pin: '',
@@ -46,14 +48,17 @@ export const CreateProfileForm = ({
       avatar: state.avatar,
       room: state.room,
       mainUserId: currentUser?.uid,
+      points: '0',
     };
     try {
       (profilesExist
-        ? addDoc(collection(db, 'profiles'), newProfile)
-        : addDoc(collection(db, 'profiles'), {
-          parent: true,
-          ...newProfile,
-        })
+        ? addDocToFS('profiles', newProfile)
+        : addDocToFS('profiles', {
+            ...newProfile,
+            room: null,
+            parent: true,
+            points: null,
+          })
       ).then(
         retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
           (data: DocumentData[]) => {
@@ -73,7 +78,7 @@ export const CreateProfileForm = ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      paddingBottom: 60,
+      paddingBottom: 600,
     },
   });
 
@@ -116,13 +121,15 @@ export const CreateProfileForm = ({
         }
         data={avatars}
       />
-      <Carousel
-        titel="Choose room"
-        onEmit={(selectedItem: any) =>
-          setState({ ...state, room: selectedItem })
-        }
-        data={rooms}
-      />
+      {profilesExist && (
+        <Carousel
+          titel="Choose room"
+          onEmit={(selectedItem: any) =>
+            setState({ ...state, room: selectedItem })
+          }
+          data={rooms}
+        />
+      )}
       <Button
         background="GreenForms"
         text="Add profile"

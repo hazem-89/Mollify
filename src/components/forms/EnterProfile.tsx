@@ -22,7 +22,7 @@ export default function EnterProfile({
       onClose();
     }
   };
-  const { storeAsyncData, setLoggedInProfile } = useDataContext();
+  const { setAsyncData, setLoggedInProfile } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
@@ -38,7 +38,6 @@ export default function EnterProfile({
     ButtonsView: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: smallScreen ? 200 : 350,
       marginTop: smallScreen ? 30 : 20,
     },
   });
@@ -46,31 +45,27 @@ export default function EnterProfile({
     // Compare pin from db to entered pin.
     if (PINState === selectedProfile.pin) {
       // Store the logged in profile in asyncStorage so data persists between app sessions
-      storeAsyncData('loggedInProfile', selectedProfile);
+      setAsyncData('loggedInProfile', selectedProfile);
       setLoggedInProfile(selectedProfile);
-      if (selectedProfile.parent) {
-        // If the profile is parent then navigate to selectProfile but with parent view
-        // (parent wont need to enter pin for other profiles and wont see own profile again)
-        // Set a global parent state to true
-
-        console.log('This is a parent profile');
-        if (onClose) onClose();
-      }
+      if (onClose) onClose();
     }
   };
 
   return (
     <View style={styles.container}>
       {/* <Text>{`Welcome ${selectedProfile.name}`}</Text> */}
-      <Text type="formText">Enter your pin</Text>
-      <TextInput
-        placeholder="Enter PIN code"
-        secureTextEntry
-        autoCapitalize="none"
-        keyboardType="numeric"
-        value={PINState}
-        onChangeText={changedPin => setPINState(changedPin)}
-      />
+      <Text type="MenuTitle">Enter your pin</Text>
+      <View style={{ marginTop: 20 }}>
+        <TextInput
+          placeholder="Enter PIN code"
+          secureTextEntry
+          autoCapitalize="none"
+          keyboardType="numeric"
+          value={PINState}
+          onChangeText={changedPin => setPINState(changedPin)}
+          style={{ fontSize: 20, marginBottom: 7, minWidth: 50 }}
+        />
+      </View>
       <View style={styles.ButtonsView}>
         <Button
           background="GreenForms"
@@ -86,3 +81,4 @@ export default function EnterProfile({
     </View>
   );
 }
+

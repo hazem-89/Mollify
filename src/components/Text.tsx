@@ -73,7 +73,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       textAlign: 'center',
     },
     GreenForms: {
-      fontSize: smallScreen ? 10 : 15,
+      fontSize: smallScreen ? 20 : 25,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: '#0F6209',
@@ -117,7 +117,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
     Cancel: {
       color: '#fff',
-      fontSize: smallScreen ? 10 : 12,
+      fontSize: smallScreen ? 20 : 25,
       textAlign: 'center',
     },
     MenuTitle: {
@@ -148,6 +148,16 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     NotificationNum: {
       fontSize: smallScreen ? 14 : 18,
       fontWeight: 'bold',
+    },
+    rewardHeader: {
+      fontSize: smallScreen ? 40 : 50,
+      fontFamily: 'Inika',
+      color: '#fff',
+    },
+    rewardDetails: {
+      fontSize: smallScreen ? 20 : 25,
+      fontFamily: 'Inika',
+      color: '#fff',
     },
   });
 
@@ -185,6 +195,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.categoryTitles);
   } else if (type === 'NotificationNum') {
     textStyles.push(styles.NotificationNum);
+  } else if (type === 'rewardHeader') {
+    textStyles.push(styles.rewardHeader);
+  } else if (type === 'rewardDetails') {
+    textStyles.push(styles.rewardDetails);
   }
 
   textStyles = [...textStyles, ...style];
@@ -195,3 +209,4 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     </RNText>
   );
 };
+

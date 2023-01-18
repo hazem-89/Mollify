@@ -72,7 +72,7 @@ export function CountdownTimer({ date }: CounterProps) {
     }, 1000);
     // Clean up the interval when the component unmounts
     return () => clearInterval(interval);
-  }, []);
+  }, [date]);
 
   const DateText =
     countdown.days + ':' + countdown.hours + ':' + countdown.minutes;

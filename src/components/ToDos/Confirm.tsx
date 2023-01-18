@@ -1,17 +1,18 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { Text } from '../Text';
 
 type ConfirmProps = {
   text: string;
-  taskId: string;
+  taskId?: string;
   confirmBtnText: string;
   funName?: string;
   onClose?: () => void;
   markTaskDone?: (a: string) => void;
   UpdateReqStatus?: (a: string) => void;
+  rewardId?: string;
 };
 
 export const Confirm = ({
@@ -22,11 +23,12 @@ export const Confirm = ({
   markTaskDone,
   UpdateReqStatus,
   funName,
+  rewardId,
 }: ConfirmProps) => {
   const { deleteDocFromFS } = useDataContext();
 
   const handleSubmit = () => {
-    if (funName === 'delete') {
+    if (funName === 'delete' && taskId) {
       deleteDocFromFS('Tasks', taskId);
     } else if (funName === 'updateTaskDone') {
       if (markTaskDone) {
@@ -36,6 +38,8 @@ export const Confirm = ({
       if (UpdateReqStatus) {
         UpdateReqStatus(funName);
       }
+    } else if (funName === 'delete' && rewardId) {
+      deleteDocFromFS('Rewards', rewardId);
     }
     if (onClose) {
       onClose();
@@ -46,27 +50,29 @@ export const Confirm = ({
       onClose();
     }
   };
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     container: {
       // marginTop: 50,
-      minWidth: 400,
+      width: 0.6 * ScreenWidth,
+      // minWidth: 400,
       maxHeight: 200,
       flex: 1,
       alignItems: 'center',
-      justifyContent: 'space-between',
+      // justifyContent: 'space-between',
     },
   });
 
   return (
     <View style={styles.container}>
-      <Text type="text">{text}</Text>
+      <Text type="header">{text}</Text>
       <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          width: 350,
-          marginVertical: 30,
+          width: 0.4 * ScreenWidth,
+          marginVertical: 0.08 * ScreenHeight,
           justifyContent: 'space-between',
         }}
       >

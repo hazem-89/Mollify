@@ -11,10 +11,20 @@ export interface Tasks {
 
 export interface Rewards {
   id: string;
-  rewardTitle: string;
-  pointsValue: string;
+  title: string;
+  points: string;
   endTime: string;
   isDone: boolean;
-  hasRequest: boolean;
-  asignedProfileId: string;
+  assignedProfileId: string;
+}
+
+export interface ProfileInterface {
+  avatar: string;
+  id: string;
+  mainUserId: string;
+  name: string;
+  parent?: boolean;
+  pin: string;
+  room: string;
+  points: string;
 }

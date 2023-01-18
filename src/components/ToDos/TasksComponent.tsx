@@ -1,6 +1,5 @@
-import TaskCard from './TaskCard';
 import { useDimensions } from '@react-native-community/hooks';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -9,30 +8,35 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import AddButtonImage from '../../../assets/images/AddButton.png';
+import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
 import PointsBtnIcon from '../../../assets/images/Icons/PointsBtnIcon.png';
 import TaskBtnIcon from '../../../assets/images/Icons/TaskBtnIcon.png';
 import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
-import CountDownGreenBg from '../../../assets/images/CountDownGreenBg.png';
+import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
-import { AddTodoForm } from '../forms/AddTodoForm';
-import Button from '../buttons/Buttons';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Text } from '../../components/Text';
-import AddButtonImage from '../../../assets/images/AddButton.png';
-
-import { loadAsync } from 'expo-font';
+import { AddTodoForm } from '../forms/AddForm';
+import TaskCard from './TaskCard';
 
 type TasksCategoryPageProps = {
   category: string;
 };
 
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
-  const [parent, setParent] = useState(true);
-  const { retrieveFSData, tasks, setTasks } = useDataContext();
+  const { tasks, loggedInProfile } = useDataContext();
+  const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const categoryTasks = tasks?.filter(
     (task: { category: string }) => task.category === category,
   );
+  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
+    string | undefined
+  >();
   const dateSortedTask = categoryTasks.sort(
     (
       task1: { endTime: string | number | Date },
@@ -47,32 +51,15 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       return 0;
     },
   );
-
   const sortedTasks = dateSortedTask.sort((a: { hasRequest: any }) =>
     a.hasRequest ? 1 : -1,
   );
-  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
-    string | undefined
-  >();
-  const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
-  const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600);
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
-
-  useEffect(() => {
-    // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
-    retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
-      (data: any) => {
-        if (data) setTasks(data);
-      },
-    );
-  }, [category]);
 
   function handleClick(state: string | undefined) {
     setSelectedForm(
       <AddTodoForm
         category={category}
+        ParentComponent="Tasks"
         setAddTaskBtnClicked={setAddTaskBtnClicked}
       />,
     );
@@ -107,7 +94,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     <View style={styles.container}>
       {!addTaskBtnClicked ? (
         <>
-          {parent && (
+          {loggedInProfile && loggedInProfile.parent && (
             <TouchableOpacity
               style={{
                 position: 'absolute',

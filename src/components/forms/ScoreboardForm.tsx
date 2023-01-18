@@ -55,13 +55,13 @@ export const ScoreboardForm = () => {
     !pointsValue ? (nextErrors.points = 'you need to set points') : '';
     !endTime ? (nextErrors.time = 'you need to set Time') : '';
     setErrors(nextErrors);
-    console.log(nextErrors);
+    console.error(nextErrors);
     if (Object.keys(nextErrors).length === 0) {
       console.log('no err');
       const newReward = {
         title: state.rewardTitle,
         points: pointsValue,
-        endTime,
+        endTime: endTime?.toString(),
         asignedProfileId: 'pjVcsYpBE46nGlDmHmO0',
         isDone: false,
       };

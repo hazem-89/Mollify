@@ -1,5 +1,6 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React, { ReactElement, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -17,6 +18,7 @@ import SelectProfile from '../components/menu/SelectProfile';
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
 import { useLogin } from '../util/auth';
+import { useDataContext } from '../util/context/DataContext';
 
 export default function StartScreen() {
   const dimensions = useDimensions();
@@ -24,7 +26,14 @@ export default function StartScreen() {
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
   const { currentUser, logout } = useLogin();
+  const { setSelectedChild } = useDataContext();
   const [text, setText] = useState<string | undefined>();
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    // reset selectedChild to fix bug where leaving room and attempting to enter the same room does nothing.
+    if (isFocused) setSelectedChild(undefined);
+  }, [isFocused]);
 
   const styles = StyleSheet.create({
     WelcomeSign: {
@@ -96,7 +105,7 @@ export default function StartScreen() {
           </>
         ) : (
           <>
-            <View>
+            <View style={{ marginTop: 20 }}>
               <Button
                 disable={!!btnClicked}
                 background="Gold"
@@ -107,7 +116,7 @@ export default function StartScreen() {
                 <Button
                   disable={!!btnClicked}
                   background="Google"
-                  text="sign in with Google"
+                  text="Sign in with Google"
                   onPress={() => handleClick('GoogleSignIn')}
                 />
               ) : (
@@ -137,3 +146,4 @@ export default function StartScreen() {
     </>
   );
 }
+
