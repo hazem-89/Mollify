@@ -33,6 +33,7 @@ interface ContextInterface {
   setLoggedInProfile: Function;
   selectedChild: DocumentData;
   setSelectedChild: Function;
+  /** This boolean will be used to add or remove the user-guides */
   onboarding: boolean;
   /** This function is used to store or remove an object value in the async storage on the device.
    * The function takes in a key and a data{}, if you want to remove the key value leave the data prop undefined.
@@ -88,7 +89,7 @@ export default function DataProvider(props: any) {
   const navigation = useNavigation();
 
   useEffect(() => {
-    // retrieve the asyncstorage
+    // Logged in, retrieve data
     if (currentUser !== undefined) {
       if (currentUser?.uid) {
         retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
@@ -108,7 +109,6 @@ export default function DataProvider(props: any) {
         });
       } else {
         // Logging out, reset relevant states
-        console.log('logged out');
         setLoggedInProfile(undefined);
         setFilteredProfiles(undefined);
         setSelectedChild(undefined);
