@@ -22,7 +22,7 @@ const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { profiles, loggedInProfile, filteredProfiles, setSelectedChild } = useDataContext();
+  const { profiles, loggedInProfile, filteredProfiles, setSelectedChild, setTasks, setRewards, } = useDataContext();
 
   const styles = StyleSheet.create({
     modal: {
@@ -72,7 +72,11 @@ const SelectProfile = () => {
         if (profile) setComponent(<EnterProfile selectedProfile={profile} />);
         break;
       case 'ManageProfile':
-        if (profile) setSelectedChild(profile);
+        if (profile) {
+          setTasks([]);
+          setRewards([]);
+          setSelectedChild(profile);
+        }
         break;
       default:
         setComponent(undefined);
