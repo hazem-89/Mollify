@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { addDoc, collection, DocumentData } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -20,6 +20,7 @@ import { Text } from '../Text';
 import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
 import { useDimensions } from '@react-native-community/hooks';
 import TigerMessage from '../../../assets/images/TigerMessage.png';
+import { useNavigation } from '@react-navigation/native';
 
 interface Profiles {
   mainUserId: string | undefined;
@@ -35,7 +36,12 @@ type CreateProfileProps = {
   profilesExist: boolean;
   onClose?: () => void;
 };
-
+type ErrorType = {
+  name?: string;
+  pin?: string;
+  room?: {};
+  avatar?: {};
+};
 export const CreateProfileForm = ({
   profilesExist,
   onClose,
@@ -43,6 +49,8 @@ export const CreateProfileForm = ({
   // const dimensions = useDimensions();
   const { currentUser } = useLogin();
   const dimensions = useDimensions();
+  const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
+    React.useState({});
   const [firstTime, setFirstTime] = useState(false);
   const { retrieveFSData, setProfiles, profiles, addDocToFS } =
     useDataContext();
@@ -55,6 +63,31 @@ export const CreateProfileForm = ({
   useEffect(() => {
     !profilesExist ? setFirstTime(true) : setFirstTime(false);
   }, []);
+  const handleSubmit = () => {
+    const nextErrors: ErrorType = {};
+
+    if (!state.name) {
+      nextErrors.name = 'Please enter a profile name.';
+    }
+    if (!state.pin) {
+      nextErrors.pin = 'Please enter a profile pin.';
+    }
+    if (!state.avatar) {
+      nextErrors.avatar = 'Please select an avatar.';
+    }
+    if (!state.room) {
+      nextErrors.room = 'Please select a rom.';
+    }
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length === 0) {
+      addProfileToUser();
+      navigation.goBack();
+    }
+    if (Object.keys(nextErrors).length > 0) {
+      return null;
+    }
+    return null;
+  };
   const addProfileToUser = async () => {
     const newProfile: Profiles = {
       name: state.name,
@@ -87,6 +120,7 @@ export const CreateProfileForm = ({
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const navigation = useNavigation();
 
   const styles = StyleSheet.create({
     container: {
@@ -104,10 +138,13 @@ export const CreateProfileForm = ({
       justifyContent: 'center',
     },
 
+    InputsView: {
+      marginVertical: 0.025 * ScreenHeight,
+    },
     Inputs: {
-      backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      backgroundColor: 'rgba(147, 53, 41, .8)',
       width: 0.3 * ScreenWidth,
-      padding: 10,
+      padding: 15,
       borderRadius: 20,
       marginBottom: 10,
     },
@@ -123,24 +160,13 @@ export const CreateProfileForm = ({
       marginBottom: 0.05 * ScreenHeight,
     },
     FirstTimeText: {
-      // position: 'absolute',
       maxWidth: smallScreen ? 0.25 * ScreenWidth : 0.3 * ScreenWidth,
       height: 0.3 * ScreenHeight,
-      // left: 0.04 * ScreenWidth,
-      // top: 0.04 * ScreenHeight,
-
       padding: 0.02 * ScreenHeight,
       marginRight: smallScreen ? 0.04 * ScreenWidth : 0.05 * ScreenWidth,
       marginTop: smallScreen ? 0.04 * ScreenHeight : 0.06 * ScreenHeight,
     },
   });
-
-  const handleSubmit = () => {
-    addProfileToUser();
-    if (onClose) {
-      onClose();
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -150,54 +176,81 @@ export const CreateProfileForm = ({
             source={RewardMainTitleBg}
             style={styles.RewardMainTitleBg}
           >
-            <View style={{ marginBottom: '10%' }}>
+            <View style={{ marginBottom: '8%' }}>
               <Text type="header">Add Profile</Text>
             </View>
           </ImageBackground>
-          <ScrollView horizontal={false} style={{}}>
-            <View style={{ alignItems: 'center', paddingBottom: 200 }}>
-              <TextInput
-                placeholder="Name"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                value={state.name}
-                onChangeText={(text: string) =>
-                  setState({ ...state, name: text })
-                }
-                impStyle={styles.Inputs}
-              />
-              <TextInput
-                placeholder="PIN code"
-                secureTextEntry
-                autoCapitalize="none"
-                value={state.pin}
-                keyboardType="numeric"
-                onChangeText={(text: string) =>
-                  setState({ ...state, pin: text })
-                }
-                impStyle={styles.Inputs}
-              />
+          <ScrollView
+            horizontal={false}
+            style={{ width: 0.8 * ScreenWidth, maxHeight: 0.71 * ScreenHeight }}
+          >
+            <View style={{ alignItems: 'center', paddingBottom: 20 }}>
+              <View style={styles.InputsView}>
+                <TextInput
+                  placeholder="Name"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  value={state.name}
+                  onChangeText={(text: string) =>
+                    setState({ ...state, name: text })
+                  }
+                  impStyle={styles.Inputs}
+                  errorText={errors.name}
+                />
+                <TextInput
+                  placeholder="PIN code"
+                  secureTextEntry
+                  autoCapitalize="none"
+                  value={state.pin}
+                  keyboardType="numeric"
+                  onChangeText={(text: string) =>
+                    setState({ ...state, pin: text })
+                  }
+                  impStyle={styles.Inputs}
+                  errorText={errors.pin}
+                />
+              </View>
               <Carousel
-                titel="Choose avatar"
+                title="Choose avatar"
                 onEmit={(selectedItem: any) =>
                   setState({ ...state, avatar: selectedItem })
                 }
                 data={avatars}
               />
+              {/* {errors.points && (
+              <View style={styles.errorsView}>
+                <Text type="errorText">{errors.points}</Text>
+              </View>
+            )} */}
               {profilesExist && (
                 <Carousel
-                  titel="Choose room"
+                  title="Choose room"
                   onEmit={(selectedItem: any) =>
                     setState({ ...state, room: selectedItem })
                   }
                   data={rooms}
                 />
               )}
-              <View style={{ marginVertical: 0.1 * ScreenHeight }}>
+              <View
+                style={{
+                  marginVertical: 0.1 * ScreenHeight,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: 0.4 * ScreenWidth,
+                }}
+              >
                 <Button
                   background="GreenForms"
                   text="Add profile"
                   onPress={handleSubmit}
+                  // disable={
+                  //   !state.name || !state.avatar || !state.pin || !state.room
+                  // }
+                />
+                <Button
+                  background="Cancel"
+                  text="Cancel"
+                  onPress={() => navigation.goBack()}
                 />
               </View>
             </View>

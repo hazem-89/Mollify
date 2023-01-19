@@ -153,6 +153,7 @@ const SelectProfile = () => {
           )}
 
           <View style={styles.ProfilesView}>
+            {!profiles ? <> </> : <></>}
             {filteredProfiles
               ? filteredProfiles?.map((profile: DocumentData) => (
                   <TouchableOpacity
