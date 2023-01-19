@@ -1,44 +1,37 @@
-import React, { useEffect } from 'react';
-import {
-  Animated,
-  Dimensions,
-  Image,
-  ImageSourcePropType,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Animated, Dimensions, Image, StyleSheet, View } from 'react-native';
+import { roomObjects, roomObjectsInterface } from '../../util/itemObjects';
 
 type DisposalProps = {
-  onEmit?: Function;
-  image?: ImageSourcePropType;
+  imageFilter: string;
   show: boolean;
 };
 
-export default function Disposal({ onEmit, image, show }: DisposalProps) {
+export default function Disposal({ imageFilter, show }: DisposalProps) {
   const translateX = new Animated.Value(1000); // Initial value for translateX
   const ScreenHeight = Dimensions.get('window').height;
   const ScreenWidth = Dimensions.get('window').width;
+  const [foundRoomObject, setFoundRoomObject] =
+    useState<roomObjectsInterface>();
 
   const styles = StyleSheet.create({
     modal: {
-      display: show ? 'flex' : 'none',
+      display: foundRoomObject && show ? 'flex' : 'none',
       height: ScreenHeight,
       flex: 1,
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
       position: 'absolute',
       right: 0,
       zIndex: 0,
     },
-    animated: {
+    image: {
       width: ScreenWidth * 0.3,
-      height: '65%',
-      backgroundColor: 'red',
+      height: '80%',
     },
   });
 
   useEffect(() => {
-    console.log('show in disposal', show);
-    if (show) {
+    if (show && foundRoomObject) {
       // Animate slide in.
       Animated.timing(translateX, {
         toValue: 0,
@@ -53,19 +46,50 @@ export default function Disposal({ onEmit, image, show }: DisposalProps) {
         useNativeDriver: true,
       }).start();
     }
-  }, [show]);
+  }, [show, foundRoomObject]);
+
+  useEffect(() => {
+    // Should use an image id from db instead but addTodoForm is too confusing.
+    switch (imageFilter) {
+      // set the image to the one from roombject
+      case 'Deal with your laundry':
+        setFoundRoomObject(findRoomObject('laundry'));
+        break;
+      case 'Deal with your dishes':
+        setFoundRoomObject(findRoomObject('dishes'));
+        break;
+      case 'Take out your garbage':
+        setFoundRoomObject(findRoomObject('garbage'));
+        break;
+      case 'Not too much, not too little water':
+        setFoundRoomObject(findRoomObject('watering'));
+        break;
+      case 'Get those dust bunnies':
+        setFoundRoomObject(findRoomObject('vacuum'));
+        break;
+      default:
+        break;
+    }
+  }, [imageFilter]);
+
+  function findRoomObject(objectID: string) {
+    const roomObject = roomObjects.find(object => object.id === objectID);
+    console.log(roomObject);
+    if (roomObject) return roomObject;
+    return undefined;
+  }
 
   return (
     <>
       <View style={styles.modal}>
-        <Animated.View
-          style={[styles.animated, { transform: [{ translateX }] }]}
-        >
-          {/* <Image
-          style={styles.formBackground}
-          resizeMode="stretch"
-          source={image}
-        /> */}
+        <Animated.View style={[{ transform: [{ translateX }] }]}>
+          {foundRoomObject && (
+            <Image
+              style={styles.image}
+              resizeMode="contain"
+              source={foundRoomObject.disposalImg}
+            />
+          )}
         </Animated.View>
       </View>
     </>

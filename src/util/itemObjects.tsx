@@ -26,7 +26,7 @@ import washSponge from '../../assets/images/roomObjects/disposal/washSponge.png'
 
 export interface assetInterface {
   id: string;
-  image: ImageSourcePropType | undefined;
+  image: ImageSourcePropType;
   description?: string;
 }
 
@@ -112,8 +112,8 @@ export const rooms: roomInterface[] = [
 
 export interface roomObjectsInterface {
   id: string;
-  draggableImg: ImageSourcePropType | undefined;
-  disposalImg: ImageSourcePropType | undefined;
+  draggableImg: ImageSourcePropType;
+  disposalImg: ImageSourcePropType;
 }
 
 export const roomObjects: roomObjectsInterface[] = [

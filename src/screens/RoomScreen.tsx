@@ -13,7 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Disposal from '../components/room/Disposal';
 import Draggable from '../components/room/Draggable';
 import RoomUI from '../components/RoomUI';
-import { ProfileInterface, Tasks } from '../Interfaces';
+import { Tasks } from '../Interfaces';
 import { useDataContext } from '../util/context/DataContext';
 import { rooms } from '../util/itemObjects';
 
@@ -28,6 +28,7 @@ export default function RoomScreen() {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const [aspectRatio, setAspectRatio] = useState<number>(ScreenWidth);
+  const [disposalFilterProp, setDisposalFilterProp] = useState('');
   // viewPortCoords refer to the top-left corner of the viewport.
   const [viewPortCoords, setViewPortCoords] = useState<coordinates>({
     x: 0,
@@ -63,14 +64,14 @@ export default function RoomScreen() {
       selectedChild !== undefined
     ) {
       // Logged in profile is a parent, find and render selected child's room
-      handleData(selectedChild as ProfileInterface)
+      handleData(selectedChild);
     } else if (loggedInProfile && loggedInProfile.room) {
       // Logged in profile is a kid, find and render kid's room.
-      handleData(loggedInProfile as ProfileInterface)
+      handleData(loggedInProfile);
     }
   }, [loggedInProfile]);
 
-  function handleData(profileProp: ProfileInterface) {
+  function handleData(profileProp: any) {
     // find and render child's room
     const foundRoom = rooms.find(room => room.id === profileProp.room);
     if (foundRoom && foundRoom.image) {
@@ -78,13 +79,11 @@ export default function RoomScreen() {
       // Calculate aspect ratio
       setAspectRatio(foundRoom.width / foundRoom.height);
       // Get the tasks for rendering draggables
-      retrieveFSData(
-        'Tasks',
-        'profileId',
-        `${profileProp.id}`,
-      ).then((data: any) => {
-        if (data) setTasks(data);
-      });
+      retrieveFSData('Tasks', 'profileId', `${profileProp.id}`).then(
+        (data: any) => {
+          if (data) setTasks(data);
+        },
+      );
     }
   }
 
@@ -95,28 +94,26 @@ export default function RoomScreen() {
   ) {
     if (moving) {
       // When moving the Disposal component is rendered.
+      // This is dumb but passing the tasks description to the disposal component for .find(). Should be using an image id from db instead.
+      setDisposalFilterProp(task.taskDescription);
       setIsDragging(true);
-    } else {
-      if (
-        draggableCoords &&
-        viewPortCoords &&
-        draggableCoords.x >= viewPortCoords.x + ScreenWidth * 0.7 &&
-        loggedInProfile
-      ) {
-        // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
-        updateFSDoc('Tasks', task.id, { hasRequest: true });
-        retrieveFSData(
-          'Tasks',
-          'profileId',
-          `${loggedInProfile.id}`,
-        ).then((data: any) => {
+    } else if (
+      draggableCoords &&
+      viewPortCoords &&
+      draggableCoords.x >= viewPortCoords.x + ScreenWidth * 0.7 &&
+      loggedInProfile
+    ) {
+      // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
+      updateFSDoc('Tasks', task.id, { hasRequest: true });
+      retrieveFSData('Tasks', 'profileId', `${loggedInProfile.id}`).then(
+        (data: any) => {
           if (data) setTasks(data);
-        });
-        setIsDragging(false);
-      } else {
-        // If end draggableCoords don't overlap then just remove Disposal component.
-        setIsDragging(false);
-      }
+        },
+      );
+      setIsDragging(false);
+    } else {
+      // If end draggableCoords don't overlap then just remove Disposal component.
+      setIsDragging(false);
     }
   }
 
@@ -142,7 +139,9 @@ export default function RoomScreen() {
           style={styles.BackgroundImage}
         />
         {/* For each task render a draggable with .map */}
-        {tasks && loggedInProfile && !loggedInProfile.parent &&
+        {tasks &&
+          loggedInProfile &&
+          !loggedInProfile.parent &&
           tasks.map((task: Tasks) =>
             task.hasRequest === false ? (
               <Draggable
@@ -155,7 +154,7 @@ export default function RoomScreen() {
             ) : null,
           )}
       </ScrollView>
-      <Disposal show={isDragging} />
+      <Disposal imageFilter={disposalFilterProp} show={isDragging} />
     </View>
   );
 }
