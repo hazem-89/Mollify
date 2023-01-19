@@ -21,6 +21,7 @@ export default function Disposal({ onEmit, image, show }: DisposalProps) {
 
   const styles = StyleSheet.create({
     modal: {
+      display: show ? 'flex' : 'none',
       height: ScreenHeight,
       flex: 1,
       justifyContent: 'center',
@@ -36,6 +37,7 @@ export default function Disposal({ onEmit, image, show }: DisposalProps) {
   });
 
   useEffect(() => {
+    console.log('show in disposal', show);
     if (show) {
       // Animate slide in.
       Animated.timing(translateX, {
@@ -43,13 +45,13 @@ export default function Disposal({ onEmit, image, show }: DisposalProps) {
         duration: 1000,
         useNativeDriver: true,
       }).start();
-    } else if (!show) {
+    } else {
       // Animate slide out not working but removing this breaks things.
       Animated.timing(translateX, {
         toValue: 1000,
-        duration: 500,
+        duration: 1000,
         useNativeDriver: true,
-      }).stop();
+      }).start();
     }
   }, [show]);
 

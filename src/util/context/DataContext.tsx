@@ -92,7 +92,7 @@ export default function DataProvider(props: any) {
     // Logged in, retrieve data
     if (currentUser !== undefined) {
       if (currentUser?.uid) {
-        retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
+        retrieveFSData('profiles', 'mainUserId', `${currentUser.uid}`).then(
           data => {
             if (data) setProfiles(data);
           },

@@ -100,14 +100,15 @@ export default function RoomScreen() {
       if (
         draggableCoords &&
         viewPortCoords &&
-        draggableCoords.x >= viewPortCoords.x + ScreenWidth * 0.7
+        draggableCoords.x >= viewPortCoords.x + ScreenWidth * 0.7 &&
+        loggedInProfile
       ) {
         // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
         updateFSDoc('Tasks', task.id, { hasRequest: true });
         retrieveFSData(
           'Tasks',
           'profileId',
-          `${loggedInProfile?.mainUserId}`,
+          `${loggedInProfile.id}`,
         ).then((data: any) => {
           if (data) setTasks(data);
         });
@@ -154,7 +155,7 @@ export default function RoomScreen() {
             ) : null,
           )}
       </ScrollView>
-      {isDragging && <Disposal show={isDragging} />}
+      <Disposal show={isDragging} />
     </View>
   );
 }

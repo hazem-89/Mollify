@@ -24,28 +24,34 @@ import InputBg from '../../../assets/images/InputBg.png';
 
 import { useDataContext } from '../../util/context/DataContext';
 
-const CleaningTodo = [
+const cleaningTodo = [
   {
-    title: 'Dirty clothes',
-    description: 'Put the dirty clothes in the laundry basket',
+    title: 'Laundry',
+    description: 'Deal with your laundry',
     img: laundryBasket,
     selected: false,
   },
   {
-    title: 'Dirty Dishes',
-    description: 'Take the dishes to the kitchen',
+    title: 'Dishes',
+    description: 'Deal with your dishes',
     img: laundryBasket,
     selected: false,
   },
   {
     title: 'Garbage',
-    description: 'Put the dirty clothes in the laundry basket',
+    description: 'Take out your garbage',
     img: laundryBasket,
     selected: false,
   },
   {
     title: 'Watering Plants',
-    description: 'Not too much not too little water',
+    description: 'Not too much, not too little water',
+    img: laundryBasket,
+    selected: false,
+  },
+  {
+    title: 'Vacuum',
+    description: 'Get those dust bunnies',
     img: laundryBasket,
     selected: false,
   },
@@ -87,24 +93,25 @@ export const AddTodoForm = ({
   const test = () => {
     setAddTaskBtnClicked(undefined);
   };
+
   useEffect(() => {
     switch (category) {
       case 'Special':
-        setTitleInputExample('Inter a title: E.g. Baby site');
+        setTitleInputExample('Enter a title e.g. Babysit');
         setDescriptionInputExample(
-          'Inter a description: E.g. Baby site your baby brother for 20 min',
+          'Enter a description, e.g. Babysit your brother for 20 min',
         );
         break;
       case 'School':
-        setTitleInputExample('Inter a title: E.g. Math exercises');
+        setTitleInputExample('Enter a title e.g. Math exercises');
         setDescriptionInputExample(
-          'Inter a description: E.g. Practice multiplication for 1 hour',
+          'Enter a description, e.g. Practice multiplication for 1 hour',
         );
         break;
       case 'Activities':
-        setTitleInputExample('Inter a title: E.g. Dance Practice');
+        setTitleInputExample('Enter a title e.g. "Dance Practice"');
         setDescriptionInputExample(
-          'Inter a description: E.g. Practice dancing 1 hour',
+          'Enter a description, e.g. 1 hour dance practice',
         );
         break;
 
@@ -112,6 +119,7 @@ export const AddTodoForm = ({
         break;
     }
   }, []);
+
   const styles = StyleSheet.create({
     container: {
       minHeight: smallScreen ? 300 : 500,
@@ -173,18 +181,10 @@ export const AddTodoForm = ({
     },
   });
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
   const handleConfirm = (date: Date) => {
-    console.warn('A date has been picked: ', date);
+    // console.warn('A date has been picked: ', date);
     setEndTime(date);
-    hideDatePicker();
+    setDatePickerVisibility(false);
   };
 
   const submit = () => {
@@ -192,8 +192,8 @@ export const AddTodoForm = ({
     if (!state.taskDescription) {
       nextErrors.taskDescription = 'This field is required.';
     }
-    if (!pointsValue) nextErrors.points = 'you need to set points';
-    if (!endTime) nextErrors.time = 'you need to set Time';
+    if (!pointsValue) nextErrors.points = 'You need to set points';
+    if (!endTime) nextErrors.time = 'You need to set a time for completion';
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
@@ -206,7 +206,6 @@ export const AddTodoForm = ({
         category,
         isDone: false,
         hasRequest: false,
-        // need to replace profile with the current profile.id
         profileId: selectedChild.id,
       };
       addDocToFS('Tasks', newTodo);
@@ -246,9 +245,7 @@ export const AddTodoForm = ({
         {category === 'Room' && (
           <>
             <View style={styles.CleaningTasksInfo}>
-              <Text type="MenuTitle">
-                Here you can Add a room cleaning task
-              </Text>
+              <Text type="MenuTitle">Here you can add a room task</Text>
               {/* <Text type="MenuTitle">
                 Adding a task will automatically add an item to the room
               </Text> */}
@@ -262,7 +259,7 @@ export const AddTodoForm = ({
                 marginTop: smallScreen ? 20 : 30,
               }}
             >
-              {CleaningTodo?.map(todo => {
+              {cleaningTodo?.map(todo => {
                 return (
                   <View
                     key={todo.title}
@@ -311,11 +308,10 @@ export const AddTodoForm = ({
             )}
           </>
         )}
-
         {category !== 'Room' && (
           <View style={styles.inputContainer}>
             <View style={styles.OtherTasksInfo}>
-              <Text type="MenuTitle">Here you can Add a {category} task</Text>
+              <Text type="MenuTitle">Here you can add a {category} task</Text>
             </View>
             <ImageBackground source={InputBg} style={styles.InputBg}>
               <TextInput
@@ -337,7 +333,7 @@ export const AddTodoForm = ({
           <View style={styles.TimePointView}>
             <TouchableOpacity
               disabled={!state.taskDescription}
-              onPress={showDatePicker}
+              onPress={() => setDatePickerVisibility(true)}
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Image source={hourglass} style={styles.icons} />
@@ -351,14 +347,13 @@ export const AddTodoForm = ({
               isVisible={isDatePickerVisible}
               mode="datetime"
               onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
+              onCancel={() => setDatePickerVisibility(false)}
               minimumDate={new Date()}
               minuteInterval={10}
             />
 
             <Text type="errorText">{errors.time}</Text>
           </View>
-
           <View style={styles.TimePointView}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={PointsIcon} style={styles.icons} />

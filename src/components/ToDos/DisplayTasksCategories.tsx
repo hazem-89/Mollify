@@ -26,28 +26,29 @@ const tasksCategories = [
   {
     title: 'Room',
     background: TodoButtonImage,
-    displayName: 'Clean Your Room!',
+    displayName: 'Room tasks',
     length: 0,
   },
   {
     title: 'Special',
     background: SpecialTaskIcon,
-    displayName: 'Extra For You!',
+    displayName: 'Special tasks',
     length: 0,
   },
   {
     title: 'School',
     background: SchoolTasksIcon,
-    displayName: 'Extra Study?!',
+    displayName: 'Study tasks',
     length: 0,
   },
   {
     title: 'Activities',
     background: ActivityIcon,
-    displayName: 'More Practice!',
+    displayName: 'Activities',
     length: 0,
   },
 ];
+
 // This Render the categories buttons and the category task based on the chosen category that saved in the text state
 export const DisplayTasksCategories = () => {
   const [text, setText] = useState<string | undefined>();
@@ -202,29 +203,11 @@ export const DisplayTasksCategories = () => {
                       <Text
                         type={
                           text && text === taskCategory.title
-                            ? 'header'
-                            : 'text'
-                        }
-                      >
-                        "
-                      </Text>
-                      <Text
-                        type={
-                          text && text === taskCategory.title
                             ? 'categoryTitles'
                             : 'text'
                         }
                       >
                         {taskCategory.displayName}
-                      </Text>
-                      <Text
-                        type={
-                          text && text === taskCategory.title
-                            ? 'header'
-                            : 'text'
-                        }
-                      >
-                        "
                       </Text>
                     </View>
                   </View>
@@ -278,7 +261,7 @@ export const DisplayTasksCategories = () => {
           >
             <ImageBackground source={GoldenArrow} style={styles.GoldenArrow}>
               <View style={{ marginLeft: smallScreen ? 15 : 20 }}>
-                <Text type="header">Please Select a Category</Text>
+                <Text type="header">Select a category</Text>
               </View>
             </ImageBackground>
           </View>
