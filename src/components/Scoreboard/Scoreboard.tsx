@@ -305,9 +305,10 @@ const Scoreboard = () => {
                   <View
                     style={{
                       position: 'relative',
-                      height: selectedChild
-                        ? 0.38 * ScreenHeight
-                        : 0.3 * ScreenHeight,
+                      height:
+                        selectedChild && text && text === reward.title
+                          ? 0.38 * ScreenHeight
+                          : 0.3 * ScreenHeight,
                     }}
                     key={reward.id}
                   >
