@@ -122,28 +122,6 @@ const Scoreboard = () => {
           />,
         );
         break;
-      // case 'RewardNotification':
-      //   setComponent(
-      //     <Confirm
-      //       text="Mark as Done?"
-      //       taskId={task.id}
-      //       confirmBtnText="Confirm"
-      //       funName="updateTaskDone"
-      //       markTaskDone={() => handleTaskRequestStatus('updateTaskDone')}
-      //     />,
-      //   );
-      //   break;
-      // case 'updateRequest':
-      //   setComponent(
-      //     <Confirm
-      //       text="Are you done with this task?"
-      //       taskId={task.id}
-      //       confirmBtnText="Yes"
-      //       funName="updateRequest"
-      //       UpdateReqStatus={() => handleTaskRequestStatus('updateRequest')}
-      //     />,
-      //   );
-      //   break;
       default:
         setComponent(undefined);
     }
