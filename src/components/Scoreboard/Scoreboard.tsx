@@ -11,8 +11,14 @@ import {
 import { useDataContext } from '../../util/context/DataContext';
 import { Text } from '../../components/Text';
 import RewardCard from './RewardCard';
+import { Rewards } from '../../Interfaces';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
+import { AddTodoForm } from '../forms/AddForm';
+import Button from '../buttons/Buttons';
+import FormModal from '../modals/FormModal';
+import { Confirm } from '../ToDos/Confirm';
+import { createRef } from 'react';
 // images
 import AddButtonImage from '../../../assets/images/AddButton.png';
 import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
@@ -28,11 +34,6 @@ import TrophyBig from '../../../assets/images/TrophyBig.png';
 import ArrowDown from '../../../assets/images/ArrowDown.png';
 import ActiveViewIcon from '../../../assets/images/ActiveViewIcon.png';
 import NotActiveViewIcon from '../../../assets/images/NotActiveViewIcon.png';
-import { AddTodoForm } from '../forms/AddForm';
-import Button from '../buttons/Buttons';
-import FormModal from '../modals/FormModal';
-import { Confirm } from '../ToDos/Confirm';
-import { createRef } from 'react';
 
 const Scoreboard = () => {
   const navigation = useNavigation();
@@ -110,15 +111,28 @@ const Scoreboard = () => {
       });
     navigationValue === 'Room' && navigation.goBack();
   };
-  function handleClick(state: boolean) {
-    setSelectedForm(
-      <AddTodoForm
-        category="Reward"
-        ParentComponent="Reward"
-        setAddRewardBtnClicked={setAddRewardBtnClicked}
-      />,
-    );
-    setAddRewardBtnClicked(state);
+  function handleClick(state: boolean, fun?: string, reward?: Rewards) {
+    if (fun === 'add') {
+      setSelectedForm(
+        <AddTodoForm
+          category="AddReward"
+          ParentComponent="Reward"
+          setAddRewardBtnClicked={setAddRewardBtnClicked}
+        />,
+      );
+      setAddRewardBtnClicked(state);
+    }
+    if (fun === 'edit') {
+      setSelectedForm(
+        <AddTodoForm
+          category="EditReward"
+          ParentComponent="Reward"
+          setAddRewardBtnClicked={setAddRewardBtnClicked}
+          reward={reward}
+        />,
+      );
+      setAddRewardBtnClicked(state);
+    }
   }
   function handleFormClick(state: string | undefined, id?: string) {
     setBtnClicked(state);
@@ -363,7 +377,7 @@ const Scoreboard = () => {
                         />
                         <Button
                           background="EditButton"
-                          onPress={() => console.log('edit')}
+                          onPress={() => handleClick(true, 'edit', reward)}
                         />
                       </View>
                     )}
@@ -397,7 +411,7 @@ const Scoreboard = () => {
                   bottom: 0.05 * ScreenHeight,
                   left: 0.07 * ScreenHeight,
                 }}
-                onPress={() => handleClick(true)}
+                onPress={() => handleClick(true, 'add')}
               >
                 <View
                   style={{

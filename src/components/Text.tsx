@@ -30,10 +30,11 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   }
 
   const styles = StyleSheet.create({
-    text: {
+    smallText: {
       fontSize: smallScreen ? 14 : 16,
       color: 'rgba(0,0,0,.6)',
       fontFamily: 'Inika',
+      textAlign: 'center',
     },
 
     headerText: {
@@ -167,7 +168,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
   });
 
-  let textStyles: StyleProp<TextStyle>[] = [styles.text];
+  let textStyles: StyleProp<TextStyle>[] = [styles.smallText];
 
   if (type === 'header') {
     textStyles.push(styles.headerText);
@@ -207,6 +208,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.rewardDetails);
   } else if (type === 'disable') {
     textStyles.push(styles.disable);
+  } else if (type === 'text') {
+    textStyles.push(styles.smallText);
   }
 
   textStyles = [...textStyles, ...style];

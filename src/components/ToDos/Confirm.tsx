@@ -54,13 +54,10 @@ export const Confirm = ({
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     container: {
-      // marginTop: 50,
       width: 0.6 * ScreenWidth,
-      // minWidth: 400,
       maxHeight: 200,
       flex: 1,
       alignItems: 'center',
-      // justifyContent: 'space-between',
     },
   });
 

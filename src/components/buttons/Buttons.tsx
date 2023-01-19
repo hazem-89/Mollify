@@ -17,8 +17,9 @@ import InfoButtonImage from '../../../assets/images/info.png';
 import BellButtonImage from '../../../assets/images/bell.png';
 import CancelButton from '../../../assets/images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/images/trophy.png';
-import TodoButtonImage from '../../../assets/images/todo.png';
 import ArrowButton from '../../../assets/images/Polygon.png';
+import TodoButtonImage from '../../../assets/images/todo.png';
+import EditButton from '../../../assets/images/EditButton.png';
 import ReverseArrowButton from '../../../assets/images/PolygonReverse.png';
 import DeleteIcon from '../../../assets/images/Icons/DeleteIcon.png';
 import DoneIcon from '../../../assets/images/Icons/DoneIcon.png';
@@ -108,6 +109,10 @@ function Button({
       width: smallScreen ? 40 : 50,
       height: smallScreen ? 40 : 50,
     },
+    EditButton: {
+      width: smallScreen ? 50 : 60,
+      height: smallScreen ? 50 : 60,
+    },
   });
 
   useEffect(() => {
@@ -162,6 +167,9 @@ function Button({
     } else if (background === 'TaskNotification') {
       setSource(TaskNotificationIcon);
       setStyle(styles.TaskNotification);
+    } else if (background === 'EditButton') {
+      setSource(EditButton);
+      setStyle(styles.EditButton);
     }
   }, [background]);
 
