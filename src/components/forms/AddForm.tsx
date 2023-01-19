@@ -184,11 +184,12 @@ export const AddTodoForm = ({
       justifyContent: 'center',
     },
     errorsView: {
-      backgroundColor: 'rgba(255, 255, 255, .7)',
+      backgroundColor: 'rgba(255, 255, 255, .8)',
       width: 0.15 * ScreenWidth,
       padding: 5,
       alignItems: 'center',
-      borderRadius: 25,
+      borderRadius: 10,
+      marginBottom: 0.02 * ScreenHeight,
     },
   });
 
@@ -417,7 +418,7 @@ export const AddTodoForm = ({
             minWidth: smallScreen ? 350 : 450,
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: -15,
+            marginTop: category === 'Room' ? -15 : 10,
           }}
         >
           <Button background="GreenForms" text="Add" onPress={() => submit()} />

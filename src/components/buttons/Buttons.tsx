@@ -173,11 +173,18 @@ function Button({
       }}
     >
       <ImageBackground source={source} style={style}>
-        <Text type={background}>{text}</Text>
+        {disable ? (
+          <>
+            <Text type="disable">{text}</Text>
+          </>
+        ) : (
+          <>
+            <Text type={background}>{text}</Text>
+          </>
+        )}
       </ImageBackground>
     </TouchableOpacity>
   );
 }
 
 export default Button;
-

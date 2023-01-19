@@ -1,22 +1,27 @@
+import { useDimensions } from '@react-native-community/hooks';
 import React, { useState } from 'react';
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, FlatList, Image, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Text } from '../components/Text';
 
 type CarouselProps = {
   onEmit: Function;
-  titel: string;
+  title: string;
   data: any[];
 };
 
-export default function Carousel({ titel, data, onEmit }: CarouselProps) {
+export default function Carousel({ title, data, onEmit }: CarouselProps) {
   const [selectedItem, setSelectedItem] = useState();
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
+  const dimensions = useDimensions();
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     CarouselContainer: {
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      width: '100%',
+      width: 0.6 * ScreenWidth,
     },
     slide: {
       display: 'flex',
@@ -25,14 +30,28 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
       padding: 15,
     },
     image: {
+      width: 0.1 * ScreenWidth,
+      height: 0.1 * ScreenWidth,
       maxWidth: 200,
       maxHeight: 200,
       borderRadius: 200,
     },
     selectedImage: {
-      maxWidth: 200,
-      maxHeight: 200,
+      width: 0.12 * ScreenWidth,
+      height: 0.12 * ScreenWidth,
       borderRadius: 200,
+      borderWidth: 3,
+      borderColor: '#97E491',
+    },
+    RoomImage: {
+      width: 0.25 * ScreenWidth,
+      height: 0.13 * ScreenWidth,
+      borderRadius: 10,
+    },
+    RoomSelectedImage: {
+      width: 0.22 * ScreenWidth,
+      height: 0.16 * ScreenWidth,
+      borderRadius: 5,
       borderWidth: 3,
       borderColor: '#97E491',
     },
@@ -40,7 +59,7 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
 
   return (
     <View style={styles.CarouselContainer}>
-      {titel && <Text>{titel}</Text>}
+      {title && <Text type="rewardDetails">{title}</Text>}
       <FlatList
         data={data}
         horizontal={true}
@@ -56,9 +75,21 @@ export default function Carousel({ titel, data, onEmit }: CarouselProps) {
               }}
             >
               {item.image && item.id === selectedItem ? (
-                <Image style={styles.selectedImage} source={item.image} />
+                <Image
+                  style={
+                    title === 'Choose avatar'
+                      ? styles.selectedImage
+                      : styles.RoomSelectedImage
+                  }
+                  source={item.image}
+                />
               ) : (
-                <Image style={styles.image} source={item.image} />
+                <Image
+                  style={
+                    title === 'Choose avatar' ? styles.image : styles.RoomImage
+                  }
+                  source={item.image}
+                />
               )}
             </TouchableOpacity>
           </View>
