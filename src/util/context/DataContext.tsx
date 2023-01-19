@@ -111,6 +111,7 @@ export default function DataProvider(props: any) {
         // Logging out, reset relevant states
         setLoggedInProfile(undefined);
         setFilteredProfiles(undefined);
+        setProfiles(undefined);
         setSelectedChild(undefined);
         setTasks([]);
         setRewards([]);
