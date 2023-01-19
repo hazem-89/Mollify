@@ -22,7 +22,7 @@ import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
 import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
 import InputBg from '../../../assets/images/InputBg.png';
-import { Rewards } from '../../Interfaces';
+import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
 import { useNavigation } from '@react-navigation/native';
 
@@ -67,6 +67,7 @@ type todoFormProps = {
   ParentComponent: string;
   setAddRewardBtnClicked?: React.Dispatch<React.SetStateAction<boolean>>;
   reward?: Rewards;
+  task?: Tasks;
 };
 
 export const AddTodoForm = ({
@@ -75,6 +76,7 @@ export const AddTodoForm = ({
   ParentComponent,
   setAddRewardBtnClicked,
   reward,
+  task,
 }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
@@ -131,12 +133,24 @@ export const AddTodoForm = ({
             description: reward.title,
           });
           let rewardTime = reward?.endTime.slice(0, 16);
-          console.log('====================================');
-          console.log(rewardTime);
-          console.log('====================================');
           setEndTime(new Date(rewardTime));
           setDescriptionInputExample(reward.title);
           setPointsValue(reward.points);
+        }
+        break;
+      case 'EditTask':
+        if (task) {
+          setState({
+            ...state,
+            description: task.taskDescription,
+          });
+          console.log('====================================');
+          console.log(task);
+          console.log('====================================');
+          let taskTime = task?.endTime.slice(0, 16);
+          setEndTime(new Date(taskTime));
+          setDescriptionInputExample(task.taskDescription);
+          setPointsValue(task.pointsValue);
         }
         break;
 
@@ -238,7 +252,7 @@ export const AddTodoForm = ({
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
-      if (ParentComponent === 'Tasks') {
+      if (ParentComponent === 'Tasks' && category !== 'EditTask') {
         const newTodo = {
           taskTitle: state.title,
           taskDescription: state.description,
@@ -252,9 +266,23 @@ export const AddTodoForm = ({
         addDocToFS('Tasks', newTodo);
         setPointsValue('');
 
-        Alert.alert('Success!', `Description: ${state.description}`);
-        navigation.goBack();
-      } else if (ParentComponent === 'Reward' && category === 'AddReward') {
+        Alert.alert('Success!');
+        closeAdd();
+      }
+      if (ParentComponent === 'Tasks' && category === 'EditTask') {
+        const updatedTodo = {
+          taskTitle: state.title,
+          taskDescription: state.description,
+          pointsValue,
+          endTime: endTime?.toString(),
+        };
+        updateFSDoc('Tasks', task?.id, updatedTodo);
+        setPointsValue('');
+
+        Alert.alert('update task Success!');
+        closeAdd();
+      }
+      if (ParentComponent === 'Reward' && category === 'AddReward') {
         console.log('Add rewards');
         const newReward = {
           title: state.description,
@@ -266,9 +294,10 @@ export const AddTodoForm = ({
         addDocToFS('Rewards', newReward);
         setPointsValue('');
 
-        Alert.alert('Add Success!', `Description: ${state.description}`);
-        navigation.goBack();
-      } else if (ParentComponent === 'Reward' && category === 'EditReward') {
+        Alert.alert('Add Success!');
+        closeAdd();
+      }
+      if (ParentComponent === 'Reward' && category === 'EditReward') {
         console.log('update rewards');
         const updatedReward = {
           title: state.description,
@@ -278,8 +307,8 @@ export const AddTodoForm = ({
           isDone: reward?.isDone,
         };
         updateFSDoc('Rewards', reward?.id, updatedReward);
-        Alert.alert('update Success!', `Description: ${state.description}`);
-        navigation.goBack();
+        Alert.alert('update Success!');
+        closeAdd();
         setPointsValue('');
       }
     }
