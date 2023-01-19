@@ -32,6 +32,7 @@ import { AddTodoForm } from '../forms/AddForm';
 import Button from '../buttons/Buttons';
 import FormModal from '../modals/FormModal';
 import { Confirm } from '../ToDos/Confirm';
+import { createRef } from 'react';
 
 const Scoreboard = () => {
   const navigation = useNavigation();
@@ -42,6 +43,7 @@ const Scoreboard = () => {
   const [profilePoints, setProfilePoints] = useState<number>(0);
   const [selectedReward, setSelectedReward] = useState<any>();
   const [rewardsProcessed, setRewardsProcessed] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<number>(0);
   const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
   const [addRewardBtnClicked, setAddRewardBtnClicked] =
     useState<boolean>(false);
@@ -54,6 +56,15 @@ const Scoreboard = () => {
     setRewards,
     retrieveFSData,
   } = useDataContext();
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
+  const scrollViewRef = createRef<ScrollView>();
+  const ITEM_HEIGHT = 0.9 * ScreenHeight;
+  useEffect(() => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollTo({ x: 0, y: selectedItem * ITEM_HEIGHT });
+    }
+  }, [selectedItem]);
   useEffect(() => {
     if (loggedInProfile) {
       retrieveFSData('Rewards', 'profileId', `${loggedInProfile.id}`).then(
@@ -127,8 +138,6 @@ const Scoreboard = () => {
     }
   }
 
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     Container: {
       flex: 1,
@@ -175,7 +184,7 @@ const Scoreboard = () => {
     RewardsScrollView: {
       width: 0.1 * ScreenWidth,
       maxWidth: 0.27 * ScreenWidth,
-      maxHeight: 0.55 * ScreenHeight,
+      maxHeight: 0.56 * ScreenHeight,
       marginLeft: 0.04 * ScreenWidth,
     },
     RewardDetails: {
@@ -212,10 +221,12 @@ const Scoreboard = () => {
       width: 0.22 * ScreenWidth,
       height: 0.07 * ScreenHeight,
     },
-    DeleteBtn: {
+    buttonsView: {
+      flexDirection: 'row',
       position: 'absolute',
-      right: -0.005 * ScreenWidth,
-      top: 0.01 * ScreenHeight,
+      right: 0.09 * ScreenWidth,
+      bottom: -0 * ScreenHeight,
+      // minHeight: 0.5 * ScreenHeight,
     },
   });
   return (
@@ -244,8 +255,12 @@ const Scoreboard = () => {
           </View>
           {/* display rewards and rewards <details></details> */}
           <View style={styles.RewardsBody}>
-            <ScrollView style={styles.RewardsScrollView} horizontal={false}>
-              {rewards?.map((reward: any) => {
+            <ScrollView
+              style={styles.RewardsScrollView}
+              horizontal={false}
+              ref={scrollViewRef}
+            >
+              {rewards?.map((reward: any, index: number) => {
                 const rewardPoints = +reward.points;
                 const percentageProgress = (profilePoints / rewardPoints) * 100;
                 let imageSource;
@@ -273,9 +288,18 @@ const Scoreboard = () => {
                 }
 
                 return (
-                  <View style={{ position: 'relative' }}>
+                  <View
+                    style={{
+                      position: 'relative',
+                      height: selectedChild
+                        ? 0.38 * ScreenHeight
+                        : 0.3 * ScreenHeight,
+                    }}
+                    key={reward.id}
+                  >
                     <TouchableOpacity
                       onPress={() => {
+                        setSelectedItem(index);
                         setText(
                           text && text === reward.title
                             ? undefined
@@ -303,7 +327,7 @@ const Scoreboard = () => {
                             marginLeft: 0.04 * ScreenWidth,
                           }}
                         >
-                          <Text>{reward.title}</Text>
+                          <Text type="text">{reward.title}</Text>
                           <Text>{Math.trunc(percentageProgress)}%</Text>
                         </View>
                       </ImageBackground>
@@ -331,11 +355,15 @@ const Scoreboard = () => {
                         ></Image>
                       </View>
                     </TouchableOpacity>
-                    {text && text === reward.title && (
-                      <View style={styles.DeleteBtn}>
+                    {text && text === reward.title && selectedChild && (
+                      <View style={styles.buttonsView}>
                         <Button
                           background="DeleteTask"
                           onPress={() => handleFormClick('confirm', reward.id)}
+                        />
+                        <Button
+                          background="EditButton"
+                          onPress={() => console.log('edit')}
                         />
                       </View>
                     )}
