@@ -159,6 +159,12 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: '#fff',
     },
+    disable: {
+      fontSize: smallScreen ? 20 : 25,
+      fontFamily: 'Inika',
+      color: 'rgba(255, 255, 255, .5)',
+      textAlign: 'center',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.text];
@@ -199,6 +205,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.rewardHeader);
   } else if (type === 'rewardDetails') {
     textStyles.push(styles.rewardDetails);
+  } else if (type === 'disable') {
+    textStyles.push(styles.disable);
   }
 
   textStyles = [...textStyles, ...style];
