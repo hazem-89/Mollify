@@ -67,7 +67,6 @@ type todoFormProps = {
   ParentComponent: string;
   setAddRewardBtnClicked?: React.Dispatch<React.SetStateAction<boolean>>;
   reward?: Rewards;
-  fun?: string;
 };
 
 export const AddTodoForm = ({
@@ -76,7 +75,6 @@ export const AddTodoForm = ({
   ParentComponent,
   setAddRewardBtnClicked,
   reward,
-  fun,
 }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
@@ -132,7 +130,11 @@ export const AddTodoForm = ({
             ...state,
             description: reward.title,
           });
-
+          let rewardTime = reward?.endTime.slice(0, 16);
+          console.log('====================================');
+          console.log(rewardTime);
+          console.log('====================================');
+          setEndTime(new Date(rewardTime));
           setDescriptionInputExample(reward.title);
           setPointsValue(reward.points);
         }
