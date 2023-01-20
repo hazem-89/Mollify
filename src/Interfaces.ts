@@ -19,8 +19,8 @@ export interface Rewards {
 }
 
 export interface ProfileInterface {
-  avatar: string;
   id: string;
+  avatar: string;
   mainUserId: string;
   name: string;
   parent?: boolean;
