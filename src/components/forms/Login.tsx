@@ -30,34 +30,58 @@ export const LoginForm = ({ onClose }: LoginProps) => {
     ButtonsView: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      width: smallScreen ? 200 : 350,
-      marginTop: 20,
+      // width: smallScreen ? 200 : 450,
+      marginTop: smallScreen ? 30 : 40,
+    },
+    inputStyle: {
+      fontSize: smallScreen ? 15 : 20,
+      marginBottom: 7,
     },
   });
   return (
     <View>
       <View style={styles.Container}>
-        <TextInput
-          placeholder="Enter your email..."
-          value={email}
-          onChangeText={(text: string) => setEmail(text)}
-          errorText={errors.email}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <TextInput
-          placeholder="Choose your password..."
-          onChangeText={(text: string) => setPassword(text)}
-          secureTextEntry
-          errorText={errors.password}
-          autoCapitalize="none"
-          value={password}
-        />
+        <Text type="MenuTitle">Sign in to your account</Text>
+        <View
+          style={{
+            marginTop: 30,
+            width: 220,
+          }}
+        >
+          <TextInput
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={(text: string) => setEmail(text)}
+            errorText={errors.email}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            style={styles.inputStyle}
+          />
+        </View>
+        <View
+          style={{
+            maxHeight: smallScreen ? 40 : 80,
+            marginTop: smallScreen ? 20 : 30,
+            width: 220,
+          }}
+        >
+          <TextInput
+            placeholder="Enter your password"
+            onChangeText={(text: string) => setPassword(text)}
+            secureTextEntry
+            errorText={errors.password}
+            autoCapitalize="none"
+            value={password}
+            style={styles.inputStyle}
+          />
+        </View>
         <View style={styles.ButtonsView}>
           <Button
             background="GreenForms"
             text="Login"
-            onPress={() => submit('login')}
+            onPress={() => {
+              submit('login');
+            }}
           />
           <Button
             background="Cancel"

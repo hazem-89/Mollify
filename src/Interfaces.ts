@@ -26,4 +26,5 @@ export interface ProfileInterface {
   parent?: boolean;
   pin: string;
   room: string;
+  points: string;
 }

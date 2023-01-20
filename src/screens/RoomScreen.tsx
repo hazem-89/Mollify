@@ -69,7 +69,7 @@ export default function RoomScreen() {
       // Logged in profile is a kid, find and render kid's room.
       handleData(loggedInProfile);
     }
-  }, [loggedInProfile]);
+  }, [loggedInProfile, selectedChild]);
 
   function handleData(profileProp: any) {
     // find and render child's room

@@ -17,7 +17,7 @@ import TimBtnIcon from '../../../assets/images/Icons/TimBtnIcon.png';
 import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
-import { AddTodoForm } from '../forms/AddTodoForm';
+import { AddTodoForm } from '../forms/AddForm';
 import TaskCard from './TaskCard';
 
 type TasksCategoryPageProps = {
@@ -55,20 +55,11 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
     a.hasRequest ? 1 : -1,
   );
 
-  // Is this fetch necessary? I can't tell cause I'm not sure what the component does but the tasks are already set in the roomScreen
-  // useEffect(() => {
-  //   // Retrieve tasks, replace Lgq9YJnPLLezb1iE4xHQ with current profile id
-  //   retrieveFSData('Tasks', 'profileId', 'Lgq9YJnPLLezb1iE4xHQ').then(
-  //     (data: any) => {
-  //       if (data) setTasks(data);
-  //     },
-  //   );
-  // }, [category]);
-
   function handleClick(state: string | undefined) {
     setSelectedForm(
       <AddTodoForm
         category={category}
+        ParentComponent="Tasks"
         setAddTaskBtnClicked={setAddTaskBtnClicked}
       />,
     );
@@ -77,23 +68,24 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
 
   const styles = StyleSheet.create({
     container: {
-      width: smallScreen ? 580 : 700,
+      width: 0.75 * ScreenWidth,
       marginTop: smallScreen ? 5 : 15,
       padding: 20,
-      maxHeight: '95%',
+      maxHeight: 0.9 * ScreenHeight,
       zIndex: 10,
     },
     iconsView: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
+      width: '100%',
     },
     icons: {
-      width: smallScreen ? 40 : 75,
-      height: smallScreen ? 40 : 75,
+      width: 0.08 * ScreenWidth,
+      height: 0.08 * ScreenWidth,
     },
     scrollView: {
-      marginTop: smallScreen ? 50 : 90,
+      marginTop: 0.12 * ScreenHeight,
       width: '100%',
       minHeight: ScreenHeight,
       maxHeight: ScreenHeight,
@@ -136,19 +128,19 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                       height: smallScreen ? 40 : 50,
                     }}
                   />
-                  <Text type="text"> Add A Task</Text>
+                  <Text type="text"> Add a task</Text>
                 </View>
               </ImageBackground>
             </TouchableOpacity>
           )}
           <View>
             <View style={styles.iconsView}>
-              <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
+              <View style={{ width: 0.4 * ScreenWidth }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
               </View>
               <View
                 style={{
-                  width: smallScreen ? 50 : 60,
+                  width: smallScreen ? 100 : 60,
                   alignItems: 'center',
                 }}
               >

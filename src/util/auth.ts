@@ -1,3 +1,4 @@
+import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -40,33 +41,39 @@ export const useLogin = () => {
     return unsubscribe;
   }, [onAuthStateChanged, auth]);
 
+  const nextErrors: ErrorType = {};
+
   const submit = (functionName: string) => {
-    const nextErrors: ErrorType = {};
     if (email.length === 0) {
-      nextErrors.email = 'This field is required.';
+      nextErrors.email = 'Please enter an email';
+    } else if (email.indexOf('@') < 1) {
+      nextErrors.email = 'Please enter a valid email';
     }
     if (password.length === 0) {
-      nextErrors.password = 'This field is required.';
+      nextErrors.password = 'Please enter a password';
     } else if (password.length < 6) {
       nextErrors.password = 'Password should be at least 6 characters.';
     }
     if (password !== confirmedPassword && functionName === 'signUp') {
       nextErrors.confirmedPassword = 'Passwords do not match';
+    } else if (confirmedPassword.length === 0 && functionName === 'signUp') {
+      nextErrors.confirmedPassword = 'You need to confirm your password';
     }
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
+      Alert.alert('login Success!', `Email: ${email}`);
     } else if (
       Object.keys(nextErrors).length === 0 &&
       functionName === 'signUp'
     ) {
       signup(email, password);
+      Alert.alert('Sign up Success!', `Email: ${email}`);
     }
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
 
-    Alert.alert('Success!', `Email: ${email} \n Password: ${password}`);
     return null;
   };
 
@@ -82,16 +89,18 @@ export const useLogin = () => {
           }
         })
         .catch((error: any) => {
-          console.error(error);
+          console.log(error);
         });
     } catch (error) {
       console.error(error);
     }
   };
+
   const login = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password).catch(error => {
         setErrorMessage(true);
+        console.log(error);
       });
       if (auth.currentUser && !errorMessage) {
         setCurrentUser(auth.currentUser);

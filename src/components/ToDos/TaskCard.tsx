@@ -2,6 +2,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { doc, setDoc } from 'firebase/firestore';
 import React, { ReactElement, useState } from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   StyleSheet,
@@ -25,6 +26,7 @@ import TaskInReviewTextBg from '../../../assets/images/TaskInReviewTextBg.png';
 import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import { Confirm } from './Confirm';
 import { CountdownTimer } from './CountDown';
+import { AddTodoForm } from '../forms/AddForm';
 
 interface Props {
   task: Tasks;
@@ -33,7 +35,7 @@ interface Props {
 const TaskCard = ({ task }: Props) => {
   const {
     retrieveFSData,
-    setTasks,
+    setRewards,
     loggedInProfile,
     selectedChild,
     updateFSDoc,
@@ -43,6 +45,10 @@ const TaskCard = ({ task }: Props) => {
   const [swipeOn, setSwipeOn] = useState(false);
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
+  const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
+  const [updateTaskBtnClicked, setUpdateTaskBtnClicked] = useState<
+    string | undefined
+  >();
   let updateAcceptedReq = {};
   const endDate = new Date(task.endTime);
 
@@ -65,14 +71,14 @@ const TaskCard = ({ task }: Props) => {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', selectedChild.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              if (data) setRewards(data);
             },
           );
         } else if (loggedInProfile) {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              if (data) setRewards(data);
             },
           );
         }
@@ -82,7 +88,7 @@ const TaskCard = ({ task }: Props) => {
     }
   };
 
-  function handleClick(state: string | undefined) {
+  function handleUpdateClick(state: string | undefined) {
     setBtnClicked(state);
     switch (state) {
       case 'confirm':
@@ -121,23 +127,33 @@ const TaskCard = ({ task }: Props) => {
         setComponent(undefined);
     }
   }
-
+  function handleEditClick(state: string | undefined) {
+    setSelectedForm(
+      <AddTodoForm
+        category={state}
+        ParentComponent="Tasks"
+        setAddTaskBtnClicked={setUpdateTaskBtnClicked}
+        task={task}
+      />,
+    );
+    setUpdateTaskBtnClicked(state);
+  }
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     CardContainer: {
       marginTop: 20,
       maxHeight: smallScreen ? 60 : 100,
-      maxWidth: 800,
+      maxWidth: 0.75 * ScreenWidth,
     },
     TextView: {
-      flex: 1,
-      maxWidth: smallScreen ? 300 : 400,
-      height: smallScreen ? 60 : 80,
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     TextViewBg: {
-      height: smallScreen ? 60 : 80,
+      height: smallScreen ? 0.17 * ScreenHeight : 0.14 * ScreenHeight,
+      width: 0.4 * ScreenWidth,
+      MaxWidth: 0.4 * ScreenWidth,
       justifyContent: 'center',
-      paddingHorizontal: 20,
     },
     taskView: {
       flexDirection: 'row',
@@ -198,22 +214,18 @@ const TaskCard = ({ task }: Props) => {
           <View style={styles.ParentButtonView}>
             <Button
               background="DeleteTask"
-              onPress={() => handleClick('confirm')}
+              onPress={() => handleUpdateClick('confirm')}
             />
             <Button
-              background="DoneIcon"
-              onPress={() => {
-                console.log('====================================');
-                console.log('parent edit');
-                console.log('====================================');
-              }}
+              background="EditButton"
+              onPress={() => handleEditClick('EditTask')}
             />
           </View>
         ) : (
           <View>
             <Button
               background="DoneIcon"
-              onPress={() => handleClick('updateRequest')}
+              onPress={() => handleUpdateClick('updateRequest')}
             />
           </View>
         )}
@@ -223,93 +235,99 @@ const TaskCard = ({ task }: Props) => {
 
   return (
     <View style={styles.CardContainer}>
-      {task.hasRequest &&
-        loggedInProfile &&
-        loggedInProfile.parent &&
-        !swipeOn &&
-        !btnClicked && (
-          <View
-            style={{
-              position: 'absolute',
-              zIndex: 9999,
-              top: -20,
-              left: smallScreen ? 280 : 370,
-            }}
-          >
-            <Button
-              background="TaskNotification"
-              onPress={() => handleClick('TaskNotification')}
-            />
-          </View>
-        )}
-      {task.hasRequest &&
-        loggedInProfile &&
-        !loggedInProfile.parent &&
-        !swipeOn &&
-        !btnClicked && (
-          <View
-            style={{
-              position: 'absolute',
-              zIndex: 9999,
-              top: -20,
-              left: smallScreen ? 280 : 370,
-            }}
-          >
-            <Image
-              source={TaskInReviewNotifChilled}
-              style={{ width: 50, height: 50 }}
-            />
-          </View>
-        )}
-
-      <TouchableOpacity
-        onPress={() =>
-          loggedInProfile && !loggedInProfile.parent && !task.hasRequest
-            ? handleClick('updateRequest')
-            : null
-        }
-        activeOpacity={0.6}
-      >
-        <Swipeable
-          renderLeftActions={leftSwipe}
-          onBegan={() => setSwipeOn(true)}
-          onSwipeableClose={() => setSwipeOn(false)}
-        >
-          <View style={styles.taskView}>
-            <View style={styles.TextView}>
-              <ImageBackground
-                source={task.hasRequest ? TaskInReviewTextBg : TaskTextBg}
-                style={styles.TextViewBg}
+      {!updateTaskBtnClicked ? (
+        <>
+          {task.hasRequest &&
+            loggedInProfile &&
+            loggedInProfile.parent &&
+            !swipeOn &&
+            !btnClicked && (
+              <View
+                style={{
+                  position: 'absolute',
+                  zIndex: 9999,
+                  top: -20,
+                  left: smallScreen ? 280 : 370,
+                }}
               >
-                <View style={{ marginBottom: 5 }}>
-                  <Text type="text">{task.taskDescription}</Text>
-                </View>
-              </ImageBackground>
-            </View>
-            <ImageBackground
-              source={task.hasRequest ? PointsGreenBg : PointsBg}
-              style={styles.PointsBackground}
-            >
-              <Text type="DigitalNum">{task.pointsValue}</Text>
-            </ImageBackground>
-            <ImageBackground
-              source={task.hasRequest ? CountDownGreenBg : CountDownBg}
-              style={styles.CountDownView}
-            >
-              <CountdownTimer date={endDate} />
-            </ImageBackground>
-          </View>
-        </Swipeable>
-      </TouchableOpacity>
+                <Button
+                  background="TaskNotification"
+                  onPress={() => handleUpdateClick('TaskNotification')}
+                />
+              </View>
+            )}
+          {task.hasRequest &&
+            loggedInProfile &&
+            !loggedInProfile.parent &&
+            !swipeOn &&
+            !btnClicked && (
+              <View
+                style={{
+                  position: 'absolute',
+                  zIndex: 9999,
+                  top: -20,
+                  left: smallScreen ? 280 : 370,
+                }}
+              >
+                <Image
+                  source={TaskInReviewNotifChilled}
+                  style={{ width: 50, height: 50 }}
+                />
+              </View>
+            )}
 
-      <View style={{ position: 'absolute', top: -10, left: '50%' }}>
-        {/* Maybe consider moving it so it doesn't end up in the scroll view */}
-        <FormModal
-          component={component}
-          onEmit={() => handleClick(undefined)}
-        // text="confirm"
-        />
-      </View>
+          <TouchableOpacity
+            onPress={() =>
+              loggedInProfile && !loggedInProfile.parent && !task.hasRequest
+                ? handleUpdateClick('updateRequest')
+                : null
+            }
+            activeOpacity={0.6}
+          >
+            <Swipeable
+              renderLeftActions={leftSwipe}
+              onBegan={() => setSwipeOn(true)}
+              onSwipeableClose={() => setSwipeOn(false)}
+            >
+              <View style={styles.taskView}>
+                <View style={styles.TextView}>
+                  <ImageBackground
+                    source={task.hasRequest ? TaskInReviewTextBg : TaskTextBg}
+                    style={styles.TextViewBg}
+                  >
+                    <View style={{ marginBottom: 5 }}>
+                      <Text type="text">{task.taskDescription}</Text>
+                    </View>
+                  </ImageBackground>
+                </View>
+                <ImageBackground
+                  source={task.hasRequest ? PointsGreenBg : PointsBg}
+                  style={styles.PointsBackground}
+                >
+                  <Text type="DigitalNum">{task.pointsValue}</Text>
+                </ImageBackground>
+                <ImageBackground
+                  source={task.hasRequest ? CountDownGreenBg : CountDownBg}
+                  style={styles.CountDownView}
+                >
+                  <CountdownTimer date={endDate} />
+                </ImageBackground>
+              </View>
+            </Swipeable>
+          </TouchableOpacity>
+
+          <View style={{ position: 'absolute', top: -10, left: '50%' }}>
+            {/* Maybe consider moving it so it doesn't end up in the scroll view */}
+            <FormModal
+              component={component}
+              onEmit={() => handleUpdateClick(undefined)}
+              // text="confirm"
+            />
+          </View>
+        </>
+      ) : (
+        <>{selectedForm}</>
+      )}
     </View>
   );
 };

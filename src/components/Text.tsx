@@ -30,10 +30,11 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   }
 
   const styles = StyleSheet.create({
-    text: {
+    smallText: {
       fontSize: smallScreen ? 14 : 16,
-      fontFamily: 'Inika',
       color: 'rgba(0,0,0,.6)',
+      fontFamily: 'Inika',
+      textAlign: 'center',
     },
 
     headerText: {
@@ -73,7 +74,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       textAlign: 'center',
     },
     GreenForms: {
-      fontSize: smallScreen ? 10 : 15,
+      fontSize: smallScreen ? 20 : 25,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: '#0F6209',
@@ -117,7 +118,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
     Cancel: {
       color: '#fff',
-      fontSize: smallScreen ? 10 : 12,
+      fontSize: smallScreen ? 20 : 25,
       textAlign: 'center',
     },
     MenuTitle: {
@@ -159,9 +160,15 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: '#fff',
     },
+    disable: {
+      fontSize: smallScreen ? 20 : 25,
+      fontFamily: 'Inika',
+      color: 'rgba(255, 255, 255, .5)',
+      textAlign: 'center',
+    },
   });
 
-  let textStyles: StyleProp<TextStyle>[] = [styles.text];
+  let textStyles: StyleProp<TextStyle>[] = [styles.smallText];
 
   if (type === 'header') {
     textStyles.push(styles.headerText);
@@ -199,6 +206,10 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.rewardHeader);
   } else if (type === 'rewardDetails') {
     textStyles.push(styles.rewardDetails);
+  } else if (type === 'disable') {
+    textStyles.push(styles.disable);
+  } else if (type === 'text') {
+    textStyles.push(styles.smallText);
   }
 
   textStyles = [...textStyles, ...style];
