@@ -74,7 +74,7 @@ export const DataContext = createContext<ContextInterface>({
 export default function DataProvider(props: any) {
   // Here 👇 all the profiles are stored each time the currentUser state changes.
   const [profiles, setProfiles] = useState<DocumentData[]>();
-  // the currently logged in profile, we need a state for when the logged in profile is a parent inspecting a childs room.
+  // the currently logged in profile, can be parent or child.
   const [loggedInProfile, setLoggedInProfile] = useState<ProfileInterface>();
   // The current child profile being managed
   const [selectedChild, setSelectedChild] = useState<ProfileInterface>();
