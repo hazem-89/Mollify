@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
-import { addDoc, collection, DocumentData } from 'firebase/firestore';
+import { useDimensions } from '@react-native-community/hooks';
+import { useNavigation } from '@react-navigation/native';
+import { DocumentData } from 'firebase/firestore';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
   Dimensions,
@@ -7,9 +9,9 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Image,
 } from 'react-native';
-import { db } from '../../../firebaseConfig';
+import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
+import TigerMessage from '../../../assets/images/TigerMessage.png';
 import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
 import { avatars, rooms } from '../../util/itemObjects';
@@ -17,10 +19,6 @@ import Button from '../buttons/Buttons';
 import Carousel from '../Carousel';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
-import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
-import { useDimensions } from '@react-native-community/hooks';
-import TigerMessage from '../../../assets/images/TigerMessage.png';
-import { useNavigation } from '@react-navigation/native';
 
 interface Profiles {
   mainUserId: string | undefined;
@@ -52,17 +50,26 @@ export const CreateProfileForm = ({
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
   const [firstTime, setFirstTime] = useState(false);
-  const { retrieveFSData, setProfiles, profiles, addDocToFS } =
-    useDataContext();
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
+  const [smallScreen] = useState(dimensions.screen.height < 600);
+  const navigation = useNavigation();
+  const { retrieveFSData, setProfiles, addDocToFS } = useDataContext();
   const [state, setState] = useState({
     name: '',
     pin: '',
     avatar: '',
     room: '',
   });
+
   useEffect(() => {
-    !profilesExist ? setFirstTime(true) : setFirstTime(false);
+    if (!profilesExist) {
+      setFirstTime(true);
+    } else {
+      setFirstTime(false);
+    }
   }, []);
+
   const handleSubmit = () => {
     const nextErrors: ErrorType = {};
 
@@ -75,7 +82,7 @@ export const CreateProfileForm = ({
     if (!state.avatar) {
       nextErrors.avatar = 'Please select an avatar.';
     }
-    if (!state.room) {
+    if (!state.room && profilesExist) {
       nextErrors.room = 'Please select a rom.';
     }
     setErrors(nextErrors);
@@ -88,6 +95,7 @@ export const CreateProfileForm = ({
     }
     return null;
   };
+
   const addProfileToUser = async () => {
     const newProfile: Profiles = {
       name: state.name,
@@ -101,11 +109,11 @@ export const CreateProfileForm = ({
       (profilesExist
         ? addDocToFS('profiles', newProfile)
         : addDocToFS('profiles', {
-            ...newProfile,
-            room: null,
-            parent: true,
-            points: null,
-          })
+          ...newProfile,
+          room: null,
+          parent: true,
+          points: null,
+        })
       ).then(
         retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
           (data: DocumentData[]) => {
@@ -117,10 +125,6 @@ export const CreateProfileForm = ({
       console.log(err);
     }
   };
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
-  const [smallScreen] = useState(dimensions.screen.height < 600);
-  const navigation = useNavigation();
 
   const styles = StyleSheet.create({
     container: {
@@ -243,9 +247,9 @@ export const CreateProfileForm = ({
                   background="GreenForms"
                   text="Add profile"
                   onPress={handleSubmit}
-                  // disable={
-                  //   !state.name || !state.avatar || !state.pin || !state.room
-                  // }
+                // disable={
+                //   !state.name || !state.avatar || !state.pin || !state.room
+                // }
                 />
                 <Button
                   background="Cancel"
