@@ -12,6 +12,7 @@ import { useDimensions } from '@react-native-community/hooks';
 // Uninstall
 // import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useNavigation } from '@react-navigation/native';
 import { TextInput } from '../CustomInput';
 import Button from '../buttons/Buttons';
 import laundryBasket from '../../../assets/images/Icons/basket.png';
@@ -24,30 +25,35 @@ import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.
 import InputBg from '../../../assets/images/InputBg.png';
 import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
-import { useNavigation } from '@react-navigation/native';
 
-const CleaningTodo = [
+const cleaningTodo = [
   {
-    title: 'Dirty clothes',
-    description: 'Put the dirty clothes in the laundry basket',
+    title: 'Laundry',
+    description: 'Deal with your laundry',
     img: laundryBasket,
     selected: false,
   },
   {
-    title: 'Dirty Dishes',
-    description: 'Take the dishes to the kitchen',
+    title: 'Dishes',
+    description: 'Deal with your dishes',
     img: laundryBasket,
     selected: false,
   },
   {
     title: 'Garbage',
-    description: 'Put the dirty clothes in the laundry basket',
+    description: 'Take out your garbage',
     img: laundryBasket,
     selected: false,
   },
   {
     title: 'Watering Plants',
-    description: 'You need to water your plants',
+    description: 'Not too much, not too little water',
+    img: laundryBasket,
+    selected: false,
+  },
+  {
+    title: 'Vacuum',
+    description: 'Get those dust bunnies',
     img: laundryBasket,
     selected: false,
   },
@@ -106,6 +112,7 @@ export const AddTodoForm = ({
       setAddRewardBtnClicked(false);
     }
   };
+
   useEffect(() => {
     switch (category) {
       case 'Special':
@@ -132,7 +139,7 @@ export const AddTodoForm = ({
             ...state,
             description: reward.title,
           });
-          let rewardTime = reward?.endTime.slice(0, 16);
+          const rewardTime = reward?.endTime.slice(0, 16);
           setEndTime(new Date(rewardTime));
           setDescriptionInputExample(reward.title);
           setPointsValue(reward.points);
@@ -144,7 +151,7 @@ export const AddTodoForm = ({
             ...state,
             description: task.taskDescription,
           });
-          let taskTime = task?.endTime.slice(0, 16);
+          const taskTime = task?.endTime.slice(0, 16);
           setEndTime(new Date(taskTime));
           setDescriptionInputExample(task.taskDescription);
           setPointsValue(task.pointsValue);
@@ -226,17 +233,9 @@ export const AddTodoForm = ({
     },
   });
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
   const handleConfirm = (date: Date) => {
     setEndTime(date);
-    hideDatePicker();
+    setDatePickerVisibility(false);
   };
 
   const submit = () => {
@@ -244,8 +243,8 @@ export const AddTodoForm = ({
     if (!state.description) {
       nextErrors.taskDescription = 'This field is required.';
     }
-    if (!pointsValue) nextErrors.points = 'you need to set points';
-    if (!endTime) nextErrors.time = 'you need to set Time';
+    if (!pointsValue) nextErrors.points = 'You need to set points';
+    if (!endTime) nextErrors.time = 'You need to set a time for completion';
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
@@ -340,7 +339,7 @@ export const AddTodoForm = ({
         {category === 'Room' && (
           <>
             <View style={styles.CleaningTasksInfo}>
-              <Text type="MenuTitle">Here you can add a cleaning task</Text>
+              <Text type="MenuTitle">Here you can add a room task</Text>
               {/* <Text type="MenuTitle">
                 Adding a task will automatically add an item to the room
               </Text> */}
@@ -354,7 +353,7 @@ export const AddTodoForm = ({
                 marginTop: smallScreen ? 20 : 30,
               }}
             >
-              {CleaningTodo?.map(todo => {
+              {cleaningTodo?.map(todo => {
                 return (
                   <View
                     key={todo.title}
@@ -403,12 +402,11 @@ export const AddTodoForm = ({
             )}
           </>
         )}
-
         {category !== 'Room' && (
           <View style={styles.inputContainer}>
             {ParentComponent !== 'Reward' && (
               <View style={styles.OtherTasksInfo}>
-                <Text type="MenuTitle">Here you can Add a {category} task</Text>
+                <Text type="MenuTitle">Here you can add a {category} task</Text>
               </View>
             )}
             <ImageBackground source={InputBg} style={styles.InputBg}>
@@ -445,7 +443,7 @@ export const AddTodoForm = ({
               isVisible={isDatePickerVisible}
               mode="datetime"
               onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
+              onCancel={() => setDatePickerVisibility(false)}
               minimumDate={new Date()}
               minuteInterval={10}
             />
@@ -455,7 +453,6 @@ export const AddTodoForm = ({
               </View>
             )}
           </View>
-
           <View style={styles.TimePointView}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={PointsIcon} style={styles.icons} />

@@ -1,7 +1,6 @@
 import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
@@ -113,7 +112,6 @@ export const useLogin = () => {
     }
   };
   const logout = async () => {
-    const auth = getAuth();
     signOut(auth).catch(error => {
       console.error(error);
     });

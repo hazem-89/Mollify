@@ -164,7 +164,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                   height: ScreenHeight,
                 }}
               >
-                <Text type="header">There is no tasks to display</Text>
+                <Text type="header">There are no tasks to display</Text>
               </View>
             )}
 
