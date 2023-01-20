@@ -28,13 +28,10 @@ const RewardCard = ({ reward }: Props) => {
     if (loggedInProfile) {
       const profilePointsNum = +loggedInProfile.points;
       setProfilePoints(profilePointsNum);
-      console.log(typeof loggedInProfile.points, loggedInProfile.points);
     }
     if (selectedChild) {
       const profilePointsNum = +selectedChild.points;
       setProfilePoints(profilePointsNum);
-      console.log('selectedChild', selectedChild);
-      console.log(typeof selectedChild.points, selectedChild.points);
     }
   }, [rewards]);
   const rewardPoints = +reward.points;

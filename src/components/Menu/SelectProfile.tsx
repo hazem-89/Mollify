@@ -36,23 +36,21 @@ const SelectProfile = () => {
   } = useDataContext();
 
   const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
-      top: smallScreen ? '15%' : '8%',
-      width: smallScreen ? 500 : 700,
-      height: smallScreen ? 300 : 500,
+      top: 0.065 * ScreenHeight,
+      width: smallScreen ? 0.6 * ScreenWidth : 0.7 * ScreenWidth,
+      height: 0.9 * ScreenHeight,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     MainView: {
-      position: 'absolute',
-      top: smallScreen ? '5%' : '5%',
-      width: 0.8 * ScreenWidth,
-      height: smallScreen ? 300 : 500,
-      flex: 1,
+      width: 0.45 * ScreenWidth,
       alignItems: 'center',
       justifyContent: 'center',
       flexDirection: 'row',
-      marginLeft: '20%',
     },
     ProfilesView: {
       flexDirection: 'row',
@@ -109,13 +107,12 @@ const SelectProfile = () => {
       <ImageBackground source={SelectFormMenu} style={styles.modal}>
         <View
           style={{
-            marginTop: smallScreen ? 80 : 150,
-            flex: 1,
             alignItems: 'center',
+            maxWidth: 0.5 * ScreenWidth,
           }}
         >
           {loggedInProfile && loggedInProfile.parent ? (
-            <Text>
+            <Text type="header">
               Welcome {loggedInProfile.name}, select profile to manage
             </Text>
           ) : (
@@ -153,7 +150,6 @@ const SelectProfile = () => {
           )}
 
           <View style={styles.ProfilesView}>
-            {!profiles ? <> </> : <></>}
             {filteredProfiles
               ? filteredProfiles?.map((profile: DocumentData) => (
                   <TouchableOpacity
