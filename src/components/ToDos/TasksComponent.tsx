@@ -68,23 +68,24 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
 
   const styles = StyleSheet.create({
     container: {
-      width: smallScreen ? 580 : 700,
+      width: 0.75 * ScreenWidth,
       marginTop: smallScreen ? 5 : 15,
       padding: 20,
-      maxHeight: '95%',
+      maxHeight: 0.9 * ScreenHeight,
       zIndex: 10,
     },
     iconsView: {
       flex: 1,
       flexDirection: 'row',
       justifyContent: 'space-between',
+      width: '100%',
     },
     icons: {
-      width: smallScreen ? 40 : 75,
-      height: smallScreen ? 40 : 75,
+      width: 0.08 * ScreenWidth,
+      height: 0.08 * ScreenWidth,
     },
     scrollView: {
-      marginTop: smallScreen ? 50 : 90,
+      marginTop: 0.12 * ScreenHeight,
       width: '100%',
       minHeight: ScreenHeight,
       maxHeight: ScreenHeight,
@@ -127,19 +128,19 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                       height: smallScreen ? 40 : 50,
                     }}
                   />
-                  <Text type="text"> Add A Task</Text>
+                  <Text type="text"> Add a task</Text>
                 </View>
               </ImageBackground>
             </TouchableOpacity>
           )}
           <View>
             <View style={styles.iconsView}>
-              <View style={{ flex: 1, maxWidth: smallScreen ? 300 : 400 }}>
+              <View style={{ width: 0.4 * ScreenWidth }}>
                 <Image style={styles.icons} source={TaskBtnIcon} />
               </View>
               <View
                 style={{
-                  width: smallScreen ? 50 : 60,
+                  width: smallScreen ? 100 : 60,
                   alignItems: 'center',
                 }}
               >
@@ -163,7 +164,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                   height: ScreenHeight,
                 }}
               >
-                <Text type="header">There is no tasks to display</Text>
+                <Text type="header">There are no tasks to display</Text>
               </View>
             )}
 

@@ -17,8 +17,9 @@ import InfoButtonImage from '../../../assets/images/info.png';
 import BellButtonImage from '../../../assets/images/bell.png';
 import CancelButton from '../../../assets/images/CancelButton.png';
 import TrophyButtonImage from '../../../assets/images/trophy.png';
-import TodoButtonImage from '../../../assets/images/todo.png';
 import ArrowButton from '../../../assets/images/Polygon.png';
+import TodoButtonImage from '../../../assets/images/todo.png';
+import EditButton from '../../../assets/images/EditButton.png';
 import ReverseArrowButton from '../../../assets/images/PolygonReverse.png';
 import DeleteIcon from '../../../assets/images/Icons/DeleteIcon.png';
 import DoneIcon from '../../../assets/images/Icons/DoneIcon.png';
@@ -120,6 +121,10 @@ function Button({
       width: smallScreen ? 40 : 40,
       height: smallScreen ? 40 : 40,
     },
+    EditButton: {
+      width: smallScreen ? 50 : 60,
+      height: smallScreen ? 50 : 60,
+    },
   });
 
   useEffect(() => {
@@ -186,6 +191,9 @@ function Button({
     } else if (background === 'LogoutIcon') {
       setSource(LogoutIcon);
       setStyle(styles.settingsStyle);
+    } else if (background === 'EditButton') {
+      setSource(EditButton);
+      setStyle(styles.EditButton);
     }
   }, [background]);
 
@@ -197,7 +205,15 @@ function Button({
       }}
     >
       <ImageBackground source={source} style={style}>
-        <Text type={background}>{text}</Text>
+        {disable ? (
+          <>
+            <Text type="disable">{text}</Text>
+          </>
+        ) : (
+          <>
+            <Text type={background}>{text}</Text>
+          </>
+        )}
       </ImageBackground>
     </TouchableOpacity>
   );

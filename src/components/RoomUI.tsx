@@ -16,7 +16,6 @@ import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
 import SidebarMenu from './Menu/SidebarMenu';
 import FormModal from './modals/FormModal';
-import Scoreboard from './Scoreboard/Scoreboard';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -38,6 +37,7 @@ export default function RoomUI() {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
+
   // this not used right now maybe we will need it
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
@@ -57,24 +57,26 @@ export default function RoomUI() {
     ) {
     }
   }
-  const handelNav = (navigationValue: string) => {
-    // console.log(navigationValue);
 
-    navigationValue === 'DisplayTasks' &&
+  const handelNav = (navigationValue: string) => {
+    if (navigationValue === 'DisplayTasks') {
       // @ts-ignore
       navigation.navigate('TasksCategoryPage', {
         paramKey: {
           content: 'DisplayTasks',
         },
       });
-    navigationValue === 'DisplayRewards' &&
+    }
+    if (navigationValue === 'DisplayRewards') {
       // @ts-ignore
       navigation.navigate('TasksCategoryPage', {
         paramKey: {
           content: 'DisplayRewards',
         },
       });
+    }
   };
+
   const ScreenWidth = Dimensions.get('window').width;
   // const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({

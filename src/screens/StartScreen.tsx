@@ -1,6 +1,6 @@
 import { useDimensions } from '@react-native-community/hooks';
-import { useIsFocused } from '@react-navigation/native';
-import React, { ReactElement, useEffect, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { ReactElement, useState } from 'react';
 import {
   Image,
   ImageBackground,
@@ -27,14 +27,29 @@ export default function StartScreen() {
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
   const { currentUser, logout } = useLogin();
-  const { setSelectedChild } = useDataContext();
+  const {
+    setSelectedChild,
+    loggedInProfile,
+    setLoggedInProfile,
+    setTasks,
+    setRewards,
+  } = useDataContext();
   const [text, setText] = useState<string | undefined>();
-  const isFocused = useIsFocused();
 
-  useEffect(() => {
-    // reset selectedChild to fix bug where leaving room and attempting to enter the same room does nothing.
-    if (isFocused) setSelectedChild(undefined);
-  }, [isFocused]);
+  useFocusEffect(
+    React.useCallback(() => {
+      // focused StartScreen, reset states
+      if (loggedInProfile && !('parent' in loggedInProfile)) {
+        setLoggedInProfile(undefined);
+      }
+      setSelectedChild(undefined);
+      setTasks([]);
+      setRewards([]);
+      // return () => {
+      // uncomment if you want to do something when leaving startScreen
+      // };
+    }, []),
+  );
 
   const styles = StyleSheet.create({
     WelcomeSign: {

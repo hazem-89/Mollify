@@ -10,18 +10,22 @@ import {
 import DisplayTasksBackGround from '../../assets/images/DisplayTasksBackGround.png';
 import Scoreboard from '../components/Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from '../components/ToDos/DisplayTasksCategories';
-
+import { CreateProfileForm } from '../components/forms/CreateProfile';
+import { useDataContext } from '../util/context/DataContext';
 const DisplayMenusScreen = ({ route }: any) => {
   const [component, setComponent] = useState<ReactElement>();
 
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const content = route.params.paramKey.content;
+  const { profiles } = useDataContext();
 
   useEffect(() => {
     const test = () => {
       content === 'DisplayTasks' && setComponent(<DisplayTasksCategories />);
       content === 'DisplayRewards' && setComponent(<Scoreboard />);
+      content === 'CreateProfile' &&
+        setComponent(<CreateProfileForm profilesExist={!!profiles} />);
     };
     test();
   }, []);

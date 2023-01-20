@@ -1,7 +1,6 @@
 import { FirebaseError } from 'firebase/app';
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
@@ -61,9 +60,6 @@ export const useLogin = () => {
       nextErrors.confirmedPassword = 'You need to confirm your password';
     }
     setErrors(nextErrors);
-    console.log('====================================');
-    console.log(nextErrors);
-    console.log('====================================');
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
       Alert.alert('login Success!', `Email: ${email}`);
@@ -116,7 +112,6 @@ export const useLogin = () => {
     }
   };
   const logout = async () => {
-    const auth = getAuth();
     signOut(auth).catch(error => {
       console.error(error);
     });

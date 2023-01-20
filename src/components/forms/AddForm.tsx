@@ -12,6 +12,7 @@ import { useDimensions } from '@react-native-community/hooks';
 // Uninstall
 // import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { useNavigation } from '@react-navigation/native';
 import { TextInput } from '../CustomInput';
 import Button from '../buttons/Buttons';
 import laundryBasket from '../../../assets/images/Icons/basket.png';
@@ -22,31 +23,37 @@ import TaskTextBg from '../../../assets/images/TaskTextBg.png';
 import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
 import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
 import InputBg from '../../../assets/images/InputBg.png';
-
+import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
 
-const CleaningTodo = [
+const cleaningTodo = [
   {
-    title: 'Dirty clothes',
-    description: 'Put the dirty clothes in the laundry basket',
+    title: 'Laundry',
+    description: 'Deal with your laundry',
     img: laundryBasket,
     selected: false,
   },
   {
-    title: 'Dirty Dishes',
-    description: 'Take the dishes to the kitchen',
+    title: 'Dishes',
+    description: 'Deal with your dishes',
     img: laundryBasket,
     selected: false,
   },
   {
     title: 'Garbage',
-    description: 'Put the dirty clothes in the laundry basket',
+    description: 'Take out your garbage',
     img: laundryBasket,
     selected: false,
   },
   {
     title: 'Watering Plants',
-    description: 'You need to water your plants',
+    description: 'Not too much, not too little water',
+    img: laundryBasket,
+    selected: false,
+  },
+  {
+    title: 'Vacuum',
+    description: 'Get those dust bunnies',
     img: laundryBasket,
     selected: false,
   },
@@ -65,6 +72,8 @@ type todoFormProps = {
   >;
   ParentComponent: string;
   setAddRewardBtnClicked?: React.Dispatch<React.SetStateAction<boolean>>;
+  reward?: Rewards;
+  task?: Tasks;
 };
 
 export const AddTodoForm = ({
@@ -72,23 +81,29 @@ export const AddTodoForm = ({
   setAddTaskBtnClicked,
   ParentComponent,
   setAddRewardBtnClicked,
+  reward,
+  task,
 }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
+  const navigation = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
   const [descriptionInputExample, setDescriptionInputExample] = useState('');
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { selectedChild } = useDataContext();
+  const { selectedChild, addDocToFS, updateFSDoc } = useDataContext();
 
-  const [state, setState] = useState({
-    taskTitle: '',
-    taskDescription: '',
+  const [state, setState] = useState<{
+    title: string;
+    description: string;
+    selected: string;
+  }>({
+    title: '',
+    description: '',
     selected: '',
   });
-  const { addDocToFS } = useDataContext();
   const closeAdd = () => {
     if (setAddTaskBtnClicked) {
       setAddTaskBtnClicked(undefined);
@@ -97,6 +112,7 @@ export const AddTodoForm = ({
       setAddRewardBtnClicked(false);
     }
   };
+
   useEffect(() => {
     switch (category) {
       case 'Special':
@@ -114,8 +130,32 @@ export const AddTodoForm = ({
           'Enter a task: E.g. Practice dancing 1 hour',
         );
         break;
-      case 'Reward':
+      case 'AddReward':
         setDescriptionInputExample('Enter a Reward:');
+        break;
+      case 'EditReward':
+        if (reward) {
+          setState({
+            ...state,
+            description: reward.title,
+          });
+          const rewardTime = reward?.endTime.slice(0, 16);
+          setEndTime(new Date(rewardTime));
+          setDescriptionInputExample(reward.title);
+          setPointsValue(reward.points);
+        }
+        break;
+      case 'EditTask':
+        if (task) {
+          setState({
+            ...state,
+            description: task.taskDescription,
+          });
+          const taskTime = task?.endTime.slice(0, 16);
+          setEndTime(new Date(taskTime));
+          setDescriptionInputExample(task.taskDescription);
+          setPointsValue(task.pointsValue);
+        }
         break;
 
       default:
@@ -184,43 +224,34 @@ export const AddTodoForm = ({
       justifyContent: 'center',
     },
     errorsView: {
-      backgroundColor: 'rgba(255, 255, 255, .7)',
+      backgroundColor: 'rgba(255, 255, 255, .8)',
       width: 0.15 * ScreenWidth,
       padding: 5,
       alignItems: 'center',
-      borderRadius: 25,
+      borderRadius: 10,
+      marginBottom: 0.02 * ScreenHeight,
     },
   });
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
   const handleConfirm = (date: Date) => {
-    console.warn('A date has been picked: ', date);
     setEndTime(date);
-    hideDatePicker();
+    setDatePickerVisibility(false);
   };
 
   const submit = () => {
     const nextErrors: ErrorType = {};
-    if (!state.taskDescription) {
+    if (!state.description) {
       nextErrors.taskDescription = 'This field is required.';
     }
-    if (!pointsValue) nextErrors.points = 'you need to set points';
-    if (!endTime) nextErrors.time = 'you need to set Time';
+    if (!pointsValue) nextErrors.points = 'You need to set points';
+    if (!endTime) nextErrors.time = 'You need to set a time for completion';
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length === 0) {
-      console.log('no err');
-      if (ParentComponent === 'Tasks') {
+      if (ParentComponent === 'Tasks' && category !== 'EditTask') {
         const newTodo = {
-          taskTitle: state.taskTitle,
-          taskDescription: state.taskDescription,
+          taskTitle: state.title,
+          taskDescription: state.description,
           pointsValue,
           endTime: endTime?.toString(),
           category,
@@ -229,21 +260,53 @@ export const AddTodoForm = ({
           profileId: selectedChild.id,
         };
         addDocToFS('Tasks', newTodo);
+        setPointsValue('');
 
-        Alert.alert('Success!', `Description: ${state.taskDescription}`);
-      } else if (ParentComponent === 'Reward') {
-        console.log('rewards');
+        Alert.alert('Success!');
+        closeAdd();
+      }
+      if (ParentComponent === 'Tasks' && category === 'EditTask') {
+        const updatedTodo = {
+          taskTitle: state.title,
+          taskDescription: state.description,
+          pointsValue,
+          endTime: endTime?.toString(),
+        };
+        updateFSDoc('Tasks', task?.id, updatedTodo);
+        setPointsValue('');
+
+        Alert.alert('update task Success!');
+        closeAdd();
+      }
+      if (ParentComponent === 'Reward' && category === 'AddReward') {
         const newReward = {
-          title: state.taskDescription,
+          title: state.description,
           points: pointsValue,
           endTime: endTime?.toString(),
           profileId: selectedChild.id,
+          isDone: false,
         };
         addDocToFS('Rewards', newReward);
+        setPointsValue('');
+
+        Alert.alert('Add Success!');
+        closeAdd();
+      }
+      if (ParentComponent === 'Reward' && category === 'EditReward') {
+        const updatedReward = {
+          title: state.description,
+          points: pointsValue,
+          endTime: endTime?.toString(),
+          profileId: selectedChild.id,
+          isDone: reward?.isDone,
+        };
+        updateFSDoc('Rewards', reward?.id, updatedReward);
+        Alert.alert('update Success!');
+        closeAdd();
+        setPointsValue('');
       }
     }
-    setEndTime(new Date());
-    setPointsValue('');
+
     if (Object.keys(nextErrors).length > 0) {
       return null;
     }
@@ -252,19 +315,19 @@ export const AddTodoForm = ({
 
   function handlePress(todo: { description: string; title: string }) {
     if (
-      state.taskDescription &&
-      state.taskDescription === todo.description &&
+      state.description &&
+      state.description === todo.description &&
       state.selected === todo.title
     ) {
       setState({
         ...state,
-        taskDescription: '',
+        description: '',
         selected: '',
       });
     } else {
       setState({
         ...state,
-        taskDescription: todo.description,
+        description: todo.description,
         selected: todo.title,
       });
     }
@@ -276,7 +339,7 @@ export const AddTodoForm = ({
         {category === 'Room' && (
           <>
             <View style={styles.CleaningTasksInfo}>
-              <Text type="MenuTitle">Here you can add a cleaning task</Text>
+              <Text type="MenuTitle">Here you can add a room task</Text>
               {/* <Text type="MenuTitle">
                 Adding a task will automatically add an item to the room
               </Text> */}
@@ -290,7 +353,7 @@ export const AddTodoForm = ({
                 marginTop: smallScreen ? 20 : 30,
               }}
             >
-              {CleaningTodo?.map(todo => {
+              {cleaningTodo?.map(todo => {
                 return (
                   <View
                     key={todo.title}
@@ -323,7 +386,7 @@ export const AddTodoForm = ({
                 );
               })}
             </View>
-            {state.taskDescription && (
+            {state.description && (
               <ImageBackground
                 source={TaskTextBg}
                 style={{
@@ -334,25 +397,24 @@ export const AddTodoForm = ({
                   height: smallScreen ? 60 : 80,
                 }}
               >
-                <Text type="text">{state.taskDescription}</Text>
+                <Text type="text">{state.description}</Text>
               </ImageBackground>
             )}
           </>
         )}
-
         {category !== 'Room' && (
           <View style={styles.inputContainer}>
             {ParentComponent !== 'Reward' && (
               <View style={styles.OtherTasksInfo}>
-                <Text type="MenuTitle">Here you can Add a {category} task</Text>
+                <Text type="MenuTitle">Here you can add a {category} task</Text>
               </View>
             )}
             <ImageBackground source={InputBg} style={styles.InputBg}>
               <TextInput
                 placeholder={descriptionInputExample}
-                value={state.taskDescription}
+                value={state.description}
                 onChangeText={(text: string) =>
-                  setState({ ...state, taskDescription: text })
+                  setState({ ...state, description: text })
                 }
                 errorText={errors.taskDescription}
                 keyboardType="default"
@@ -366,7 +428,7 @@ export const AddTodoForm = ({
         <View style={styles.TimePointsContainer}>
           <View style={styles.TimePointView}>
             <TouchableOpacity
-              disabled={!state.taskDescription}
+              disabled={!state.description}
               onPress={showDatePicker}
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
@@ -381,7 +443,7 @@ export const AddTodoForm = ({
               isVisible={isDatePickerVisible}
               mode="datetime"
               onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
+              onCancel={() => setDatePickerVisibility(false)}
               minimumDate={new Date()}
               minuteInterval={10}
             />
@@ -391,7 +453,6 @@ export const AddTodoForm = ({
               </View>
             )}
           </View>
-
           <View style={styles.TimePointView}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Image source={PointsIcon} style={styles.icons} />
@@ -417,7 +478,7 @@ export const AddTodoForm = ({
             minWidth: smallScreen ? 350 : 450,
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: -15,
+            marginTop: category === 'Room' ? -15 : 10,
           }}
         >
           <Button background="GreenForms" text="Add" onPress={() => submit()} />
