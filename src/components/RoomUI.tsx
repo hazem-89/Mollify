@@ -1,13 +1,20 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
 import React, { ReactElement, useState } from 'react';
-import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
+import {
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import awardBadge from '../../assets/images/awardBadge.png';
 import woodSignLarge from '../../assets/images/woodSignLarge.png';
 import { Text } from '../components/Text';
 import { useLogin } from '../util/auth';
 import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
+import SidebarMenu from './Menu/SidebarMenu';
 import FormModal from './modals/FormModal';
 import Scoreboard from './Scoreboard/Scoreboard';
 
@@ -19,6 +26,7 @@ import Scoreboard from './Scoreboard/Scoreboard';
 }; */
 
 export default function RoomUI() {
+  const [open, setOpen] = useState(false);
   const { tasks } = useDataContext();
   const { logout } = useLogin();
   const navigation = useNavigation();
@@ -138,69 +146,105 @@ export default function RoomUI() {
       left: smallScreen ? -5 : -10,
       borderRadius: 50,
     },
+    menuBackground: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+    },
+    sidebar: {
+      display: open ? 'flex' : 'none',
+      position: 'relative',
+    },
+    arrowStyle: {
+      display: open ? 'flex' : 'none',
+      position: 'absolute',
+      top: smallScreen ? 0 : 140,
+      right: smallScreen ? 100 : 210,
+    },
   });
 
   return (
     <>
-      {!addTaskBtnClicked ? (
-        <View style={{ height: '100%' }}>
-          <View style={styles.imagesContainer}>
-            <ImageBackground
-              source={woodSignLarge}
-              style={styles.woodLargeStyle}
-            >
-              <View style={styles.SidesButtons}>
-                <Button background="BellButtonImage" onPress={logout} />
-                <Button
-                  background="BellButtonImage"
-                  onPress={() => console.log('log')}
-                />
+      <View style={{}}>
+        <TouchableOpacity onPress={() => setOpen(false)} activeOpacity={1}>
+          {!addTaskBtnClicked ? (
+            <View>
+              <View style={styles.imagesContainer}>
+                <ImageBackground
+                  source={woodSignLarge}
+                  style={styles.woodLargeStyle}
+                >
+                  <View style={styles.SidesButtons}>
+                    <Button background="BellButtonImage" onPress={logout} />
+                    <Button
+                      background="BellButtonImage"
+                      onPress={() => console.log('log')}
+                    />
+                  </View>
+                </ImageBackground>
+                {/* <Image source={woodSignLarge} style={styles.woodLargeStyle} /> */}
+                <ImageBackground
+                  source={awardBadge}
+                  style={styles.awardBadgeStyle}
+                >
+                  <Button
+                    background="TrophyButtonImage"
+                    onPress={() => {
+                      handelNav('DisplayRewards');
+                    }}
+                  />
+                </ImageBackground>
+                {/* <Image source={awardBadge} style={styles.awardBadgeStyle} /> */}
+                <ImageBackground
+                  source={woodSignLarge}
+                  style={styles.woodLargeStyle}
+                >
+                  <View style={styles.SidesButtons}>
+                    {tasks.length ? (
+                      <>
+                        <View style={styles.tasksLength}>
+                          <Text type="NotificationNum">{tasks.length}</Text>
+                        </View>
+                      </>
+                    ) : null}
+                    <Button
+                      background="TodoButtonImage"
+                      onPress={() => {
+                        // handleClick('displayTask');
+                        handelNav('DisplayTasks');
+                      }}
+                    />
+                    <Button
+                      background="InfoButtonImage"
+                      onPress={() => setOpen(true)}
+                    />
+                  </View>
+                </ImageBackground>
               </View>
-            </ImageBackground>
-            {/* <Image source={woodSignLarge} style={styles.woodLargeStyle} /> */}
-            <ImageBackground source={awardBadge} style={styles.awardBadgeStyle}>
-              <Button
-                background="TrophyButtonImage"
-                onPress={() => {
-                  handelNav('DisplayRewards');
-                }}
-              />
-            </ImageBackground>
-            {/* <Image source={awardBadge} style={styles.awardBadgeStyle} /> */}
-            <ImageBackground
-              source={woodSignLarge}
-              style={styles.woodLargeStyle}
-            >
-              <View style={styles.SidesButtons}>
-                {tasks.length ? (
-                  <>
-                    <View style={styles.tasksLength}>
-                      <Text type="NotificationNum">{tasks.length}</Text>
-                    </View>
-                  </>
-                ) : null}
-                <Button
-                  background="TodoButtonImage"
-                  onPress={() => {
-                    // handleClick('displayTask');
-                    handelNav('DisplayTasks');
-                  }}
-                />
-                <Button
-                  background="InfoButtonImage"
-                  onPress={() => setBtnClicked(undefined)}
-                />
+              <View style={styles.sidebar}>
+                <SidebarMenu />
               </View>
-            </ImageBackground>
-          </View>
-        </View>
-      ) : (
-        <FormModal
-          component={component}
-          onEmit={() => handleClick(undefined)}
-          text={text}
-        />
-      )}
+              {/* {open ? (
+                <View style={styles.arrowStyle}>
+                  <Button
+                    background="GoBackArrowLeft"
+                    onPress={() => setOpen(false)}
+                  />
+                </View>
+              ) : null} */}
+            </View>
+          ) : (
+            <FormModal
+              component={component}
+              onEmit={() => handleClick(undefined)}
+              text={text}
+            />
+          )}
+        </TouchableOpacity>
+      </View>
     </>
   );
 }
+

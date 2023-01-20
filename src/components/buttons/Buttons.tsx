@@ -22,6 +22,10 @@ import ArrowButton from '../../../assets/images/Polygon.png';
 import ReverseArrowButton from '../../../assets/images/PolygonReverse.png';
 import DeleteIcon from '../../../assets/images/Icons/DeleteIcon.png';
 import DoneIcon from '../../../assets/images/Icons/DoneIcon.png';
+import GoBackArrowLeft from '../../../assets/images/GoBackArrowLeft.png';
+import SettingsWheel from '../../../assets/images/settingsWheel.png';
+import ProfileIcon from '../../../assets/images/profileIcon.png';
+import LogoutIcon from '../../../assets/images/logoutIcon.png';
 import { Text } from '../Text';
 
 type ButtonProps = {
@@ -108,6 +112,14 @@ function Button({
       width: smallScreen ? 40 : 50,
       height: smallScreen ? 40 : 50,
     },
+    GoBackArrowLeft: {
+      width: smallScreen ? 60 : 90,
+      height: smallScreen ? 40 : 50,
+    },
+    settingsStyle: {
+      width: smallScreen ? 40 : 40,
+      height: smallScreen ? 40 : 40,
+    },
   });
 
   useEffect(() => {
@@ -162,6 +174,18 @@ function Button({
     } else if (background === 'TaskNotification') {
       setSource(TaskNotificationIcon);
       setStyle(styles.TaskNotification);
+    } else if (background === 'GoBackArrowLeft') {
+      setSource(GoBackArrowLeft);
+      setStyle(styles.GoBackArrowLeft);
+    } else if (background === 'SettingsWheel') {
+      setSource(SettingsWheel);
+      setStyle(styles.settingsStyle);
+    } else if (background === 'ProfileIcon') {
+      setSource(ProfileIcon);
+      setStyle(styles.settingsStyle);
+    } else if (background === 'LogoutIcon') {
+      setSource(LogoutIcon);
+      setStyle(styles.settingsStyle);
     }
   }, [background]);
 
