@@ -25,21 +25,46 @@ export const Confirm = ({
   funName,
   rewardId,
 }: ConfirmProps) => {
-  const { deleteDocFromFS } = useDataContext();
-
+  const {
+    deleteDocFromFS,
+    selectedChild,
+    setTasks,
+    setRewards,
+    retrieveFSData,
+  } = useDataContext();
   const handleSubmit = () => {
     if (funName === 'delete' && taskId) {
       deleteDocFromFS('Tasks', taskId);
+      retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+        (data: any) => {
+          if (data) setTasks(data);
+        },
+      );
     } else if (funName === 'updateTaskDone') {
       if (markTaskDone) {
         markTaskDone(funName);
+        retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       }
     } else if (funName === 'updateRequest') {
       if (UpdateReqStatus) {
         UpdateReqStatus(funName);
+        retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       }
     } else if (funName === 'delete' && rewardId) {
       deleteDocFromFS('Rewards', rewardId);
+      retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+        (data: any) => {
+          if (data) setRewards(data);
+        },
+      );
     }
     if (onClose) {
       onClose();
