@@ -144,9 +144,6 @@ export const AddTodoForm = ({
             ...state,
             description: task.taskDescription,
           });
-          console.log('====================================');
-          console.log(task);
-          console.log('====================================');
           let taskTime = task?.endTime.slice(0, 16);
           setEndTime(new Date(taskTime));
           setDescriptionInputExample(task.taskDescription);
@@ -283,7 +280,6 @@ export const AddTodoForm = ({
         closeAdd();
       }
       if (ParentComponent === 'Reward' && category === 'AddReward') {
-        console.log('Add rewards');
         const newReward = {
           title: state.description,
           points: pointsValue,
@@ -298,7 +294,6 @@ export const AddTodoForm = ({
         closeAdd();
       }
       if (ParentComponent === 'Reward' && category === 'EditReward') {
-        console.log('update rewards');
         const updatedReward = {
           title: state.description,
           points: pointsValue,

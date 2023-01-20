@@ -61,9 +61,6 @@ export const useLogin = () => {
       nextErrors.confirmedPassword = 'You need to confirm your password';
     }
     setErrors(nextErrors);
-    console.log('====================================');
-    console.log(nextErrors);
-    console.log('====================================');
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
       Alert.alert('login Success!', `Email: ${email}`);
