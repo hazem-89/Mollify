@@ -14,19 +14,14 @@ const SidebarMenu = () => {
   const navigation = useNavigation();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
+    string | undefined
+  >();
 
   const handelNav = (navigationValue: string) => {
     // @ts-ignore
     navigationValue === 'StartScreen' && navigation.goBack();
   };
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 10000,
-      useNativeDriver: true,
-    }).start();
-  }, [fadeAnim]);
 
   const styles = StyleSheet.create({
     container: {},
@@ -42,10 +37,10 @@ const SidebarMenu = () => {
       display: 'flex',
       flexDirection: 'column',
       position: 'absolute',
-      right: smallScreen ? '70%' : '12%',
-      bottom: smallScreen ? '90%' : '31%',
-      left: 0,
-      top: 0,
+      right: smallScreen ? 0 : '12%',
+      bottom: smallScreen ? 0 : '31%',
+      left: smallScreen ? '50%' : '80%',
+      top: smallScreen ? '40%' : '25%',
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -57,29 +52,27 @@ const SidebarMenu = () => {
     },
   });
   return (
-    <Animated.View style={{}}>
-      <View style={styles.container}>
-        <View style={styles.menuBackground}>
-          <View style={styles.btnsAlign}>
-            <Text type="Cancel">Change Profile</Text>
-            <View style={styles.settingsAlign}>
-              <Button
-                background="ProfileIcon"
-                onPress={() => handelNav('StartScreen')}
-              />
-            </View>
-            <Text type="Cancel">Settings</Text>
-            <View style={styles.settingsAlign}>
-              <Button background="SettingsWheel" onPress={logout} />
-            </View>
-            <Text type="Cancel">Logout</Text>
-            <View style={styles.logoutAlign}>
-              <Button background="LogoutIcon" onPress={logout} />
-            </View>
+    <View style={styles.container}>
+      <View style={styles.menuBackground}>
+        <View style={styles.btnsAlign}>
+          <Text type="Cancel">Change Profile</Text>
+          <View style={styles.settingsAlign}>
+            <Button
+              background="ProfileIcon"
+              onPress={() => handelNav('StartScreen')}
+            />
+          </View>
+          <Text type="Cancel">Settings</Text>
+          <View style={styles.settingsAlign}>
+            <Button background="SettingsWheel" onPress={() => undefined} />
+          </View>
+          <Text type="Cancel">Logout</Text>
+          <View style={styles.logoutAlign}>
+            <Button background="LogoutIcon" onPress={logout} />
           </View>
         </View>
       </View>
-    </Animated.View>
+    </View>
   );
 };
 

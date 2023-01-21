@@ -26,6 +26,7 @@ import DoneIcon from '../../../assets/images/Icons/DoneIcon.png';
 import GoBackArrowLeft from '../../../assets/images/GoBackArrowLeft.png';
 import SettingsWheel from '../../../assets/images/settingsWheel.png';
 import ProfileIcon from '../../../assets/images/profileIcon.png';
+import MenuIcon from '../../../assets/images/menuIcon.png';
 import LogoutIcon from '../../../assets/images/logoutIcon.png';
 import { Text } from '../Text';
 
@@ -118,8 +119,8 @@ function Button({
       height: smallScreen ? 40 : 50,
     },
     settingsStyle: {
-      width: smallScreen ? 40 : 40,
-      height: smallScreen ? 40 : 40,
+      width: smallScreen ? 60 : 80,
+      height: smallScreen ? 60 : 80,
     },
     EditButton: {
       width: smallScreen ? 50 : 60,
@@ -194,6 +195,9 @@ function Button({
     } else if (background === 'EditButton') {
       setSource(EditButton);
       setStyle(styles.EditButton);
+    } else if (background === 'MenuIcon') {
+      setSource(MenuIcon);
+      setStyle(styles.infoStyle);
     }
   }, [background]);
 

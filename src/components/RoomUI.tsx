@@ -219,7 +219,7 @@ export default function RoomUI() {
                       }}
                     />
                     <Button
-                      background="InfoButtonImage"
+                      background="MenuIcon"
                       onPress={() => setOpen(true)}
                     />
                   </View>
