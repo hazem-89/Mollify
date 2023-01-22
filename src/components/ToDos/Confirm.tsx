@@ -1,5 +1,7 @@
+import { DocumentData } from 'firebase/firestore';
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
+import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { Text } from '../Text';
@@ -31,7 +33,14 @@ export const Confirm = ({
     setTasks,
     setRewards,
     retrieveFSData,
+    loggedInProfile,
+    setProfiles,
   } = useDataContext();
+  const { currentUser } = useLogin();
+
+  /**
+   *  handel confirm delete and update fpr both tasks and reward
+   */
   const handleSubmit = () => {
     if (funName === 'delete' && taskId) {
       deleteDocFromFS('Tasks', taskId);
@@ -40,19 +49,22 @@ export const Confirm = ({
           if (data) setTasks(data);
         },
       );
+      // parent confirm if task is done task as done
     } else if (funName === 'updateTaskDone') {
       if (markTaskDone) {
         markTaskDone(funName);
+        deleteDocFromFS('Tasks', taskId);
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
             if (data) setTasks(data);
           },
         );
       }
+      // chilled request when th task is done
     } else if (funName === 'updateRequest') {
       if (UpdateReqStatus) {
         UpdateReqStatus(funName);
-        retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+        retrieveFSData('Tasks', 'profileId', `${loggedInProfile?.id}`).then(
           (data: any) => {
             if (data) setTasks(data);
           },

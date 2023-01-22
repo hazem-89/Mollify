@@ -1,6 +1,6 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { doc, setDoc } from 'firebase/firestore';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -35,10 +35,11 @@ interface Props {
 const TaskCard = ({ task }: Props) => {
   const {
     retrieveFSData,
-    setRewards,
     loggedInProfile,
     selectedChild,
     updateFSDoc,
+    setTasks,
+    setSelectedChild,
   } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -50,8 +51,12 @@ const TaskCard = ({ task }: Props) => {
     string | undefined
   >();
   let updateAcceptedReq = {};
+  let updateProfilePoints = {};
   const endDate = new Date(task.endTime);
 
+  /**
+   *  handel update tasks status
+   */
   const handleTaskRequestStatus = async (funName: string) => {
     if (funName === 'updateRequest') {
       updateAcceptedReq = {
@@ -64,21 +69,29 @@ const TaskCard = ({ task }: Props) => {
         isDone: true,
         hasRequest: false,
       };
+      const pointsSum = +selectedChild.points + +task.pointsValue;
+
+      updateProfilePoints = {
+        ...selectedChild,
+        points: pointsSum.toString(),
+      };
+      setSelectedChild({ ...selectedChild, points: pointsSum.toString() });
     }
     if (task.id) {
       try {
         if (selectedChild) {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
+          await updateFSDoc('profiles', selectedChild.id, updateProfilePoints);
           retrieveFSData('Tasks', 'profileId', selectedChild.id).then(
             (data: any) => {
-              if (data) setRewards(data);
+              if (data) setTasks(data);
             },
           );
         } else if (loggedInProfile) {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
             (data: any) => {
-              if (data) setRewards(data);
+              if (data) setTasks(data);
             },
           );
         }
@@ -142,8 +155,8 @@ const TaskCard = ({ task }: Props) => {
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     CardContainer: {
-      marginTop: 20,
-      maxHeight: smallScreen ? 60 : 100,
+      marginTop: 0.01 * ScreenHeight,
+      maxHeight: 0.2 * ScreenHeight,
       maxWidth: 0.75 * ScreenWidth,
     },
     TextView: {
@@ -245,7 +258,6 @@ const TaskCard = ({ task }: Props) => {
               <View
                 style={{
                   position: 'absolute',
-                  zIndex: 9999,
                   top: -20,
                   left: smallScreen ? 280 : 370,
                 }}
@@ -264,7 +276,7 @@ const TaskCard = ({ task }: Props) => {
               <View
                 style={{
                   position: 'absolute',
-                  zIndex: 9999,
+                  zIndex: 1,
                   top: -20,
                   left: smallScreen ? 280 : 370,
                 }}
