@@ -275,7 +275,11 @@ const Scoreboard = () => {
             >
               {rewards?.map((reward: any, index: number) => {
                 const rewardPoints = +reward.points;
-                let percentageProgress = (profilePoints / rewardPoints) * 100;
+                const profileOldPoints = +reward.profilePoints;
+                const actualPoints = rewardPoints + profileOldPoints;
+                let percentageProgress =
+                  ((profilePoints - +reward.ProfilePoints) / rewardPoints) *
+                  100;
                 if (percentageProgress > 100) {
                   percentageProgress = 100;
                 }

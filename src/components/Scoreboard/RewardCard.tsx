@@ -36,9 +36,10 @@ const RewardCard = ({ reward }: Props) => {
   }, [rewards]);
   const rewardPoints = +reward.points;
 
-  const PointsLeft = rewardPoints - profilePoints;
+  const PointsLeft = rewardPoints - (profilePoints - +reward.ProfilePoints);
 
-  const percentageProgress = (profilePoints / rewardPoints) * 100;
+  const percentageProgress =
+    ((profilePoints - +reward.ProfilePoints) / rewardPoints) * 100;
   let imageSource;
   if (percentageProgress > 20 && percentageProgress < 40) {
     imageSource = Twenty;
