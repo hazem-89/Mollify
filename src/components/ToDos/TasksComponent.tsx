@@ -85,7 +85,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       height: 0.08 * ScreenWidth,
     },
     scrollView: {
-      marginTop: 0.16 * ScreenHeight,
+      marginTop: 0.17 * ScreenHeight,
       width: 0.7 * ScreenWidth,
       maxHeight: 0.71 * ScreenHeight,
     },
