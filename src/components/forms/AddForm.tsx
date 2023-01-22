@@ -268,7 +268,7 @@ export const AddTodoForm = ({
         };
         addDocToFS('Tasks', newTodo);
         setPointsValue('');
-        Alert.alert('update task Success!');
+        Alert.alert('Task Added Successfully!');
         closeAdd();
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -303,13 +303,13 @@ export const AddTodoForm = ({
         };
         addDocToFS('Rewards', newReward);
         setPointsValue('');
-        Alert.alert('Add Success!');
+        Alert.alert('Reward Added Successfully!');
         closeAdd();
-        retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
-          (data: any) => {
-            if (data) setRewards(data);
-          },
-        );
+        // retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+        //   (data: any) => {
+        //     if (data) setRewards(data);
+        //   },
+        // );
       }
       if (ParentComponent === 'Reward' && category === 'EditReward') {
         const updatedReward = {
@@ -321,7 +321,7 @@ export const AddTodoForm = ({
         };
         updateFSDoc('Rewards', reward?.id, updatedReward);
         setPointsValue('');
-        Alert.alert('update Success!');
+        Alert.alert('Reward updated Successfully!');
         closeAdd();
         retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -453,7 +453,7 @@ export const AddTodoForm = ({
           <View style={styles.TimePointView}>
             <TouchableOpacity
               disabled={!state.description}
-              onPress={showDatePicker}
+              onPress={() => setDatePickerVisibility(true)}
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Image source={hourglass} style={styles.icons} />
