@@ -7,10 +7,13 @@ import {
   View,
 } from 'react-native';
 import DisplayTasksBackGround from '../../assets/images/DisplayTasksBackGround.png';
+import { DataContext } from '../util/context/DataContext';
 
 export default function DisplayMenusScreen() {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
+  const { loggedInProfile } = dataContext();
+
 
   const styles = StyleSheet.create({
     Background: {
@@ -38,7 +41,7 @@ export default function DisplayMenusScreen() {
     <>
       <Image source={DisplayTasksBackGround} style={styles.Background} />
       <SafeAreaView style={styles.SafeArea}>
-        <View>eeeeeee</View>
+        <View>{loggedInProfile.name}</View>
       </SafeAreaView>
     </>
   );
