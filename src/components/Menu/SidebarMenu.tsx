@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Image, Animated } from 'react-native';
-import sidebarBackground from '../../../assets/images/sidebarBackground.png';
+import { useDimensions } from '@react-native-community/hooks';
+import { useNavigation } from '@react-navigation/native';
+import React, { useRef, useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
+import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
 import Button from '../buttons/Buttons';
-import { Text } from '../../components/Text';
-import { useDimensions } from '@react-native-community/hooks';
-import SelectProfile from './SelectProfile';
-import { useNavigation } from '@react-navigation/native';
 
 const SidebarMenu = () => {
   const { logout } = useLogin();
@@ -17,11 +15,6 @@ const SidebarMenu = () => {
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
-
-  const handelNav = (navigationValue: string) => {
-    // @ts-ignore
-    navigationValue === 'StartScreen' && navigation.goBack();
-  };
 
   const styles = StyleSheet.create({
     container: {},
@@ -59,12 +52,17 @@ const SidebarMenu = () => {
           <View style={styles.settingsAlign}>
             <Button
               background="ProfileIcon"
-              onPress={() => handelNav('StartScreen')}
+              // @ts-ignore
+              onPress={() => navigation.navigate('StartScreen')}
             />
           </View>
           <Text type="Cancel">Settings</Text>
           <View style={styles.settingsAlign}>
-            <Button background="SettingsWheel" onPress={() => undefined} />
+            <Button
+              background="SettingsWheel"
+              // @ts-ignore
+              onPress={() => navigation.navigate('SettingsScreen')}
+            />
           </View>
           <Text type="Cancel">Logout</Text>
           <View style={styles.logoutAlign}>
@@ -77,4 +75,3 @@ const SidebarMenu = () => {
 };
 
 export default SidebarMenu;
-
