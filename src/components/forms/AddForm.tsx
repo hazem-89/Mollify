@@ -429,7 +429,7 @@ export const AddTodoForm = ({
           <View style={styles.TimePointView}>
             <TouchableOpacity
               disabled={!state.description}
-              onPress={showDatePicker}
+              onPress={() => setDatePickerVisibility(true)}
               style={{ flexDirection: 'row', alignItems: 'center' }}
             >
               <Image source={hourglass} style={styles.icons} />
@@ -492,3 +492,4 @@ export const AddTodoForm = ({
     </View>
   );
 };
+
