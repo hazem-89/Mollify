@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Image, Animated } from 'react-native';
+import { View, StyleSheet, Image, Animated, Dimensions } from 'react-native';
 import sidebarBackground from '../../../assets/images/sidebarBackground.png';
 import { useLogin } from '../../util/auth';
 import Button from '../buttons/Buttons';
@@ -22,53 +22,55 @@ const SidebarMenu = () => {
     // @ts-ignore
     navigationValue === 'StartScreen' && navigation.goBack();
   };
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
 
   const styles = StyleSheet.create({
-    container: {},
+    container: {
+      minWidth: ScreenWidth,
+      minHeight: ScreenHeight,
+      maxHeight: ScreenHeight,
+    },
     menuBackground: {
-      position: 'relative',
-      height: smallScreen ? 500 : 1000,
-      width: smallScreen ? 1000 : 1500,
-      top: -200,
-      right: smallScreen ? 200 : 200,
-      backgroundColor: 'linear-gradient(to bottom right, rgba(0,0,0,0.7))',
+      height: '100%',
+      minWidth: ScreenWidth,
+      backgroundColor: 'rgba(0,0,0,0.7))',
+      alignItems: 'flex-end',
+      justifyContent: 'center',
     },
     btnsAlign: {
       display: 'flex',
       flexDirection: 'column',
-      position: 'absolute',
-      right: smallScreen ? 0 : '12%',
-      bottom: smallScreen ? 0 : '31%',
-      left: smallScreen ? '50%' : '80%',
-      top: smallScreen ? '40%' : '25%',
       justifyContent: 'center',
       alignItems: 'center',
+      marginRight: 0.05 * ScreenWidth,
     },
     logoutAlign: {
       marginBottom: smallScreen ? 10 : 20,
     },
     settingsAlign: {
       marginBottom: smallScreen ? 10 : 40,
+      alignItems: 'center',
     },
   });
   return (
     <View style={styles.container}>
       <View style={styles.menuBackground}>
         <View style={styles.btnsAlign}>
-          <Text type="Cancel">Change Profile</Text>
           <View style={styles.settingsAlign}>
             <Button
               background="ProfileIcon"
               onPress={() => handelNav('StartScreen')}
             />
+            <Text type="Cancel">Change Profile</Text>
           </View>
-          <Text type="Cancel">Settings</Text>
           <View style={styles.settingsAlign}>
             <Button background="SettingsWheel" onPress={() => undefined} />
+            <Text type="Cancel">Settings</Text>
           </View>
-          <Text type="Cancel">Logout</Text>
           <View style={styles.logoutAlign}>
             <Button background="LogoutIcon" onPress={logout} />
+            <Text type="Cancel">Logout</Text>
           </View>
         </View>
       </View>
@@ -77,4 +79,3 @@ const SidebarMenu = () => {
 };
 
 export default SidebarMenu;
-
