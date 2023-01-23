@@ -14,9 +14,6 @@ const SidebarMenu = () => {
   const navigation = useNavigation();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
-    string | undefined
-  >();
 
   const handelNav = (navigationValue: string) => {
     // @ts-ignore
