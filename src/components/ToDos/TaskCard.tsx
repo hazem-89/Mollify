@@ -155,8 +155,8 @@ const TaskCard = ({ task }: Props) => {
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     CardContainer: {
-      marginTop: 0.01 * ScreenHeight,
-      maxHeight: 0.2 * ScreenHeight,
+      marginTop: 0.025 * ScreenHeight,
+      maxHeight: 0.25 * ScreenHeight,
       maxWidth: 0.75 * ScreenWidth,
     },
     TextView: {
@@ -258,8 +258,9 @@ const TaskCard = ({ task }: Props) => {
               <View
                 style={{
                   position: 'absolute',
-                  top: -20,
-                  left: smallScreen ? 280 : 370,
+                  top: -15,
+                  left: 0.35 * ScreenWidth,
+                  zIndex: 3,
                 }}
               >
                 <Button
@@ -276,7 +277,7 @@ const TaskCard = ({ task }: Props) => {
               <View
                 style={{
                   position: 'absolute',
-                  zIndex: 1,
+                  zIndex: 3,
                   top: -20,
                   left: smallScreen ? 280 : 370,
                 }}

@@ -300,16 +300,17 @@ export const AddTodoForm = ({
           endTime: endTime?.toString(),
           profileId: selectedChild.id,
           isDone: false,
+          ProfilePoints: selectedChild.points,
         };
         addDocToFS('Rewards', newReward);
         setPointsValue('');
         Alert.alert('Reward Added Successfully!');
         closeAdd();
-        // retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
-        //   (data: any) => {
-        //     if (data) setRewards(data);
-        //   },
-        // );
+        retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setRewards(data);
+          },
+        );
       }
       if (ParentComponent === 'Reward' && category === 'EditReward') {
         const updatedReward = {
@@ -516,4 +517,3 @@ export const AddTodoForm = ({
     </View>
   );
 };
-

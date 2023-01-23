@@ -16,6 +16,7 @@ export interface Rewards {
   endTime: string;
   isDone: boolean;
   assignedProfileId: string;
+  ProfilePoints: string;
 }
 
 export interface ProfileInterface {

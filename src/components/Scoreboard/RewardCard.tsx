@@ -36,9 +36,10 @@ const RewardCard = ({ reward }: Props) => {
   }, [rewards]);
   const rewardPoints = +reward.points;
 
-  const PointsLeft = rewardPoints - profilePoints;
+  const PointsLeft = rewardPoints - (profilePoints - +reward.ProfilePoints);
 
-  const percentageProgress = (profilePoints / rewardPoints) * 100;
+  const percentageProgress =
+    ((profilePoints - +reward.ProfilePoints) / rewardPoints) * 100;
   let imageSource;
   if (percentageProgress > 20 && percentageProgress < 40) {
     imageSource = Twenty;
@@ -72,13 +73,11 @@ const RewardCard = ({ reward }: Props) => {
     }
   };
 
-  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     CardContainer: {
       width: 0.6 * ScreenWidth,
       height: ScreenHeight,
       alignItems: 'center',
-      // justifyContent: 'center',
     },
     TextView: {
       flexDirection: 'row',
@@ -135,28 +134,47 @@ const RewardCard = ({ reward }: Props) => {
         <Image source={lightningBig} style={styles.PointsIcon}></Image>
         <View style={styles.PointsDetails}>
           <Image source={imageSource} style={styles.ProgressBar}></Image>
-          <Text type="rewardDetails">
-            You need {PointsLeft} more points{' '}
-            <Image source={lightningBig} style={styles.PointsIconTitle}></Image>{' '}
-            to earn this reward
-          </Text>
+          {PointsLeft < 0 ? (
+            <>
+              <Text type="rewardDetails">
+                Congrats You have earned {reward.title}
+              </Text>
+            </>
+          ) : (
+            <>
+              <Text type="rewardDetails">
+                You need {PointsLeft} more points
+                <Image
+                  source={lightningBig}
+                  style={styles.PointsIconTitle}
+                ></Image>{' '}
+                to earn this reward
+              </Text>
+            </>
+          )}
         </View>
       </View>
-      <View>
-        <Text type="rewardDetails">&</Text>
-      </View>
-      <View style={styles.TimeView}>
-        <View>
-          <Image source={hourglassBig} style={styles.PointsIcon}></Image>
-        </View>
-        <View>
-          <View style={styles.TimeDetails}>
-            <Text type="rewardDetails">
-              You Have <CountdownTimer date={endDate} /> To earn it.
-            </Text>
+      {endDate < new Date() || PointsLeft < 0 ? (
+        <></>
+      ) : (
+        <>
+          <View>
+            <Text type="rewardDetails">&</Text>
           </View>
-        </View>
-      </View>
+          <View style={styles.TimeView}>
+            <View>
+              <Image source={hourglassBig} style={styles.PointsIcon}></Image>
+            </View>
+            <View>
+              <View style={styles.TimeDetails}>
+                <Text type="rewardDetails">
+                  You Have <CountdownTimer date={endDate} /> To earn it.
+                </Text>
+              </View>
+            </View>
+          </View>
+        </>
+      )}
     </View>
   );
 };
