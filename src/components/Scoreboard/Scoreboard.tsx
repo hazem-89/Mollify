@@ -42,7 +42,7 @@ const Scoreboard = () => {
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [text, setText] = useState<string | undefined>();
   const [profilePoints, setProfilePoints] = useState<number>(0);
-  const [selectedReward, setSelectedReward] = useState<any>();
+  const [selectedReward, setSelectedReward] = useState<Rewards>();
   const [rewardsProcessed, setRewardsProcessed] = useState(false);
   const [selectedItem, setSelectedItem] = useState<number>(0);
   const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
@@ -58,6 +58,8 @@ const Scoreboard = () => {
   } = useDataContext();
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
+
+  //Scroll to the selected reward
   const scrollViewRef = createRef<ScrollView>();
   const ITEM_HEIGHT = 0.9 * ScreenHeight;
   useEffect(() => {
@@ -65,22 +67,27 @@ const Scoreboard = () => {
       scrollViewRef.current.scrollTo({ x: 0, y: selectedItem * ITEM_HEIGHT });
     }
   }, [selectedItem]);
+
+  // fetch rewards
   useEffect(() => {
     if (loggedInProfile) {
       retrieveFSData('Rewards', 'profileId', `${loggedInProfile.id}`).then(
         (data: any) => {
-          if (data) setRewards(data);
+          data ? setRewards(data) : setRewards([]);
+          setSelectedReward(undefined);
         },
       );
     }
     if (selectedChild) {
       retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
         (data: any) => {
-          if (data) setRewards(data);
+          data ? setRewards(data) : setRewards([]);
+          setSelectedReward(undefined);
         },
       );
     }
   }, []);
+
   useEffect(() => {
     if (!rewardsProcessed) {
       setRewardsProcessed(true);
@@ -239,7 +246,6 @@ const Scoreboard = () => {
       position: 'absolute',
       right: 0.09 * ScreenWidth,
       bottom: -0 * ScreenHeight,
-      // minHeight: 0.5 * ScreenHeight,
     },
   });
   return (
@@ -275,8 +281,6 @@ const Scoreboard = () => {
             >
               {rewards?.map((reward: any, index: number) => {
                 const rewardPoints = +reward.points;
-                const profileOldPoints = +reward.profilePoints;
-                const actualPoints = rewardPoints + profileOldPoints;
                 let percentageProgress =
                   ((profilePoints - +reward.ProfilePoints) / rewardPoints) *
                   100;
@@ -461,21 +465,6 @@ const Scoreboard = () => {
         onEmit={() => handleFormClick(undefined)}
         // text="confirm"
       />
-      {/* <View style={styles.GoToTasksButton}>
-        <TouchableOpacity onPress={() => handelNav('TasksCategoryPage')}>
-          <ImageBackground
-            source={GoBackArrow}
-            style={styles.GoToTasksArrowImageStyle}
-          >
-            <View style={{ marginRight: 50, transform: [{ scaleX: -1 }] }}>
-              <Text type="header">Tasks</Text>
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-      </View> */}
-      {/* <View>
-        <View></View>
-      </View> */}
     </View>
   );
 };
