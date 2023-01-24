@@ -124,43 +124,45 @@ export default function RoomScreen() {
   }
 
   return (
-    <View style={{ backgroundColor: 'black', display: 'flex' }}>
-      {/* Use safeAreaView to keep RoomUI away from notches and cameras on phones. */}
-      <SafeAreaView style={styles.SafeArea}>
-        <RoomUI />
-        {loggedInProfile && loggedInProfile.parent ? (
-          <Onboarding guide="RoomScreenParent" />
-        ) : (
-          <Onboarding guide="RoomScreenChild" />
-        )}
-      </SafeAreaView>
-      <ScrollView
-        onScroll={e => handleScroll(e)}
-        scrollEventThrottle={16}
-        horizontal={true}
-      >
-        <ImageBackground
-          resizeMode="cover"
-          source={profileRoom}
-          style={styles.BackgroundImage}
-        />
-        {/* For each task render a draggable with .map */}
-        {tasks &&
-          loggedInProfile &&
-          !loggedInProfile.parent &&
-          tasks.map((task: Tasks) =>
-            task.hasRequest === false ? (
-              <Draggable
-                key={task.id}
-                task={task}
-                onMove={(moving: boolean, draggableCoords?: coordinates) =>
-                  handleMove(moving, task, draggableCoords)
-                }
-              />
-            ) : null,
-          )}
-      </ScrollView>
-      <Disposal imageFilter={disposalFilterProp} show={isDragging} />
-    </View>
+    <>
+      <View style={{ backgroundColor: 'black', display: 'flex' }}>
+        {/* Use safeAreaView to keep RoomUI away from notches and cameras on phones. */}
+        <SafeAreaView style={styles.SafeArea}>
+          <RoomUI />
+        </SafeAreaView>
+        <ScrollView
+          onScroll={e => handleScroll(e)}
+          scrollEventThrottle={16}
+          horizontal={true}
+        >
+          <ImageBackground
+            resizeMode="cover"
+            source={profileRoom}
+            style={styles.BackgroundImage}
+          />
+          {/* For each task render a draggable with .map */}
+          {tasks &&
+            loggedInProfile &&
+            !loggedInProfile.parent &&
+            tasks.map((task: Tasks) =>
+              task.hasRequest === false ? (
+                <Draggable
+                  key={task.id}
+                  task={task}
+                  onMove={(moving: boolean, draggableCoords?: coordinates) =>
+                    handleMove(moving, task, draggableCoords)
+                  }
+                />
+              ) : null,
+            )}
+        </ScrollView>
+        <Disposal imageFilter={disposalFilterProp} show={isDragging} />
+      </View>
+      {loggedInProfile && loggedInProfile.parent ? (
+        <Onboarding guide="roomScreenParent" />
+      ) : (
+        <Onboarding guide="roomScreenChild" />
+      )}
+    </>
   );
 }

@@ -143,7 +143,7 @@ export default function RoomUI() {
       width: smallScreen ? 20 : 30,
       height: smallScreen ? 20 : 30,
       alignItems: 'center',
-      zIndex: 99,
+      zIndex: 10,
       bottom: smallScreen ? 0 : -10,
       left: smallScreen ? -5 : -10,
       borderRadius: 50,

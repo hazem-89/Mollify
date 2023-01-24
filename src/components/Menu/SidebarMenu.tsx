@@ -1,7 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, Dimensions, StyleSheet, View } from 'react-native';
 import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
 import Button from '../buttons/Buttons';
