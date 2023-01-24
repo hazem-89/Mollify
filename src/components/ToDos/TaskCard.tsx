@@ -40,6 +40,7 @@ const TaskCard = ({ task }: Props) => {
     updateFSDoc,
     setTasks,
     setSelectedChild,
+    tasks,
   } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);

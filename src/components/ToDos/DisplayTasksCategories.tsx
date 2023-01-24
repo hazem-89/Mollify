@@ -67,7 +67,7 @@ export const DisplayTasksCategories = () => {
       profileID = loggedInProfile.id;
     }
     retrieveFSData('Tasks', 'profileId', profileID).then((data: any) => {
-      if (data) setTasks(data);
+      data ? setTasks(data) : setTasks([]);
     });
     setCategoryLength();
   }, [text]);
