@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Onboarding from '../components/onboarding/Onboarding';
 import Disposal from '../components/room/Disposal';
 import Draggable from '../components/room/Draggable';
 import RoomUI from '../components/RoomUI';
@@ -127,6 +128,11 @@ export default function RoomScreen() {
       {/* Use safeAreaView to keep RoomUI away from notches and cameras on phones. */}
       <SafeAreaView style={styles.SafeArea}>
         <RoomUI />
+        {loggedInProfile && loggedInProfile.parent ? (
+          <Onboarding guide="RoomScreenParent" />
+        ) : (
+          <Onboarding guide="RoomScreenChild" />
+        )}
       </SafeAreaView>
       <ScrollView
         onScroll={e => handleScroll(e)}
@@ -158,4 +164,3 @@ export default function RoomScreen() {
     </View>
   );
 }
-

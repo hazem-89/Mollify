@@ -33,8 +33,16 @@ interface ContextInterface {
   setLoggedInProfile: Function;
   selectedChild: DocumentData;
   setSelectedChild: Function;
-  /** This boolean will be used to add or remove the user-guides */
-  onboarding: boolean;
+  /** This boolean object will be used to add or remove the user-guides */
+  onboardingComplete: {
+    roomScreenChild: boolean;
+    roomScreenParent: boolean;
+    taskScreenParent: boolean;
+    rewardScreenParent: boolean;
+    taskScreenChild: boolean;
+    rewardScreenChild: boolean;
+  };
+  setOnboardingComplete: Function;
   /** This function is used to store or remove an object value in the async storage on the device.
    * The function takes in a key and a data{}, if you want to remove the key value leave the data prop undefined.
    */
@@ -63,7 +71,15 @@ export const DataContext = createContext<ContextInterface>({
   setLoggedInProfile: () => false,
   selectedChild: [],
   setSelectedChild: () => false,
-  onboarding: true,
+  onboardingComplete: {
+    roomScreenChild: false,
+    roomScreenParent: false,
+    taskScreenParent: false,
+    rewardScreenParent: false,
+    taskScreenChild: false,
+    rewardScreenChild: false,
+  },
+  setOnboardingComplete: () => false,
   retrieveFSData: () => false,
   setAsyncData: () => false,
   addDocToFS: () => false,
@@ -84,7 +100,15 @@ export default function DataProvider(props: any) {
   const [tasks, setTasks] = useState<DocumentData[]>([]);
   // Here 👇 the rewards for the selected profile are stored.
   const [rewards, setRewards] = useState<DocumentData[]>([]);
-  const [onboarding, setOnboarding] = useState<boolean>();
+  // Here 👇 the completed guides are stored.
+  const [onboardingComplete, setOnboardingComplete] = useState({
+    roomScreenChild: false,
+    roomScreenParent: false,
+    taskScreenParent: false,
+    rewardScreenParent: false,
+    taskScreenChild: false,
+    rewardScreenChild: false,
+  });
   const { currentUser } = useLogin();
   const navigation = useNavigation();
 
@@ -100,12 +124,8 @@ export default function DataProvider(props: any) {
         getAsyncData('loggedInProfile').then(data => {
           if (data) setLoggedInProfile(data);
         });
-        getAsyncData('onboarding').then(data => {
-          if (data) {
-            setOnboarding(data);
-          } else {
-            setOnboarding(true);
-          }
+        getAsyncData('onboardingComplete').then(data => {
+          if (data) setOnboardingComplete(data);
         });
       } else {
         // Logging out, reset relevant states
@@ -150,6 +170,7 @@ export default function DataProvider(props: any) {
 
   // This function is used to store or remove an object value in the async storage on the device.
   async function setAsyncData(key: string, data: any[] | undefined) {
+    console.log('running setasyncdata');
     try {
       if (data !== undefined) {
         const jsonValue = JSON.stringify(data);
@@ -245,7 +266,8 @@ export default function DataProvider(props: any) {
         setRewards,
         loggedInProfile,
         setLoggedInProfile,
-        onboarding,
+        onboardingComplete,
+        setOnboardingComplete,
         retrieveFSData,
         setAsyncData,
         addDocToFS,

@@ -14,7 +14,7 @@ import { Text } from '../components/Text';
 import { useLogin } from '../util/auth';
 import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
-import SidebarMenu from './Menu/SidebarMenu';
+import SidebarMenu from './menu/SidebarMenu';
 import FormModal from './modals/FormModal';
 
 /* type roomProps = {
@@ -42,18 +42,18 @@ export default function RoomUI() {
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (
-      state
-      // case 'displayTask':
-      //   // setComponent(<DisplayTasksCategories />);
-      //   setText('Tasks');
-      //   break;
-      // case 'displayScoreboard':
-      //   setComponent(<Scoreboard />);
-      //   setText('Scoreboard');
-      //   break;
-      // default:
-      //   setComponent(undefined);
-      //   break;
+    state
+    // case 'displayTask':
+    //   // setComponent(<DisplayTasksCategories />);
+    //   setText('Tasks');
+    //   break;
+    // case 'displayScoreboard':
+    //   setComponent(<Scoreboard />);
+    //   setText('Scoreboard');
+    //   break;
+    // default:
+    //   setComponent(undefined);
+    //   break;
     ) {
     }
   }
