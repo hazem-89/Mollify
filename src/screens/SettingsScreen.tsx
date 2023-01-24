@@ -18,15 +18,17 @@ import { useNavigation } from '@react-navigation/native';
 import { Confirm } from '../components/ToDos/Confirm';
 import { useLogin } from '../util/auth';
 import FormModal from '../components/modals/FormModal';
+import RewardMainTitleBg from '../../assets/images/RewardMainTitleBg.png';
+import { useDimensions } from '@react-native-community/hooks';
 
 export default function DisplayMenusScreen() {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const navigation = useNavigation();
-  const [text, onChangeText] = React.useState('');
+  const dimensions = useDimensions();
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
-
+  const [smallScreen] = useState(dimensions.screen.height < 600);
   const { loggedInProfile, selectedChild } = useDataContext();
   const { currentUser } = useLogin();
   function handleUpdateClick(state: string | undefined) {
@@ -122,17 +124,31 @@ export default function DisplayMenusScreen() {
       alignItems: 'center',
       justifyContent: 'center',
     },
+    RewardMainTitleBg: {
+      width: smallScreen ? 0.25 * ScreenWidth : 0.3 * ScreenWidth,
+      height: 0.2 * ScreenHeight,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   });
 
   return (
     <>
       <Image source={DisplayTasksBackGround} style={styles.Background} />
       <SafeAreaView style={styles.SafeArea}>
-        {/* <View>{loggedInProfile.name}</View> */}
-        <View style={{ marginTop: 30 }}>
-          <Text type="rewardHeader">Settings</Text>
+        <View style={{ minWidth: smallScreen ? '20%' : '30%' }}>
+          <ImageBackground
+            source={RewardMainTitleBg}
+            style={styles.RewardMainTitleBg}
+          >
+            <View style={{ marginBottom: '10%' }}>
+              <Text type="header">Settings</Text>
+            </View>
+          </ImageBackground>
         </View>
-        <Text>{selectedChild.name} profile setting</Text>
+        <View style={{ marginTop: 30 }}>
+          <Text type="rewardHeader">{selectedChild.name}'s profile</Text>
+        </View>
         <View style={styles.GoBackButton}>
           <TouchableOpacity
             // @ts-ignore
