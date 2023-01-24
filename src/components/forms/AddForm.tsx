@@ -93,7 +93,14 @@ export const AddTodoForm = ({
   const [descriptionInputExample, setDescriptionInputExample] = useState('');
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
-  const { selectedChild, addDocToFS, updateFSDoc } = useDataContext();
+  const {
+    selectedChild,
+    addDocToFS,
+    updateFSDoc,
+    setTasks,
+    setRewards,
+    retrieveFSData,
+  } = useDataContext();
 
   const [state, setState] = useState<{
     title: string;
@@ -261,9 +268,13 @@ export const AddTodoForm = ({
         };
         addDocToFS('Tasks', newTodo);
         setPointsValue('');
-
-        Alert.alert('Success!');
+        Alert.alert('Task Added Successfully!');
         closeAdd();
+        retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       }
       if (ParentComponent === 'Tasks' && category === 'EditTask') {
         const updatedTodo = {
@@ -274,9 +285,13 @@ export const AddTodoForm = ({
         };
         updateFSDoc('Tasks', task?.id, updatedTodo);
         setPointsValue('');
-
         Alert.alert('update task Success!');
         closeAdd();
+        retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       }
       if (ParentComponent === 'Reward' && category === 'AddReward') {
         const newReward = {
@@ -285,12 +300,17 @@ export const AddTodoForm = ({
           endTime: endTime?.toString(),
           profileId: selectedChild.id,
           isDone: false,
+          ProfilePoints: selectedChild.points,
         };
         addDocToFS('Rewards', newReward);
         setPointsValue('');
-
-        Alert.alert('Add Success!');
+        Alert.alert('Reward Added Successfully!');
         closeAdd();
+        retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setRewards(data);
+          },
+        );
       }
       if (ParentComponent === 'Reward' && category === 'EditReward') {
         const updatedReward = {
@@ -301,9 +321,14 @@ export const AddTodoForm = ({
           isDone: reward?.isDone,
         };
         updateFSDoc('Rewards', reward?.id, updatedReward);
-        Alert.alert('update Success!');
-        closeAdd();
         setPointsValue('');
+        Alert.alert('Reward updated Successfully!');
+        closeAdd();
+        retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setRewards(data);
+          },
+        );
       }
     }
 
@@ -492,4 +517,3 @@ export const AddTodoForm = ({
     </View>
   );
 };
-

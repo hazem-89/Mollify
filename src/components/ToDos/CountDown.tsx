@@ -41,12 +41,11 @@ export function CountdownTimer({ date }: CounterProps) {
 
       // If the difference is less than or equal to 0, stop the countdown
       if (diff <= 0) {
-        console.log('Countdown complete!');
         setCountdown({
-          days: '0',
-          hours: '0',
-          minutes: '0',
-          seconds: '0',
+          days: '00',
+          hours: '00',
+          minutes: '00',
+          seconds: '00',
         });
         clearInterval(interval);
         return;
