@@ -15,6 +15,7 @@ import TigerAvatar from '../../../assets/images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
+import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
@@ -33,8 +34,23 @@ const SelectProfile = () => {
     setSelectedChild,
     setTasks,
     setRewards,
+    retrieveFSData,
+    setProfiles,
   } = useDataContext();
+  const { currentUser } = useLogin();
 
+  // useEffect(() => {
+  //   const fetchProfile = () => {
+  //     const test = retrieveFSData(
+  //       'profiles',
+  //       'mainUserId',
+  //       `${currentUser?.uid}`,
+  //     ).then((data: DocumentData[]) => {
+  //       data ? setProfiles(data) : setProfiles([]);
+  //     });
+  //   };
+  //   fetchProfile();
+  // }, []);
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
@@ -198,3 +214,4 @@ const SelectProfile = () => {
 };
 
 export default SelectProfile;
+

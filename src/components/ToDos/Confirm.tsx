@@ -3,6 +3,9 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { Text } from '../Text';
+import { useNavigation } from '@react-navigation/native';
+import { useLogin } from '../../util/auth';
+import { DocumentData } from 'firebase/firestore';
 
 type ConfirmProps = {
   text: string;
@@ -13,6 +16,8 @@ type ConfirmProps = {
   markTaskDone?: (a: string) => void;
   UpdateReqStatus?: (a: string) => void;
   rewardId?: string;
+  profileId?: string;
+  accountId?: string;
 };
 
 export const Confirm = ({
@@ -24,8 +29,12 @@ export const Confirm = ({
   UpdateReqStatus,
   funName,
   rewardId,
+  profileId,
+  accountId,
 }: ConfirmProps) => {
-  const { deleteDocFromFS } = useDataContext();
+  const { deleteDocFromFS, retrieveFSData, setProfiles } = useDataContext();
+  const navigation = useNavigation();
+  const { currentUser, logout, deleteAccount } = useLogin();
 
   const handleSubmit = () => {
     if (funName === 'delete' && taskId) {
@@ -40,6 +49,19 @@ export const Confirm = ({
       }
     } else if (funName === 'delete' && rewardId) {
       deleteDocFromFS('Rewards', rewardId);
+    } else if (funName === 'delete' && profileId) {
+      deleteDocFromFS('profiles', profileId);
+      retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
+        (data: DocumentData[]) => {
+          data ? setProfiles(data) : setProfiles(undefined);
+        },
+      ),
+        // @ts-ignore
+        navigation.navigate('StartScreen');
+    } else if (funName === 'delete' && accountId) {
+      deleteDocFromFS('users', accountId);
+      deleteAccount();
+      logout();
     }
     if (onClose) {
       onClose();
@@ -87,3 +109,4 @@ export const Confirm = ({
     </View>
   );
 };
+

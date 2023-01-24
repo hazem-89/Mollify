@@ -20,6 +20,13 @@ const DisplayMenusScreen = ({ route }: any) => {
       if (content === 'DisplayRewards') setComponent(<Scoreboard />);
       if (content === 'CreateProfile')
         setComponent(<CreateProfileForm profilesExist={!!profiles} />);
+      if (content === 'UpdateProfile')
+        setComponent(
+          <CreateProfileForm
+            profilesExist={!!profiles}
+            profile={route.params.paramKey.profile}
+          />,
+        );
     };
     test();
   }, []);
@@ -55,3 +62,4 @@ const DisplayMenusScreen = ({ route }: any) => {
 };
 
 export default DisplayMenusScreen;
+
