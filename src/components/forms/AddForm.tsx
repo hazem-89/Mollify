@@ -27,6 +27,7 @@ import InputBg from '../../../assets/images/InputBg.png';
 import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
 import Carousel from '../Carousel';
+import Toast from 'react-native-root-toast';
 
 const cleaningTodo = [
   {
@@ -275,7 +276,14 @@ export const AddTodoForm = ({
         };
         addDocToFS('Tasks', newTodo);
         setPointsValue('');
-        Alert.alert('Task Added Successfully!');
+        Toast.show('  Task added successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -292,7 +300,14 @@ export const AddTodoForm = ({
         };
         updateFSDoc('Tasks', task?.id, updatedTodo);
         setPointsValue('');
-        Alert.alert('update task Success!');
+        Toast.show('  Task is Updated.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -311,7 +326,14 @@ export const AddTodoForm = ({
         };
         addDocToFS('Rewards', newReward);
         setPointsValue('');
-        Alert.alert('Reward Added Successfully!');
+        Toast.show('  Reward Added Successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -329,7 +351,14 @@ export const AddTodoForm = ({
         };
         updateFSDoc('Rewards', reward?.id, updatedReward);
         setPointsValue('');
-        Alert.alert('Reward updated Successfully!');
+        Toast.show('  Reward updated Successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {

@@ -40,8 +40,10 @@ export const Confirm = ({
     setRewards,
     retrieveFSData,
     loggedInProfile,
+    setProfiles,
   } = useDataContext();
   const { currentUser, deleteAccount, logout } = useLogin();
+  const navigation = useNavigation();
 
   /**
    *  handel confirm delete and update fpr tasks, reward, profiles, and accounts
@@ -75,14 +77,6 @@ export const Confirm = ({
           hideOnPress: true,
           delay: 0,
         });
-        Toast.show('  Task updated successfully.  ', {
-          duration: Toast.durations.SHORT,
-          position: Toast.positions.TOP,
-          shadow: true,
-          animation: true,
-          hideOnPress: true,
-          delay: 10,
-        });
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
             if (data) setTasks(data);
@@ -99,7 +93,7 @@ export const Confirm = ({
           shadow: true,
           animation: true,
           hideOnPress: true,
-          delay: 10,
+          delay: 0,
         });
         retrieveFSData('Tasks', 'profileId', `${loggedInProfile?.id}`).then(
           (data: any) => {
@@ -121,9 +115,24 @@ export const Confirm = ({
         (data: any) => {
           data ? setRewards(data) : setRewards([]);
         },
-      ),
-        // @ts-ignore
-        navigation.navigate('StartScreen');
+      );
+    } else if (funName === 'delete' && profileId) {
+      deleteDocFromFS('profiles', profileId);
+      Toast.show('  This profile deleted successfully.  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
+      retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
+        (data: DocumentData) => {
+          data ? setProfiles(data) : setProfiles(undefined);
+        },
+      );
+      // @ts-ignore
+      navigation.navigate('StartScreen');
     } else if (funName === 'delete' && accountId) {
       deleteDocFromFS('users', accountId);
       deleteAccount();
