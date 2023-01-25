@@ -63,6 +63,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: 'rgba(136, 80, 0, 1)',
       textAlign: 'center',
+      marginBottom: 10,
     },
 
     Green: {
@@ -72,6 +73,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: '#0F6209',
       width: '100%',
       textAlign: 'center',
+      marginBottom: 10,
     },
     GreenForms: {
       fontSize: smallScreen ? 20 : 25,

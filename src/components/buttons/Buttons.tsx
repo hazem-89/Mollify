@@ -56,7 +56,7 @@ function Button({
     Green: {
       justifyContent: 'center',
       width: 0.3 * ScreenWidth,
-      height: smallScreen ? 0.16 * ScreenHeight : 0.14 * ScreenHeight,
+      height: smallScreen ? 0.2 * ScreenHeight : 0.16 * ScreenHeight,
       alignSelf: 'center',
     },
     GreenForms: {
@@ -76,7 +76,7 @@ function Button({
     Gold: {
       justifyContent: 'center',
       width: 0.25 * ScreenWidth,
-      height: smallScreen ? 0.18 * ScreenHeight : 0.15 * ScreenHeight,
+      height: smallScreen ? 0.17 * ScreenHeight : 0.14 * ScreenHeight,
       alignSelf: 'center',
       resizeMode: 'contain',
     },
