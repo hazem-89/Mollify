@@ -43,7 +43,7 @@ export const Confirm = ({
   const { currentUser, deleteAccount, logout } = useLogin();
 
   /**
-   *  handel confirm delete and update fpr both tasks and reward
+   *  handel confirm delete and update fpr tasks, reward, profiles, and accounts
    */
   const handleSubmit = () => {
     if (funName === 'delete' && taskId) {

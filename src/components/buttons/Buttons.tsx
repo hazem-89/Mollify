@@ -55,14 +55,14 @@ function Button({
   const styles = StyleSheet.create({
     Green: {
       justifyContent: 'center',
-      width: 0.29 * ScreenWidth,
-      height: smallScreen ? 0.17 * ScreenHeight : 0.15 * ScreenHeight,
+      width: 0.3 * ScreenWidth,
+      height: smallScreen ? 0.16 * ScreenHeight : 0.14 * ScreenHeight,
       alignSelf: 'center',
     },
     GreenForms: {
       justifyContent: 'center',
       width: 0.2 * ScreenWidth,
-      height: smallScreen ? 45 : 55,
+      height: smallScreen ? 0.11 * ScreenHeight : 0.09 * ScreenHeight,
       alignSelf: 'center',
       // marginTop: smallScreen ? 20 : 30,
     },
@@ -76,7 +76,7 @@ function Button({
     Gold: {
       justifyContent: 'center',
       width: 0.25 * ScreenWidth,
-      height: smallScreen ? 0.2 * ScreenHeight : 0.15 * ScreenHeight,
+      height: smallScreen ? 0.16 * ScreenHeight : 0.13 * ScreenHeight,
       alignSelf: 'center',
       resizeMode: 'contain',
     },
