@@ -53,7 +53,6 @@ const Scoreboard = () => {
     rewards,
     loggedInProfile,
     selectedChild,
-    updateFSDoc,
     setRewards,
     retrieveFSData,
   } = useDataContext();
@@ -276,7 +275,14 @@ const Scoreboard = () => {
             >
               {rewards?.map((reward: any, index: number) => {
                 const rewardPoints = +reward.points;
-                const percentageProgress = (profilePoints / rewardPoints) * 100;
+                const profileOldPoints = +reward.profilePoints;
+                const actualPoints = rewardPoints + profileOldPoints;
+                let percentageProgress =
+                  ((profilePoints - +reward.ProfilePoints) / rewardPoints) *
+                  100;
+                if (percentageProgress > 100) {
+                  percentageProgress = 100;
+                }
                 let imageSource;
                 if (percentageProgress > 20 && percentageProgress < 40) {
                   imageSource = Twenty;

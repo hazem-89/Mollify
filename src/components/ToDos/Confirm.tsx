@@ -32,20 +32,48 @@ export const Confirm = ({
   profileId,
   accountId,
 }: ConfirmProps) => {
-  const { deleteDocFromFS, retrieveFSData, setProfiles } = useDataContext();
-  const navigation = useNavigation();
-  const { currentUser, logout, deleteAccount } = useLogin();
+  const {
+    deleteDocFromFS,
+    selectedChild,
+    setTasks,
+    setRewards,
+    retrieveFSData,
+    loggedInProfile,
+    setProfiles,
+  } = useDataContext();
+  const { currentUser, deleteAccount, logout } = useLogin();
 
+  /**
+   *  handel confirm delete and update fpr both tasks and reward
+   */
   const handleSubmit = () => {
     if (funName === 'delete' && taskId) {
       deleteDocFromFS('Tasks', taskId);
+      retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+        (data: any) => {
+          if (data) setTasks(data);
+        },
+      );
+      // parent confirm if task is done task as done
     } else if (funName === 'updateTaskDone') {
       if (markTaskDone) {
         markTaskDone(funName);
+        deleteDocFromFS('Tasks', taskId);
+        retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       }
+      // chilled request when th task is done
     } else if (funName === 'updateRequest') {
       if (UpdateReqStatus) {
         UpdateReqStatus(funName);
+        retrieveFSData('Tasks', 'profileId', `${loggedInProfile?.id}`).then(
+          (data: any) => {
+            if (data) setTasks(data);
+          },
+        );
       }
     } else if (funName === 'delete' && rewardId) {
       deleteDocFromFS('Rewards', rewardId);
@@ -109,4 +137,3 @@ export const Confirm = ({
     </View>
   );
 };
-

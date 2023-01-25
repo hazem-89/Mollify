@@ -146,7 +146,7 @@ export default function DisplayMenusScreen() {
             </View>
           </ImageBackground>
         </View>
-        <View style={{ marginTop: 30 }}>
+        <View style={{ marginTop: 10 }}>
           <Text type="rewardHeader">{selectedChild.name}'s profile</Text>
         </View>
         <View style={styles.GoBackButton}>
@@ -200,4 +200,3 @@ export default function DisplayMenusScreen() {
     </>
   );
 }
-

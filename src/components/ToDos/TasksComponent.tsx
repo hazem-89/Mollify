@@ -25,7 +25,7 @@ type TasksCategoryPageProps = {
 };
 
 export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
-  const { tasks, loggedInProfile } = useDataContext();
+  const { tasks, loggedInProfile, selectedChild } = useDataContext();
   const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -51,8 +51,8 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       return 0;
     },
   );
-  const sortedTasks = dateSortedTask.sort((a: { hasRequest: any }) =>
-    a.hasRequest ? 1 : -1,
+  const sortedTasks = dateSortedTask.sort((a: { hasRequest: boolean }) =>
+    a.hasRequest && loggedInProfile ? 1 : -1,
   );
 
   function handleClick(state: string | undefined) {
@@ -85,10 +85,9 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
       height: 0.08 * ScreenWidth,
     },
     scrollView: {
-      marginTop: 0.12 * ScreenHeight,
-      width: '100%',
-      minHeight: ScreenHeight,
-      maxHeight: ScreenHeight,
+      marginTop: 0.17 * ScreenHeight,
+      width: 0.7 * ScreenWidth,
+      maxHeight: 0.71 * ScreenHeight,
     },
   });
   return (
@@ -99,8 +98,8 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
             <TouchableOpacity
               style={{
                 position: 'absolute',
-                top: smallScreen ? 120 : 160,
-                left: smallScreen ? -135 : -185,
+                top: 0.3 * ScreenHeight,
+                left: -0.18 * ScreenWidth,
               }}
               onPress={() => handleClick(category)}
             >
@@ -108,8 +107,8 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
                 source={CountDownGreenBg}
                 style={{
                   alignItems: 'center',
-                  width: smallScreen ? 130 : 180,
-                  height: smallScreen ? 80 : 110,
+                  width: 0.16 * ScreenWidth,
+                  height: 0.1 * ScreenWidth,
                   justifyContent: 'center',
                 }}
               >

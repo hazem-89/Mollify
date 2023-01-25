@@ -14,7 +14,7 @@ import { Text } from '../components/Text';
 import { useLogin } from '../util/auth';
 import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
-import SidebarMenu from './Menu/SidebarMenu';
+import SidebarMenu from './menu/SidebarMenu';
 import FormModal from './modals/FormModal';
 
 /* type roomProps = {
@@ -156,6 +156,7 @@ export default function RoomUI() {
       right: 0,
     },
     sidebar: {
+      // flex: 1,
       display: open ? 'flex' : 'none',
       position: 'relative',
     },
@@ -174,6 +175,11 @@ export default function RoomUI() {
           {!addTaskBtnClicked ? (
             <View>
               <View style={styles.imagesContainer}>
+                {open && (
+                  <View style={styles.sidebar}>
+                    <SidebarMenu />
+                  </View>
+                )}
                 <ImageBackground
                   source={woodSignLarge}
                   style={styles.woodLargeStyle}
@@ -225,9 +231,7 @@ export default function RoomUI() {
                   </View>
                 </ImageBackground>
               </View>
-              <View style={styles.sidebar}>
-                <SidebarMenu />
-              </View>
+
               {/* {open ? (
                 <View style={styles.arrowStyle}>
                   <Button
@@ -249,4 +253,3 @@ export default function RoomUI() {
     </>
   );
 }
-
