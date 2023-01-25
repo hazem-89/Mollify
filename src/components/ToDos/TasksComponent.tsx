@@ -1,5 +1,5 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -28,33 +28,45 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
   const { tasks, loggedInProfile, selectedChild } = useDataContext();
   const [selectedForm, setSelectedForm] = useState<ReactElement | undefined>();
   const dimensions = useDimensions();
+  const [sortedTasks, setSortedTasks] = useState<Tasks[]>();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
-  const categoryTasks = tasks?.filter(
-    (task: { category: string }) => task.category === category,
-  );
   const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
     string | undefined
   >();
-  const dateSortedTask = categoryTasks.sort(
-    (
-      task1: { endTime: string | number | Date },
-      task2: { endTime: string | number | Date },
-    ) => {
-      if (new Date(task1.endTime) > new Date(task2.endTime)) {
-        return -1;
-      }
-      if (new Date(task1.endTime) < new Date()) {
-        return -1;
-      }
-      return 0;
-    },
-  );
-  const sortedTasks = dateSortedTask.sort((a: { hasRequest: boolean }) =>
-    a.hasRequest && loggedInProfile ? 1 : -1,
-  );
 
+  const sortTasks = () => {
+    if (tasks.length > 0) {
+      const categoryTasks = tasks.filter(
+        (task: { category: string }) => task.category === category,
+      );
+
+      const dateSortedTask = categoryTasks.sort(
+        (
+          task1: { endTime: string | number | Date },
+          task2: { endTime: string | number | Date },
+        ) => {
+          if (new Date(task1.endTime) > new Date(task2.endTime)) {
+            return -1;
+          }
+          if (new Date(task1.endTime) < new Date()) {
+            return -1;
+          }
+          return 0;
+        },
+      );
+      const sortTasks = dateSortedTask.sort((a: { hasRequest: boolean }) =>
+        a.hasRequest && loggedInProfile ? 1 : -1,
+      );
+      setSortedTasks(sortTasks);
+    } else {
+      setSortedTasks([]);
+    }
+  };
+  useEffect(() => {
+    sortTasks();
+  }, [tasks]);
   function handleClick(state: string | undefined) {
     setSelectedForm(
       <AddTodoForm
@@ -155,7 +167,7 @@ export const TasksComponent = ({ category }: TasksCategoryPageProps) => {
               </View>
             </View>
 
-            {!categoryTasks.length && (
+            {sortedTasks && !sortedTasks.length && (
               <View
                 style={{
                   alignItems: 'center',

@@ -24,7 +24,7 @@ import PointsBg from '../../../assets/images/PointsBg.png';
 import PointsGreenBg from '../../../assets/images/PointsGreenBg.png';
 import TaskInReviewTextBg from '../../../assets/images/TaskInReviewTextBg.png';
 import TaskTextBg from '../../../assets/images/TaskTextBg.png';
-import { Confirm } from './Confirm';
+import { Confirm } from '../Confirm';
 import { CountdownTimer } from './CountDown';
 import { AddTodoForm } from '../forms/AddForm';
 
@@ -40,6 +40,7 @@ const TaskCard = ({ task }: Props) => {
     updateFSDoc,
     setTasks,
     setSelectedChild,
+    tasks,
   } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -339,7 +340,7 @@ const TaskCard = ({ task }: Props) => {
           </View>
         </>
       ) : (
-        <>{selectedForm}</>
+        <View style={{ position: 'absolute', top: -50 }}>selectedForm</View>
       )}
     </View>
   );

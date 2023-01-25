@@ -6,6 +6,7 @@ import {
   Image,
   ImageBackground,
   Dimensions,
+  ScrollView,
 } from 'react-native';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useDimensions } from '@react-native-community/hooks';
@@ -25,6 +26,8 @@ import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.
 import InputBg from '../../../assets/images/InputBg.png';
 import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
+import Carousel from '../Carousel';
+import Toast from 'react-native-root-toast';
 
 const cleaningTodo = [
   {
@@ -47,7 +50,7 @@ const cleaningTodo = [
   },
   {
     title: 'Watering Plants',
-    description: 'Not too much, not too little water',
+    description: 'Water the poor plants',
     img: laundryBasket,
     selected: false,
   },
@@ -124,7 +127,7 @@ export const AddTodoForm = ({
     switch (category) {
       case 'Special':
         setDescriptionInputExample(
-          'Enter a task: E.g. Baby site your baby brother for 20 min',
+          'Enter a task: E.g. Babysit your baby brother for 20 min',
         );
         break;
       case 'School':
@@ -174,55 +177,53 @@ export const AddTodoForm = ({
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     container: {
-      minHeight: smallScreen ? 300 : 500,
+      minHeight: 0.7 * ScreenHeight,
       flexDirection: 'row',
       justifyContent: 'center',
     },
     input: {
-      width: smallScreen ? 300 : 400,
+      width: 0.4 * ScreenWidth,
     },
     PointsInput: {
-      width: smallScreen ? 80 : 100,
+      width: 0.1 * ScreenWidth,
     },
     inputContainer: {
       alignItems: 'center',
-      marginTop: 40,
+      marginTop: 0.08 * ScreenHeight,
     },
     TimePointsContainer: {
       flexDirection: 'row',
       justifyContent: 'center',
-      marginVertical: smallScreen ? 15 : 30,
+      marginVertical: 0.05 * ScreenHeight,
     },
     TimePointView: {
-      width: smallScreen ? 150 : 200,
+      width: 0.25 * ScreenWidth,
       alignItems: 'center',
       justifyContent: 'center',
     },
     TasksContainer: {
-      width: smallScreen ? 120 : 140,
-      height: smallScreen ? 95 : 110,
+      width: 0.18 * ScreenWidth,
+      height: smallScreen ? 0.3 * ScreenHeight : 0.25 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: 500,
-      marginLeft: 20,
+      marginLeft: 0.02 * ScreenWidth,
     },
     icons: {
-      width: smallScreen ? 40 : 55,
-      minHeight: smallScreen ? 80 : 90,
-      maxHeight: smallScreen ? 65 : 120,
+      width: 0.05 * ScreenWidth,
+      height: 0.17 * ScreenHeight,
       marginRight: 10,
     },
     CleaningTasksInfo: {
-      maxWidth: smallScreen ? 150 : 200,
+      maxWidth: 0.2 * ScreenWidth,
       position: 'absolute',
-      left: smallScreen ? -220 : -280,
-      top: smallScreen ? 110 : 140,
+      left: -0.21 * ScreenWidth,
+      top: 0.25 * ScreenHeight,
     },
     OtherTasksInfo: {
-      maxWidth: smallScreen ? 150 : 200,
+      maxWidth: 0.2 * ScreenWidth,
       position: 'absolute',
-      left: smallScreen ? -250 : -280,
-      top: smallScreen ? 60 : 110,
+      left: -0.32 * ScreenWidth,
+      top: 0.15 * ScreenHeight,
     },
     InputBg: {
       width: smallScreen ? 350 : 500,
@@ -237,6 +238,13 @@ export const AddTodoForm = ({
       alignItems: 'center',
       borderRadius: 10,
       marginBottom: 0.02 * ScreenHeight,
+    },
+    taskDescription: {
+      marginVertical: smallScreen ? 10 : 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: smallScreen ? 300 : 400,
+      height: smallScreen ? 60 : 80,
     },
   });
 
@@ -268,7 +276,14 @@ export const AddTodoForm = ({
         };
         addDocToFS('Tasks', newTodo);
         setPointsValue('');
-        Alert.alert('Task Added Successfully!');
+        Toast.show('  Task added successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -285,7 +300,14 @@ export const AddTodoForm = ({
         };
         updateFSDoc('Tasks', task?.id, updatedTodo);
         setPointsValue('');
-        Alert.alert('update task Success!');
+        Toast.show('  Task is Updated.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -304,7 +326,14 @@ export const AddTodoForm = ({
         };
         addDocToFS('Rewards', newReward);
         setPointsValue('');
-        Alert.alert('Reward Added Successfully!');
+        Toast.show('  Reward Added Successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -322,7 +351,14 @@ export const AddTodoForm = ({
         };
         updateFSDoc('Rewards', reward?.id, updatedReward);
         setPointsValue('');
-        Alert.alert('Reward updated Successfully!');
+        Toast.show('  Reward updated Successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         closeAdd();
         retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
@@ -369,13 +405,18 @@ export const AddTodoForm = ({
                 Adding a task will automatically add an item to the room
               </Text> */}
             </View>
-            <View
+            <ScrollView
+              horizontal={true}
+              // style={{ width: 0.3 * ScreenWidth }}
+            ></ScrollView>
+            <ScrollView
+              horizontal={true}
               style={{
                 flexDirection: 'row',
-                width: smallScreen ? 300 : 500,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: smallScreen ? 20 : 30,
+                width: 0.7 * ScreenWidth,
+                // alignItems: 'center',
+                // justifyContent: 'center',
+                // marginTop: smallScreen ? 20 : 0,
               }}
             >
               {cleaningTodo?.map(todo => {
@@ -384,8 +425,8 @@ export const AddTodoForm = ({
                     key={todo.title}
                     style={{
                       minWidth: smallScreen ? 100 : 120,
-                      alignItems: 'center',
-                      justifyContent: 'center',
+                      // alignItems: 'center',
+                      // justifyContent: 'center',
                     }}
                   >
                     <TouchableOpacity onPress={() => handlePress(todo)}>
@@ -410,17 +451,11 @@ export const AddTodoForm = ({
                   </View>
                 );
               })}
-            </View>
+            </ScrollView>
             {state.description && (
               <ImageBackground
                 source={TaskTextBg}
-                style={{
-                  marginVertical: smallScreen ? 10 : 20,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: smallScreen ? 300 : 400,
-                  height: smallScreen ? 60 : 80,
-                }}
+                style={styles.taskDescription}
               >
                 <Text type="text">{state.description}</Text>
               </ImageBackground>
@@ -500,10 +535,10 @@ export const AddTodoForm = ({
         <View
           style={{
             flexDirection: 'row',
-            minWidth: smallScreen ? 350 : 450,
+            minWidth: 0.45 * ScreenWidth,
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginTop: category === 'Room' ? -15 : 10,
+            // marginTop: category === 'Room' ? -15 : 10,
           }}
         >
           <Button background="GreenForms" text="Add" onPress={() => submit()} />

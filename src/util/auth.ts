@@ -9,8 +9,8 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { auth, db } from '../../firebaseConfig';
+import Toast from 'react-native-root-toast';
 
 type ErrorType = {
   email?: string;
@@ -62,13 +62,12 @@ export const useLogin = () => {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
-      Alert.alert('login Success!', `Email: ${email}`);
     } else if (
       Object.keys(nextErrors).length === 0 &&
-      functionName === 'signUp'
+      functionName === 'signUp' &&
+      !errorMessage
     ) {
       signup(email, password);
-      Alert.alert('Sign up Success!', `Email: ${email}`);
     }
     if (Object.keys(nextErrors).length > 0) {
       return null;
@@ -86,10 +85,28 @@ export const useLogin = () => {
           }
           if (auth.currentUser && auth.currentUser.email) {
             addUserToDb(auth.currentUser.email, auth.currentUser.uid);
+            Toast.show('  You account was registered successfully  ', {
+              duration: Toast.durations.SHORT,
+              position: Toast.positions.TOP,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 10,
+            });
           }
         })
         .catch((error: any) => {
           console.log(error);
+          if (error.message.includes('auth/email-already-in-use')) {
+            Toast.show('You already have a account try login instead', {
+              duration: Toast.durations.LONG,
+              position: Toast.positions.CENTER,
+              shadow: true,
+              animation: true,
+              hideOnPress: true,
+              delay: 0,
+            });
+          }
         });
     } catch (error) {
       console.error(error);
@@ -99,11 +116,41 @@ export const useLogin = () => {
   const login = async (email: string, password: string) => {
     try {
       await signInWithEmailAndPassword(auth, email, password).catch(error => {
+        setErrors({});
         setErrorMessage(true);
-        console.log(error);
+
+        console.log('error', error.message);
+        if (error.message.includes('user-not-found')) {
+          Toast.show('Account not fount. Pleas check You email and try again', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
+        }
+        if (error.message.includes('auth/wrong-password')) {
+          Toast.show('Wrong password: Please double check your password', {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.CENTER,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            delay: 0,
+          });
+        }
       });
       if (auth.currentUser && !errorMessage) {
         setCurrentUser(auth.currentUser);
+        Toast.show('  You logged in successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 10,
+        });
       } else {
         setCurrentUser(undefined);
       }
@@ -116,6 +163,21 @@ export const useLogin = () => {
       console.error(error);
     });
   };
+
+  /** Delete firebase account */
+  function deleteAccount() {
+    var user = auth.currentUser;
+    user
+      ?.delete()
+      .then(function () {
+        // User deleted successfully
+        console.log('User deleted successfully');
+      })
+      .catch(function (error) {
+        // An error occurred
+        console.error('Error deleting user: ', error);
+      });
+  }
   return {
     submit,
     errors,
@@ -129,5 +191,6 @@ export const useLogin = () => {
     login,
     currentUser,
     logout,
+    deleteAccount,
   };
 };
