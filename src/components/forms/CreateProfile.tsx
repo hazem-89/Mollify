@@ -70,9 +70,7 @@ export const CreateProfileForm = ({
     avatar: '',
     room: '',
   });
-  console.log('====================================');
-  console.log('profile', profile);
-  console.log('====================================');
+
   useEffect(() => {
     if (!profilesExist) {
       setFirstTime(true);
@@ -260,11 +258,6 @@ export const CreateProfileForm = ({
                 }
                 data={avatars}
               />
-              {/* {errors.points && (
-              <View style={styles.errorsView}>
-                <Text type="errorText">{errors.points}</Text>
-              </View>
-            )} */}
               {profilesExist && (
                 <Carousel
                   title="Choose room"
@@ -334,4 +327,3 @@ export const CreateProfileForm = ({
     </View>
   );
 };
-
