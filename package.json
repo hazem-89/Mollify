@@ -44,7 +44,8 @@
     "react-native-screens": "~3.18.0",
     "react-native-timer-mixin": "^0.11.0",
     "react-native-uuid": "^2.0.1",
-    "react-native-web": "~0.18.7"
+    "react-native-web": "~0.18.7",
+    "uuid": "^7.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.19.3",
@@ -59,7 +60,7 @@
     "eslint-plugin-prettier": "^3.4.1",
     "jest-expo": "^47.0.0",
     "prettier": "^2.2.1",
-    "react-test-renderer": "^17.0.2",
+    "react-test-renderer": "^18.1.0",
     "ts-jest": "^27.0.7",
     "typescript": "^4.6.3"
   },
