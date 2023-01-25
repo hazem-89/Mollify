@@ -3,6 +3,15 @@ import { ImageSourcePropType } from 'react-native';
 
 /* Avatars */
 import TigerAvatar from '../../assets/images/Avatars/Avatar-Tiger.png';
+import DogAvatar from '../../assets/images/Avatars/dog.png';
+import CatAvatar from '../../assets/images/Avatars/cat.png';
+import FoxAvatar from '../../assets/images/Avatars/fox.png';
+import SharkAvatar from '../../assets/images/Avatars/shark.png';
+import BoyAvatar from '../../assets/images/Avatars/boy.png';
+import GirlAvatar from '../../assets/images/Avatars/girl.png';
+import RobotAvatar from '../../assets/images/Avatars/robot.png';
+import FossilAvatar from '../../assets/images/Avatars/fossil.png';
+import TrexAvatar from '../../assets/images/Avatars/trex.png';
 
 /* Rooms */
 import loftBedsRoom from '../../assets/images/rooms/loftBedsRoom.jpg';
@@ -40,40 +49,40 @@ export const avatars: assetInterface[] = [
     image: TigerAvatar,
   },
   {
-    id: 'Lion',
-    image: TigerAvatar,
+    id: 'Dog',
+    image: DogAvatar,
   },
   {
-    id: 'Gorilla',
-    image: TigerAvatar,
+    id: 'Cat',
+    image: CatAvatar,
   },
   {
-    id: 'Panda',
-    image: TigerAvatar,
+    id: 'Fox',
+    image: FoxAvatar,
   },
   {
-    id: 'Elephant',
-    image: TigerAvatar,
+    id: 'Shark',
+    image: SharkAvatar,
   },
   {
-    id: 'Giraffe',
-    image: TigerAvatar,
+    id: 'Boy',
+    image: BoyAvatar,
   },
   {
-    id: 'Zebra',
-    image: TigerAvatar,
+    id: 'Girl',
+    image: GirlAvatar,
   },
   {
-    id: 'Hippopotamus',
-    image: TigerAvatar,
+    id: 'Robot',
+    image: RobotAvatar,
   },
   {
-    id: 'Leopard',
-    image: TigerAvatar,
+    id: 'Fossil',
+    image: FossilAvatar,
   },
   {
-    id: 'Cheetah',
-    image: TigerAvatar,
+    id: 'Trex',
+    image: TrexAvatar,
   },
 ];
 
@@ -143,3 +152,4 @@ export const roomObjects: roomObjectsInterface[] = [
     disposalImg: dustpan,
   },
 ];
+
