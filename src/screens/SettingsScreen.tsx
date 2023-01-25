@@ -15,7 +15,7 @@ import { Text } from '../components/Text';
 import GoBackArrow from '../../assets/images/GoBackArrow.png';
 import { useDataContext } from '../util/context/DataContext';
 import { useNavigation } from '@react-navigation/native';
-import { Confirm } from '../components/ToDos/Confirm';
+import { Confirm } from '../components/Confirm';
 import { useLogin } from '../util/auth';
 import FormModal from '../components/modals/FormModal';
 import RewardMainTitleBg from '../../assets/images/RewardMainTitleBg.png';

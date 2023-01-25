@@ -9,8 +9,9 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, ToastAndroid } from 'react-native';
 import { auth, db } from '../../firebaseConfig';
+import Toast from 'react-native-root-toast';
 
 type ErrorType = {
   email?: string;
@@ -62,13 +63,27 @@ export const useLogin = () => {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length === 0 && functionName === 'login') {
       login(email, password);
-      Alert.alert('login Success!', `Email: ${email}`);
+      Toast.show('  You logged in successfully.  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 10,
+      });
     } else if (
       Object.keys(nextErrors).length === 0 &&
       functionName === 'signUp'
     ) {
-      signup(email, password);
-      Alert.alert('Sign up Success!', `Email: ${email}`);
+      // signup(email, password);
+      Toast.show('  You account was registered successfully  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 10,
+      });
     }
     if (Object.keys(nextErrors).length > 0) {
       return null;
@@ -120,14 +135,16 @@ export const useLogin = () => {
   /** Delete firebase account */
   function deleteAccount() {
     var user = auth.currentUser;
-  
-    user?.delete().then(function() {
-      // User deleted successfully
-      console.log("User deleted successfully");
-    }).catch(function(error) {
-      // An error occurred
-      console.error("Error deleting user: ", error);
-    });
+    user
+      ?.delete()
+      .then(function () {
+        // User deleted successfully
+        console.log('User deleted successfully');
+      })
+      .catch(function (error) {
+        // An error occurred
+        console.error('Error deleting user: ', error);
+      });
   }
   return {
     submit,
@@ -142,6 +159,6 @@ export const useLogin = () => {
     login,
     currentUser,
     logout,
-    deleteAccount
+    deleteAccount,
   };
 };

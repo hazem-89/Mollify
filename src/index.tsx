@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { Main } from './navigation/Main';
 import DataProvider from './util/context/DataContext';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 export default function App() {
   // Render the app
@@ -17,10 +18,11 @@ export default function App() {
       */}
       <NavigationContainer>
         <DataProvider>
-          <Main />
+          <RootSiblingParent>
+            <Main />
+          </RootSiblingParent>
         </DataProvider>
       </NavigationContainer>
     </>
   );
 }
-
