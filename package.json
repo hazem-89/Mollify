@@ -13,7 +13,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^1.17.11",
+    "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/datetimepicker": "6.5.2",
     "@react-native-community/hooks": "^2.8.1",
     "@react-native-firebase/auth": "^16.5.0",
@@ -23,8 +23,8 @@
     "@types/react-native": "~0.70.6",
     "@types/react-responsive": "^8.0.5",
     "expo": "^47.0.0",
-    "expo-app-loading": "^2.1.1",
-    "expo-font": "^11.0.1",
+    "expo-app-loading": "~2.1.1",
+    "expo-font": "~11.0.1",
     "expo-google-sign-in": "^11.0.0",
     "expo-image-manipulator": "~11.0.0",
     "expo-screen-orientation": "~5.0.1",
