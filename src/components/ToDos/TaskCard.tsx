@@ -339,7 +339,7 @@ const TaskCard = ({ task }: Props) => {
           </View>
         </>
       ) : (
-        <>{selectedForm}</>
+        <View style={{ position: 'absolute', top: -50 }}>selectedForm</View>
       )}
     </View>
   );
