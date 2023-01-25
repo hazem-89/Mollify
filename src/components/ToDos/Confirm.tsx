@@ -39,7 +39,6 @@ export const Confirm = ({
     setRewards,
     retrieveFSData,
     loggedInProfile,
-    setProfiles,
   } = useDataContext();
   const { currentUser, deleteAccount, logout } = useLogin();
 
@@ -51,7 +50,7 @@ export const Confirm = ({
       deleteDocFromFS('Tasks', taskId);
       retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
         (data: any) => {
-          if (data) setTasks(data);
+          data ? setTasks(data) : setTasks([]);
         },
       );
       // parent confirm if task is done task as done
@@ -77,11 +76,9 @@ export const Confirm = ({
       }
     } else if (funName === 'delete' && rewardId) {
       deleteDocFromFS('Rewards', rewardId);
-    } else if (funName === 'delete' && profileId) {
-      deleteDocFromFS('profiles', profileId);
-      retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
-        (data: DocumentData[]) => {
-          data ? setProfiles(data) : setProfiles(undefined);
+      retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+        (data: any) => {
+          data ? setRewards(data) : setRewards([]);
         },
       ),
         // @ts-ignore
