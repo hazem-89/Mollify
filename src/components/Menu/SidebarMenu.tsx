@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Image, Animated, Dimensions } from 'react-native';
-import sidebarBackground from '../../../assets/images/sidebarBackground.png';
+import { useDimensions } from '@react-native-community/hooks';
+import { useNavigation } from '@react-navigation/native';
+import React, { useRef, useState } from 'react';
+import { Animated, Dimensions, StyleSheet, View } from 'react-native';
+import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
 import Button from '../buttons/Buttons';
-import { Text } from '../../components/Text';
-import { useDimensions } from '@react-native-community/hooks';
-import SelectProfile from './SelectProfile';
-import { useNavigation } from '@react-navigation/native';
 
 const SidebarMenu = () => {
   const { logout } = useLogin();
@@ -60,7 +58,8 @@ const SidebarMenu = () => {
           <View style={styles.settingsAlign}>
             <Button
               background="ProfileIcon"
-              onPress={() => handelNav('StartScreen')}
+              // @ts-ignore
+              onPress={() => navigation.navigate('StartScreen')}
             />
             <Text type="Cancel">Change Profile</Text>
           </View>

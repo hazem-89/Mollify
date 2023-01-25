@@ -116,6 +116,19 @@ export const useLogin = () => {
       console.error(error);
     });
   };
+
+  /** Delete firebase account */
+  function deleteAccount() {
+    var user = auth.currentUser;
+  
+    user?.delete().then(function() {
+      // User deleted successfully
+      console.log("User deleted successfully");
+    }).catch(function(error) {
+      // An error occurred
+      console.error("Error deleting user: ", error);
+    });
+  }
   return {
     submit,
     errors,
@@ -129,5 +142,6 @@ export const useLogin = () => {
     login,
     currentUser,
     logout,
+    deleteAccount
   };
 };
