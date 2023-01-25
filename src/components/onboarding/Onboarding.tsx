@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  Dimensions,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import Close from '../../../assets/images/Close.png';
 import questionBtn from '../../../assets/images/questionBtn.png';
 import Tiger from '../../../assets/images/tiger-min.png';
@@ -88,10 +98,9 @@ export default function Onboarding({ guide }: OnboardingProps) {
       alignSelf: 'flex-end',
     },
     background: {
+      position: 'absolute',
       width: ScreenWidth,
       height: ScreenHeight,
-      top: -ScreenHeight,
-      position: 'absolute',
       backgroundColor: 'linear-gradient(to bottom right, rgba(0,0,0,0.7))',
     },
     disableAllView: {
@@ -128,22 +137,21 @@ export default function Onboarding({ guide }: OnboardingProps) {
   });
 
   /* Guides needed:
-    1. Roomscreen, drag and drop explanation (Child)
-    2. RoomScreen menu (Parent & child)
-    3. Tasks: add, remove and approve (Parent)
-    4. Rewards: add, remove and approve (Parent)
-    5. Tasks: mark as done (Child)
-    6. Rewards: Explain points etc.
-  */
+        1. Roomscreen, drag and drop explanation (Child)
+        2. RoomScreen menu (Parent & child)
+        3. Tasks: add, remove and approve (Parent)
+        4. Rewards: add, remove and approve (Parent)
+        5. Tasks: mark as done (Child)
+        6. Rewards: Explain points etc.
+    */
   return (
     <>
       {open ? (
-        <TouchableOpacity
-          onPress={() => handlePress()}
-          activeOpacity={1}
-          style={styles.background}
-        >
-          <View style={styles.infoView}>
+        <View style={styles.background}>
+          <TouchableWithoutFeedback
+            onPress={() => handlePress()}
+            style={styles.infoView}
+          >
             {guide === 'roomScreenChild' && (
               <View style={styles.twoChatBubbles}>
                 <ChatBubble orientation="left">
@@ -173,7 +181,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 <ChatBubble orientation="right">
                   <Text>Welcome to your childs room!</Text>
                   <Text>
-                    Here you can manage your child's tasks and rewards.
+                    {`Here you can manage your child's tasks and rewards.`}
                   </Text>
                 </ChatBubble>
               </View>
@@ -187,7 +195,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 />
                 <ChatBubble orientation="right">
                   <Text>This is the tasks screen</Text>
-                  <Text>Here you can manage your child's tasks.</Text>9
+                  <Text>{`Here you can manage your child's tasks.`}</Text>9
                 </ChatBubble>
               </View>
             )}
@@ -200,7 +208,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 />
                 <ChatBubble orientation="right">
                   <Text>This is the rewards screen</Text>
-                  <Text>Here you can manage your child's rewards.</Text>
+                  <Text>{`Here you can manage your child's rewards.`}</Text>
                 </ChatBubble>
               </View>
             )}
@@ -236,7 +244,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
               </View>
             )}
             {/* <Image style={styles.tiger} resizeMode="contain" source={Tiger} /> */}
-          </View>
+          </TouchableWithoutFeedback>
           <SafeAreaView style={styles.disableAllView}>
             <TouchableOpacity
               style={styles.button}
@@ -248,7 +256,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
               <Text>Disable all guides</Text>
             </View>
           </SafeAreaView>
-        </TouchableOpacity>
+        </View>
       ) : (
         <View style={styles.guideBtnView}>
           <TouchableOpacity style={styles.button} onPress={() => handleOpen()}>

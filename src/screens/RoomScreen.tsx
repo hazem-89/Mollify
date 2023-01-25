@@ -157,12 +157,12 @@ export default function RoomScreen() {
             )}
         </ScrollView>
         <Disposal imageFilter={disposalFilterProp} show={isDragging} />
-        {loggedInProfile && loggedInProfile.parent ? (
-          <Onboarding guide="roomScreenParent" />
-        ) : (
-          <Onboarding guide="roomScreenChild" />
-        )}
       </View>
+      {loggedInProfile && loggedInProfile.parent ? (
+        <Onboarding guide="roomScreenParent" />
+      ) : (
+        <Onboarding guide="roomScreenChild" />
+      )}
     </>
   );
 }
