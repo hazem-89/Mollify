@@ -1,39 +1,39 @@
 import { useDimensions } from '@react-native-community/hooks';
-import React, { ReactElement, useEffect, useMemo, useState } from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  ImageBackground,
-  Dimensions,
-} from 'react-native';
-import { useDataContext } from '../../util/context/DataContext';
-import { Text } from '../../components/Text';
-import RewardCard from './RewardCard';
-import { Rewards } from '../../Interfaces';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
-import { AddTodoForm } from '../forms/AddForm';
+import React, { createRef, ReactElement, useEffect, useState } from 'react';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { Text } from '../../components/Text';
+import { Rewards } from '../../Interfaces';
+import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
+import { AddTodoForm } from '../forms/AddForm';
 import FormModal from '../modals/FormModal';
 import { Confirm } from '../ToDos/Confirm';
-import { createRef } from 'react';
+import RewardCard from './RewardCard';
 // images
-import AddButtonImage from '../../../assets/images/AddButton.png';
-import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
-import GoBackArrow from '../../../assets/images/GoBackArrow.png';
-import AwardTitleBg from '../../../assets/images/AwardTitleBg.png';
-import Zero from '../../../assets/images/Zero.png';
-import Twenty from '../../../assets/images/Twenty.png';
-import Forty from '../../../assets/images/Forty.png';
-import Sixty from '../../../assets/images/Sixty.png';
-import Eighty from '../../../assets/images/Eighty.png';
-import FullScore from '../../../assets/images/FullScore.png';
-import TrophyBig from '../../../assets/images/TrophyBig.png';
-import ArrowDown from '../../../assets/images/ArrowDown.png';
 import ActiveViewIcon from '../../../assets/images/ActiveViewIcon.png';
+import AddButtonImage from '../../../assets/images/AddButton.png';
+import ArrowDown from '../../../assets/images/ArrowDown.png';
+import AwardTitleBg from '../../../assets/images/AwardTitleBg.png';
+import Eighty from '../../../assets/images/Eighty.png';
+import Forty from '../../../assets/images/Forty.png';
+import FullScore from '../../../assets/images/FullScore.png';
+import GoBackArrow from '../../../assets/images/GoBackArrow.png';
 import NotActiveViewIcon from '../../../assets/images/NotActiveViewIcon.png';
+import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
+import Sixty from '../../../assets/images/Sixty.png';
+import TrophyBig from '../../../assets/images/TrophyBig.png';
+import Twenty from '../../../assets/images/Twenty.png';
+import Zero from '../../../assets/images/Zero.png';
+import Onboarding from '../onboarding/Onboarding';
 
 const Scoreboard = () => {
   const navigation = useNavigation();
@@ -59,7 +59,7 @@ const Scoreboard = () => {
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
 
-  //Scroll to the selected reward
+  // Scroll to the selected reward
   const scrollViewRef = createRef<ScrollView>();
   const ITEM_HEIGHT = 0.9 * ScreenHeight;
   useEffect(() => {
@@ -249,223 +249,227 @@ const Scoreboard = () => {
     },
   });
   return (
-    <View style={styles.Container}>
-      {/* Display rewards section */}
-      {/* Screen Title View */}
-      {!addRewardBtnClicked ? (
-        <>
-          <View style={styles.HederView}>
-            <View style={styles.TitleView}>
-              <Image source={TrophyBig} style={styles.TrophyBigStyleLeft} />
+    <>
+      <View style={styles.Container}>
+        {/* Display rewards section */}
+        {/* Screen Title View */}
+        {!addRewardBtnClicked ? (
+          <>
+            <View style={styles.HederView}>
+              <View style={styles.TitleView}>
+                <Image source={TrophyBig} style={styles.TrophyBigStyleLeft} />
+              </View>
+              <View style={{ minWidth: smallScreen ? '20%' : '30%' }}>
+                <ImageBackground
+                  source={RewardMainTitleBg}
+                  style={styles.RewardMainTitleBg}
+                >
+                  <View style={{ marginBottom: '10%' }}>
+                    <Text type="header">Rewards</Text>
+                  </View>
+                </ImageBackground>
+              </View>
+              <View style={styles.TitleView}>
+                <Image source={TrophyBig} style={styles.TrophyBigStyleRight} />
+              </View>
             </View>
-            <View style={{ minWidth: smallScreen ? '20%' : '30%' }}>
-              <ImageBackground
-                source={RewardMainTitleBg}
-                style={styles.RewardMainTitleBg}
+            {/* display rewards and rewards <details></details> */}
+            <View style={styles.RewardsBody}>
+              <ScrollView
+                style={styles.RewardsScrollView}
+                horizontal={false}
+                ref={scrollViewRef}
               >
-                <View style={{ marginBottom: '10%' }}>
-                  <Text type="header">Rewards</Text>
-                </View>
-              </ImageBackground>
-            </View>
-            <View style={styles.TitleView}>
-              <Image source={TrophyBig} style={styles.TrophyBigStyleRight} />
-            </View>
-          </View>
-          {/* display rewards and rewards <details></details> */}
-          <View style={styles.RewardsBody}>
-            <ScrollView
-              style={styles.RewardsScrollView}
-              horizontal={false}
-              ref={scrollViewRef}
-            >
-              {rewards?.map((reward: any, index: number) => {
-                const rewardPoints = +reward.points;
-                let percentageProgress =
-                  ((profilePoints - +reward.ProfilePoints) / rewardPoints) *
-                  100;
-                if (percentageProgress > 100) {
-                  percentageProgress = 100;
-                }
-                let imageSource;
-                if (percentageProgress > 20 && percentageProgress < 40) {
-                  imageSource = Twenty;
-                } else if (
-                  percentageProgress >= 40 &&
-                  percentageProgress < 60
-                ) {
-                  imageSource = Forty;
-                } else if (
-                  percentageProgress >= 60 &&
-                  percentageProgress < 80
-                ) {
-                  imageSource = Sixty;
-                } else if (
-                  percentageProgress >= 80 &&
-                  percentageProgress < 100
-                ) {
-                  imageSource = Eighty;
-                } else if (percentageProgress >= 100) {
-                  imageSource = FullScore;
-                } else if (percentageProgress <= 10) {
-                  imageSource = Zero;
-                }
+                {rewards?.map((reward: any, index: number) => {
+                  const rewardPoints = +reward.points;
+                  let percentageProgress =
+                    ((profilePoints - +reward.ProfilePoints) / rewardPoints) *
+                    100;
+                  if (percentageProgress > 100) {
+                    percentageProgress = 100;
+                  }
+                  let imageSource;
+                  if (percentageProgress > 20 && percentageProgress < 40) {
+                    imageSource = Twenty;
+                  } else if (
+                    percentageProgress >= 40 &&
+                    percentageProgress < 60
+                  ) {
+                    imageSource = Forty;
+                  } else if (
+                    percentageProgress >= 60 &&
+                    percentageProgress < 80
+                  ) {
+                    imageSource = Sixty;
+                  } else if (
+                    percentageProgress >= 80 &&
+                    percentageProgress < 100
+                  ) {
+                    imageSource = Eighty;
+                  } else if (percentageProgress >= 100) {
+                    imageSource = FullScore;
+                  } else if (percentageProgress <= 10) {
+                    imageSource = Zero;
+                  }
 
-                return (
-                  <View
-                    style={{
-                      position: 'relative',
-                      height:
-                        selectedChild && text && text === reward.title
-                          ? 0.38 * ScreenHeight
-                          : 0.3 * ScreenHeight,
-                    }}
-                    key={reward.id}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        setSelectedItem(index);
-                        setText(
-                          text && text === reward.title
-                            ? undefined
-                            : reward.title,
-                        );
-                        setSelectedReward(reward);
-                      }}
-                      key={reward.id}
+                  return (
+                    <View
                       style={{
                         position: 'relative',
-                        marginBottom: 0.05 * ScreenHeight,
+                        height:
+                          selectedChild && text && text === reward.title
+                            ? 0.38 * ScreenHeight
+                            : 0.3 * ScreenHeight,
                       }}
+                      key={reward.id}
                     >
-                      <ImageBackground
-                        source={AwardTitleBg}
-                        style={styles.RewardButtonBg}
-                      >
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            marginTop: 0.055 * ScreenHeight,
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            width: '70%',
-                            marginLeft: 0.04 * ScreenWidth,
-                          }}
-                        >
-                          <Text type="text">{reward.title}</Text>
-                          <Text>{Math.trunc(percentageProgress)}%</Text>
-                        </View>
-                      </ImageBackground>
-                      <Image
-                        source={imageSource}
-                        style={styles.ProgressBar}
-                      ></Image>
-                      <View
+                      <TouchableOpacity
+                        onPress={() => {
+                          setSelectedItem(index);
+                          setText(
+                            text && text === reward.title
+                              ? undefined
+                              : reward.title,
+                          );
+                          setSelectedReward(reward);
+                        }}
+                        key={reward.id}
                         style={{
-                          position: 'absolute',
-                          left: '0%',
-                          top: '0%',
+                          position: 'relative',
+                          marginBottom: 0.05 * ScreenHeight,
                         }}
                       >
-                        <Image
-                          source={
-                            text && text === reward.title
-                              ? ActiveViewIcon
-                              : NotActiveViewIcon
-                          }
+                        <ImageBackground
+                          source={AwardTitleBg}
+                          style={styles.RewardButtonBg}
+                        >
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              marginTop: 0.055 * ScreenHeight,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              width: '70%',
+                              marginLeft: 0.04 * ScreenWidth,
+                            }}
+                          >
+                            <Text type="text">{reward.title}</Text>
+                            <Text>{Math.trunc(percentageProgress)}%</Text>
+                          </View>
+                        </ImageBackground>
+                        <Image source={imageSource} style={styles.ProgressBar} />
+                        <View
                           style={{
-                            width: 0.036 * ScreenWidth,
-                            height: 0.07 * ScreenHeight,
+                            position: 'absolute',
+                            left: '0%',
+                            top: '0%',
                           }}
-                        ></Image>
-                      </View>
-                    </TouchableOpacity>
-                    {text && text === reward.title && selectedChild && (
-                      <View style={styles.buttonsView}>
-                        <Button
-                          background="DeleteTask"
-                          onPress={() => handleFormClick('confirm', reward.id)}
-                        />
-                        <Button
-                          background="EditButton"
-                          onPress={() => handleClick(true, 'edit', reward)}
-                        />
-                      </View>
-                    )}
-                  </View>
-                );
-              })}
-            </ScrollView>
-            {/* Reward details View */}
-            {selectedReward && text && (
+                        >
+                          <Image
+                            source={
+                              text && text === reward.title
+                                ? ActiveViewIcon
+                                : NotActiveViewIcon
+                            }
+                            style={{
+                              width: 0.036 * ScreenWidth,
+                              height: 0.07 * ScreenHeight,
+                            }}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                      {text && text === reward.title && selectedChild && (
+                        <View style={styles.buttonsView}>
+                          <Button
+                            background="DeleteTask"
+                            onPress={() => handleFormClick('confirm', reward.id)}
+                          />
+                          <Button
+                            background="EditButton"
+                            onPress={() => handleClick(true, 'edit', reward)}
+                          />
+                        </View>
+                      )}
+                    </View>
+                  );
+                })}
+              </ScrollView>
+              {/* Reward details View */}
+              {selectedReward && text && (
+                <>
+                  <RewardCard reward={selectedReward} />
+                </>
+              )}
+            </View>
+            {/* Position absolute Views  */}
+            <View
+              style={{
+                position: 'absolute',
+                left: '10%',
+                top: smallScreen ? '10%' : '15%',
+              }}
+            >
+              <Image source={ArrowDown} />
+            </View>
+            {/* Parent's buttons View */}
+            {loggedInProfile && loggedInProfile.parent && (
               <>
-                <RewardCard reward={selectedReward} />
+                <TouchableOpacity
+                  style={{
+                    position: 'absolute',
+                    bottom: 0.05 * ScreenHeight,
+                    left: 0.07 * ScreenHeight,
+                  }}
+                  onPress={() => handleClick(true, 'add')}
+                >
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: 10,
+                    }}
+                  >
+                    <Image
+                      source={AddButtonImage}
+                      style={{
+                        width: smallScreen ? 40 : 50,
+                        height: smallScreen ? 40 : 50,
+                      }}
+                    />
+                    <Text type="rewardDetails"> Add A Reward</Text>
+                  </View>
+                </TouchableOpacity>
               </>
             )}
-          </View>
-          {/* Position absolute Views  */}
-          <View
-            style={{
-              position: 'absolute',
-              left: '10%',
-              top: smallScreen ? '10%' : '15%',
-            }}
-          >
-            <Image source={ArrowDown}></Image>
-          </View>
-          {/* Parent's buttons View */}
-          {loggedInProfile && loggedInProfile.parent && (
-            <>
-              <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  bottom: 0.05 * ScreenHeight,
-                  left: 0.07 * ScreenHeight,
-                }}
-                onPress={() => handleClick(true, 'add')}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: 10,
-                  }}
+            <View style={styles.GoBackButton}>
+              <TouchableOpacity onPress={() => handelNav('Room')}>
+                <ImageBackground
+                  source={GoBackArrow}
+                  style={styles.GoBackToRoomImageStyle}
                 >
-                  <Image
-                    source={AddButtonImage}
-                    style={{
-                      width: smallScreen ? 40 : 50,
-                      height: smallScreen ? 40 : 50,
-                    }}
-                  />
-                  <Text type="rewardDetails"> Add A Reward</Text>
-                </View>
+                  <View style={{ marginRight: '25%' }}>
+                    <Text type="header">Room</Text>
+                  </View>
+                </ImageBackground>
               </TouchableOpacity>
-            </>
-          )}
-          <View style={styles.GoBackButton}>
-            <TouchableOpacity onPress={() => handelNav('Room')}>
-              <ImageBackground
-                source={GoBackArrow}
-                style={styles.GoBackToRoomImageStyle}
-              >
-                <View style={{ marginRight: '25%' }}>
-                  <Text type="header">Room</Text>
-                </View>
-              </ImageBackground>
-            </TouchableOpacity>
-          </View>
-        </>
-      ) : (
-        <>{selectedForm}</>
-      )}
-      <FormModal
-        component={component}
-        onEmit={() => handleFormClick(undefined)}
+            </View>
+          </>
+        ) : (
+          <>{selectedForm}</>
+        )}
+        <FormModal
+          component={component}
+          onEmit={() => handleFormClick(undefined)}
         // text="confirm"
-      />
-    </View>
+        />
+      </View>
+      {loggedInProfile && loggedInProfile.parent ? (
+        <Onboarding guide="rewardScreenParent" />
+      ) : (
+        <Onboarding guide="rewardScreenChild" />
+      )}
+    </>
   );
 };
 

@@ -20,6 +20,7 @@ import TodoButtonImage from '../../../assets/images/todo.png';
 import { Text } from '../../components/Text';
 import { Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
+import Onboarding from '../onboarding/Onboarding';
 import { TasksComponent } from './TasksComponent';
 
 const tasksCategories = [
@@ -277,6 +278,11 @@ export const DisplayTasksCategories = () => {
               </ImageBackground>
             </TouchableOpacity>
           </View>
+          {loggedInProfile && loggedInProfile.parent ? (
+            <Onboarding guide="taskScreenParent" />
+          ) : (
+            <Onboarding guide="taskScreenChild" />
+          )}
         </>
       )}
     </View>

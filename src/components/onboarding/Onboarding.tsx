@@ -129,11 +129,6 @@ export default function Onboarding({ guide }: OnboardingProps) {
       width: ScreenWidth,
       height: ScreenHeight,
     },
-    // roomScreenParent: {},
-    // taskScreenParent: {},
-    // rewardScreenParent: {},
-    // taskScreenChild: {},
-    // rewardScreenChild: {},
   });
 
   /* Guides needed:
@@ -194,7 +189,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                   source={Tiger}
                 />
                 <ChatBubble orientation="right">
-                  <Text>This is the tasks screen</Text>
+                  <Text>This is the tasks screen.</Text>
                   <Text>{`Here you can manage your child's tasks.`}</Text>9
                 </ChatBubble>
               </View>
@@ -207,7 +202,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                   source={Tiger}
                 />
                 <ChatBubble orientation="right">
-                  <Text>This is the rewards screen</Text>
+                  <Text>This is the rewards screen.</Text>
                   <Text>{`Here you can manage your child's rewards.`}</Text>
                 </ChatBubble>
               </View>
@@ -220,9 +215,9 @@ export default function Onboarding({ guide }: OnboardingProps) {
                   source={Tiger}
                 />
                 <ChatBubble orientation="right">
-                  <Text>This is the tasks screen</Text>
+                  <Text>This is the tasks screen.</Text>
                   <Text>
-                    Here you can view your active tasks and set them as done.
+                    Here you can view your active tasks and mark them as done.
                   </Text>
                 </ChatBubble>
               </View>
@@ -235,15 +230,14 @@ export default function Onboarding({ guide }: OnboardingProps) {
                   source={Tiger}
                 />
                 <ChatBubble orientation="right">
-                  <Text>This is the rewards screen</Text>
+                  <Text>This is the rewards screen.</Text>
                   <Text>
-                    Here you can view your active rewards and see how many close
-                    you are to achieving them.
+                    Here you can view your active rewards and see how close you
+                    are to achieving them.
                   </Text>
                 </ChatBubble>
               </View>
             )}
-            {/* <Image style={styles.tiger} resizeMode="contain" source={Tiger} /> */}
           </TouchableWithoutFeedback>
           <SafeAreaView style={styles.disableAllView}>
             <TouchableOpacity
