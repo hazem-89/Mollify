@@ -1,6 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { useEffect, useState } from 'react';
 import {
+  Dimensions,
   ImageBackground,
   ImageSourcePropType,
   StyleSheet,
@@ -49,18 +50,19 @@ function Button({
     undefined,
   );
   const [style, setStyle] = useState<Object>({});
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     Green: {
       justifyContent: 'center',
-      width: smallScreen ? 200 : 270,
-      height: smallScreen ? 50 : 70,
+      width: 0.29 * ScreenWidth,
+      height: smallScreen ? 0.17 * ScreenHeight : 0.15 * ScreenHeight,
       alignSelf: 'center',
     },
     GreenForms: {
       justifyContent: 'center',
-      width: smallScreen ? 150 : 200,
-      height: smallScreen ? 40 : 55,
+      width: 0.2 * ScreenWidth,
+      height: smallScreen ? 45 : 55,
       alignSelf: 'center',
       // marginTop: smallScreen ? 20 : 30,
     },
@@ -73,8 +75,8 @@ function Button({
     },
     Gold: {
       justifyContent: 'center',
-      width: smallScreen ? 150 : 200,
-      height: smallScreen ? 45 : 55,
+      width: 0.25 * ScreenWidth,
+      height: smallScreen ? 0.2 * ScreenHeight : 0.15 * ScreenHeight,
       alignSelf: 'center',
       resizeMode: 'contain',
     },
@@ -224,4 +226,3 @@ function Button({
 }
 
 export default Button;
-

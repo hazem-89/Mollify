@@ -2,6 +2,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { ReactElement, useState } from 'react';
 import {
+  Dimensions,
   Image,
   ImageBackground,
   SafeAreaView,
@@ -50,21 +51,22 @@ export default function StartScreen() {
       // };
     }, []),
   );
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     WelcomeSign: {
       justifyContent: 'center',
       alignSelf: 'center',
-      width: smallScreen ? 350 : 450,
-      height: smallScreen ? 100 : 140,
-      top: smallScreen ? 10 : 20,
-      marginBottom: 10,
+      width: 0.5 * ScreenWidth,
+      height: 0.25 * ScreenHeight,
+      top: 0.03 * ScreenHeight,
+      marginBottom: 0.02 * ScreenHeight,
       zIndex: 5,
     },
     Background: {
       position: 'relative',
-      width: '100%',
-      height: '100%',
+      width: ScreenWidth,
+      height: ScreenHeight,
     },
     tiger: {
       position: 'absolute',
@@ -128,7 +130,8 @@ export default function StartScreen() {
                 text="Sign in"
                 onPress={() => handleClick('Login')}
               />
-              {btnClicked !== 'GoogleSignIn' ? (
+              {/* did not delete maybe we re use it soon */}
+              {/* {btnClicked !== 'GoogleSignIn' ? (
                 <Button
                   disable={!!btnClicked}
                   background="Google"
@@ -141,7 +144,7 @@ export default function StartScreen() {
                   background="GoogleButtonBroken"
                   onPress={() => handleClick(undefined)}
                 />
-              )}
+              )} */}
               <Text type="bold">OR</Text>
               <Button
                 disable={!!btnClicked}

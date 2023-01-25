@@ -27,12 +27,14 @@ interface Profiles {
   avatar: string;
   room: string;
   points: string;
+  id?: string;
 }
 
 type CreateProfileProps = {
   // Text maybe for future cases when the modal has a badge for a title. Might not use this tho.
   profilesExist: boolean;
   onClose?: () => void;
+  profile?: Profiles;
 };
 type ErrorType = {
   name?: string;
@@ -42,6 +44,7 @@ type ErrorType = {
 };
 export const CreateProfileForm = ({
   profilesExist,
+  profile,
   onClose,
 }: CreateProfileProps) => {
   // const dimensions = useDimensions();
@@ -54,19 +57,36 @@ export const CreateProfileForm = ({
   const ScreenHeight = Dimensions.get('window').height;
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const navigation = useNavigation();
-  const { retrieveFSData, setProfiles, addDocToFS } = useDataContext();
+  const {
+    retrieveFSData,
+    setProfiles,
+    addDocToFS,
+    updateFSDoc,
+    setSelectedChild,
+  } = useDataContext();
   const [state, setState] = useState({
     name: '',
     pin: '',
     avatar: '',
     room: '',
   });
-
+  console.log('====================================');
+  console.log('profile', profile);
+  console.log('====================================');
   useEffect(() => {
     if (!profilesExist) {
       setFirstTime(true);
     } else {
       setFirstTime(false);
+    }
+    if (profile) {
+      setState({
+        ...state,
+        name: profile.name,
+        pin: profile.pin,
+        avatar: profile.avatar,
+        room: profile.room,
+      });
     }
   }, []);
 
@@ -86,8 +106,13 @@ export const CreateProfileForm = ({
       nextErrors.room = 'Please select a rom.';
     }
     setErrors(nextErrors);
+
     if (Object.keys(nextErrors).length === 0) {
-      addProfileToUser();
+      if (!profile) {
+        addProfileToUser();
+      } else {
+        updateProfile();
+      }
       navigation.goBack();
     }
     if (Object.keys(nextErrors).length > 0) {
@@ -95,7 +120,21 @@ export const CreateProfileForm = ({
     }
     return null;
   };
-
+  const updateProfile = () => {
+    if (profile) {
+      const updatedProfile: Profiles = {
+        name: state.name,
+        pin: state.pin,
+        avatar: state.avatar,
+        room: state.room,
+        mainUserId: profile.mainUserId,
+        points: profile.points,
+        id: profile.id,
+      };
+      updateFSDoc('profiles', profile.id, updatedProfile);
+      setSelectedChild(updatedProfile);
+    }
+  };
   const addProfileToUser = async () => {
     const newProfile: Profiles = {
       name: state.name,
@@ -109,15 +148,15 @@ export const CreateProfileForm = ({
       (profilesExist
         ? addDocToFS('profiles', newProfile)
         : addDocToFS('profiles', {
-          ...newProfile,
-          room: null,
-          parent: true,
-          points: null,
-        })
+            ...newProfile,
+            room: null,
+            parent: true,
+            points: null,
+          })
       ).then(
         retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
           (data: DocumentData[]) => {
-            if (data) setProfiles(data);
+            data && setProfiles(data);
           },
         ),
       );
@@ -245,11 +284,11 @@ export const CreateProfileForm = ({
               >
                 <Button
                   background="GreenForms"
-                  text="Add profile"
+                  text={!profile ? 'Add profile' : 'Update profile '}
                   onPress={handleSubmit}
-                // disable={
-                //   !state.name || !state.avatar || !state.pin || !state.room
-                // }
+                  // disable={
+                  //   !state.name || !state.avatar || !state.pin || !state.room
+                  // }
                 />
                 <Button
                   background="Cancel"
@@ -295,3 +334,4 @@ export const CreateProfileForm = ({
     </View>
   );
 };
+

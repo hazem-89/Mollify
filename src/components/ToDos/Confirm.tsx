@@ -1,10 +1,11 @@
-import { DocumentData } from 'firebase/firestore';
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { Text } from '../Text';
+import { useNavigation } from '@react-navigation/native';
+import { useLogin } from '../../util/auth';
+import { DocumentData } from 'firebase/firestore';
 
 type ConfirmProps = {
   text: string;
@@ -15,6 +16,8 @@ type ConfirmProps = {
   markTaskDone?: (a: string) => void;
   UpdateReqStatus?: (a: string) => void;
   rewardId?: string;
+  profileId?: string;
+  accountId?: string;
 };
 
 export const Confirm = ({
@@ -26,6 +29,8 @@ export const Confirm = ({
   UpdateReqStatus,
   funName,
   rewardId,
+  profileId,
+  accountId,
 }: ConfirmProps) => {
   const {
     deleteDocFromFS,
@@ -34,9 +39,8 @@ export const Confirm = ({
     setRewards,
     retrieveFSData,
     loggedInProfile,
-    setProfiles,
   } = useDataContext();
-  const { currentUser } = useLogin();
+  const { currentUser, deleteAccount, logout } = useLogin();
 
   /**
    *  handel confirm delete and update fpr both tasks and reward
@@ -46,7 +50,7 @@ export const Confirm = ({
       deleteDocFromFS('Tasks', taskId);
       retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
         (data: any) => {
-          if (data) setTasks(data);
+          data ? setTasks(data) : setTasks([]);
         },
       );
       // parent confirm if task is done task as done
@@ -74,9 +78,15 @@ export const Confirm = ({
       deleteDocFromFS('Rewards', rewardId);
       retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
         (data: any) => {
-          if (data) setRewards(data);
+          data ? setRewards(data) : setRewards([]);
         },
-      );
+      ),
+        // @ts-ignore
+        navigation.navigate('StartScreen');
+    } else if (funName === 'delete' && accountId) {
+      deleteDocFromFS('users', accountId);
+      deleteAccount();
+      logout();
     }
     if (onClose) {
       onClose();

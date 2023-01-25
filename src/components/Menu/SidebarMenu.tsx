@@ -58,7 +58,8 @@ const SidebarMenu = () => {
           <View style={styles.settingsAlign}>
             <Button
               background="ProfileIcon"
-              onPress={() => handelNav('StartScreen')}
+              // @ts-ignore
+              onPress={() => navigation.navigate('StartScreen')}
             />
             <Text type="Cancel">Change Profile</Text>
           </View>

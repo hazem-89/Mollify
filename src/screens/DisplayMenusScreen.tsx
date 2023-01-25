@@ -1,17 +1,11 @@
 import React, { ReactElement, useEffect, useState } from 'react';
-import {
-  Dimensions,
-  ImageBackground,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Image,
-} from 'react-native';
+import { Dimensions, Image, SafeAreaView, StyleSheet } from 'react-native';
 import DisplayTasksBackGround from '../../assets/images/DisplayTasksBackGround.png';
+import { CreateProfileForm } from '../components/forms/CreateProfile';
 import Scoreboard from '../components/Scoreboard/Scoreboard';
 import { DisplayTasksCategories } from '../components/ToDos/DisplayTasksCategories';
-import { CreateProfileForm } from '../components/forms/CreateProfile';
 import { useDataContext } from '../util/context/DataContext';
+
 const DisplayMenusScreen = ({ route }: any) => {
   const [component, setComponent] = useState<ReactElement>();
 
@@ -22,10 +16,17 @@ const DisplayMenusScreen = ({ route }: any) => {
 
   useEffect(() => {
     const test = () => {
-      content === 'DisplayTasks' && setComponent(<DisplayTasksCategories />);
-      content === 'DisplayRewards' && setComponent(<Scoreboard />);
-      content === 'CreateProfile' &&
+      if (content === 'DisplayTasks') setComponent(<DisplayTasksCategories />);
+      if (content === 'DisplayRewards') setComponent(<Scoreboard />);
+      if (content === 'CreateProfile')
         setComponent(<CreateProfileForm profilesExist={!!profiles} />);
+      if (content === 'UpdateProfile')
+        setComponent(
+          <CreateProfileForm
+            profilesExist={!!profiles}
+            profile={route.params.paramKey.profile}
+          />,
+        );
     };
     test();
   }, []);
@@ -61,3 +62,4 @@ const DisplayMenusScreen = ({ route }: any) => {
 };
 
 export default DisplayMenusScreen;
+

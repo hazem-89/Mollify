@@ -40,6 +40,7 @@ const TaskCard = ({ task }: Props) => {
     updateFSDoc,
     setTasks,
     setSelectedChild,
+    tasks,
   } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -339,7 +340,7 @@ const TaskCard = ({ task }: Props) => {
           </View>
         </>
       ) : (
-        <>{selectedForm}</>
+        <View style={{ position: 'absolute', top: -50 }}>selectedForm</View>
       )}
     </View>
   );
