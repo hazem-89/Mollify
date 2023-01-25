@@ -7,6 +7,7 @@ import {
   ImageBackground,
   SafeAreaView,
   StyleSheet,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import MainBackGround from '../../assets/images/MainBackGround.png';
@@ -16,6 +17,7 @@ import Button from '../components/buttons/Buttons';
 import { LoginForm } from '../components/forms/Login';
 import { SignUpForm } from '../components/forms/Signup';
 import SelectProfile from '../components/menu/SelectProfile';
+import SidebarMenu from '../components/menu/SidebarMenu';
 
 import FormModal from '../components/modals/FormModal';
 import { Text } from '../components/Text';
@@ -27,6 +29,8 @@ export default function StartScreen() {
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
+  const [sideBarOpen, setSideBarOpen] = useState(false);
+
   const { currentUser, logout } = useLogin();
   const {
     setSelectedChild,
@@ -63,6 +67,15 @@ export default function StartScreen() {
       marginBottom: 0.02 * ScreenHeight,
       zIndex: 5,
     },
+    WelcomeSignSelectProfile: {
+      justifyContent: 'center',
+      alignSelf: 'center',
+      width: smallScreen ? 0.35 * ScreenWidth : 0.45 * ScreenWidth,
+      height: 0.25 * ScreenHeight,
+      top: 0.015 * ScreenHeight,
+      marginBottom: 0.02 * ScreenHeight,
+      zIndex: 5,
+    },
     Background: {
       position: 'relative',
       width: ScreenWidth,
@@ -86,6 +99,11 @@ export default function StartScreen() {
       display: 'flex',
       alignItems: 'center',
       zIndex: 1,
+    },
+    sidebar: {
+      // flex: 1,
+      display: sideBarOpen ? 'flex' : 'none',
+      position: 'relative',
     },
   });
 
@@ -113,16 +131,31 @@ export default function StartScreen() {
     <>
       <ImageBackground source={MainBackGround} style={styles.Background} />
       <SafeAreaView style={styles.SafeArea}>
-        <Image source={WelcomeSign} style={styles.WelcomeSign} />
         {currentUser ? (
           <>
-            <View style={{ position: 'absolute', top: 50, left: 50 }}>
-              <Button background="Close" onPress={logout} />
-            </View>
-            <SelectProfile />
+            {sideBarOpen && (
+              <View style={styles.sidebar}>
+                <SidebarMenu />
+              </View>
+            )}
+            <>
+              <Image
+                source={WelcomeSign}
+                style={styles.WelcomeSignSelectProfile}
+              />
+
+              <SelectProfile />
+              <View style={{ position: 'absolute', top: 50, right: 50 }}>
+                <Button
+                  background="MenuIcon"
+                  onPress={() => setSideBarOpen(true)}
+                />
+              </View>
+            </>
           </>
         ) : (
           <>
+            <Image source={WelcomeSign} style={styles.WelcomeSign} />
             <View style={{ marginTop: 20 }}>
               <Button
                 disable={!!btnClicked}
