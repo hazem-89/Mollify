@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Close from '../../../assets/images/Close.png';
 import questionBtn from '../../../assets/images/questionBtn.png';
@@ -75,13 +75,6 @@ export default function Onboarding({ guide }: OnboardingProps) {
       width: 40,
       height: 40,
     },
-    tiger: {
-      width: '20%',
-      height: '50%',
-    },
-    chatBubble: {
-      padding: 10,
-    },
     infoView: {
       width: ScreenWidth,
       height: ScreenHeight,
@@ -89,12 +82,16 @@ export default function Onboarding({ guide }: OnboardingProps) {
       justifyContent: 'flex-end',
       alignItems: 'center',
     },
+    tiger: {
+      width: '20%',
+      height: '50%',
+      alignSelf: 'flex-end',
+    },
     background: {
       width: ScreenWidth,
       height: ScreenHeight,
       top: -ScreenHeight,
       position: 'absolute',
-      zIndex: 100,
       backgroundColor: 'linear-gradient(to bottom right, rgba(0,0,0,0.7))',
     },
     disableAllView: {
@@ -105,7 +102,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
       display: 'flex',
       flexDirection: 'row',
     },
-    roomScreenChild: {
+    oneChatBubble: {
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
@@ -113,13 +110,21 @@ export default function Onboarding({ guide }: OnboardingProps) {
       alignItems: 'center',
       width: ScreenWidth,
       height: ScreenHeight,
-      gap: 100,
     },
-    roomScreenParent: {},
-    taskScreenParent: {},
-    rewardScreenParent: {},
-    taskScreenChild: {},
-    rewardScreenChild: {},
+    twoChatBubbles: {
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      position: 'absolute',
+      alignItems: 'center',
+      width: ScreenWidth,
+      height: ScreenHeight,
+    },
+    // roomScreenParent: {},
+    // taskScreenParent: {},
+    // rewardScreenParent: {},
+    // taskScreenChild: {},
+    // rewardScreenChild: {},
   });
 
   /* Guides needed:
@@ -140,21 +145,31 @@ export default function Onboarding({ guide }: OnboardingProps) {
         >
           <View style={styles.infoView}>
             {guide === 'roomScreenChild' && (
-              <View style={styles.roomScreenChild}>
+              <View style={styles.twoChatBubbles}>
                 <ChatBubble orientation="left">
                   <Text>Welcome to your room!</Text>
                   <Text>Here you can navigate to your tasks and rewards.</Text>
                 </ChatBubble>
+                <Image
+                  style={styles.tiger}
+                  resizeMode="contain"
+                  source={Tiger}
+                />
                 <ChatBubble orientation="right">
                   <Text>
                     You can also drag the tasks to the right in order to set the
-                    task as done
+                    task as done.
                   </Text>
                 </ChatBubble>
               </View>
             )}
             {guide === 'roomScreenParent' && (
-              <View style={styles.roomScreenParent}>
+              <View style={styles.oneChatBubble}>
+                <Image
+                  style={styles.tiger}
+                  resizeMode="contain"
+                  source={Tiger}
+                />
                 <ChatBubble orientation="right">
                   <Text>Welcome to your childs room!</Text>
                   <Text>
@@ -164,15 +179,25 @@ export default function Onboarding({ guide }: OnboardingProps) {
               </View>
             )}
             {guide === 'taskScreenParent' && (
-              <View style={styles.taskScreenParent}>
+              <View style={styles.oneChatBubble}>
+                <Image
+                  style={styles.tiger}
+                  resizeMode="contain"
+                  source={Tiger}
+                />
                 <ChatBubble orientation="right">
                   <Text>This is the tasks screen</Text>
-                  <Text>Here you can manage your child's tasks.</Text>
+                  <Text>Here you can manage your child's tasks.</Text>9
                 </ChatBubble>
               </View>
             )}
             {guide === 'rewardScreenParent' && (
-              <View style={styles.rewardScreenParent}>
+              <View style={styles.oneChatBubble}>
+                <Image
+                  style={styles.tiger}
+                  resizeMode="contain"
+                  source={Tiger}
+                />
                 <ChatBubble orientation="right">
                   <Text>This is the rewards screen</Text>
                   <Text>Here you can manage your child's rewards.</Text>
@@ -180,7 +205,12 @@ export default function Onboarding({ guide }: OnboardingProps) {
               </View>
             )}
             {guide === 'taskScreenChild' && (
-              <View style={styles.taskScreenChild}>
+              <View style={styles.oneChatBubble}>
+                <Image
+                  style={styles.tiger}
+                  resizeMode="contain"
+                  source={Tiger}
+                />
                 <ChatBubble orientation="right">
                   <Text>This is the tasks screen</Text>
                   <Text>
@@ -190,7 +220,12 @@ export default function Onboarding({ guide }: OnboardingProps) {
               </View>
             )}
             {guide === 'rewardScreenChild' && (
-              <View style={styles.rewardScreenChild}>
+              <View style={styles.oneChatBubble}>
+                <Image
+                  style={styles.tiger}
+                  resizeMode="contain"
+                  source={Tiger}
+                />
                 <ChatBubble orientation="right">
                   <Text>This is the rewards screen</Text>
                   <Text>
@@ -200,9 +235,9 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 </ChatBubble>
               </View>
             )}
-            <Image style={styles.tiger} resizeMode="contain" source={Tiger} />
+            {/* <Image style={styles.tiger} resizeMode="contain" source={Tiger} /> */}
           </View>
-          <View style={styles.disableAllView}>
+          <SafeAreaView style={styles.disableAllView}>
             <TouchableOpacity
               style={styles.button}
               onPress={() => handleDisableAll()}
@@ -212,7 +247,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
             <View>
               <Text>Disable all guides</Text>
             </View>
-          </View>
+          </SafeAreaView>
         </TouchableOpacity>
       ) : (
         <View style={styles.guideBtnView}>
