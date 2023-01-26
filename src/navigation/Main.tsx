@@ -1,6 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { ProfileInterface } from '../Interfaces';
+import AboutScreen from '../screens/AboutScreen';
 import DisplayMenusScreen from '../screens/DisplayMenusScreen';
 import LoadingScreen from '../screens/LoadingScreen';
 import RoomScreen from '../screens/RoomScreen';
@@ -14,6 +15,7 @@ export type MainStackParams = {
   RoomScreen: { selectedProfile: ProfileInterface };
   TasksCategoryPage: { category: string; content: string };
   SettingsScreen: any;
+  AboutScreen: any;
 };
 
 const MainStack = createStackNavigator<MainStackParams>();
@@ -34,6 +36,8 @@ export const Main = () => {
         component={DisplayMenusScreen}
       />
       <MainStack.Screen name="SettingsScreen" component={SettingsScreen} />
+      <MainStack.Screen name="AboutScreen" component={AboutScreen} />
     </MainStack.Navigator>
   );
 };
+
