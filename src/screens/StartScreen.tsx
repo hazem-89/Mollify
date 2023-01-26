@@ -70,9 +70,9 @@ export default function StartScreen() {
     WelcomeSignSelectProfile: {
       justifyContent: 'center',
       alignSelf: 'center',
-      width: smallScreen ? 0.35 * ScreenWidth : 0.45 * ScreenWidth,
+      width: smallScreen ? 0.45 * ScreenWidth : 0.45 * ScreenWidth,
       height: 0.25 * ScreenHeight,
-      top: 0.015 * ScreenHeight,
+      top: 0.01 * ScreenHeight,
       marginBottom: 0.02 * ScreenHeight,
       zIndex: 5,
     },

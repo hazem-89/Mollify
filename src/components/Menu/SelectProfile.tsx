@@ -68,7 +68,7 @@ const SelectProfile = () => {
     modal: {
       position: 'absolute',
       top: smallScreen ? 5 : 20,
-      width: smallScreen ? 0.6 * ScreenWidth : 0.75 * ScreenWidth,
+      width: smallScreen ? 0.7 * ScreenWidth : 0.75 * ScreenWidth,
       height: smallScreen ? ScreenHeight : 0.9 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
