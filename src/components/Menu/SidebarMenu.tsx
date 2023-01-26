@@ -64,7 +64,14 @@ const SidebarMenu = () => {
             <Text type="Cancel">Change Profile</Text>
           </View>
           <View style={styles.settingsAlign}>
-            <Button background="SettingsWheel" onPress={() => undefined} />
+            <Button
+              background="SettingsWheel"
+              onPress={() =>
+                // @ts-ignore
+
+                navigation.navigate('SettingsScreen')
+              }
+            />
             <Text type="Cancel">Settings</Text>
           </View>
           <View style={styles.logoutAlign}>

@@ -16,8 +16,8 @@ import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { AddTodoForm } from '../forms/AddForm';
 import FormModal from '../modals/FormModal';
-import { Confirm } from '../ToDos/Confirm';
 import RewardCard from './RewardCard';
+import { Confirm } from '../Confirm';
 // images
 import ActiveViewIcon from '../../../assets/images/ActiveViewIcon.png';
 import AddButtonImage from '../../../assets/images/AddButton.png';

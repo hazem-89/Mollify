@@ -24,7 +24,7 @@ import PointsBg from '../../../assets/images/PointsBg.png';
 import PointsGreenBg from '../../../assets/images/PointsGreenBg.png';
 import TaskInReviewTextBg from '../../../assets/images/TaskInReviewTextBg.png';
 import TaskTextBg from '../../../assets/images/TaskTextBg.png';
-import { Confirm } from './Confirm';
+import { Confirm } from '../Confirm';
 import { CountdownTimer } from './CountDown';
 import { AddTodoForm } from '../forms/AddForm';
 
