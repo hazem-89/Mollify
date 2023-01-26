@@ -78,7 +78,6 @@ const SelectProfile = () => {
       flexDirection: 'row',
     },
     ProfilesView: {
-      flexDirection: 'row',
       width: '80%',
     },
   });
@@ -146,7 +145,9 @@ const SelectProfile = () => {
             </>
           ) : null}
 
-          <ScrollView horizontal={true} style={styles.ProfilesView}>
+          <ScrollView contentContainerStyle={{
+            paddingHorizontal: 10,
+          }} horizontal={true} style={styles.ProfilesView}>
             {filteredProfiles && loggedInProfile && loggedInProfile.parent
               ? filteredProfiles?.map((profile: DocumentData) => (
                 <ProfileButton key={profile.id} onpress={() => handleClick('ManageProfile', profile)} profile={profile} />

@@ -182,7 +182,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 />
                 <ChatBubble orientation="right">
                   <Text>This is the tasks screen.</Text>
-                  <Text>{`Here you can manage your child's tasks.`}</Text>9
+                  <Text>{`Here you can manage your child's tasks.`}</Text>
                 </ChatBubble>
               </View>
             )}

@@ -1,7 +1,7 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { DocumentData } from 'firebase/firestore';
-import React, { useState, useMemo, useEffect } from 'react';
-import { TouchableOpacity, View, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { avatars } from '../../util/itemObjects';
 import { Text } from '../Text';
 
@@ -16,21 +16,45 @@ export default function ProfileButton({
 }: ProfileButtonProps) {
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const [color, setColor] = useState<string>();
+  const colorOptions = [
+    '#067B7B',
+    '#087b06',
+    '#647b06',
+    '#7b1a06',
+    '#12067b',
+    '#7b063b',
+    '#06467b',
+    '#067b5a',
+    '#7b067b',
+    '#587b06',
+    '#F44336',
+    '#9C27B0',
+    '#b5783f',
+    '#a54caf',
+    '#ff0707',
+    '#3fb54f',
+    '#4c7caf',
+    '#07fbff',
+    '#3F51B5',
+    '#4CAF50',
+    '#FFC107',
+  ];
+
+  useEffect(() => {
+    setColor(colorOptions[Math.floor(Math.random() * colorOptions.length)]);
+  }, []);
 
   const styles = StyleSheet.create({
-    Avatar: {
+    avatar: {
       width: smallScreen ? 70 : 100,
       height: smallScreen ? 70 : 100,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#067B7B',
+      backgroundColor: color,
       borderRadius: 500,
-    },
-    profile: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      marginLeft: 10,
+      marginRight: 10,
+      overflow: 'hidden',
     },
   });
 
@@ -45,19 +69,18 @@ export default function ProfileButton({
   }, [avatars, profile.avatar]);
 
   return (
-    <TouchableOpacity key={profile?.id} onPress={() => onpress()}>
-      <View style={styles.profile}>
-        <View style={styles.Avatar}>
-          <Image
-            source={profileImage}
-            style={{
-              width: smallScreen ? 50 : 75,
-              height: smallScreen ? 50 : 75,
-            }}
-          />
-        </View>
-        <Text type="text">{profile?.name.toUpperCase()}</Text>
+    <TouchableOpacity key={profile.id} onPress={() => onpress()}>
+      <View style={styles.avatar}>
+        <Image
+          resizeMode="cover"
+          source={profileImage}
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+        />
       </View>
+      <Text type="text">{profile.name.toUpperCase()}</Text>
     </TouchableOpacity>
   );
 }
