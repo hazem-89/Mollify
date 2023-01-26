@@ -7,6 +7,7 @@ import {
   Dimensions, ImageBackground,
   StyleSheet, View
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
@@ -145,7 +146,7 @@ const SelectProfile = () => {
             </>
           ) : null}
 
-          <View style={styles.ProfilesView}>
+          <ScrollView horizontal={true} style={styles.ProfilesView}>
             {filteredProfiles && loggedInProfile && loggedInProfile.parent
               ? filteredProfiles?.map((profile: DocumentData) => (
                 <ProfileButton key={profile.id} onpress={() => handleClick('ManageProfile', profile)} profile={profile} />
@@ -153,7 +154,7 @@ const SelectProfile = () => {
               : profiles?.map((profile: DocumentData) => (
                 <ProfileButton key={profile.id} onpress={() => handleClick('EnterPIN', profile)} profile={profile} />
               ))}
-          </View>
+          </ScrollView>
         </View>
       </ImageBackground>
       <FormModal component={component} />

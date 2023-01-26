@@ -44,10 +44,6 @@ export default function ProfileButton({
     return image;
   }, [avatars, profile.avatar]);
 
-  useEffect(() => {
-    console.log(profileImage);
-  }, [profileImage]);
-
   return (
     <TouchableOpacity key={profile?.id} onPress={() => onpress()}>
       <View style={styles.profile}>
