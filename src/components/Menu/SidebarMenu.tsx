@@ -17,6 +17,7 @@ const SidebarMenu = () => {
     // @ts-ignore
     navigationValue === 'StartScreen' && navigation.goBack();
   };
+
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
 

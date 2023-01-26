@@ -64,7 +64,7 @@ export default function DisplayMenusScreen() {
     navigation.navigate('TasksCategoryPage', {
       paramKey: {
         content: 'UpdateProfile',
-        profile: selectedChild,
+        profile: selectedChild ? selectedChild : loggedInProfile,
       },
     });
   };
@@ -168,7 +168,7 @@ export default function DisplayMenusScreen() {
           </TouchableOpacity>
         </View>
         <View style={styles.leftContainer}>
-          <View style={{ marginBottom: 50 }}>
+          <View style={{ marginBottom: 0.02 * ScreenWidth }}>
             <Button
               background="GreenForms"
               text="Update"
