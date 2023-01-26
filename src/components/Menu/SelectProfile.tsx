@@ -3,15 +3,12 @@ import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { DocumentData } from 'firebase/firestore';
 import React, { ReactElement, useEffect, useState } from 'react';
-import {
-  Dimensions, ImageBackground,
-  StyleSheet, View
-} from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useDataContext } from '../../util/context/DataContext';
-import ProfileButton from '../buttons/ProfileButton';
+import ProfileButton from '../buttons/profileButton';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
@@ -43,10 +40,14 @@ const SelectProfile = () => {
     } else {
       if (profiles.length === 1) {
         if (!loggedInProfile) {
-          setMainText('Login to your parent profile, to add a new child profile');
+          setMainText(
+            'Login to your parent profile, to add a new child profile',
+          );
         }
         if (loggedInProfile && loggedInProfile.parent) {
-          setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child profile`);
+          setMainText(
+            `Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child profile`,
+          );
         }
       }
       if (profiles.length > 1) {
@@ -55,11 +56,11 @@ const SelectProfile = () => {
         }
         if (loggedInProfile && loggedInProfile.parent) {
           setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}
-            Select profile to manage`,);
+            Select profile to manage`);
         }
       }
     }
-  }
+  };
 
   const styles = StyleSheet.create({
     modal: {
@@ -148,11 +149,19 @@ const SelectProfile = () => {
           <View style={styles.ProfilesView}>
             {filteredProfiles && loggedInProfile && loggedInProfile.parent
               ? filteredProfiles?.map((profile: DocumentData) => (
-                <ProfileButton key={profile.id} onpress={() => handleClick('ManageProfile', profile)} profile={profile} />
-              ))
+                  <ProfileButton
+                    key={profile.id}
+                    onpress={() => handleClick('ManageProfile', profile)}
+                    profile={profile}
+                  />
+                ))
               : profiles?.map((profile: DocumentData) => (
-                <ProfileButton key={profile.id} onpress={() => handleClick('EnterPIN', profile)} profile={profile} />
-              ))}
+                  <ProfileButton
+                    key={profile.id}
+                    onpress={() => handleClick('EnterPIN', profile)}
+                    profile={profile}
+                  />
+                ))}
           </View>
         </View>
       </ImageBackground>

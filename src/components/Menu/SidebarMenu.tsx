@@ -33,20 +33,21 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
       minWidth: ScreenWidth,
       backgroundColor: 'rgba(0,0,0,0.7))',
       alignItems: 'flex-end',
-      justifyContent: 'center',
+      marginLeft: -50,
     },
     btnsAlign: {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 0.05 * ScreenWidth,
+      marginRight: 0.1 * ScreenWidth,
+      marginTop: 30,
     },
     logoutAlign: {
       marginBottom: smallScreen ? 10 : 20,
     },
     settingsAlign: {
-      marginBottom: smallScreen ? 10 : 40,
+      marginBottom: smallScreen ? 0 : 40,
       alignItems: 'center',
     },
   });

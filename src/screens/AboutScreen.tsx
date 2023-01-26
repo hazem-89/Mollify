@@ -68,7 +68,7 @@ const AboutScreen = () => {
       zIndex: 5,
     },
     GoBackToRoomImageStyle: {
-      width: 0.15 * ScreenWidth,
+      width: smallScreen ? 0.15 * ScreenWidth : 0.22 * ScreenWidth,
       height: 0.17 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',

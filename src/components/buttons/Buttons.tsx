@@ -121,8 +121,8 @@ function Button({
       height: smallScreen ? 40 : 50,
     },
     settingsStyle: {
-      width: smallScreen ? 60 : 80,
-      height: smallScreen ? 60 : 80,
+      width: smallScreen ? 55 : 80,
+      height: smallScreen ? 55 : 80,
     },
     EditButton: {
       width: smallScreen ? 50 : 60,
@@ -226,3 +226,4 @@ function Button({
 }
 
 export default Button;
+
