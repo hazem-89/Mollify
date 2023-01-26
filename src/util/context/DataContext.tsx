@@ -165,6 +165,8 @@ export default function DataProvider(props: any) {
         navigation.navigate('StartScreen');
       }
     } else {
+      // @ts-ignore
+      navigation.navigate('StartScreen');
       setAsyncData('loggedInProfile', undefined);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,7 +174,6 @@ export default function DataProvider(props: any) {
 
   // This function is used to store or remove an object value in the async storage on the device.
   async function setAsyncData(key: string, data: any[] | undefined) {
-    console.log('running setasyncdata');
     try {
       if (data !== undefined) {
         const jsonValue = JSON.stringify(data);
