@@ -1,5 +1,11 @@
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, Text as RNText, StyleProp, TextStyle } from 'react-native';
+import {
+  StyleSheet,
+  Text as RNText,
+  StyleProp,
+  TextStyle,
+  Dimensions,
+} from 'react-native';
 import { useDimensions } from '@react-native-community/hooks';
 import colors from '../constants/colors';
 import { useFonts } from 'expo-font';
@@ -15,6 +21,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
   SplashScreen.preventAutoHideAsync();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600 ? true : false);
+  const ScreenHeight = Dimensions.get('window').height;
   const [fontsLoaded] = useFonts({
     Inika: require('../../assets/fonts/Inika/Inika-Regular.ttf'),
     DigitalNumbers: require('../../assets/fonts/DigitalNum/DigitalNumbers-Regular.ttf'),
@@ -52,13 +59,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
 
     Gold: {
-      shadowColor: '#636363',
-      shadowOffset: {
-        width: 20,
-        height: 10,
-      },
-      shadowOpacity: 0.5,
-      fontSize: smallScreen ? 30 : 35,
+      fontSize: smallScreen ? 0.2 * ScreenHeight : 0.05 * ScreenHeight,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: 'rgba(136, 80, 0, 1)',
@@ -67,7 +68,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
 
     Green: {
-      fontSize: smallScreen ? 25 : 30,
+      fontSize: smallScreen ? 0.2 * ScreenHeight : 0.05 * ScreenHeight,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: '#0F6209',
@@ -82,6 +83,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: '#0F6209',
       width: '100%',
       textAlign: 'center',
+      marginBottom: 10,
     },
 
     Google: {
@@ -122,6 +124,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       color: '#fff',
       fontSize: smallScreen ? 20 : 25,
       textAlign: 'center',
+      marginBottom: 10,
     },
     MenuTitle: {
       fontSize: smallScreen ? 20 : 30,
@@ -222,3 +225,4 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     </RNText>
   );
 };
+

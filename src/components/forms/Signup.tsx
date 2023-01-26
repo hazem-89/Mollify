@@ -57,7 +57,9 @@ export const SignUpForm = ({ onClose }: SignUpProps) => {
   return (
     <View>
       <View style={styles.container}>
-        <Text type="MenuTitle">Let’s register your account</Text>
+        <View style={{ marginTop: -20 }}>
+          <Text type="MenuTitle">Let’s register your account</Text>
+        </View>
         <View style={styles.inputAlign}>
           <TextInput
             placeholder="Enter your email"
@@ -95,7 +97,7 @@ export const SignUpForm = ({ onClose }: SignUpProps) => {
         <View style={styles.ButtonsView}>
           <Button
             background="GreenForms"
-            text="signUp"
+            text="Sign up"
             onPress={() => submit('signUp')}
           />
           <Button
