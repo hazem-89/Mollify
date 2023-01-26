@@ -1,6 +1,12 @@
 import { useDimensions } from '@react-native-community/hooks';
 import React, { ReactElement, useEffect, useState } from 'react';
-import { Animated, ImageBackground, StyleSheet, View } from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import PaperForm from '../../../assets/images/paperFormTEMP.png';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu-1.png';
@@ -53,7 +59,8 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       }).start();
     }
   }, [componentState]);
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
@@ -82,6 +89,7 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
       alignItems: 'center',
       minHeight: smallScreen ? 65 : 100,
       justifyContent: 'center',
+      marginBottom: 0.05 * ScreenHeight,
     },
   });
 
@@ -116,4 +124,3 @@ export default function FormModal({ component, onEmit, text }: ModalProps) {
     </>
   );
 }
-

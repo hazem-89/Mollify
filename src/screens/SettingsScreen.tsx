@@ -26,13 +26,11 @@ export default function DisplayMenusScreen() {
   const ScreenHeight = Dimensions.get('window').height;
   const navigation = useNavigation();
   const dimensions = useDimensions();
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const { loggedInProfile, selectedChild } = useDataContext();
   const { currentUser } = useLogin();
   function handleUpdateClick(state: string | undefined) {
-    setBtnClicked(state);
     switch (state) {
       case 'deleteProfileConfirm':
         setComponent(
@@ -59,7 +57,6 @@ export default function DisplayMenusScreen() {
     }
   }
   const handelNav = () => {
-    // console.log(navigationValue);
     // @ts-ignore
     navigation.navigate('TasksCategoryPage', {
       paramKey: {
@@ -99,12 +96,6 @@ export default function DisplayMenusScreen() {
       justifyContent: 'center',
       alignItems: 'center',
       marginTop: 100,
-    },
-    rightContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      // marginTop: 100,
-      // right: -300,
     },
     inputStyle: {
       fontSize: 35,
@@ -148,8 +139,10 @@ export default function DisplayMenusScreen() {
         </View>
         <View style={{ marginTop: 10 }}>
           <Text type="rewardHeader">
-            {selectedChild ? selectedChild?.name : loggedInProfile?.name}'s
-            profile
+            {loggedInProfile && selectedChild
+              ? selectedChild?.name
+              : loggedInProfile?.name}
+            's profile
           </Text>
         </View>
         <View style={styles.GoBackButton}>
@@ -161,7 +154,7 @@ export default function DisplayMenusScreen() {
               source={GoBackArrow}
               style={styles.GoBackToRoomImageStyle}
             >
-              <View style={{ marginRight: '25%' }}>
+              <View style={{ marginRight: '25%', marginBottom: 10 }}>
                 <Text type="header">Room</Text>
               </View>
             </ImageBackground>
@@ -171,34 +164,38 @@ export default function DisplayMenusScreen() {
           <View style={{ marginBottom: 0.02 * ScreenWidth }}>
             <Button
               background="GreenForms"
-              text="Update"
+              text="Update profile"
               onPress={() => {
                 handelNav();
               }}
             />
           </View>
-          <View style={{ marginBottom: 30 }}>
-            <Button
-              background="Cancel"
-              text="Delete profile"
-              onPress={() => handleUpdateClick('deleteProfileConfirm')}
-            />
-          </View>
-          <Button
-            background="Cancel"
-            text="Delete account"
-            onPress={() => {
-              handleUpdateClick('deleteacountConfirm');
-            }}
-          />
+          {loggedInProfile &&
+            loggedInProfile.parent &&
+            loggedInProfile.parent && (
+              <View>
+                <View style={{ marginBottom: 10 }}>
+                  <Button
+                    background="Cancel"
+                    text="Delete profile"
+                    onPress={() => handleUpdateClick('deleteProfileConfirm')}
+                  />
+                </View>
+                <Button
+                  background="Cancel"
+                  text="Delete account"
+                  onPress={() => {
+                    handleUpdateClick('deleteacountConfirm');
+                  }}
+                />
+              </View>
+            )}
         </View>
-        <View style={styles.rightContainer}>
-          <FormModal
-            component={component}
-            onEmit={() => handleUpdateClick(undefined)}
-            // text="confirm"
-          />
-        </View>
+        <FormModal
+          component={component}
+          onEmit={() => handleUpdateClick(undefined)}
+          text="Confirm"
+        />
       </SafeAreaView>
     </>
   );
