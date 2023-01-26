@@ -139,7 +139,7 @@ export default function StartScreen() {
             <>
               {sideBarOpen && (
                 <View style={styles.sidebar}>
-                  <SidebarMenu />
+                  <SidebarMenu screen="startScreen" />
                 </View>
               )}
               <View style={{ alignItems: 'center' }}>
