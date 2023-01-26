@@ -70,7 +70,7 @@ export default function StartScreen() {
     WelcomeSignSelectProfile: {
       justifyContent: 'center',
       alignSelf: 'center',
-      width: smallScreen ? 0.45 * ScreenWidth : 0.45 * ScreenWidth,
+      width: 0.45 * ScreenWidth,
       height: 0.25 * ScreenHeight,
       top: 0.01 * ScreenHeight,
       marginBottom: 0.02 * ScreenHeight,
@@ -97,8 +97,8 @@ export default function StartScreen() {
       height: '100%',
       maxHeight: '100%',
       display: 'flex',
-      alignItems: 'center',
-      zIndex: 1,
+      // alignItems: 'center',
+      // zIndex: 1
     },
     sidebar: {
       // flex: 1,
@@ -132,27 +132,32 @@ export default function StartScreen() {
       <ImageBackground source={MainBackGround} style={styles.Background} />
       <SafeAreaView style={styles.SafeArea}>
         {currentUser ? (
-          <>
-            {sideBarOpen && (
-              <View style={styles.sidebar}>
-                <SidebarMenu />
-              </View>
-            )}
+          <TouchableOpacity
+            onPress={() => setSideBarOpen(false)}
+            activeOpacity={1}
+          >
             <>
-              <Image
-                source={WelcomeSign}
-                style={styles.WelcomeSignSelectProfile}
-              />
-
-              <SelectProfile />
-              <View style={{ position: 'absolute', top: 50, right: 50 }}>
-                <Button
-                  background="MenuIcon"
-                  onPress={() => setSideBarOpen(true)}
+              {sideBarOpen && (
+                <View style={styles.sidebar}>
+                  <SidebarMenu />
+                </View>
+              )}
+              <View style={{ alignItems: 'center' }}>
+                <Image
+                  source={WelcomeSign}
+                  style={styles.WelcomeSignSelectProfile}
                 />
+
+                <SelectProfile />
+                <View style={{ position: 'absolute', top: 50, right: 50 }}>
+                  <Button
+                    background="MenuIcon"
+                    onPress={() => setSideBarOpen(true)}
+                  />
+                </View>
               </View>
             </>
-          </>
+          </TouchableOpacity>
         ) : (
           <>
             <Image source={WelcomeSign} style={styles.WelcomeSign} />
