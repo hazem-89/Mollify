@@ -73,7 +73,7 @@ export default function Draggable({ onMove, task }: DraggableProps) {
         case 'Take out your garbage':
           setFoundRoomObject(findRoomObject('garbage'));
           break;
-        case 'Not too much, not too little water':
+        case 'Water the poor plants':
           setFoundRoomObject(findRoomObject('watering'));
           break;
         case 'Get those dust bunnies':
@@ -97,7 +97,7 @@ export default function Draggable({ onMove, task }: DraggableProps) {
       position: 'absolute',
       width: '20%',
       height: '60%',
-      zIndex: 10,
+      // zIndex: 10,
       // Use the transform property to update the position of the component based on the current x and y offset
       transform: [{ translateX: pan.x }, { translateY: pan.y }],
     },
