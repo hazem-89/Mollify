@@ -190,7 +190,7 @@ export default function RoomUI() {
           <View style={styles.imagesContainer}>
             {open && (
               <View style={styles.sidebar}>
-                <SidebarMenu />
+                <SidebarMenu setSideBarOpen={setOpen} />
               </View>
             )}
             <ImageBackground
