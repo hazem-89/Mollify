@@ -42,18 +42,18 @@ export default function RoomUI() {
   function handleClick(state: string | undefined) {
     setAddTaskBtnClicked(state);
     switch (
-      state
-      // case 'displayTask':
-      //   // setComponent(<DisplayTasksCategories />);
-      //   setText('Tasks');
-      //   break;
-      // case 'displayScoreboard':
-      //   setComponent(<Scoreboard />);
-      //   setText('Scoreboard');
-      //   break;
-      // default:
-      //   setComponent(undefined);
-      //   break;
+    state
+    // case 'displayTask':
+    //   // setComponent(<DisplayTasksCategories />);
+    //   setText('Tasks');
+    //   break;
+    // case 'displayScoreboard':
+    //   setComponent(<Scoreboard />);
+    //   setText('Scoreboard');
+    //   break;
+    // default:
+    //   setComponent(undefined);
+    //   break;
     ) {
     }
   }
@@ -143,7 +143,7 @@ export default function RoomUI() {
       width: smallScreen ? 20 : 30,
       height: smallScreen ? 20 : 30,
       alignItems: 'center',
-      zIndex: 99,
+      zIndex: 1,
       bottom: smallScreen ? 0 : -10,
       left: smallScreen ? -5 : -10,
       borderRadius: 50,
