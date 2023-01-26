@@ -180,6 +180,7 @@ export default function RoomUI() {
       backgroundColor: '#067B7B',
       borderRadius: 500,
       marginRight: 0.01 * ScreenWidth,
+      overflow: 'hidden',
     },
   });
 
@@ -200,10 +201,11 @@ export default function RoomUI() {
               <View style={styles.ProfileInfo}>
                 <View style={styles.AvatarView}>
                   <Image
+                    resizeMode="cover"
                     source={profileAvatar}
                     style={{
-                      width: 0.04 * ScreenWidth,
-                      height: 0.04 * ScreenWidth,
+                      width: '100%',
+                      height: '100%',
                     }}
                   />
                 </View>
