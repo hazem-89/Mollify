@@ -55,8 +55,8 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
       <View style={styles.menuBackground}>
         <View style={styles.btnsAlign}>
           {screen === 'startScreen' &&
-            loggedInProfile &&
-            loggedInProfile.parent ? (
+          loggedInProfile &&
+          loggedInProfile.parent ? (
             <View style={styles.settingsAlign}>
               <Button
                 background="ProfileIcon"
@@ -81,18 +81,19 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
               )}
             </View>
           )}
+          {loggedInProfile && (
+            <View style={styles.settingsAlign}>
+              <Button
+                background="SettingsWheel"
+                onPress={() =>
+                  // @ts-ignore
 
-          <View style={styles.settingsAlign}>
-            <Button
-              background="SettingsWheel"
-              onPress={() =>
-                // @ts-ignore
-
-                navigation.navigate('SettingsScreen')
-              }
-            />
-            <Text type="Cancel">Settings</Text>
-          </View>
+                  navigation.navigate('SettingsScreen')
+                }
+              />
+              <Text type="Cancel">Settings</Text>
+            </View>
+          )}
           <View style={styles.logoutAlign}>
             <Button
               background="LogoutIcon"
