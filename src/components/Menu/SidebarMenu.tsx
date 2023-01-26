@@ -4,19 +4,19 @@ import React, { useRef, useState } from 'react';
 import { Animated, Dimensions, StyleSheet, View } from 'react-native';
 import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
+import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
-
-const SidebarMenu = () => {
+type SidebarMenuProps = {
+  screen?: string;
+  setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+};
+const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
   const { logout } = useLogin();
   const dimensions = useDimensions();
   const navigation = useNavigation();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-
-  const handelNav = (navigationValue: string) => {
-    // @ts-ignore
-    navigationValue === 'StartScreen' && navigation.goBack();
-  };
+  const { loggedInProfile } = useDataContext();
 
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
@@ -53,14 +53,33 @@ const SidebarMenu = () => {
     <View style={styles.container}>
       <View style={styles.menuBackground}>
         <View style={styles.btnsAlign}>
-          <View style={styles.settingsAlign}>
-            <Button
-              background="ProfileIcon"
-              // @ts-ignore
-              onPress={() => navigation.navigate('StartScreen')}
-            />
-            <Text type="Cancel">Change Profile</Text>
-          </View>
+          {screen === 'startScreen' &&
+          loggedInProfile &&
+          loggedInProfile.parent ? (
+            <View style={styles.settingsAlign}>
+              {/* update this for logout as parent */}
+              <Button
+                background="ProfileIcon"
+                // @ts-ignore
+                onPress={() => navigation.navigate('StartScreen')}
+              />
+              <Text type="Cancel">change parent account</Text>
+            </View>
+          ) : (
+            <View style={styles.settingsAlign}>
+              {screen !== 'startScreen' && (
+                <>
+                  <Button
+                    background="ProfileIcon"
+                    // @ts-ignore
+                    onPress={() => navigation.navigate('StartScreen')}
+                  />
+                  <Text type="Cancel">Change Profile</Text>
+                </>
+              )}
+            </View>
+          )}
+
           <View style={styles.settingsAlign}>
             <Button
               background="SettingsWheel"
@@ -73,7 +92,13 @@ const SidebarMenu = () => {
             <Text type="Cancel">Settings</Text>
           </View>
           <View style={styles.logoutAlign}>
-            <Button background="LogoutIcon" onPress={logout} />
+            <Button
+              background="LogoutIcon"
+              onPress={() => {
+                logout();
+                setSideBarOpen(false);
+              }}
+            />
             <Text type="Cancel">Logout</Text>
           </View>
         </View>
