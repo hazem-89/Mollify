@@ -2,6 +2,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { DocumentData } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
+import Toast from 'react-native-root-toast';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { TextInput } from '../CustomInput';
@@ -49,6 +50,16 @@ export default function EnterProfile({
       setLoggedInProfile(selectedProfile);
       if (onClose) onClose();
     }
+    if (PINState !== selectedProfile.pin) {
+      Toast.show('Wrong PIN: Please double check your PIN', {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
+    }
   };
 
   return (
@@ -81,4 +92,3 @@ export default function EnterProfile({
     </View>
   );
 }
-

@@ -15,7 +15,7 @@ import { Text } from '../components/Text';
 import GoBackArrow from '../../assets/images/GoBackArrow.png';
 import { useDataContext } from '../util/context/DataContext';
 import { useNavigation } from '@react-navigation/native';
-import { Confirm } from '../components/ToDos/Confirm';
+import { Confirm } from '../components/Confirm';
 import { useLogin } from '../util/auth';
 import FormModal from '../components/modals/FormModal';
 import RewardMainTitleBg from '../../assets/images/RewardMainTitleBg.png';
@@ -103,8 +103,8 @@ export default function DisplayMenusScreen() {
     rightContainer: {
       display: 'flex',
       flexDirection: 'column',
-      marginTop: 100,
-      right: -300,
+      // marginTop: 100,
+      // right: -300,
     },
     inputStyle: {
       fontSize: 35,
@@ -147,7 +147,10 @@ export default function DisplayMenusScreen() {
           </ImageBackground>
         </View>
         <View style={{ marginTop: 10 }}>
-          <Text type="rewardHeader">{selectedChild.name}'s profile</Text>
+          <Text type="rewardHeader">
+            {selectedChild ? selectedChild?.name : loggedInProfile?.name}'s
+            profile
+          </Text>
         </View>
         <View style={styles.GoBackButton}>
           <TouchableOpacity

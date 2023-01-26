@@ -1,11 +1,12 @@
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import { useDataContext } from '../../util/context/DataContext';
-import Button from '../buttons/Buttons';
-import { Text } from '../Text';
+import { useDataContext } from '../util/context/DataContext';
+import Button from './buttons/Buttons';
+import { Text } from './Text';
 import { useNavigation } from '@react-navigation/native';
-import { useLogin } from '../../util/auth';
+import { useLogin } from '../util/auth';
 import { DocumentData } from 'firebase/firestore';
+import Toast from 'react-native-root-toast';
 
 type ConfirmProps = {
   text: string;
@@ -39,15 +40,25 @@ export const Confirm = ({
     setRewards,
     retrieveFSData,
     loggedInProfile,
+    setProfiles,
   } = useDataContext();
   const { currentUser, deleteAccount, logout } = useLogin();
+  const navigation = useNavigation();
 
   /**
-   *  handel confirm delete and update fpr both tasks and reward
+   *  handel confirm delete and update fpr tasks, reward, profiles, and accounts
    */
   const handleSubmit = () => {
     if (funName === 'delete' && taskId) {
       deleteDocFromFS('Tasks', taskId);
+      Toast.show('  Task deleted successfully.  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
       retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
         (data: any) => {
           data ? setTasks(data) : setTasks([]);
@@ -58,6 +69,14 @@ export const Confirm = ({
       if (markTaskDone) {
         markTaskDone(funName);
         deleteDocFromFS('Tasks', taskId);
+        Toast.show('  This task is marked as done now.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
             if (data) setTasks(data);
@@ -68,6 +87,14 @@ export const Confirm = ({
     } else if (funName === 'updateRequest') {
       if (UpdateReqStatus) {
         UpdateReqStatus(funName);
+        Toast.show('  Request for checking task is sent.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        });
         retrieveFSData('Tasks', 'profileId', `${loggedInProfile?.id}`).then(
           (data: any) => {
             if (data) setTasks(data);
@@ -76,16 +103,47 @@ export const Confirm = ({
       }
     } else if (funName === 'delete' && rewardId) {
       deleteDocFromFS('Rewards', rewardId);
+      Toast.show('  Reward deleted successfully.  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
       retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
         (data: any) => {
           data ? setRewards(data) : setRewards([]);
         },
-      ),
-        // @ts-ignore
-        navigation.navigate('StartScreen');
+      );
+    } else if (funName === 'delete' && profileId) {
+      deleteDocFromFS('profiles', profileId);
+      Toast.show('  This profile deleted successfully.  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
+      retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
+        (data: DocumentData) => {
+          data ? setProfiles(data) : setProfiles(undefined);
+        },
+      );
+      // @ts-ignore
+      navigation.navigate('StartScreen');
     } else if (funName === 'delete' && accountId) {
       deleteDocFromFS('users', accountId);
       deleteAccount();
+      Toast.show('  You account deleted successfully.  ', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.TOP,
+        shadow: true,
+        animation: true,
+        hideOnPress: true,
+        delay: 0,
+      });
       logout();
     }
     if (onClose) {

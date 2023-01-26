@@ -8,15 +8,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import Close from '../../../assets/images/Close.png';
-import GoldenButton from '../../../assets/images/GoldenButton.png';
+import GoldenButton from '../../../assets/images/GoldenBut.png';
 import GoogleButtonBroken from '../../../assets/images/GoogleButtonBroken.png';
 import GoogleButton from '../../../assets/images/GoogleButtonWithIcon.png';
-import GreenButtonImage from '../../../assets/images/GreenButton.png';
+import GreenButtonImage from '../../../assets/images/GreenBut.png';
 import TaskNotificationIcon from '../../../assets/images/Icons/TaskNotificationIcon.png';
 import AddButtonImage from '../../../assets/images/AddButton.png';
 import InfoButtonImage from '../../../assets/images/info.png';
 import BellButtonImage from '../../../assets/images/bell.png';
-import CancelButton from '../../../assets/images/CancelButton.png';
+import CancelButton from '../../../assets/images/Cancel.png';
 import TrophyButtonImage from '../../../assets/images/trophy.png';
 import ArrowButton from '../../../assets/images/Polygon.png';
 import TodoButtonImage from '../../../assets/images/todo.png';
@@ -55,14 +55,14 @@ function Button({
   const styles = StyleSheet.create({
     Green: {
       justifyContent: 'center',
-      width: 0.29 * ScreenWidth,
-      height: smallScreen ? 0.17 * ScreenHeight : 0.15 * ScreenHeight,
+      width: 0.3 * ScreenWidth,
+      height: smallScreen ? 0.2 * ScreenHeight : 0.16 * ScreenHeight,
       alignSelf: 'center',
     },
     GreenForms: {
       justifyContent: 'center',
       width: 0.2 * ScreenWidth,
-      height: smallScreen ? 45 : 55,
+      height: smallScreen ? 0.13 * ScreenHeight : 0.11 * ScreenHeight,
       alignSelf: 'center',
       // marginTop: smallScreen ? 20 : 30,
     },
@@ -76,7 +76,7 @@ function Button({
     Gold: {
       justifyContent: 'center',
       width: 0.25 * ScreenWidth,
-      height: smallScreen ? 0.2 * ScreenHeight : 0.15 * ScreenHeight,
+      height: smallScreen ? 0.17 * ScreenHeight : 0.14 * ScreenHeight,
       alignSelf: 'center',
       resizeMode: 'contain',
     },

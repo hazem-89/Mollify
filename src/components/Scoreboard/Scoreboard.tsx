@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AddTodoForm } from '../forms/AddForm';
 import Button from '../buttons/Buttons';
 import FormModal from '../modals/FormModal';
-import { Confirm } from '../ToDos/Confirm';
+import { Confirm } from '../Confirm';
 import { createRef } from 'react';
 // images
 import AddButtonImage from '../../../assets/images/AddButton.png';
