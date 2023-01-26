@@ -2,7 +2,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { DocumentData } from 'firebase/firestore';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { avatars } from '../../util/itemObjects';
+import { avatars, randomColorOptions } from '../../util/itemObjects';
 import { Text } from '../Text';
 
 type ProfileButtonProps = {
@@ -17,32 +17,11 @@ export default function ProfileButton({
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const [color, setColor] = useState<string>();
-  const colorOptions = [
-    '#067B7B',
-    '#087b06',
-    '#647b06',
-    '#7b1a06',
-    '#12067b',
-    '#7b063b',
-    '#06467b',
-    '#067b5a',
-    '#7b067b',
-    '#587b06',
-    '#F44336',
-    '#9C27B0',
-    '#b5783f',
-    '#a54caf',
-    '#ff0707',
-    '#3fb54f',
-    '#4c7caf',
-    '#07fbff',
-    '#3F51B5',
-    '#4CAF50',
-    '#FFC107',
-  ];
 
   useEffect(() => {
-    setColor(colorOptions[Math.floor(Math.random() * colorOptions.length)]);
+    setColor(
+      randomColorOptions[Math.floor(Math.random() * randomColorOptions.length)],
+    );
   }, []);
 
   const styles = StyleSheet.create({
