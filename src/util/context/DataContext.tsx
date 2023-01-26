@@ -164,6 +164,8 @@ export default function DataProvider(props: any) {
         // @ts-ignore
         navigation.navigate('StartScreen');
       }
+    } else {
+      setAsyncData('loggedInProfile', undefined);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedInProfile, profiles, selectedChild]);

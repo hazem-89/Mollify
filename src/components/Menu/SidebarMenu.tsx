@@ -6,6 +6,7 @@ import { Text } from '../../components/Text';
 import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
+
 type SidebarMenuProps = {
   screen?: string;
   setSideBarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +17,7 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
   const navigation = useNavigation();
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
-  const { loggedInProfile } = useDataContext();
+  const { loggedInProfile, setLoggedInProfile } = useDataContext();
 
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
@@ -54,16 +55,17 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
       <View style={styles.menuBackground}>
         <View style={styles.btnsAlign}>
           {screen === 'startScreen' &&
-          loggedInProfile &&
-          loggedInProfile.parent ? (
+            loggedInProfile &&
+            loggedInProfile.parent ? (
             <View style={styles.settingsAlign}>
-              {/* update this for logout as parent */}
               <Button
                 background="ProfileIcon"
-                // @ts-ignore
-                onPress={() => navigation.navigate('StartScreen')}
+                onPress={() => {
+                  setLoggedInProfile(undefined);
+                  setSideBarOpen(false);
+                }}
               />
-              <Text type="Cancel">change parent account</Text>
+              <Text type="Cancel">Exit current profile</Text>
             </View>
           ) : (
             <View style={styles.settingsAlign}>

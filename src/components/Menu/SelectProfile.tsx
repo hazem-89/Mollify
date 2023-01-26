@@ -165,7 +165,7 @@ const SelectProfile = () => {
           )}
 
           <View style={styles.ProfilesView}>
-            {filteredProfiles
+            {filteredProfiles && loggedInProfile && loggedInProfile.parent
               ? filteredProfiles?.map((profile: DocumentData) => {
                 let profileImage;
                 avatars.filter(avatar =>
