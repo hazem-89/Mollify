@@ -9,18 +9,16 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import TigerAvatar from '../../../assets/images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
-import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
+import { avatars } from '../../util/itemObjects';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
-import { avatars } from '../../util/itemObjects';
 
 const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
@@ -36,32 +34,36 @@ const SelectProfile = () => {
     setSelectedChild,
     setTasks,
     setRewards,
-    retrieveFSData,
-    setProfiles,
   } = useDataContext();
-  const { currentUser } = useLogin();
 
   useEffect(() => {
     getMainText();
   }, [profiles, loggedInProfile]);
+
   const getMainText = () => {
-    !profiles && setMainText('Welcome! Start by Adding a parent profile');
-    profiles?.length === 1 &&
-      !loggedInProfile &&
-      setMainText('Login to your parent profile, to add a new child profile');
-    profiles?.length > 1 && !loggedInProfile && setMainText('Select profile');
-    loggedInProfile &&
-      loggedInProfile.parent &&
-      profiles?.length > 1 &&
-      setMainText(
-        `Welcome ${loggedInProfile.name.toUpperCase()} Select profile to manage`,
-      );
-    profiles?.length === 1 &&
-      loggedInProfile &&
-      loggedInProfile.parent &&
-      setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child
-      profile`);
-  };
+    if (!profiles) {
+      setMainText('Welcome! Start by Adding a parent profile');
+    } else {
+      if (profiles.length === 1) {
+        if (!loggedInProfile) {
+          setMainText('Login to your parent profile, to add a new child profile');
+        }
+        if (loggedInProfile && loggedInProfile.parent) {
+          setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child profile`);
+        }
+      }
+      if (profiles.length > 1) {
+        if (!loggedInProfile) {
+          setMainText('Select profile');
+        }
+        if (loggedInProfile && loggedInProfile.parent) {
+          setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}
+            Select profile to manage`,);
+        }
+      }
+    }
+  }
+
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
@@ -165,70 +167,70 @@ const SelectProfile = () => {
           <View style={styles.ProfilesView}>
             {filteredProfiles
               ? filteredProfiles?.map((profile: DocumentData) => {
-                  let profileImage;
-                  avatars.filter(avatar =>
-                    avatar.id === profile.avatar
-                      ? (profileImage = avatar.image)
-                      : null,
-                  );
-                  return (
-                    <TouchableOpacity
-                      key={profile?.id}
-                      onPress={() => handleClick('ManageProfile', profile)}
-                    >
-                      <View style={styles.profile}>
-                        <View style={styles.Avatar}>
-                          <Image
-                            source={profileImage}
-                            style={{
-                              width: smallScreen ? 50 : 75,
-                              height: smallScreen ? 50 : 75,
-                            }}
-                          />
-                        </View>
-                        <Text type="text">{profile?.name.toUpperCase()}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })
-              : profiles?.map((profile: DocumentData) => {
-                  let profileImage;
-                  avatars.filter(avatar =>
-                    avatar.id === profile.avatar
-                      ? (profileImage = avatar.image)
-                      : null,
-                  );
-                  return (
-                    <TouchableOpacity
-                      key={profile?.id}
-                      onPress={() => handleClick('EnterPIN', profile)}
-                    >
-                      <View style={styles.profile}>
-                        <View
+                let profileImage;
+                avatars.filter(avatar =>
+                  avatar.id === profile.avatar
+                    ? (profileImage = avatar.image)
+                    : null,
+                );
+                return (
+                  <TouchableOpacity
+                    key={profile?.id}
+                    onPress={() => handleClick('ManageProfile', profile)}
+                  >
+                    <View style={styles.profile}>
+                      <View style={styles.Avatar}>
+                        <Image
+                          source={profileImage}
                           style={{
-                            width: smallScreen ? 70 : 100,
-                            height: smallScreen ? 70 : 100,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: profile.parent
-                              ? '#2BC899'
-                              : '#067B7B',
-                            borderRadius: 500,
+                            width: smallScreen ? 50 : 75,
+                            height: smallScreen ? 50 : 75,
                           }}
-                        >
-                          <Image
-                            source={profileImage}
-                            style={{
-                              width: smallScreen ? 50 : 75,
-                              height: smallScreen ? 50 : 75,
-                            }}
-                          />
-                        </View>
-                        <Text type="text">{profile?.name.toUpperCase()}</Text>
+                        />
                       </View>
-                    </TouchableOpacity>
-                  );
-                })}
+                      <Text type="text">{profile?.name.toUpperCase()}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })
+              : profiles?.map((profile: DocumentData) => {
+                let profileImage;
+                avatars.filter(avatar =>
+                  avatar.id === profile.avatar
+                    ? (profileImage = avatar.image)
+                    : null,
+                );
+                return (
+                  <TouchableOpacity
+                    key={profile?.id}
+                    onPress={() => handleClick('EnterPIN', profile)}
+                  >
+                    <View style={styles.profile}>
+                      <View
+                        style={{
+                          width: smallScreen ? 70 : 100,
+                          height: smallScreen ? 70 : 100,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: profile.parent
+                            ? '#2BC899'
+                            : '#067B7B',
+                          borderRadius: 500,
+                        }}
+                      >
+                        <Image
+                          source={profileImage}
+                          style={{
+                            width: smallScreen ? 50 : 75,
+                            height: smallScreen ? 50 : 75,
+                          }}
+                        />
+                      </View>
+                      <Text type="text">{profile?.name.toUpperCase()}</Text>
+                    </View>
+                  </TouchableOpacity>
+                );
+              })}
           </View>
         </View>
       </ImageBackground>
