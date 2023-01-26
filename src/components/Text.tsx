@@ -59,7 +59,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
 
     Gold: {
-      fontSize: smallScreen ? 0.2 * ScreenHeight : 0.05 * ScreenHeight,
+      fontSize: smallScreen ? 0.05 * ScreenHeight : 0.05 * ScreenHeight,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: 'rgba(136, 80, 0, 1)',
@@ -68,7 +68,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
 
     Green: {
-      fontSize: smallScreen ? 0.2 * ScreenHeight : 0.05 * ScreenHeight,
+      fontSize: smallScreen ? 0.05 * ScreenHeight : 0.05 * ScreenHeight,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: '#0F6209',
