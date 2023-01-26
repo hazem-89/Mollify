@@ -55,8 +55,8 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
       <View style={styles.menuBackground}>
         <View style={styles.btnsAlign}>
           {screen === 'startScreen' &&
-            loggedInProfile &&
-            loggedInProfile.parent ? (
+          loggedInProfile &&
+          loggedInProfile.parent ? (
             <View style={styles.settingsAlign}>
               <Button
                 background="ProfileIcon"
@@ -93,6 +93,17 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
             />
             <Text type="Cancel">Settings</Text>
           </View>
+          <View style={styles.settingsAlign}>
+            <Button
+              background="InfoButtonImage"
+              onPress={() =>
+                // @ts-ignore
+
+                navigation.navigate('AboutScreen')
+              }
+            />
+            <Text type="Cancel">About</Text>
+          </View>
           <View style={styles.logoutAlign}>
             <Button
               background="LogoutIcon"
@@ -110,3 +121,4 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
 };
 
 export default SidebarMenu;
+
