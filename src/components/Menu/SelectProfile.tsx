@@ -11,7 +11,7 @@ import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useDataContext } from '../../util/context/DataContext';
-import ProfileButton from '../buttons/profileButton';
+import ProfileButton from '../buttons/ProfileButton';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
