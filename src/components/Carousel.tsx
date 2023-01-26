@@ -22,6 +22,7 @@ export default function Carousel({ title, data, onEmit }: CarouselProps) {
       flexDirection: 'column',
       alignItems: 'center',
       width: 0.6 * ScreenWidth,
+      paddingRight: 60,
     },
     slide: {
       display: 'flex',
