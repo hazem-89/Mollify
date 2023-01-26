@@ -9,20 +9,20 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  View,
+  View
 } from 'react-native';
-import TigerAvatar from '../../../assets/images/Avatars/Avatar-Tiger.png';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
-import { useLogin } from '../../util/auth';
 import { useDataContext } from '../../util/context/DataContext';
+import { avatars } from '../../util/itemObjects';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
 
 const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
+  const [mainText, setMainText] = useState<string | undefined>();
   const dimensions = useDimensions();
   const navigation = useNavigation();
 
@@ -34,31 +34,44 @@ const SelectProfile = () => {
     setSelectedChild,
     setTasks,
     setRewards,
-    retrieveFSData,
-    setProfiles,
   } = useDataContext();
-  const { currentUser } = useLogin();
 
-  // useEffect(() => {
-  //   const fetchProfile = () => {
-  //     const test = retrieveFSData(
-  //       'profiles',
-  //       'mainUserId',
-  //       `${currentUser?.uid}`,
-  //     ).then((data: DocumentData[]) => {
-  //       data ? setProfiles(data) : setProfiles([]);
-  //     });
-  //   };
-  //   fetchProfile();
-  // }, []);
+  useEffect(() => {
+    getMainText();
+  }, [profiles, loggedInProfile]);
+
+  const getMainText = () => {
+    if (!profiles) {
+      setMainText('Welcome! Start by Adding a parent profile');
+    } else {
+      if (profiles.length === 1) {
+        if (!loggedInProfile) {
+          setMainText('Login to your parent profile, to add a new child profile');
+        }
+        if (loggedInProfile && loggedInProfile.parent) {
+          setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child profile`);
+        }
+      }
+      if (profiles.length > 1) {
+        if (!loggedInProfile) {
+          setMainText('Select profile');
+        }
+        if (loggedInProfile && loggedInProfile.parent) {
+          setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}
+            Select profile to manage`,);
+        }
+      }
+    }
+  }
+
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
-      top: 0.065 * ScreenHeight,
-      width: smallScreen ? 0.6 * ScreenWidth : 0.7 * ScreenWidth,
-      height: 0.9 * ScreenHeight,
+      top: smallScreen ? 5 : 20,
+      width: smallScreen ? 0.7 * ScreenWidth : 0.75 * ScreenWidth,
+      height: smallScreen ? ScreenHeight : 0.9 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -83,7 +96,7 @@ const SelectProfile = () => {
       height: smallScreen ? 70 : 100,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#FF7A00',
+      backgroundColor: '#067B7B',
       borderRadius: 500,
     },
   });
@@ -123,25 +136,11 @@ const SelectProfile = () => {
       <ImageBackground source={SelectFormMenu} style={styles.modal}>
         <View
           style={{
-            alignItems: 'center',
             maxWidth: 0.5 * ScreenWidth,
+            marginBottom: 0.05 * ScreenHeight,
           }}
         >
-          {loggedInProfile && loggedInProfile.parent ? (
-            <Text type="header">
-              Welcome {loggedInProfile.name}, select profile to manage
-            </Text>
-          ) : (
-            <View style={{ maxWidth: 0.4 * ScreenWidth }}>
-              {!profiles ? (
-                <Text type="header">
-                  Welcome! Start by Adding a parent profile
-                </Text>
-              ) : (
-                <Text type="header">Select profile</Text>
-              )}
-            </View>
-          )}
+          <Text type="header">{mainText}</Text>
         </View>
         <View style={styles.MainView}>
           {(loggedInProfile && loggedInProfile.parent) || !profiles ? (
@@ -166,8 +165,15 @@ const SelectProfile = () => {
           )}
 
           <View style={styles.ProfilesView}>
-            {filteredProfiles
-              ? filteredProfiles?.map((profile: DocumentData) => (
+            {filteredProfiles && loggedInProfile && loggedInProfile.parent
+              ? filteredProfiles?.map((profile: DocumentData) => {
+                let profileImage;
+                avatars.filter(avatar =>
+                  avatar.id === profile.avatar
+                    ? (profileImage = avatar.image)
+                    : null,
+                );
+                return (
                   <TouchableOpacity
                     key={profile?.id}
                     onPress={() => handleClick('ManageProfile', profile)}
@@ -175,7 +181,7 @@ const SelectProfile = () => {
                     <View style={styles.profile}>
                       <View style={styles.Avatar}>
                         <Image
-                          source={TigerAvatar}
+                          source={profileImage}
                           style={{
                             width: smallScreen ? 50 : 75,
                             height: smallScreen ? 50 : 75,
@@ -185,16 +191,35 @@ const SelectProfile = () => {
                       <Text type="text">{profile?.name.toUpperCase()}</Text>
                     </View>
                   </TouchableOpacity>
-                ))
-              : profiles?.map((profile: DocumentData) => (
+                );
+              })
+              : profiles?.map((profile: DocumentData) => {
+                let profileImage;
+                avatars.filter(avatar =>
+                  avatar.id === profile.avatar
+                    ? (profileImage = avatar.image)
+                    : null,
+                );
+                return (
                   <TouchableOpacity
                     key={profile?.id}
                     onPress={() => handleClick('EnterPIN', profile)}
                   >
                     <View style={styles.profile}>
-                      <View style={styles.Avatar}>
+                      <View
+                        style={{
+                          width: smallScreen ? 70 : 100,
+                          height: smallScreen ? 70 : 100,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: profile.parent
+                            ? '#2BC899'
+                            : '#067B7B',
+                          borderRadius: 500,
+                        }}
+                      >
                         <Image
-                          source={TigerAvatar}
+                          source={profileImage}
                           style={{
                             width: smallScreen ? 50 : 75,
                             height: smallScreen ? 50 : 75,
@@ -204,7 +229,8 @@ const SelectProfile = () => {
                       <Text type="text">{profile?.name.toUpperCase()}</Text>
                     </View>
                   </TouchableOpacity>
-                ))}
+                );
+              })}
           </View>
         </View>
       </ImageBackground>
@@ -214,4 +240,3 @@ const SelectProfile = () => {
 };
 
 export default SelectProfile;
-

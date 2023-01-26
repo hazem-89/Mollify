@@ -1,21 +1,22 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
+  ImageSourcePropType,
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from 'react-native';
 import awardBadge from '../../assets/images/awardBadge.png';
 import woodSignLarge from '../../assets/images/woodSignLarge.png';
 import { Text } from '../components/Text';
-import { useLogin } from '../util/auth';
 import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
 import SidebarMenu from './menu/SidebarMenu';
-import FormModal from './modals/FormModal';
+import { avatars } from '../util/itemObjects';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
@@ -26,37 +27,13 @@ import FormModal from './modals/FormModal';
 
 export default function RoomUI() {
   const [open, setOpen] = useState(false);
-  const { tasks } = useDataContext();
-  const { logout } = useLogin();
+  const { tasks, loggedInProfile, selectedChild } = useDataContext();
+  const [profileAvatar, setProfileAvatar] = useState<ImageSourcePropType>();
+
   const navigation = useNavigation();
   const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600);
-  const [btnClicked, setBtnClicked] = useState<string | undefined>();
-  const [component, setComponent] = useState<ReactElement | undefined>();
-  const [text, setText] = useState<string | undefined>();
-  const [addTaskBtnClicked, setAddTaskBtnClicked] = useState<
-    string | undefined
-  >();
 
-  // this not used right now maybe we will need it
-  function handleClick(state: string | undefined) {
-    setAddTaskBtnClicked(state);
-    switch (
-    state
-    // case 'displayTask':
-    //   // setComponent(<DisplayTasksCategories />);
-    //   setText('Tasks');
-    //   break;
-    // case 'displayScoreboard':
-    //   setComponent(<Scoreboard />);
-    //   setText('Scoreboard');
-    //   break;
-    // default:
-    //   setComponent(undefined);
-    //   break;
-    ) {
-    }
-  }
+  const [smallScreen] = useState(dimensions.screen.height < 600);
 
   const handelNav = (navigationValue: string) => {
     if (navigationValue === 'DisplayTasks') {
@@ -76,7 +53,29 @@ export default function RoomUI() {
       });
     }
   };
+  useEffect(() => {
+    if (
+      loggedInProfile &&
+      loggedInProfile.parent &&
+      selectedChild !== undefined
+    ) {
+      // Logged in profile is a parent, find and render selected child's room
+      handleData(selectedChild);
+    } else if (loggedInProfile && loggedInProfile.avatar) {
+      // Logged in profile is a kid, find and render kid's room.
+      handleData(loggedInProfile);
+    }
+  }, [loggedInProfile, selectedChild]);
 
+  function handleData(profileProp: any) {
+    // find and render child's avatar
+    const foundAvatar = avatars.find(
+      avatar => avatar.id === profileProp.avatar,
+    );
+    if (foundAvatar && foundAvatar.image) {
+      setProfileAvatar(foundAvatar.image);
+    }
+  }
   const ScreenWidth = Dimensions.get('window').width;
   // const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
@@ -130,6 +129,13 @@ export default function RoomUI() {
       alignItems: 'center',
       justifyContent: 'flex-start',
     },
+    ProfileInfo: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: smallScreen ? 50 : 60,
+      width: smallScreen ? 170 : 230,
+      justifyContent: 'flex-start',
+    },
     SidesButtons: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -166,90 +172,80 @@ export default function RoomUI() {
       top: smallScreen ? 0 : 140,
       right: smallScreen ? 100 : 210,
     },
+    AvatarView: {
+      width: 0.06 * ScreenWidth,
+      height: 0.06 * ScreenWidth,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#067B7B',
+      borderRadius: 500,
+      marginRight: 0.01 * ScreenWidth,
+    },
   });
 
   return (
-    <>
-      <View style={{}}>
-        <TouchableOpacity onPress={() => setOpen(false)} activeOpacity={1}>
-          {!addTaskBtnClicked ? (
-            <View>
-              <View style={styles.imagesContainer}>
-                {open && (
-                  <View style={styles.sidebar}>
-                    <SidebarMenu />
-                  </View>
-                )}
-                <ImageBackground
-                  source={woodSignLarge}
-                  style={styles.woodLargeStyle}
-                >
-                  <View style={styles.SidesButtons}>
-                    <Button background="BellButtonImage" onPress={logout} />
-                    <Button
-                      background="BellButtonImage"
-                      onPress={() => console.log('log')}
-                    />
-                  </View>
-                </ImageBackground>
-                {/* <Image source={woodSignLarge} style={styles.woodLargeStyle} /> */}
-                <ImageBackground
-                  source={awardBadge}
-                  style={styles.awardBadgeStyle}
-                >
-                  <Button
-                    background="TrophyButtonImage"
-                    onPress={() => {
-                      handelNav('DisplayRewards');
+    <View>
+      <TouchableOpacity onPress={() => setOpen(false)} activeOpacity={1}>
+        <View>
+          <View style={styles.imagesContainer}>
+            {open && (
+              <View style={styles.sidebar}>
+                <SidebarMenu setSideBarOpen={setOpen} />
+              </View>
+            )}
+            <ImageBackground
+              source={woodSignLarge}
+              style={styles.woodLargeStyle}
+            >
+              <View style={styles.ProfileInfo}>
+                <View style={styles.AvatarView}>
+                  <Image
+                    source={profileAvatar}
+                    style={{
+                      width: 0.04 * ScreenWidth,
+                      height: 0.04 * ScreenWidth,
                     }}
                   />
-                </ImageBackground>
-                {/* <Image source={awardBadge} style={styles.awardBadgeStyle} /> */}
-                <ImageBackground
-                  source={woodSignLarge}
-                  style={styles.woodLargeStyle}
-                >
-                  <View style={styles.SidesButtons}>
-                    {tasks.length ? (
-                      <>
-                        <View style={styles.tasksLength}>
-                          <Text type="NotificationNum">{tasks.length}</Text>
-                        </View>
-                      </>
-                    ) : null}
-                    <Button
-                      background="TodoButtonImage"
-                      onPress={() => {
-                        // handleClick('displayTask');
-                        handelNav('DisplayTasks');
-                      }}
-                    />
-                    <Button
-                      background="MenuIcon"
-                      onPress={() => setOpen(true)}
-                    />
-                  </View>
-                </ImageBackground>
-              </View>
-
-              {/* {open ? (
-                <View style={styles.arrowStyle}>
-                  <Button
-                    background="GoBackArrowLeft"
-                    onPress={() => setOpen(false)}
-                  />
                 </View>
-              ) : null} */}
-            </View>
-          ) : (
-            <FormModal
-              component={component}
-              onEmit={() => handleClick(undefined)}
-              text={text}
-            />
-          )}
-        </TouchableOpacity>
-      </View>
-    </>
+                <Text type="header">
+                  {loggedInProfile && !loggedInProfile.parent
+                    ? loggedInProfile.name.toUpperCase()
+                    : selectedChild?.name.toUpperCase()}
+                </Text>
+              </View>
+            </ImageBackground>
+            <ImageBackground source={awardBadge} style={styles.awardBadgeStyle}>
+              <Button
+                background="TrophyButtonImage"
+                onPress={() => {
+                  handelNav('DisplayRewards');
+                }}
+              />
+            </ImageBackground>
+            <ImageBackground
+              source={woodSignLarge}
+              style={styles.woodLargeStyle}
+            >
+              <View style={styles.SidesButtons}>
+                {tasks && tasks.length ? (
+                  <>
+                    <View style={styles.tasksLength}>
+                      <Text type="NotificationNum">{tasks.length}</Text>
+                    </View>
+                  </>
+                ) : null}
+                <Button
+                  background="TodoButtonImage"
+                  onPress={() => {
+                    handelNav('DisplayTasks');
+                  }}
+                />
+                <Button background="MenuIcon" onPress={() => setOpen(true)} />
+              </View>
+            </ImageBackground>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 }
