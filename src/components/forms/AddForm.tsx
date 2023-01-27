@@ -1,62 +1,65 @@
+import { useDimensions } from '@react-native-community/hooks';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import {
-  Alert,
+  Dimensions,
+  Image,
+  ImageBackground,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
-  Image,
-  ImageBackground,
-  Dimensions,
-  ScrollView,
 } from 'react-native';
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useDimensions } from '@react-native-community/hooks';
 // Uninstall
 // import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useNavigation } from '@react-navigation/native';
-import { TextInput } from '../CustomInput';
-import Button from '../buttons/Buttons';
-import laundryBasket from '../../../assets/images/Icons/basket.png';
-import { Text } from '../Text';
+import Toast from 'react-native-root-toast';
+import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
+import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
 import hourglass from '../../../assets/images/Icons/hourglass.png';
 import PointsIcon from '../../../assets/images/Icons/PointsIcon.png';
-import TaskTextBg from '../../../assets/images/TaskTextBg.png';
-import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
-import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
 import InputBg from '../../../assets/images/InputBg.png';
+import garbageBin from '../../../assets/images/roomObjects/disposal/garbageBin.png';
+import plant from '../../../assets/images/roomObjects/disposal/plant.png';
+import washSponge from '../../../assets/images/roomObjects/disposal/washSponge.png';
+import dirtyLaundry from '../../../assets/images/roomObjects/draggable/dirtyLaundry.png';
+import TaskTextBg from '../../../assets/images/TaskTextBg.png';
+import broom from '../../../assets/images/roomObjects/draggable/broom.png';
 import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
+import Button from '../buttons/Buttons';
+import { TextInput } from '../CustomInput';
+import { Text } from '../Text';
 import Toast from 'react-native-root-toast';
 
 const cleaningTodo = [
   {
     title: 'Laundry',
     description: 'Deal with your laundry',
-    img: laundryBasket,
+    img: dirtyLaundry,
     selected: false,
   },
   {
     title: 'Dishes',
     description: 'Deal with your dishes',
-    img: laundryBasket,
+    img: washSponge,
     selected: false,
   },
   {
     title: 'Garbage',
     description: 'Take out your garbage',
-    img: laundryBasket,
+    img: garbageBin,
     selected: false,
   },
   {
     title: 'Watering Plants',
     description: 'Water the poor plants',
-    img: laundryBasket,
+    img: plant,
     selected: false,
   },
   {
     title: 'Vacuum',
     description: 'Get those dust bunnies',
-    img: laundryBasket,
+    img: broom,
     selected: false,
   },
 ];
@@ -88,7 +91,6 @@ export const AddTodoForm = ({
 }: todoFormProps) => {
   const [errors, setErrors]: [ErrorType, Dispatch<SetStateAction<{}>>] =
     React.useState({});
-  const navigation = useNavigation();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [endTime, setEndTime] = useState<Date>();
   const [pointsValue, setPointsValue] = useState('');
@@ -406,8 +408,8 @@ export const AddTodoForm = ({
             </View>
             <ScrollView
               horizontal={true}
-              // style={{ width: 0.3 * ScreenWidth }}
-            ></ScrollView>
+            // style={{ width: 0.3 * ScreenWidth }}
+            />
             <ScrollView
               horizontal={true}
               style={{
@@ -438,9 +440,11 @@ export const AddTodoForm = ({
                         }
                       >
                         <Image
+                          resizeMode="contain"
                           source={todo.img}
                           style={{
                             width: smallScreen ? 50 : 50,
+                            height: 50,
                             resizeMode: 'stretch',
                           }}
                         />
