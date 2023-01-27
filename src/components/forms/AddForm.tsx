@@ -12,7 +12,6 @@ import {
 // Uninstall
 // import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Toast from 'react-native-root-toast';
 import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
 import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
 import hourglass from '../../../assets/images/Icons/hourglass.png';
@@ -29,6 +28,7 @@ import { useDataContext } from '../../util/context/DataContext';
 import Button from '../buttons/Buttons';
 import { TextInput } from '../CustomInput';
 import { Text } from '../Text';
+import Toast from 'react-native-root-toast';
 
 const cleaningTodo = [
   {
@@ -407,7 +407,7 @@ export const AddTodoForm = ({
             </View>
             <ScrollView
               horizontal={true}
-            // style={{ width: 0.3 * ScreenWidth }}
+              // style={{ width: 0.3 * ScreenWidth }}
             />
             <ScrollView
               horizontal={true}
@@ -543,7 +543,15 @@ export const AddTodoForm = ({
             // marginTop: category === 'Room' ? -15 : 10,
           }}
         >
-          <Button background="GreenForms" text="Add" onPress={() => submit()} />
+          <Button
+            background="GreenForms"
+            text={
+              category === 'EditTask' || category === 'EditReward'
+                ? 'Update'
+                : 'Add'
+            }
+            onPress={() => submit()}
+          />
           <Button
             background="Cancel"
             text="Cancel"

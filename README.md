@@ -19,6 +19,8 @@ After the user has enough points they recieve the reward
 
 credit to artists: https://www.freepik.com/author/upklyak
 
+sound credit: Sound Effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124464">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124464">Pixabay</a>
+
 ## Run
 
 Either run the project with expo go through the publish link or npm

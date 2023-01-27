@@ -59,20 +59,22 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     },
 
     Gold: {
-      fontSize: smallScreen ? 0.05 * ScreenHeight : 0.05 * ScreenHeight,
+      fontSize: 0.08 * ScreenHeight,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: 'rgba(136, 80, 0, 1)',
       textAlign: 'center',
+      marginBottom: 10,
     },
 
     Green: {
-      fontSize: smallScreen ? 0.05 * ScreenHeight : 0.05 * ScreenHeight,
+      fontSize: 0.05 * ScreenHeight,
       alignSelf: 'center',
       fontFamily: 'Inika',
       color: '#0F6209',
       width: '100%',
       textAlign: 'center',
+      marginBottom: 10,
     },
     GreenForms: {
       fontSize: smallScreen ? 15 : 20,
@@ -168,6 +170,7 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       fontFamily: 'Inika',
       color: 'rgba(255, 255, 255, .5)',
       textAlign: 'center',
+      marginBottom: 10,
     },
     aboutText: {
       fontSize: smallScreen ? 15 : 22,

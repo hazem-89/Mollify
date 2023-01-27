@@ -61,7 +61,7 @@ export default function Disposal({ imageFilter, show }: DisposalProps) {
       case 'Take out your garbage':
         setFoundRoomObject(findRoomObject('garbage'));
         break;
-      case 'Not too much, not too little water':
+      case 'Water the poor plants':
         setFoundRoomObject(findRoomObject('watering'));
         break;
       case 'Get those dust bunnies':

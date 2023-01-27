@@ -19,20 +19,24 @@ import ChatBubble from './ChatBubble';
 
 type OnboardingProps = {
   guide:
-  | 'roomScreenChild'
-  | 'roomScreenParent'
-  | 'taskScreenParent'
-  | 'rewardScreenParent'
-  | 'taskScreenChild'
-  | 'rewardScreenChild';
+    | 'roomScreenChild'
+    | 'roomScreenParent'
+    | 'taskScreenParent'
+    | 'rewardScreenParent'
+    | 'taskScreenChild'
+    | 'rewardScreenChild';
 };
 
 export default function Onboarding({ guide }: OnboardingProps) {
   const ScreenHeight = Dimensions.get('window').height;
   const ScreenWidth = Dimensions.get('window').width;
   const [open, setOpen] = useState(false);
-  const { onboardingComplete, setOnboardingComplete, setAsyncData } =
-    useDataContext();
+  const {
+    onboardingComplete,
+    setOnboardingComplete,
+    setAsyncData,
+    selectedChild,
+  } = useDataContext();
 
   function handlePress() {
     const updatedOnboarding = onboardingComplete;
@@ -166,10 +170,8 @@ export default function Onboarding({ guide }: OnboardingProps) {
                   source={Tiger}
                 />
                 <ChatBubble orientation="right">
-                  <Text>Welcome to your childs room!</Text>
-                  <Text>
-                    {`Here you can manage your child's tasks and rewards.`}
-                  </Text>
+                  <Text>Welcome to {selectedChild.name}'s room!</Text>
+                  <Text>{`Here you can manage ${selectedChild.name}'s tasks and rewards.`}</Text>
                 </ChatBubble>
               </View>
             )}
@@ -182,7 +184,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 />
                 <ChatBubble orientation="right">
                   <Text>This is the tasks screen.</Text>
-                  <Text>{`Here you can manage your child's tasks.`}</Text>
+                  <Text>{`Here you can manage ${selectedChild.name}'s tasks.`}</Text>
                 </ChatBubble>
               </View>
             )}
@@ -195,7 +197,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
                 />
                 <ChatBubble orientation="right">
                   <Text>This is the rewards screen.</Text>
-                  <Text>{`Here you can manage your child's rewards.`}</Text>
+                  <Text>{`Here you can manage your ${selectedChild.name}'s rewards.`}</Text>
                 </ChatBubble>
               </View>
             )}
