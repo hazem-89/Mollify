@@ -12,7 +12,7 @@ import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useDataContext } from '../../util/context/DataContext';
-import ProfileButton from '../buttons/ProfileButton';
+import ProfileButton from '../buttons/profileButton';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
@@ -43,10 +43,14 @@ const SelectProfile = () => {
     } else {
       if (profiles.length === 1) {
         if (!loggedInProfile) {
-          setMainText('Login to your parent profile, to add a new child profile');
+          setMainText(
+            'Login to your parent profile, to add a new child profile',
+          );
         }
         if (loggedInProfile && loggedInProfile.parent) {
-          setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child profile`);
+          setMainText(
+            `Welcome ${loggedInProfile.name.toUpperCase()}, Start creating a new child profile`,
+          );
         }
       }
       if (profiles.length > 1) {
@@ -55,11 +59,11 @@ const SelectProfile = () => {
         }
         if (loggedInProfile && loggedInProfile.parent) {
           setMainText(`Welcome ${loggedInProfile.name.toUpperCase()}
-            Select profile to manage`,);
+            Select profile to manage`);
         }
       }
     }
-  }
+  };
 
   const styles = StyleSheet.create({
     modal: {
@@ -146,7 +150,6 @@ const SelectProfile = () => {
               </View>
             </>
           ) : null}
-
           <ScrollView contentContainerStyle={{
             paddingHorizontal: 10,
           }} horizontal={true} style={styles.ProfilesView}>
