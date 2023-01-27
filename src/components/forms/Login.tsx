@@ -30,7 +30,6 @@ export const LoginForm = ({ onClose }: LoginProps) => {
     ButtonsView: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      // width: smallScreen ? 200 : 450,
       marginTop: smallScreen ? 30 : 40,
     },
     inputStyle: {

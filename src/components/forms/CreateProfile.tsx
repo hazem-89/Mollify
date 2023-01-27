@@ -10,6 +10,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import Toast from 'react-native-root-toast';
 import RewardMainTitleBg from '../../../assets/images/RewardMainTitleBg.png';
 import TigerMessage from '../../../assets/images/TigerMessage.png';
 import { useLogin } from '../../util/auth';
@@ -129,7 +130,21 @@ export const CreateProfileForm = ({
         points: profile.points,
         id: profile.id,
       };
-      updateFSDoc('profiles', profile.id, updatedProfile);
+      updateFSDoc('profiles', profile.id, updatedProfile).then(
+        Toast.show('Profile updated successfully.  ', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.TOP,
+          shadow: true,
+          animation: true,
+          hideOnPress: true,
+          delay: 0,
+        }),
+        retrieveFSData('profiles', 'mainUserId', `${currentUser?.uid}`).then(
+          (data: DocumentData[]) => {
+            data && setProfiles(data);
+          },
+        ),
+      );
       setSelectedChild(updatedProfile);
     }
   };

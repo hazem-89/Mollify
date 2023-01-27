@@ -40,7 +40,7 @@ const TaskCard = ({ task }: Props) => {
     updateFSDoc,
     setTasks,
     setSelectedChild,
-    tasks,
+    setRewards,
   } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -77,6 +77,11 @@ const TaskCard = ({ task }: Props) => {
         points: pointsSum.toString(),
       };
       setSelectedChild({ ...selectedChild, points: pointsSum.toString() });
+      retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+        (data: any) => {
+          data ? setRewards(data) : setRewards([]);
+        },
+      );
     }
     if (task.id) {
       try {
@@ -85,14 +90,19 @@ const TaskCard = ({ task }: Props) => {
           await updateFSDoc('profiles', selectedChild.id, updateProfilePoints);
           retrieveFSData('Tasks', 'profileId', selectedChild.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              data ? setTasks(data) : setTasks([]);
             },
           );
         } else if (loggedInProfile) {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              data ? setTasks(data) : setTasks([]);
+            },
+          );
+          retrieveFSData('Rewards', 'profileId', `${loggedInProfile.id}`).then(
+            (data: any) => {
+              data ? setRewards(data) : setRewards([]);
             },
           );
         }
@@ -279,13 +289,13 @@ const TaskCard = ({ task }: Props) => {
                 style={{
                   position: 'absolute',
                   zIndex: 3,
-                  top: -20,
-                  left: smallScreen ? 280 : 370,
+                  top: -10,
+                  left: 0.35 * ScreenWidth,
                 }}
               >
                 <Image
                   source={TaskInReviewNotifChilled}
-                  style={{ width: 50, height: 50 }}
+                  style={{ width: 40, height: 40 }}
                 />
               </View>
             )}
@@ -340,7 +350,7 @@ const TaskCard = ({ task }: Props) => {
           </View>
         </>
       ) : (
-        <View style={{ position: 'absolute', top: -50 }}>selectedForm</View>
+        <View style={{ position: 'absolute', top: -50 }}>{selectedForm}</View>
       )}
     </View>
   );
