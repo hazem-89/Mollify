@@ -279,13 +279,13 @@ const TaskCard = ({ task }: Props) => {
                 style={{
                   position: 'absolute',
                   zIndex: 3,
-                  top: -20,
-                  left: smallScreen ? 280 : 370,
+                  top: -10,
+                  left: 0.35 * ScreenWidth,
                 }}
               >
                 <Image
                   source={TaskInReviewNotifChilled}
-                  style={{ width: 50, height: 50 }}
+                  style={{ width: 40, height: 40 }}
                 />
               </View>
             )}
@@ -340,7 +340,7 @@ const TaskCard = ({ task }: Props) => {
           </View>
         </>
       ) : (
-        <View style={{ position: 'absolute', top: -50 }}>selectedForm</View>
+        <View style={{ position: 'absolute', top: -50 }}>{selectedForm}</View>
       )}
     </View>
   );

@@ -19,15 +19,16 @@ import { avatars } from '../../util/itemObjects';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
-import { Audio } from 'expo-av';
+// import { Audio } from 'expo-av';
+// import { useLogin } from '../../util/auth';
 
 const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [mainText, setMainText] = useState<string | undefined>();
   const dimensions = useDimensions();
   const navigation = useNavigation();
-  const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [buttonPressed, setButtonPressed] = useState(false);
+  // const [sound, setSound] = useState<Audio.Sound | null>(null);
+  // const [buttonPressed, setButtonPressed] = useState(false);
 
   const [smallScreen] = useState(dimensions.screen.height < 600);
   const {
@@ -37,21 +38,22 @@ const SelectProfile = () => {
     setSelectedChild,
     setTasks,
     setRewards,
+    retrieveFSData,
+    setProfiles,
   } = useDataContext();
-  useEffect(() => {
-    (async () => {
-      const sound1 = new Audio.Sound();
-      sound1.loadAsync(require('../../../assets/sounds/selected.mp3'));
-      setSound(sound1);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const sound1 = new Audio.Sound();
+  //     sound1.loadAsync(require('../../../assets/sounds/selected.mp3'));
+  //     setSound(sound1);
+  //   })();
+  // }, [buttonPressed]);
 
   const handlePlaySound = async () => {
-    setButtonPressed(!buttonPressed);
-
-    if (sound && sound._loaded) {
-      await sound.playAsync();
-    }
+    // setButtonPressed(!buttonPressed);
+    // if (sound && sound._loaded) {
+    //   await sound.playAsync();
+    // }
   };
   useEffect(() => {
     getMainText();

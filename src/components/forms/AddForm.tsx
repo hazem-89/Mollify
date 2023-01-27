@@ -26,7 +26,6 @@ import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.
 import InputBg from '../../../assets/images/InputBg.png';
 import { Rewards, Tasks } from '../../Interfaces';
 import { useDataContext } from '../../util/context/DataContext';
-import Carousel from '../Carousel';
 import Toast from 'react-native-root-toast';
 
 const cleaningTodo = [
@@ -541,7 +540,15 @@ export const AddTodoForm = ({
             // marginTop: category === 'Room' ? -15 : 10,
           }}
         >
-          <Button background="GreenForms" text="Add" onPress={() => submit()} />
+          <Button
+            background="GreenForms"
+            text={
+              category === 'EditTask' || category === 'EditReward'
+                ? 'Update'
+                : 'Add'
+            }
+            onPress={() => submit()}
+          />
           <Button
             background="Cancel"
             text="Cancel"
