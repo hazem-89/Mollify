@@ -134,7 +134,7 @@ const RewardCard = ({ reward }: Props) => {
         <Image source={lightningBig} style={styles.PointsIcon}></Image>
         <View style={styles.PointsDetails}>
           <Image source={imageSource} style={styles.ProgressBar}></Image>
-          {PointsLeft === 0 ? (
+          {PointsLeft <= 0 ? (
             <View style={{ marginTop: 0.02 * ScreenHeight }}>
               <Text type="rewardDetails">
                 {selectedChild
@@ -158,7 +158,7 @@ const RewardCard = ({ reward }: Props) => {
           )}
         </View>
       </View>
-      {endDate < new Date() || PointsLeft === 0 ? (
+      {endDate < new Date() || PointsLeft <= 0 ? (
         <></>
       ) : (
         <>
