@@ -3,19 +3,13 @@ import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
 import { DocumentData } from 'firebase/firestore';
 import React, { ReactElement, useEffect, useState } from 'react';
-import {
-  Dimensions,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
 import { useDataContext } from '../../util/context/DataContext';
-import { avatars } from '../../util/itemObjects';
+import ProfileButton from '../buttons/profileButton';
 import { CreateProfileForm } from '../forms/CreateProfile';
 import EnterProfile from '../forms/EnterProfile';
 import FormModal from '../modals/FormModal';
@@ -26,15 +20,13 @@ const SelectProfile = () => {
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [mainText, setMainText] = useState<string | undefined>();
   const dimensions = useDimensions();
-  const navigation = useNavigation();
-  // const [sound, setSound] = useState<Audio.Sound | null>(null);
-  // const [buttonPressed, setButtonPressed] = useState(false);
-
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const navigation = useNavigation();
   const {
     profiles,
     loggedInProfile,
-    filteredProfiles,
     setSelectedChild,
     setTasks,
     setRewards,
@@ -87,8 +79,6 @@ const SelectProfile = () => {
     }
   };
 
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     modal: {
       position: 'absolute',
@@ -105,25 +95,11 @@ const SelectProfile = () => {
       flexDirection: 'row',
     },
     ProfilesView: {
-      flexDirection: 'row',
       width: '80%',
     },
-    profile: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      textAlign: 'center',
-      marginLeft: 10,
-    },
-    Avatar: {
-      width: smallScreen ? 70 : 100,
-      height: smallScreen ? 70 : 100,
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#067B7B',
-      borderRadius: 500,
-    },
   });
-  const handelNav = () => {
+
+  const handleNav = () => {
     // console.log(navigationValue);
     // @ts-ignore
     navigation.navigate('TasksCategoryPage', {
@@ -132,6 +108,7 @@ const SelectProfile = () => {
       },
     });
   };
+
   function handleClick(state: string | undefined, profile?: DocumentData) {
     // setBtnClicked(state);
     switch (state) {
@@ -146,6 +123,8 @@ const SelectProfile = () => {
           setTasks([]);
           setRewards([]);
           setSelectedChild(profile);
+          // @ts-ignore
+          navigation.navigate('RoomScreen');
         }
         break;
       default:
@@ -156,7 +135,11 @@ const SelectProfile = () => {
 
   return (
     <>
-      <ImageBackground source={SelectFormMenu} style={styles.modal}>
+      <ImageBackground
+        source={SelectFormMenu}
+        style={styles.modal}
+        resizeMode="stretch"
+      >
         <View
           style={{
             maxWidth: 0.5 * ScreenWidth,
@@ -179,88 +162,40 @@ const SelectProfile = () => {
               >
                 <Button
                   background="AddButtonImage"
-                  onPress={() => handelNav()}
+                  onPress={() => handleNav()}
                 />
               </View>
             </>
-          ) : (
-            <></>
-          )}
+          ) : null}
 
-          <View style={styles.ProfilesView}>
-            {filteredProfiles && loggedInProfile && loggedInProfile.parent
-              ? filteredProfiles?.map((profile: DocumentData) => {
-                  let profileImage;
-                  avatars.filter(avatar =>
-                    avatar.id === profile.avatar
-                      ? (profileImage = avatar.image)
-                      : null,
-                  );
+          <ScrollView
+            contentContainerStyle={{
+              paddingHorizontal: 10,
+            }}
+            horizontal={true}
+            style={styles.ProfilesView}
+          >
+            {loggedInProfile && loggedInProfile.parent
+              ? profiles?.map((profile: DocumentData) => {
+                  if (profile.parent === true) {
+                    return null;
+                  }
                   return (
-                    <TouchableOpacity
-                      key={profile?.id}
-                      onPress={() => {
-                        handleClick('ManageProfile', profile);
-                        handlePlaySound();
-                      }}
-                    >
-                      <View style={styles.profile}>
-                        <View style={styles.Avatar}>
-                          <Image
-                            source={profileImage}
-                            style={{
-                              width: smallScreen ? 50 : 75,
-                              height: smallScreen ? 50 : 75,
-                            }}
-                          />
-                        </View>
-                        <Text type="text">{profile?.name.toUpperCase()}</Text>
-                      </View>
-                    </TouchableOpacity>
+                    <ProfileButton
+                      key={profile.id}
+                      onpress={() => handleClick('ManageProfile', profile)}
+                      profile={profile}
+                    />
                   );
                 })
-              : profiles?.map((profile: DocumentData) => {
-                  let profileImage;
-                  avatars.filter(avatar =>
-                    avatar.id === profile.avatar
-                      ? (profileImage = avatar.image)
-                      : null,
-                  );
-                  return (
-                    <TouchableOpacity
-                      key={profile?.id}
-                      onPress={() => {
-                        handleClick('EnterPIN', profile);
-                        handlePlaySound();
-                      }}
-                    >
-                      <View style={styles.profile}>
-                        <View
-                          style={{
-                            width: smallScreen ? 70 : 100,
-                            height: smallScreen ? 70 : 100,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: profile.parent
-                              ? '#2BC899'
-                              : '#067B7B',
-                            borderRadius: 500,
-                          }}
-                        >
-                          <Image
-                            source={profileImage}
-                            style={{
-                              width: smallScreen ? 50 : 75,
-                              height: smallScreen ? 50 : 75,
-                            }}
-                          />
-                        </View>
-                        <Text type="text">{profile?.name.toUpperCase()}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  );
-                })}
-          </View>
+              : profiles?.map((profile: DocumentData) => (
+                  <ProfileButton
+                    key={profile.id}
+                    onpress={() => handleClick('EnterPIN', profile)}
+                    profile={profile}
+                  />
+                ))}
+          </ScrollView>
         </View>
       </ImageBackground>
       <FormModal component={component} />

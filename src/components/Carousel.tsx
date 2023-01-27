@@ -1,4 +1,3 @@
-import { useDimensions } from '@react-native-community/hooks';
 import React, { useState } from 'react';
 import { Dimensions, FlatList, Image, StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -13,9 +12,6 @@ type CarouselProps = {
 export default function Carousel({ title, data, onEmit }: CarouselProps) {
   const [selectedItem, setSelectedItem] = useState();
   const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
-  const dimensions = useDimensions();
-  const [smallScreen] = useState(dimensions.screen.height < 600);
   const styles = StyleSheet.create({
     CarouselContainer: {
       display: 'flex',

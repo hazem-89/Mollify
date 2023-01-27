@@ -65,7 +65,7 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
                   setSideBarOpen(false);
                 }}
               />
-              <Text type="Cancel">Exit current profile</Text>
+              <Text type="Cancel">Exit parent profile</Text>
             </View>
           ) : (
             <View style={styles.settingsAlign}>
@@ -94,6 +94,18 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
               <Text type="Cancel">Settings</Text>
             </View>
           )}
+
+          <View style={styles.settingsAlign}>
+            <Button
+              background="InfoButtonImage"
+              onPress={() =>
+                // @ts-ignore
+
+                navigation.navigate('AboutScreen')
+              }
+            />
+            <Text type="Cancel">About</Text>
+          </View>
           <View style={styles.logoutAlign}>
             <Button
               background="LogoutIcon"

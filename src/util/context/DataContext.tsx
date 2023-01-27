@@ -19,7 +19,6 @@ import { ProfileInterface } from '../../Interfaces';
 interface ContextInterface {
   profiles: DocumentData;
   setProfiles: Function;
-  filteredProfiles: DocumentData;
   tasks: DocumentData;
   setTasks: Function;
   rewards: DocumentData;
@@ -62,7 +61,6 @@ interface ContextInterface {
 export const DataContext = createContext<ContextInterface>({
   profiles: [],
   setProfiles: () => false,
-  filteredProfiles: [],
   tasks: [],
   setTasks: () => false,
   rewards: [],
@@ -94,8 +92,6 @@ export default function DataProvider(props: any) {
   const [loggedInProfile, setLoggedInProfile] = useState<ProfileInterface>();
   // The current child profile being managed
   const [selectedChild, setSelectedChild] = useState<ProfileInterface>();
-  // The filtered profiles that are rendered when logged in as parent.
-  const [filteredProfiles, setFilteredProfiles] = useState<DocumentData>();
   // Here 👇 the tasks for the selected profile are stored.
   const [tasks, setTasks] = useState<DocumentData[]>([]);
   // Here 👇 the rewards for the selected profile are stored.
@@ -122,7 +118,19 @@ export default function DataProvider(props: any) {
           },
         );
         getAsyncData('loggedInProfile').then(data => {
-          if (data) setLoggedInProfile(data);
+          if (data) {
+            setLoggedInProfile(data);
+            if (data.parent) {
+              // @ts-ignore
+              navigation.navigate('StartScreen');
+            } else {
+              // @ts-ignore
+              navigation.navigate('RoomScreen');
+            }
+          } else {
+            // @ts-ignore
+            navigation.navigate('StartScreen');
+          }
         });
         getAsyncData('onboardingComplete').then(data => {
           if (data) setOnboardingComplete(data);
@@ -130,7 +138,6 @@ export default function DataProvider(props: any) {
       } else {
         // Logging out, reset relevant states
         setLoggedInProfile(undefined);
-        setFilteredProfiles(undefined);
         setProfiles(undefined);
         setSelectedChild(undefined);
         setTasks([]);
@@ -143,36 +150,8 @@ export default function DataProvider(props: any) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
 
-  useEffect(() => {
-    if (loggedInProfile !== undefined) {
-      if (!loggedInProfile.parent) {
-        // Navigate to room if child profile
-        // @ts-ignore
-        navigation.navigate('RoomScreen');
-      } else if (selectedChild) {
-        // @ts-ignore
-        navigation.navigate('RoomScreen');
-      } else if (profiles) {
-        // Stay on selectProfile and remove parent profile from selectable profiles if loggedInProfile is parent.
-        const filter = profiles.filter(
-          (profile: DocumentData) => profile.id !== loggedInProfile.id,
-        );
-        setFilteredProfiles(filter);
-        // @ts-ignore
-        navigation.navigate('StartScreen');
-      } else {
-        // @ts-ignore
-        navigation.navigate('StartScreen');
-      }
-    } else {
-      setAsyncData('loggedInProfile', undefined);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loggedInProfile, profiles, selectedChild]);
-
   // This function is used to store or remove an object value in the async storage on the device.
   async function setAsyncData(key: string, data: any[] | undefined) {
-    console.log('running setasyncdata');
     try {
       if (data !== undefined) {
         const jsonValue = JSON.stringify(data);
@@ -261,7 +240,6 @@ export default function DataProvider(props: any) {
         setProfiles,
         selectedChild,
         setSelectedChild,
-        filteredProfiles,
         tasks,
         setTasks,
         rewards,

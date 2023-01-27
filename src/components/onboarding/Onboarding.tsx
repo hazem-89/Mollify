@@ -38,13 +38,7 @@ export default function Onboarding({ guide }: OnboardingProps) {
     selectedChild,
   } = useDataContext();
 
-  useEffect(() => {
-    console.log('onboarding state', onboardingComplete);
-    console.log('guide', guide);
-  }, [guide, onboardingComplete]);
-
   function handlePress() {
-    console.log('press', onboardingComplete);
     const updatedOnboarding = onboardingComplete;
     // fix ts error
     // @ts-ignore
@@ -63,11 +57,9 @@ export default function Onboarding({ guide }: OnboardingProps) {
       updatedOnboarding[key] = true;
     });
     setOnboardingComplete(updatedOnboarding);
-    console.log('disabled guides');
   }
 
   function handleOpen() {
-    console.log('open');
     const updatedOnboarding = { ...onboardingComplete };
     // fix ts error
     // @ts-ignore

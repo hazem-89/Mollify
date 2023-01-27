@@ -172,6 +172,12 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
       textAlign: 'center',
       marginBottom: 10,
     },
+    aboutText: {
+      fontSize: smallScreen ? 15 : 22,
+      fontFamily: 'Inika',
+      color: '#fff',
+      textAlign: 'center',
+    },
   });
 
   let textStyles: StyleProp<TextStyle>[] = [styles.smallText];
@@ -216,6 +222,8 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     textStyles.push(styles.disable);
   } else if (type === 'text') {
     textStyles.push(styles.smallText);
+  } else if (type === 'aboutText') {
+    textStyles.push(styles.aboutText);
   }
 
   textStyles = [...textStyles, ...style];
@@ -226,3 +234,4 @@ export const Text = ({ type, children, style = [] }: TextProps) => {
     </RNText>
   );
 };
+

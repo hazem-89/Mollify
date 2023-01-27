@@ -30,10 +30,12 @@ export default function StartScreen() {
   const [btnClicked, setBtnClicked] = useState<string | undefined>();
   const [component, setComponent] = useState<ReactElement | undefined>();
   const [sideBarOpen, setSideBarOpen] = useState(false);
-
-  const { currentUser, logout } = useLogin();
+  const ScreenWidth = Dimensions.get('window').width;
+  const ScreenHeight = Dimensions.get('window').height;
+  const { currentUser } = useLogin();
   const {
     setSelectedChild,
+    selectedChild,
     loggedInProfile,
     setLoggedInProfile,
     setTasks,
@@ -44,10 +46,16 @@ export default function StartScreen() {
   useFocusEffect(
     React.useCallback(() => {
       // focused StartScreen, reset states
-      if (loggedInProfile && !('parent' in loggedInProfile)) {
+      if (
+        selectedChild ||
+        (loggedInProfile && loggedInProfile.parent === true)
+      ) {
+        console.log('reseting child in startscreen');
+        setSelectedChild(undefined);
+      } else if (loggedInProfile && loggedInProfile.parent !== true) {
+        console.log('reseting loggedin in startscreen');
         setLoggedInProfile(undefined);
       }
-      setSelectedChild(undefined);
       setTasks([]);
       setRewards([]);
       // return () => {
@@ -55,8 +63,7 @@ export default function StartScreen() {
       // };
     }, []),
   );
-  const ScreenWidth = Dimensions.get('window').width;
-  const ScreenHeight = Dimensions.get('window').height;
+
   const styles = StyleSheet.create({
     WelcomeSign: {
       justifyContent: 'center',
@@ -163,7 +170,11 @@ export default function StartScreen() {
           </TouchableOpacity>
         ) : (
           <>
-            <Image source={WelcomeSign} style={styles.WelcomeSign} />
+            <Image
+              source={WelcomeSign}
+              style={styles.WelcomeSign}
+              resizeMode="contain"
+            />
             <View style={{ marginTop: 20 }}>
               <Button
                 disable={!!btnClicked}

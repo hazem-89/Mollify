@@ -1,27 +1,27 @@
 import { useDimensions } from '@react-native-community/hooks';
 import { useNavigation } from '@react-navigation/native';
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
+  Image,
   ImageBackground,
   ImageSourcePropType,
   StyleSheet,
   TouchableOpacity,
   View,
-  Image,
 } from 'react-native';
 import awardBadge from '../../assets/images/awardBadge.png';
 import woodSignLarge from '../../assets/images/woodSignLarge.png';
 import { Text } from '../components/Text';
 import { useDataContext } from '../util/context/DataContext';
+import { avatars, randomColorOptions } from '../util/itemObjects';
 import Button from './buttons/Buttons';
 import SidebarMenu from './menu/SidebarMenu';
-import { avatars } from '../util/itemObjects';
 
 /* type roomProps = {
   addTaskBtnClicked: string;
   setAddTaskBtnClicked: React.Dispatch<
-    React.SetStateAction<string | undefined>
+  React.SetStateAction<string | undefined>
   >;
 }; */
 
@@ -29,11 +29,12 @@ export default function RoomUI() {
   const [open, setOpen] = useState(false);
   const { tasks, loggedInProfile, selectedChild } = useDataContext();
   const [profileAvatar, setProfileAvatar] = useState<ImageSourcePropType>();
-
-  const navigation = useNavigation();
   const dimensions = useDimensions();
-
+  const ScreenWidth = Dimensions.get('window').width;
+  // const ScreenHeight = Dimensions.get('window').height;
   const [smallScreen] = useState(dimensions.screen.height < 600);
+  const navigation = useNavigation();
+  const [color, setColor] = useState<string>();
 
   const handelNav = (navigationValue: string) => {
     if (navigationValue === 'DisplayTasks') {
@@ -53,6 +54,7 @@ export default function RoomUI() {
       });
     }
   };
+
   useEffect(() => {
     if (
       loggedInProfile &&
@@ -65,6 +67,9 @@ export default function RoomUI() {
       // Logged in profile is a kid, find and render kid's room.
       handleData(loggedInProfile);
     }
+    setColor(
+      randomColorOptions[Math.floor(Math.random() * randomColorOptions.length)],
+    );
   }, [loggedInProfile, selectedChild]);
 
   function handleData(profileProp: any) {
@@ -76,8 +81,6 @@ export default function RoomUI() {
       setProfileAvatar(foundAvatar.image);
     }
   }
-  const ScreenWidth = Dimensions.get('window').width;
-  // const ScreenHeight = Dimensions.get('window').height;
   const styles = StyleSheet.create({
     imagesContainer: {
       width: '100%',
@@ -177,9 +180,10 @@ export default function RoomUI() {
       height: 0.06 * ScreenWidth,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#067B7B',
+      backgroundColor: color,
       borderRadius: 500,
       marginRight: 0.01 * ScreenWidth,
+      overflow: 'hidden',
     },
   });
 
@@ -200,10 +204,11 @@ export default function RoomUI() {
               <View style={styles.ProfileInfo}>
                 <View style={styles.AvatarView}>
                   <Image
+                    resizeMode="cover"
                     source={profileAvatar}
                     style={{
-                      width: 0.04 * ScreenWidth,
-                      height: 0.04 * ScreenWidth,
+                      width: '100%',
+                      height: '100%',
                     }}
                   />
                 </View>
