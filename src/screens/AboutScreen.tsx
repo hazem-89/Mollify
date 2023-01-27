@@ -68,7 +68,7 @@ const AboutScreen = () => {
       zIndex: 5,
     },
     GoBackToRoomImageStyle: {
-      width: 0.15 * ScreenWidth,
+      width: smallScreen ? 0.15 * ScreenWidth : 0.22 * ScreenWidth,
       height: 0.17 * ScreenHeight,
       alignItems: 'center',
       justifyContent: 'center',
@@ -90,14 +90,14 @@ const AboutScreen = () => {
         <View style={styles.GoBackButton}>
           <TouchableOpacity
             // @ts-ignore
-            onPress={() => navigation.navigate('RoomScreen')}
+            onPress={() => navigation.goBack()}
           >
             <ImageBackground
               source={GoBackArrow}
               style={styles.GoBackToRoomImageStyle}
             >
               <View style={{ marginRight: '25%', marginBottom: 10 }}>
-                <Text type="header">Room</Text>
+                <Text type="header">Back</Text>
               </View>
             </ImageBackground>
           </TouchableOpacity>

@@ -167,7 +167,6 @@ const SelectProfile = () => {
               </View>
             </>
           ) : null}
-
           <ScrollView
             contentContainerStyle={{
               paddingHorizontal: 10,
