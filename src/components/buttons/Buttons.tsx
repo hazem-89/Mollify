@@ -18,10 +18,8 @@ import InfoButtonImage from '../../../assets/images/info.png';
 import BellButtonImage from '../../../assets/images/bell.png';
 import CancelButton from '../../../assets/images/Cancel.png';
 import TrophyButtonImage from '../../../assets/images/trophy.png';
-import ArrowButton from '../../../assets/images/Polygon.png';
 import TodoButtonImage from '../../../assets/images/todo.png';
 import EditButton from '../../../assets/images/EditButton.png';
-import ReverseArrowButton from '../../../assets/images/PolygonReverse.png';
 import DeleteIcon from '../../../assets/images/Icons/DeleteIcon.png';
 import DoneIcon from '../../../assets/images/Icons/DoneIcon.png';
 import GoBackArrowLeft from '../../../assets/images/GoBackArrowLeft.png';
@@ -189,12 +187,6 @@ function Button({
     } else if (background === 'TrophyButtonImage') {
       setSource(TrophyButtonImage);
       setStyle(styles.trophyStyle);
-    } else if (background === 'ArrowButton') {
-      setSource(ArrowButton);
-      setStyle(styles.arrowStyle);
-    } else if (background === 'ReverseArrowButton') {
-      setSource(ReverseArrowButton);
-      setStyle(styles.arrowStyle);
     } else if (background === 'DeleteTask') {
       setSource(DeleteIcon);
       setStyle(styles.DeleteTask);
@@ -252,4 +244,3 @@ function Button({
 }
 
 export default Button;
-
