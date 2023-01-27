@@ -74,7 +74,6 @@ export default function Disposal({ imageFilter, show }: DisposalProps) {
 
   function findRoomObject(objectID: string) {
     const roomObject = roomObjects.find(object => object.id === objectID);
-    console.log(roomObject);
     if (roomObject) return roomObject;
     return undefined;
   }
