@@ -2,47 +2,42 @@
 
 # Mollify your family's to-do list with ease!
 
-# React Native School TypeScript Expo Template
-
-A simple Expo template with the following features:
-
-- All TypeScript
-- Eslint & Prettier configured
-- React Navigation v6
-- Testing Configured
-- Simple project structure
-- Small component library to get started with
-
-It's easy to create a project, strip out the few components included, and still have the architecture in place to quickly start building an app.
-
 ## Usage
 
-> Be sure to have the [Expo CLI](https://docs.expo.io/workflow/expo-cli/) installed.
+This app let's parents manage their childrens todo lists.
+Register
+Create your parent profile
+Create your children(s) profile
+Enter child's room
+Set task for your child
+Set reward for your child
+After the child has done its task, he/she can request if it's done
+The child can interact with room and the task to request as well
+The parent can then accept in their profile if the task is done
+If it's done, the points increases
+After the user has enough points they recieve the reward
 
-```bash
-expo init --template @react-native-school/expo-typescript-template
-```
+credit to artists: https://www.freepik.com/author/upklyak
 
-- Run on iOS: `yarn ios` or `npm run ios`
-- Run on Android: `yarn android` or `npm run android`
-- Run on Web: `yarn web` or `npm run web`
-- Compile TypeScript: `yarn tsc`
-- Run Tests: `yarn test` or `npm run test`
-- Lint Code: `yarn lint` or `npm run lint`
-- Format Code: `yarn format` or `npm run format`
+sound credit: Sound Effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124464">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124464">Pixabay</a>
 
-## Screenshots
+## Run
 
-## sound credit
+Either run the project with expo go through the publish link or npm
 
-# cancel button
+npm:
 
-Sound Effect by <a href="https://pixabay.com/users/_idontknow_-28948652/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=116016">_IDONTKNOW_</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=116016">Pixabay</a>
+1. npm i
+2. npm expo start
+3. Download expo go and scan QR-code
 
-Sound Effect by <a href="https://pixabay.com/users/irinairinafomicheva-25140203/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=13692">irinairinafomicheva</a> from <a href="https://pixabay.com/sound-effects//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=13692">Pixabay</a>
+Link to application:
+exp://exp.host/@mollify/Mollify?release-channel=default
 
-Sound Effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124476">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124476">Pixabay</a>
+Project: https://github.com/users/hazem-89/projects/4/views/1
+Repository: https://github.com/hazem-89/Mollify
 
-Sound Effect by <a href="https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124464">Universfield</a> from <a href="https://pixabay.com//?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=124464">Pixabay</a>
-
-Sound Effect from <a href="https://pixabay.com/sound-effects/?utm_source=link-attribution&amp;utm_medium=referral&amp;utm_campaign=music&amp;utm_content=6313">Pixabay</a>
+By:
+Philip Risberg: https://github.com/Prisberg,
+Erik Isaksson: https://github.com/Erikisak,
+Hazem Kawas: https://github.com/hazem-89
