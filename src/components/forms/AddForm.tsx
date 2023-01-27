@@ -12,7 +12,6 @@ import {
 // Uninstall
 // import uuid from 'react-native-uuid';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Toast from 'react-native-root-toast';
 import ActiveCleaningTasksBg from '../../../assets/images/ActiveCleaningTasksBg.png';
 import CleaningTasksBg from '../../../assets/images/CleaningTasksBg.png';
 import hourglass from '../../../assets/images/Icons/hourglass.png';
@@ -408,7 +407,7 @@ export const AddTodoForm = ({
             </View>
             <ScrollView
               horizontal={true}
-            // style={{ width: 0.3 * ScreenWidth }}
+              // style={{ width: 0.3 * ScreenWidth }}
             />
             <ScrollView
               horizontal={true}
