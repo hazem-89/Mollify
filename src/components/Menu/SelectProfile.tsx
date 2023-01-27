@@ -28,7 +28,6 @@ const SelectProfile = () => {
   const {
     profiles,
     loggedInProfile,
-    filteredProfiles,
     setSelectedChild,
     setTasks,
     setRewards,
@@ -106,6 +105,8 @@ const SelectProfile = () => {
           setTasks([]);
           setRewards([]);
           setSelectedChild(profile);
+          // @ts-ignore
+          navigation.navigate('RoomScreen');
         }
         break;
       default:
@@ -116,7 +117,8 @@ const SelectProfile = () => {
 
   return (
     <>
-      <ImageBackground source={SelectFormMenu} style={styles.modal}>
+      <ImageBackground source={SelectFormMenu} style={styles.modal}
+        resizeMode="stretch">
         <View
           style={{
             maxWidth: 0.5 * ScreenWidth,
@@ -148,10 +150,18 @@ const SelectProfile = () => {
           <ScrollView contentContainerStyle={{
             paddingHorizontal: 10,
           }} horizontal={true} style={styles.ProfilesView}>
-            {filteredProfiles && loggedInProfile && loggedInProfile.parent
-              ? filteredProfiles?.map((profile: DocumentData) => (
-                <ProfileButton key={profile.id} onpress={() => handleClick('ManageProfile', profile)} profile={profile} />
-              ))
+            {loggedInProfile && loggedInProfile.parent
+              ? profiles?.map((profile: DocumentData) => {
+                if (profile.parent === true) {
+                  return null;
+                }
+                return (
+                  <ProfileButton
+                    key={profile.id}
+                    onpress={() => handleClick('ManageProfile', profile)}
+                    profile={profile} />
+                )
+              })
               : profiles?.map((profile: DocumentData) => (
                 <ProfileButton key={profile.id} onpress={() => handleClick('EnterPIN', profile)} profile={profile} />
               ))}
