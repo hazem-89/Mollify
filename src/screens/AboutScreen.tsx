@@ -90,14 +90,14 @@ const AboutScreen = () => {
         <View style={styles.GoBackButton}>
           <TouchableOpacity
             // @ts-ignore
-            onPress={() => navigation.navigate('RoomScreen')}
+            onPress={() => navigation.goBack()}
           >
             <ImageBackground
               source={GoBackArrow}
               style={styles.GoBackToRoomImageStyle}
             >
               <View style={{ marginRight: '25%', marginBottom: 10 }}>
-                <Text type="header">Room</Text>
+                <Text type="header">Back</Text>
               </View>
             </ImageBackground>
           </TouchableOpacity>

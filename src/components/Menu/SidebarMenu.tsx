@@ -37,18 +37,22 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
     },
     btnsAlign: {
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: smallScreen ? 'row' : 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      marginRight: 0.1 * ScreenWidth,
-      marginTop: 30,
+      marginRight: smallScreen ? 'auto' : 0.1 * ScreenWidth,
+      marginLeft: smallScreen ? 'auto' : 0,
+      marginTop: smallScreen ? 'auto' : 30,
+      marginBottom: smallScreen ? 'auto' : 0,
     },
     logoutAlign: {
-      marginBottom: smallScreen ? 10 : 20,
+      marginBottom: smallScreen ? 0 : 20,
+      marginRight: smallScreen ? 60 : 0,
     },
     settingsAlign: {
       marginBottom: smallScreen ? 0 : 40,
       alignItems: 'center',
+      marginRight: smallScreen ? 60 : 0,
     },
   });
   return (
