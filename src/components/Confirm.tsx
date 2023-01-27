@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { useDataContext } from '../util/context/DataContext';
 import Button from './buttons/Buttons';
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useLogin } from '../util/auth';
 import { DocumentData } from 'firebase/firestore';
 import Toast from 'react-native-root-toast';
-
+import { Audio } from 'expo-av';
 type ConfirmProps = {
   text: string;
   taskId?: string;
@@ -44,7 +44,21 @@ export const Confirm = ({
   } = useDataContext();
   const { currentUser, deleteAccount, logout } = useLogin();
   const navigation = useNavigation();
+  const [sound, setSound] = useState<Audio.Sound | null>(null);
 
+  useEffect(() => {
+    (async () => {
+      const sound1 = new Audio.Sound();
+      sound1.loadAsync(require('../../assets/sounds/taskRequest.mp3'));
+      setSound(sound1);
+    })();
+  }, []);
+
+  const handlePlaySound = async () => {
+    if (sound && sound._loaded) {
+      await sound.playAsync();
+    }
+  };
   /**
    *  handel confirm delete and update fpr tasks, reward, profiles, and accounts
    */
@@ -95,6 +109,7 @@ export const Confirm = ({
           hideOnPress: true,
           delay: 0,
         });
+        handlePlaySound();
         retrieveFSData('Tasks', 'profileId', `${loggedInProfile?.id}`).then(
           (data: any) => {
             if (data) setTasks(data);

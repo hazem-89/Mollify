@@ -86,18 +86,20 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
               )}
             </View>
           )}
+          {loggedInProfile && (
+            <View style={styles.settingsAlign}>
+              <Button
+                background="SettingsWheel"
+                onPress={() =>
+                  // @ts-ignore
 
-          <View style={styles.settingsAlign}>
-            <Button
-              background="SettingsWheel"
-              onPress={() =>
-                // @ts-ignore
+                  navigation.navigate('SettingsScreen')
+                }
+              />
+              <Text type="Cancel">Settings</Text>
+            </View>
+          )}
 
-                navigation.navigate('SettingsScreen')
-              }
-            />
-            <Text type="Cancel">Settings</Text>
-          </View>
           <View style={styles.settingsAlign}>
             <Button
               background="InfoButtonImage"
@@ -126,4 +128,3 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
 };
 
 export default SidebarMenu;
-

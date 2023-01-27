@@ -30,6 +30,7 @@ import ProfileIcon from '../../../assets/images/profileIcon.png';
 import MenuIcon from '../../../assets/images/menuIcon.png';
 import LogoutIcon from '../../../assets/images/logoutIcon.png';
 import { Text } from '../Text';
+// import { Audio } from 'expo-av';
 
 type ButtonProps = {
   onPress: () => void;
@@ -49,6 +50,30 @@ function Button({
   const [source, setSource] = useState<ImageSourcePropType | undefined>(
     undefined,
   );
+  // const [sound, setSound] = useState<Audio.Sound | null>(null);
+  // const [cancelSound, setCancelSound] = useState<Audio.Sound | null>(null);
+  // const [buttonPressed, setButtonPressed] = useState(false);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     const sound1 = new Audio.Sound();
+  //     sound1.loadAsync(require('../../../assets/sounds/button.mp3'));
+  //     setSound(sound1);
+  //     const cancelSound = new Audio.Sound();
+  //     cancelSound.loadAsync(require('../../../assets/sounds/cancel.mp3'));
+  //     setCancelSound(cancelSound);
+  //   })();
+  // }, []);
+
+  const handlePlaySound = async () => {
+    // setButtonPressed(!buttonPressed);
+    // if (sound && background !== 'Cancel' && sound._loaded) {
+    //   await sound.playAsync();
+    // }
+    // if (cancelSound && background === 'Cancel' && cancelSound._loaded) {
+    //   await cancelSound.playAsync();
+    // }
+  };
   const [style, setStyle] = useState<Object>({});
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
@@ -208,6 +233,7 @@ function Button({
       activeOpacity={disable ? 1 : 0.2}
       onPress={() => {
         disable ? null : onPress();
+        handlePlaySound();
       }}
     >
       <ImageBackground source={source} style={style}>

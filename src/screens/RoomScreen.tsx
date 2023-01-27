@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import {
   Dimensions,
   ImageBackground,
@@ -10,6 +10,9 @@ import {
   View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import Toast from 'react-native-root-toast';
+import { Confirm } from '../components/Confirm';
+import FormModal from '../components/modals/FormModal';
 import Onboarding from '../components/onboarding/Onboarding';
 import Disposal from '../components/room/Disposal';
 import Draggable from '../components/room/Draggable';
@@ -26,10 +29,13 @@ export interface coordinates {
 export default function RoomScreen() {
   const [profileRoom, setProfileRoom] = useState<ImageSourcePropType>();
   const [isDragging, setIsDragging] = useState(false);
+  const [chosenTask, setChosenTask] = useState<Tasks>();
   const ScreenWidth = Dimensions.get('window').width;
   const ScreenHeight = Dimensions.get('window').height;
   const [aspectRatio, setAspectRatio] = useState<number>(ScreenWidth);
   const [disposalFilterProp, setDisposalFilterProp] = useState('');
+  const [component, setComponent] = useState<ReactElement | undefined>();
+
   // viewPortCoords refer to the top-left corner of the viewport.
   const [viewPortCoords, setViewPortCoords] = useState<coordinates>({
     x: 0,
@@ -71,6 +77,29 @@ export default function RoomScreen() {
       handleData(loggedInProfile);
     }
   }, [loggedInProfile, selectedChild]);
+  let updateAcceptedReq = {};
+  const handleTaskRequestStatus = async (funName: string) => {
+    if (funName === 'updateRequest') {
+      updateAcceptedReq = {
+        ...chosenTask,
+        hasRequest: true,
+      };
+    }
+    if (chosenTask && chosenTask.id) {
+      try {
+        if (loggedInProfile) {
+          await updateFSDoc('Tasks', chosenTask?.id, updateAcceptedReq);
+          retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
+            (data: any) => {
+              data ? setTasks(data) : setTasks([]);
+            },
+          );
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
 
   function handleData(profileProp: any) {
     // find and render child's room
@@ -105,11 +134,15 @@ export default function RoomScreen() {
       loggedInProfile
     ) {
       // If draggableCoords overlap with the Disposal component the draggable should be marked as done and removed.
-      updateFSDoc('Tasks', task.id, { hasRequest: true });
-      retrieveFSData('Tasks', 'profileId', `${loggedInProfile.id}`).then(
-        (data: any) => {
-          if (data) setTasks(data);
-        },
+      // updateFSDoc('Tasks', task.id, { hasRequest: true });
+      setComponent(
+        <Confirm
+          text="Are you done with this task?"
+          taskId={task.id}
+          confirmBtnText="Yes"
+          funName="updateRequest"
+          UpdateReqStatus={() => handleTaskRequestStatus('updateRequest')}
+        />,
       );
       setIsDragging(false);
     } else {
@@ -149,9 +182,10 @@ export default function RoomScreen() {
                 <Draggable
                   key={task.id}
                   task={task}
-                  onMove={(moving: boolean, draggableCoords?: coordinates) =>
-                    handleMove(moving, task, draggableCoords)
-                  }
+                  onMove={(moving: boolean, draggableCoords?: coordinates) => {
+                    handleMove(moving, task, draggableCoords);
+                    setChosenTask(task);
+                  }}
                 />
               ) : null,
             )}
@@ -163,6 +197,11 @@ export default function RoomScreen() {
       ) : (
         <Onboarding guide="roomScreenChild" />
       )}
+      <FormModal
+        component={component}
+        // onEmit={() => handleUpdateClick(undefined)}
+        text="Confirm"
+      />
     </>
   );
 }
