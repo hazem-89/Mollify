@@ -153,3 +153,26 @@ export const roomObjects: roomObjectsInterface[] = [
   },
 ];
 
+export const randomColorOptions = [
+  '#067B7B',
+  '#087b06',
+  '#647b06',
+  '#7b1a06',
+  '#12067b',
+  '#7b063b',
+  '#06467b',
+  '#067b5a',
+  '#7b067b',
+  '#587b06',
+  '#F44336',
+  '#9C27B0',
+  '#b5783f',
+  '#a54caf',
+  '#ff0707',
+  '#3fb54f',
+  '#4c7caf',
+  '#07fbff',
+  '#3F51B5',
+  '#4CAF50',
+  '#FFC107',
+];
