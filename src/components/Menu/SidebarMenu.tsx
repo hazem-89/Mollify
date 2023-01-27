@@ -65,7 +65,7 @@ const SidebarMenu = ({ screen, setSideBarOpen }: SidebarMenuProps) => {
                   setSideBarOpen(false);
                 }}
               />
-              <Text type="Cancel">Exit current profile</Text>
+              <Text type="Cancel">Exit parent profile</Text>
             </View>
           ) : (
             <View style={styles.settingsAlign}>

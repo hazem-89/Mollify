@@ -7,6 +7,7 @@ import {
   Dimensions, ImageBackground,
   StyleSheet, View
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import SelectFormMenu from '../../../assets/images/SelectFormMenu.png';
 import Button from '../../components/buttons/Buttons';
 import { Text } from '../../components/Text';
@@ -27,7 +28,6 @@ const SelectProfile = () => {
   const {
     profiles,
     loggedInProfile,
-    filteredProfiles,
     setSelectedChild,
     setTasks,
     setRewards,
@@ -77,7 +77,6 @@ const SelectProfile = () => {
       flexDirection: 'row',
     },
     ProfilesView: {
-      flexDirection: 'row',
       width: '80%',
     },
   });
@@ -106,6 +105,8 @@ const SelectProfile = () => {
           setTasks([]);
           setRewards([]);
           setSelectedChild(profile);
+          // @ts-ignore
+          navigation.navigate('RoomScreen');
         }
         break;
       default:
@@ -116,7 +117,8 @@ const SelectProfile = () => {
 
   return (
     <>
-      <ImageBackground source={SelectFormMenu} style={styles.modal}>
+      <ImageBackground source={SelectFormMenu} style={styles.modal}
+        resizeMode="stretch">
         <View
           style={{
             maxWidth: 0.5 * ScreenWidth,
@@ -145,15 +147,25 @@ const SelectProfile = () => {
             </>
           ) : null}
 
-          <View style={styles.ProfilesView}>
-            {filteredProfiles && loggedInProfile && loggedInProfile.parent
-              ? filteredProfiles?.map((profile: DocumentData) => (
-                <ProfileButton key={profile.id} onpress={() => handleClick('ManageProfile', profile)} profile={profile} />
-              ))
+          <ScrollView contentContainerStyle={{
+            paddingHorizontal: 10,
+          }} horizontal={true} style={styles.ProfilesView}>
+            {loggedInProfile && loggedInProfile.parent
+              ? profiles?.map((profile: DocumentData) => {
+                if (profile.parent === true) {
+                  return null;
+                }
+                return (
+                  <ProfileButton
+                    key={profile.id}
+                    onpress={() => handleClick('ManageProfile', profile)}
+                    profile={profile} />
+                )
+              })
               : profiles?.map((profile: DocumentData) => (
                 <ProfileButton key={profile.id} onpress={() => handleClick('EnterPIN', profile)} profile={profile} />
               ))}
-          </View>
+          </ScrollView>
         </View>
       </ImageBackground>
       <FormModal component={component} />
