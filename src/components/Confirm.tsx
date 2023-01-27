@@ -93,7 +93,7 @@ export const Confirm = ({
         });
         retrieveFSData('Tasks', 'profileId', `${selectedChild.id}`).then(
           (data: any) => {
-            if (data) setTasks(data);
+            data ? setTasks(data) : setTasks([]);
           },
         );
       }

@@ -40,7 +40,7 @@ const TaskCard = ({ task }: Props) => {
     updateFSDoc,
     setTasks,
     setSelectedChild,
-    tasks,
+    setRewards,
   } = useDataContext();
   const dimensions = useDimensions();
   const [smallScreen] = useState(dimensions.screen.height < 600);
@@ -77,6 +77,11 @@ const TaskCard = ({ task }: Props) => {
         points: pointsSum.toString(),
       };
       setSelectedChild({ ...selectedChild, points: pointsSum.toString() });
+      retrieveFSData('Rewards', 'profileId', `${selectedChild.id}`).then(
+        (data: any) => {
+          data ? setRewards(data) : setRewards([]);
+        },
+      );
     }
     if (task.id) {
       try {
@@ -85,14 +90,19 @@ const TaskCard = ({ task }: Props) => {
           await updateFSDoc('profiles', selectedChild.id, updateProfilePoints);
           retrieveFSData('Tasks', 'profileId', selectedChild.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              data ? setTasks(data) : setTasks([]);
             },
           );
         } else if (loggedInProfile) {
           await updateFSDoc('Tasks', task?.id, updateAcceptedReq);
           retrieveFSData('Tasks', 'profileId', loggedInProfile.id).then(
             (data: any) => {
-              if (data) setTasks(data);
+              data ? setTasks(data) : setTasks([]);
+            },
+          );
+          retrieveFSData('Rewards', 'profileId', `${loggedInProfile.id}`).then(
+            (data: any) => {
+              data ? setRewards(data) : setRewards([]);
             },
           );
         }
